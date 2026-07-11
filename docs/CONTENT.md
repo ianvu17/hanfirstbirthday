@@ -27,7 +27,7 @@ Top-level fields:
 - `assets`: references to required visual and audio assets.
 - `admin`: admin-facing labels and validation copy.
 
-## Quiz Model
+## Static Question Content
 
 Quiz questions must be structured, localizable, and externally managed.
 
@@ -41,8 +41,10 @@ Question fields:
 - `durationSeconds`: default 20 unless overridden by approved content.
 - `answers`: localized answer options.
 - `correctAnswerId`: stable answer id.
-- `explanation`: optional localized explanation after answering or on result review.
+- `funFact`: optional localized Han fun fact shown after a response is locked, only when provided by Ian or another approved source.
 - `assetId`: optional linked asset id.
+- `audioAssetId`: optional linked audio asset id.
+- `enabled`: whether the question can appear in the active quiz.
 - `sortOrder`: display order.
 
 Answer fields:
@@ -56,7 +58,23 @@ Validation rules:
 - Every ready question must have at least two answers.
 - Every ready single-choice question must have exactly one correct answer.
 - Ready questions must exist in both locales.
-- No prompt, answer, or explanation may be fabricated.
+- No prompt, answer, or fun fact may be fabricated.
+
+## Runtime Guest Response
+
+Question responses are runtime data and must be stored in Supabase or an approved runtime data store after implementation. They do not belong in `content/en.json` or `content/vi.json`.
+
+Potential fields:
+
+- `quizAttemptId`: quiz session id.
+- `questionId`: stable content question id.
+- `selectedAnswerId`: selected answer id, or null for a timeout.
+- `resultStatus`: correct, incorrect, or timed out.
+- `responseDurationMs`: response duration.
+- `submittedAt`: submission timestamp.
+- `lockedAt`: lock timestamp.
+- `timedOut`: timeout flag.
+- `idempotencyKey`: retry token or equivalent.
 
 ## Message Model
 
@@ -69,7 +87,7 @@ Fields:
 - `displayName`: guest-provided display name.
 - `locale`: submitted locale.
 - `message`: guest message text.
-- `status`: `pending`, `approved`, `hidden`, or `archived` if moderation is added.
+- `status`: simple visibility/review status if messages are later displayed publicly.
 - `isTest`: identifies QA/test data.
 - `createdAt`: timestamp.
 
@@ -77,7 +95,7 @@ Constraints:
 
 - Set a reasonable character limit before implementation.
 - Do not require sensitive personal information.
-- Provide admin review if messages may be displayed publicly later.
+- Keep any review workflow simple and defer complex moderation unless Ian explicitly approves it later.
 
 ## Timeline Model
 

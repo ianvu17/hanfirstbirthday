@@ -4,7 +4,7 @@ Public title: **WHO IS TURNING ONE?!**
 
 Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, play a short bilingual quiz, leave a message, and see a live leaderboard on a laptop or TV display.
 
-This repository is currently in a documentation-first foundation phase. Application implementation should not begin until the product, UX, content, architecture, and QA documents have been reviewed.
+This repository has completed its documentation-first foundation review. The next approved step is Milestone 1 project scaffolding; no application implementation exists yet.
 
 ## Purpose
 
@@ -45,6 +45,7 @@ No app scaffold or implementation code exists yet. The intended architecture is 
 - [docs/ASSETS.md](docs/ASSETS.md): required assets, naming, and replacement behavior.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): planned technical architecture.
 - [docs/QA.md](docs/QA.md): testing and release strategy.
+- [docs/FOUNDATION_REVIEW.md](docs/FOUNDATION_REVIEW.md): Milestone 0 review record and approved next step.
 - [AGENTS.md](AGENTS.md): specialized AI roles for future project work.
 - [.github/instructions/birthday.instructions.md](.github/instructions/birthday.instructions.md): project-specific coding and review instructions for AI agents.
 
@@ -62,7 +63,7 @@ These files intentionally contain no real Han stories, memories, timeline events
 1. Review the foundation documents.
 2. Confirm product scope, content ownership, and asset availability.
 3. Add real content only to external content files after Ian provides it.
-4. Scaffold the application with the target stack only after documentation review.
+4. Scaffold the application with the target stack during Milestone 1.
 5. Build features milestone by milestone from [ROADMAP.md](ROADMAP.md).
 6. Validate each milestone through the QA process in [docs/QA.md](docs/QA.md).
 

@@ -11,17 +11,18 @@ This is not a generic quiz website. It is a digital extension of the birthday pa
 - Create a warm party experience that feels personal, premium, and easy to use.
 - Support English and Vietnamese guests equally.
 - Let guests play a short quiz with a 20-second timer per question.
-- Prevent duplicate quiz submissions.
+- Submit and lock one response per question, including timed-out responses.
+- Prevent duplicate question responses during safe retries.
 - Display a live leaderboard for the room.
 - Let guests leave a birthday message.
 - Reserve space for timeline and gallery features without inventing content.
-- Support admin and QA workflows so the event can be tested safely before launch.
+- Support lightweight admin and QA workflows so the event can be tested safely before launch.
 
 ## Target Audience
 
 - Family and friends attending Han's first birthday.
 - Guests using personal mobile phones, likely in a social environment with distractions.
-- A host or admin preparing content and monitoring the experience.
+- A host or admin checking event readiness, scores, messages, leaderboard access, and QA/test separation.
 - Viewers watching a laptop or TV leaderboard during the party.
 
 ## Experience Goals
@@ -66,11 +67,13 @@ Architecture should separate:
 - UI components from content strings.
 - Guest routes from admin, QA, and display routes.
 
+Admin MVP must stay small: scores, messages, leaderboard view/link, QA/test separation, necessary test resets, and optional simple readiness summary.
+
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the planned technical design.
 
 ## Constraints
 
-- Documentation-first workflow: do not implement the application until the foundation is reviewed.
+- Documentation-first workflow: Milestone 0 foundation review is complete; next implementation work is limited to Milestone 1 scaffolding unless Ian explicitly reprioritizes.
 - Do not invent stories, memories, quiz facts, timeline events, images, or photo descriptions.
 - Do not hardcode content in components.
 - All content-related data must come from external data files or Supabase records.

@@ -12,7 +12,7 @@ The experience should feel instantly understandable, warm, and festive. Guests s
 4. Enter display name.
 5. Start quiz.
 6. Answer timed questions.
-7. Submit once.
+7. Lock each question response as it is accepted or timed out.
 8. View result.
 9. View leaderboard.
 10. Leave a birthday message.
@@ -71,7 +71,7 @@ States:
 
 - Empty: primary action disabled or prompts for name.
 - Invalid: explain display name requirements.
-- Duplicate or already submitted: route to existing result or explain submit-once behavior.
+- Duplicate or already completed: route to the existing result or explain that locked question responses cannot be changed.
 
 ### Quiz Start
 
@@ -98,38 +98,50 @@ UX notes:
 - Timer must be visible but not stressful.
 - Answers should be large touch targets.
 - Use motion to transition between questions without slowing the flow.
+- The timer must not begin before the question and required fallback assets are ready.
+- Once a question response is accepted, stop the timer, disable all answer options, prevent backward editing, and show the reveal state.
+- If the timer expires before a valid answer is accepted, lock the question as timed out and show the timeout reveal.
+- Network retry behavior must never unlock an already accepted response or create duplicate question responses.
 
 Micro interactions:
 
 - Gentle entrance for each question.
 - Clear selected-answer state.
-- Subtle feedback on answer lock-in if answers submit per question.
+- Subtle feedback when an answer is accepted and locked.
 - Timer transition should become more noticeable near the end without feeling alarming.
 
 States:
 
+- Loading.
+- Ready.
 - Unanswered.
 - Answer selected.
-- Time expired.
-- Network save pending.
-- Network save failed with retry path.
+- Submitting.
+- Accepted and locked.
+- Correct reveal.
+- Incorrect reveal.
+- Timeout and locked.
+- Temporary request failure.
+- Safe retry.
+- Transition to next question.
 
-### Quiz Completion / Submit
+Open UX decision:
 
-Purpose: Finalize the guest's attempt exactly once.
+- Whether tapping an answer immediately submits it or whether a separate confirmation action is required. Existing documentation does not resolve this, so implementation must decide explicitly before building the quiz interaction.
+
+### Quiz Completion
 
 UX notes:
 
-- Make submission state clear.
-- Prevent double taps from creating duplicate records.
-- If a submission already exists, recover gracefully.
+- Completion happens after all question responses are locked.
+- There is no editable final review of all quiz answers.
+- The final score is calculated from locked question responses.
 
 States:
 
-- Submitting.
-- Submitted.
-- Already submitted.
-- Submission failed with retry.
+- Calculating result.
+- Completed quiz attempt.
+- Result unavailable with recovery guidance.
 
 ### Result Screen
 
@@ -224,23 +236,36 @@ States:
 - Asset missing fallback.
 - Future populated state after real assets are provided.
 
-### Admin Dashboard
+### Lightweight Admin
 
-Purpose: Let Ian/admin monitor event readiness and submissions.
+Purpose: Let Ian/admin handle essential event-day and testing checks without becoming a full dashboard product.
 
 UX notes:
 
 - Admin UI can be more utilitarian but should still be clear.
 - Separate real event data from QA/test data.
 - Do not expose admin controls to guests.
+- Keep navigation and controls minimal so admin work does not block the guest MVP.
 
-Core views:
+Approved capabilities:
 
-- Submission overview.
-- Message review.
-- Leaderboard status.
-- QA/test mode controls.
-- Content readiness checks.
+- View guest names and final quiz scores.
+- View submitted birthday messages.
+- View current leaderboard.
+- Distinguish QA/test data from real event data.
+- Remove or reset an incorrect test record or quiz attempt when necessary.
+- Open or link to the TV leaderboard.
+- Optionally show a small readiness summary if it remains simple.
+
+Out of MVP scope:
+
+- Content editing.
+- Translation management.
+- Visual question editing.
+- Media upload.
+- Advanced analytics.
+- Complex moderation workflow.
+- User or role management.
 
 ### QA Mode
 

@@ -57,8 +57,8 @@ Quantitative:
 
 - At least 80% of participating guests complete the quiz once they start.
 - Median quiz completion time stays under 4 minutes.
-- Leaderboard updates within a few seconds of submission under expected party load.
-- No duplicate scored submissions from the same guest identity/device path.
+- Leaderboard updates within a few seconds of completed quiz attempts under expected party load.
+- No duplicate accepted question responses from the same quiz attempt and question.
 - Zero guest-facing missing translation keys in production.
 
 Qualitative:
@@ -95,8 +95,23 @@ Qualitative:
 - Each question must support localized prompt and answer text.
 - Questions must support one correct answer unless a future ADR adds other question types.
 - The quiz must include a 20-second timer per question.
-- The quiz must submit only once per guest attempt.
-- Result scoring must be deterministic and reviewable.
+- Each question must follow this lifecycle:
+  - Question loads.
+  - Question becomes ready.
+  - 20-second timer starts.
+  - Guest selects an answer.
+  - Answer is submitted.
+  - Server accepts and locks the response.
+  - Correct, incorrect, or timeout reveal appears.
+  - Han fun fact appears when provided in approved content.
+  - App proceeds to the next question.
+  - Final score is derived from all locked responses.
+- A submitted answer is immutable once accepted.
+- A timed-out question is immutable once locked.
+- Previous questions must not reopen for editing.
+- Retried requests for the same question response must be idempotent and must not create duplicate responses.
+- There is no end-of-quiz page where all answers remain editable before completing the quiz.
+- Result scoring must be deterministic and reviewable from locked question responses.
 
 ### Result Screen
 
@@ -129,11 +144,18 @@ Qualitative:
 - No fake photos or fake captions should be generated.
 - Missing assets should use approved placeholders.
 
-### Admin Dashboard
+### Lightweight Admin
 
-- Admin should be able to monitor quiz submissions and messages.
-- Admin should have tools for QA/test mode where appropriate.
+- Admin should be a small utility area for essential event-day and testing operations.
+- Admin should be able to view guest names and final quiz scores.
+- Admin should be able to view submitted birthday messages.
+- Admin should be able to view the current leaderboard.
+- Admin should distinguish QA/test data from real event data.
+- Admin should allow removal or reset of an incorrect test record or quiz attempt when necessary.
+- Admin should open or link to the TV leaderboard.
+- Admin may show a small readiness summary if it remains simple.
 - Admin access must be separated from guest access.
+- Admin MVP must not include content editing, translation editing, media upload, advanced analytics, complex moderation, role management, or a reusable CMS.
 
 ### QA Mode And Test Mode
 
@@ -173,6 +195,7 @@ Qualitative:
 - Submissions should avoid accidental duplicates.
 - Network errors should be recoverable or clearly explained.
 - Production data should be protected from QA/test data.
+- Question response retries should preserve locked answers and timed-out responses.
 
 ### Privacy And Data Care
 
@@ -186,9 +209,15 @@ MVP acceptance:
 
 - Guest can scan QR code, choose language, enter display name, complete the quiz, see result, view leaderboard, and leave a message.
 - Quiz enforces 20-second question timing.
-- Scored submission can happen only once for a guest attempt.
+- A quiz attempt can have at most one accepted response per question.
+- A submitted response is immutable.
+- A timed-out question is immutable.
+- Previous questions cannot be reopened for editing.
+- Retried question-response requests are idempotent.
+- Final scoring uses accepted locked responses.
+- No editable end-of-quiz answer review exists.
 - Leaderboard updates live for expected party load.
-- Admin can verify submissions and messages.
+- Admin can verify quiz attempts, leaderboard state, messages, and QA/test separation through a lightweight utility page.
 - QA mode can test flows without polluting production event data.
 - English and Vietnamese guest flows are complete.
 - No real content is present unless Ian provided it.
@@ -215,4 +244,4 @@ Foundation acceptance:
 - Additional quiz rounds or family mini-games.
 - Private post-event page for family.
 - Richer timeline once real events and photos are provided.
-- Optional media upload workflow if privacy and moderation requirements are defined.
+- Optional media upload workflow if privacy and review requirements are defined after MVP.

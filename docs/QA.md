@@ -2,7 +2,7 @@
 
 ## QA Goal
 
-Protect the birthday-day experience. Testing should prove that guests can scan, play, submit once, see results, view the leaderboard, and leave messages without confusion.
+Protect the birthday-day experience. Testing should prove that guests can scan, play, answer timed questions with immutable locked responses, see results, view the leaderboard, and leave messages without confusion.
 
 ## Test Environments
 
@@ -65,7 +65,7 @@ Use cases:
 
 - Simulate a guest completing quiz.
 - Simulate timer expiration.
-- Simulate duplicate submission.
+- Simulate duplicate question-response retry.
 - Simulate network failure or retry.
 - Simulate empty leaderboard.
 - Simulate missing optional assets.
@@ -80,7 +80,7 @@ Cover:
 
 - Quiz scoring.
 - Timer behavior.
-- Submit-once guard logic.
+- Question response locking and idempotent retry logic.
 - Content schema validation.
 - Locale key parity.
 - Leaderboard ranking and tie-break rules.
@@ -93,6 +93,8 @@ Cover:
 - Guest name form validation.
 - Quiz question state.
 - Answer selection.
+- Accepted and locked answer reveal.
+- Timeout and locked reveal.
 - Result summary.
 - Message form.
 - Empty states.
@@ -102,8 +104,8 @@ Cover:
 Cover:
 
 - Guest starts and completes quiz.
-- Attempt submission persists once.
-- Duplicate submission recovers gracefully.
+- Each accepted question response persists once.
+- Duplicate question-response requests recover gracefully.
 - Leaderboard updates after submission.
 - Message submission persists.
 - QA/test data is filtered from production views.
@@ -157,11 +159,13 @@ Checklist:
 - Guest can choose English or Vietnamese.
 - Guest can enter display name.
 - Guest can answer quiz questions with 20-second timer.
-- Guest can submit once.
+- Accepted answers lock and cannot be edited.
+- Timed-out questions lock and cannot be edited.
+- Safe retries do not create duplicate question responses.
 - Guest sees a result screen.
 - Leaderboard updates after submission.
 - Guest can leave a message.
-- Admin can see submissions and messages.
+- Admin can see final quiz scores, messages, leaderboard state, and QA/test separation through a lightweight utility area.
 - QA/test data is separate from production data.
 - Timeline and gallery placeholders do not invent content.
 

@@ -82,9 +82,7 @@ Display routes:
 
 Admin routes:
 
-- `/{locale}/admin`: admin dashboard.
-- `/{locale}/admin/messages`: message review.
-- `/{locale}/admin/submissions`: submission monitoring.
+- `/{locale}/admin`: lightweight admin utility for scores, messages, leaderboard link/status, QA/test separation, and simple resets.
 
 QA routes:
 
@@ -123,8 +121,8 @@ Feature compositions:
 - Result page.
 - Mobile leaderboard page.
 - TV leaderboard page.
-- Admin dashboard.
-- QA dashboard.
+- Lightweight admin utility.
+- QA utility.
 
 ## State Management
 
@@ -133,7 +131,7 @@ Use the simplest state model that supports reliability.
 Client state:
 
 - Current question index.
-- Selected answers before submission.
+- Selected answer for the active question before submission.
 - Timer state.
 - Local UI state such as loading, submitting, and errors.
 
@@ -141,7 +139,7 @@ Server/runtime state:
 
 - Participant identity.
 - Quiz attempt.
-- Submitted answers.
+- Immutable question responses.
 - Score.
 - Message submissions.
 - QA/test flag.
@@ -174,7 +172,7 @@ Fields:
 
 ### `quiz_attempts`
 
-Purpose: Store one scored attempt per participant/event scope.
+Purpose: Store one guest's quiz session.
 
 Fields:
 
@@ -184,26 +182,37 @@ Fields:
 - `score`.
 - `total_questions`.
 - `started_at`.
-- `submitted_at`.
+- `completed_at`.
 - `is_test`.
 
 Constraints:
 
-- Enforce one submitted attempt per participant/event scope.
+- Enforce one active or completed attempt per participant/event scope if the approved guest identity model needs it.
 
-### `quiz_answers`
+### `question_responses`
 
-Purpose: Store answers for auditing and scoring review.
+Purpose: Store one immutable response for one question within one quiz attempt.
 
 Fields:
 
 - `id`.
 - `attempt_id`.
 - `question_id`.
-- `answer_id`.
+- `selected_answer_id` or null for timeout.
+- `status`, such as `accepted` or `timed_out`.
 - `is_correct`.
-- `answered_at`.
-- `time_remaining_ms` if used for tie-breaking.
+- `timed_out`.
+- `submitted_at`.
+- `locked_at`.
+- `response_duration_ms`.
+- `idempotency_key` or equivalent retry token.
+
+Constraints:
+
+- Enforce one accepted question response per quiz attempt per question.
+- Once accepted or timed out, a question response must not be reopened or edited.
+- Retried requests with the same idempotency key or equivalent retry token should return the existing locked response instead of creating a duplicate.
+- Final score should be calculated from accepted locked question responses.
 
 ### `messages`
 
@@ -233,7 +242,7 @@ Fields:
 
 ## Leaderboard Strategy
 
-- Source leaderboard from submitted quiz attempts.
+- Source leaderboard from completed quiz attempts whose question responses are locked.
 - Rank by score first.
 - Use completion time or time remaining only if approved as a tie-breaker.
 - Filter out QA/test data in production display.
@@ -245,15 +254,18 @@ Potential server actions or route handlers:
 
 - Create or resume participant.
 - Start quiz attempt.
-- Submit quiz attempt.
+- Submit question response.
+- Lock timed-out question response.
+- Complete quiz attempt.
 - Fetch result.
 - Fetch leaderboard.
 - Submit message.
-- Admin fetch submissions.
+- Admin fetch final quiz scores.
 - Admin fetch messages.
+- Admin remove/reset incorrect test record or quiz attempt when necessary.
 - QA reset test data.
 
-All mutation paths should validate input and prevent duplicate submissions.
+All mutation paths should validate input, preserve immutable locked responses, and prevent duplicate question responses.
 
 ## Admin And QA Separation
 

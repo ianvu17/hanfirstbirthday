@@ -89,7 +89,7 @@
     "quiz": {
         "settings": {
             "defaultQuestionDurationSeconds": 20,
-            "submitOnlyOnce": true,
+            "responseLocking": "per-question-immutable",
             "questionOrder": "content-order",
             "scoringMode": "correct-count"
         },
@@ -106,13 +106,8 @@
             "minLength": 1,
             "maxLength": 500
         },
-        "moderation": {
-            "statusWorkflow": [
-                "pending",
-                "approved",
-                "hidden",
-                "archived"
-            ]
+        "review": {
+            "simpleStatusWorkflow": []
         }
     },
     "assets": {

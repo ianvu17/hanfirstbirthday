@@ -1,6 +1,67 @@
 # AI Agent Roles
 
-This repository is expected to be built over many AI-assisted iterations. Agents should read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) first, then consult the role guidance below and the relevant document for the task.
+This repository is expected to be built over many AI-assisted iterations. Agents must read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) first, then consult [DECISIONS.md](DECISIONS.md), the role guidance below, and the relevant document for the task.
+
+## Mandatory Workflow
+
+Before making a change, every agent must:
+
+1. Read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md).
+2. Read [DECISIONS.md](DECISIONS.md).
+3. Read the task-relevant documentation.
+4. Inspect the current repository state.
+5. State material assumptions.
+6. Stay within requested scope.
+7. Validate relevant behavior.
+8. Update documentation when approved behavior changes.
+
+## Documentation Precedence
+
+When guidance conflicts, use this order:
+
+1. Ian's most recent explicit instruction.
+2. [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md).
+3. [DECISIONS.md](DECISIONS.md).
+4. [docs/PRD.md](docs/PRD.md).
+5. [docs/UX.md](docs/UX.md).
+6. [docs/UI_GUIDELINES.md](docs/UI_GUIDELINES.md).
+7. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+8. [docs/CONTENT.md](docs/CONTENT.md).
+9. [docs/ASSETS.md](docs/ASSETS.md).
+10. [docs/QA.md](docs/QA.md).
+11. [ROADMAP.md](ROADMAP.md).
+12. Existing implementation.
+
+Future agents must not silently resolve material conflicts. Record the conflict and ask for clarification when it changes product behavior.
+
+## Shared Definition Of Done
+
+Where applicable, a task is not complete until:
+
+- Type checking passes.
+- Linting passes.
+- Relevant tests pass.
+- English and Vietnamese behavior is verified.
+- Mobile layout is verified.
+- Missing assets degrade gracefully.
+- No Han facts or memories are invented.
+- Question locking behavior is preserved.
+- QA/test data remains separate.
+- Documentation is updated.
+- The agent reports changed files, validation, assumptions, and risks.
+
+## Multi-Role Self-Review
+
+Before completion, the executing agent must review its work through these lenses:
+
+- Product Manager.
+- Software Architect.
+- Frontend Lead.
+- UX Designer.
+- Art Director.
+- QA Lead.
+
+This is a structured self-review. It does not require multiple spawned agents.
 
 ## Product Manager
 
@@ -35,13 +96,13 @@ Design a reliable, maintainable system that supports mobile guests, a live leade
 - Maintain [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [DECISIONS.md](DECISIONS.md).
 - Define data ownership across JSON content, Supabase, and runtime state.
 - Ensure deployment compatibility with Vercel and Supabase.
-- Design for submit-once quiz behavior and real-time leaderboard updates.
+- Design for per-question immutable quiz responses and real-time leaderboard updates.
 - Keep implementation choices aligned with the approved stack.
 
 ### Review Checklist
 
 - Is content externalized and localizable?
-- Does the data model prevent duplicate quiz submissions?
+- Does the data model prevent duplicate question responses?
 - Can the leaderboard update for a room of about 10 guests?
 - Are admin and QA capabilities separated from guest flows?
 - Are decisions documented when they affect long-term maintainability?
@@ -122,7 +183,7 @@ Protect the event-day experience through practical test coverage, preview checks
 
 - Maintain [docs/QA.md](docs/QA.md).
 - Define milestone acceptance checks.
-- Verify submit-once behavior, timer behavior, localization, and leaderboard updates.
+- Verify question locking behavior, timer behavior, localization, and leaderboard updates.
 - Coordinate QA mode and test data reset expectations.
 - Validate Vercel preview and production readiness.
 

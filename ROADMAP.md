@@ -4,7 +4,7 @@ This roadmap preserves the documentation-first workflow. Milestones should be co
 
 ## Milestone 0: Foundation
 
-Status: In progress.
+Status: Completed after foundation alignment review.
 
 Goals:
 
@@ -19,8 +19,12 @@ Exit criteria:
 - Requested foundation files exist.
 - No app scaffold or implementation code has been added.
 - Content schemas contain placeholders only.
+- Documentation records per-question locked quiz responses and minimal admin scope.
+- Foundation review record exists.
 
 ## Milestone 1: Project Scaffold
+
+Status: Next.
 
 Goals:
 
@@ -28,6 +32,7 @@ Goals:
 - Add shadcn/ui, Framer Motion, next-intl, and base project conventions.
 - Establish route groups and folder structure from [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - Wire placeholder locale files without building feature logic.
+- Do not implement the full quiz, Supabase runtime, leaderboard, admin, or complete feature flows in this milestone.
 
 Exit criteria:
 
@@ -57,23 +62,25 @@ Goals:
 - Build QR entry landing flow.
 - Add language selection and guest identification.
 - Implement quiz flow with 20-second timer.
-- Enforce submit-once behavior.
+- Enforce per-question locked responses with safe retries.
 - Show result screen.
 
 Exit criteria:
 
 - Guest can complete a quiz once.
 - Timer and scoring are tested.
-- Duplicate submission is blocked gracefully.
+- Each question can have at most one accepted locked response per attempt.
+- Timed-out questions lock and cannot be edited.
+- Duplicate response requests recover gracefully.
 
 ## Milestone 4: Supabase And Leaderboard
 
 Goals:
 
 - Add Supabase schema and policies.
-- Persist participants, attempts, answers, and scores.
+- Persist participants, quiz attempts, immutable question responses, and scores.
 - Build live leaderboard display route.
-- Add admin reset/test-data controls as appropriate.
+- Add QA/test-data tagging and filtering.
 
 Exit criteria:
 
@@ -88,6 +95,7 @@ Goals:
 - Allow guests to leave birthday messages.
 - Add timeline placeholder screen.
 - Add gallery placeholder screen.
+- Add lightweight admin message and score viewing if needed for event readiness.
 - Ensure content remains externally managed.
 
 Exit criteria:
@@ -96,14 +104,15 @@ Exit criteria:
 - Timeline and gallery do not imply fake content.
 - Empty states feel intentional and warm.
 
-## Milestone 6: Admin Dashboard And QA Mode
+## Milestone 6: Lightweight Admin And QA Mode
 
 Goals:
 
-- Build admin dashboard for monitoring submissions and messages.
+- Build lightweight admin utility for scores, messages, current leaderboard, TV leaderboard link, and necessary test resets.
 - Build QA mode and test mode controls.
 - Add content validation checks.
 - Prepare pre-party test script.
+- Keep content editing, media upload, advanced analytics, complex moderation, and user management out of MVP.
 
 Exit criteria:
 
