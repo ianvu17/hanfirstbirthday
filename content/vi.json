@@ -1,0 +1,130 @@
+{
+    "schemaVersion": "1.0.0",
+    "locale": "vi",
+    "metadata": {
+        "projectName": "Han Birthday Experience",
+        "publicTitle": "WHO IS TURNING ONE?!",
+        "contentStatus": "placeholder-schema-only",
+        "contentRules": {
+            "realContentRequiredFromIan": true,
+            "inventedMemoriesAllowed": false,
+            "fakePhotosAllowed": false,
+            "hardcodedContentAllowed": false
+        }
+    },
+    "navigation": {
+        "home": "",
+        "quiz": "",
+        "leaderboard": "",
+        "message": "",
+        "timeline": "",
+        "gallery": ""
+    },
+    "screens": {
+        "welcome": {
+            "title": "",
+            "subtitle": "",
+            "primaryAction": ""
+        },
+        "guestEntry": {
+            "title": "",
+            "nameLabel": "",
+            "namePlaceholder": "",
+            "primaryAction": "",
+            "validation": {
+                "required": "",
+                "tooLong": "",
+                "alreadySubmitted": ""
+            }
+        },
+        "quizStart": {
+            "title": "",
+            "description": "",
+            "timerNotice": "",
+            "primaryAction": ""
+        },
+        "quiz": {
+            "questionCounterLabel": "",
+            "timerLabel": "",
+            "timeExpiredLabel": "",
+            "nextAction": "",
+            "submitAction": ""
+        },
+        "result": {
+            "title": "",
+            "scoreLabel": "",
+            "leaderboardAction": "",
+            "messageAction": ""
+        },
+        "leaderboard": {
+            "title": "",
+            "emptyTitle": "",
+            "emptyDescription": ""
+        },
+        "message": {
+            "title": "",
+            "description": "",
+            "fieldLabel": "",
+            "fieldPlaceholder": "",
+            "submitAction": "",
+            "successTitle": "",
+            "successDescription": ""
+        },
+        "timeline": {
+            "title": "",
+            "emptyTitle": "",
+            "emptyDescription": ""
+        },
+        "gallery": {
+            "title": "",
+            "emptyTitle": "",
+            "emptyDescription": ""
+        },
+        "errors": {
+            "generic": "",
+            "network": "",
+            "retryAction": ""
+        }
+    },
+    "quiz": {
+        "settings": {
+            "defaultQuestionDurationSeconds": 20,
+            "submitOnlyOnce": true,
+            "questionOrder": "content-order",
+            "scoringMode": "correct-count"
+        },
+        "questions": []
+    },
+    "timeline": {
+        "entries": []
+    },
+    "gallery": {
+        "items": []
+    },
+    "messages": {
+        "constraints": {
+            "minLength": 1,
+            "maxLength": 500
+        },
+        "moderation": {
+            "statusWorkflow": [
+                "pending",
+                "approved",
+                "hidden",
+                "archived"
+            ]
+        }
+    },
+    "assets": {
+        "items": []
+    },
+    "admin": {
+        "labels": {
+            "dashboard": "",
+            "submissions": "",
+            "messages": "",
+            "qaMode": "",
+            "testData": ""
+        }
+    }
+}

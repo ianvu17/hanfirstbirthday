@@ -1,0 +1,376 @@
+# Repository Summary
+
+---
+
+# 1. Executive Summary
+
+Han Birthday Experience is a planned bilingual, mobile-first web experience for Callahan (Han)'s first birthday. The public title is "WHO IS TURNING ONE?!". Guests are expected to scan a QR code at the party, choose English or Vietnamese, enter a lightweight display name, play a short timed quiz, view results and a live leaderboard, and optionally leave a birthday message.
+
+The project is intentionally not a generic quiz app. All major documents frame it as a warm digital extension of the birthday party, with the quiz, leaderboard, messages, gallery, and timeline serving the emotional goal of guest connection and memory preservation.
+
+Current maturity is documentation-first foundation only. The repository contains planning documents, AI guidance, and placeholder locale schemas. It does not contain Next.js application code, `package.json`, Supabase migrations, environment examples, tests, scripts, UI components, generated assets, or deployment configuration.
+
+The accepted target architecture is Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Supabase, next-intl, and Vercel. This stack is documented but not scaffolded. Route groups, component layers, state boundaries, content loading, data persistence, and deployment are described as plans rather than current implementation.
+
+The architecture direction separates static localized content from runtime event data. Locale JSON files under `content/` are intended to hold UI copy and structured content, while Supabase is intended to own participants, attempts, answers, messages, event settings, QA/test flags, and live leaderboard data.
+
+The repository strongly protects content authenticity. Multiple documents state that no Han stories, memories, quiz facts, timeline entries, photo captions, or fake photos may be invented. Real content must come from Ian or another approved source. Current locale files intentionally contain empty strings and empty arrays as schema placeholders.
+
+Development is at Roadmap Milestone 0: Foundation. The next planned milestone is project scaffolding, followed by design system foundations, guest entry and quiz MVP, Supabase and leaderboard, messages/placeholders, admin/QA, and event readiness/deployment.
+
+No functional application exists yet, so implementation risk is mostly future risk: preserving the documented product intent during scaffolding, making submit-once behavior reliable, separating test and production data, completing bilingual content, and preparing for party-day device/network conditions.
+
+Repository health for AI handoff is high at the documentation level and low at the implementation level. Another AI can understand the intended product quickly, but cannot run, test, deploy, or inspect real application behavior because implementation has not started.
+
+---
+
+# 2. Product Summary
+
+Product vision: create a premium, warm, bilingual birthday web experience that feels like part of Han's first birthday party and preserves memories. The product should be personal and festive, not reusable quiz SaaS.
+
+Target users:
+
+- Guests at the birthday party using personal mobile phones.
+- Ian or a trusted host/admin preparing and monitoring the experience.
+- People watching a shared laptop or TV leaderboard.
+- Future family viewers revisiting messages, gallery, or timeline content.
+
+Core experience:
+
+1. Scan QR code.
+2. Choose English or Vietnamese.
+3. Enter display name.
+4. Play a short quiz with 20 seconds per question.
+5. Submit once.
+6. See celebratory result.
+7. View live leaderboard.
+8. Leave birthday message.
+9. Optionally view timeline/gallery placeholders or future memory content.
+
+MVP requirements from `docs/PRD.md`: guest QR entry, language selection, display name, timed quiz, submit-once scoring, result screen, live leaderboard, message submission, admin verification, QA/test separation, complete English/Vietnamese guest flows, and no unapproved real content.
+
+Future plans: curated gallery, timeline, exportable messages, more quiz rounds or mini-games, private post-event family page, and possible media upload workflow if privacy/moderation are later defined.
+
+Key source documents: `PROJECT_CONTEXT.md`, `PROJECT_PHILOSOPHY.md`, `docs/PRD.md`, `docs/UX.md`, `ROADMAP.md`.
+
+---
+
+# 3. Documentation Summary
+
+| File | Purpose | Status | Notes |
+| --- | --- | --- | --- |
+| `README.md` | Public project overview, workflow, target stack, doc map, non-negotiables | Good foundation | Accurately says no app scaffold exists; references `.github/instructions/birthday.instructions.md`, which exists. |
+| `PROJECT_CONTEXT.md` | One-file briefing for future contributors and AI agents | Strong | Best first read; clearly states current repo has docs and placeholder schemas only. |
+| `PROJECT_PHILOSOPHY.md` | Product, experience, design, content, technical, and decision principles | Strong | Useful guardrail against generic quiz implementation; no implementation detail. |
+| `DECISIONS.md` | Accepted ADRs | Good | Contains six accepted decisions; future schema/policy/access decisions still absent. |
+| `ROADMAP.md` | Milestone plan from foundation through deployment | Good | Milestone 0 marked in progress; later milestones are planned only. |
+| `AGENTS.md` | Role-based AI guidance for PM, architect, frontend, UX, art, QA | Strong | Clear role responsibilities and review checklists. |
+| `.github/instructions/birthday.instructions.md` | Repository-wide AI coding/review instructions | Strong | Applies to all files; mirrors product/content/UI/architecture constraints. |
+| `docs/PRD.md` | Product requirements, personas, success metrics, requirements, risks | Strong | MVP and foundation acceptance are clear; real content and admin access details are pending. |
+| `docs/ARCHITECTURE.md` | Planned technical architecture | Good | Target stack, folders, routes, state, Supabase schema plan, APIs; explicitly not immediate implementation plan. |
+| `docs/UX.md` | Guest/admin/display flows, screen states, interaction direction | Strong | Comprehensive screen/state planning; no wireframes or final copy. |
+| `docs/UI_GUIDELINES.md` | Visual system direction | Good | Clear design language and constraints; token values, fonts, and actual assets not chosen. |
+| `docs/CONTENT.md` | Content model and validation rules | Good | Defines locale, quiz, message, timeline, gallery, asset models; no real content. |
+| `docs/ASSETS.md` | Asset categories, naming, replacement, fallback rules | Good | Planned `public/assets` structure; no actual assets yet. |
+| `docs/QA.md` | QA strategy, environments, test layers, release checklist | Good | Detailed planned coverage; no actual test tooling or scripts yet. |
+| `content/en.json` | English placeholder content schema | Partial | Shape exists; strings, questions, timeline, gallery, assets are empty. No newline at EOF. |
+| `content/vi.json` | Vietnamese placeholder content schema | Partial | Shape matches English except locale value; strings, questions, timeline, gallery, assets are empty. No newline at EOF. |
+
+---
+
+# 4. Architecture Summary
+
+Current folder structure:
+
+```text
+.
+  .github/instructions/birthday.instructions.md
+  AGENTS.md
+  DECISIONS.md
+  PROJECT_CONTEXT.md
+  PROJECT_PHILOSOPHY.md
+  README.md
+  ROADMAP.md
+  content/
+    en.json
+    vi.json
+  docs/
+    ARCHITECTURE.md
+    ASSETS.md
+    CONTENT.md
+    PRD.md
+    QA.md
+    UI_GUIDELINES.md
+    UX.md
+```
+
+Planned architecture:
+
+```mermaid
+flowchart LR
+  Guest[Guest phone] --> Next[Next.js App Router]
+  Display[TV/laptop display] --> Next
+  Admin[Admin/QA user] --> Next
+  Next --> Intl[next-intl locale routing]
+  Next --> Content[Locale JSON content]
+  Next --> Supabase[(Supabase runtime data)]
+  Supabase --> Leaderboard[Live leaderboard]
+  Content --> UI[Guest/admin/display UI]
+```
+
+Routing is planned, not implemented. Guest routes will live under `/{locale}` with quiz, result, leaderboard, message, timeline, and gallery paths. Display route will be `/display/leaderboard`. Admin routes are planned under `/{locale}/admin`. QA routes are planned under `/{locale}/qa`.
+
+State management is planned to stay simple. Client state will cover current question, selected answers, timer, loading/submitting/error UI. Server/runtime state will cover participant identity, quiz attempts, answers, scores, messages, and QA/test flags.
+
+Data flow is planned as: static localized content from `content/*.json`; runtime event data in Supabase; UI components should not hardcode content. Mutations should validate input and enforce duplicate prevention server-side.
+
+Localization is core scope. English and Vietnamese must have equivalent structure and content coverage. Missing guest-facing translations should block production.
+
+Supabase is selected for participants, attempts, answers, messages, event settings, real-time leaderboard updates, and QA/test separation. No migrations, policies, clients, or env variables exist yet.
+
+APIs are planned as server actions or route handlers for participant creation/resume, quiz start/submit, result fetch, leaderboard fetch, message submit, admin fetches, and QA reset. None exist yet.
+
+Deployment is planned for Vercel plus Supabase. No Vercel config, env example, deployment workflow, or production URL exists in the repository.
+
+---
+
+# 5. Feature Matrix
+
+| Feature | Status | Notes |
+| --- | --- | --- |
+| Documentation foundation | Partial | Most foundation docs exist; roadmap still marks Milestone 0 in progress, likely pending review. |
+| AI role/instruction system | Completed | `AGENTS.md` and `.github/instructions/birthday.instructions.md` are present and detailed. |
+| Target stack decision | Completed | Accepted in `DECISIONS.md`; not scaffolded. |
+| Locale schema files | Partial | English and Vietnamese schemas exist and match; actual strings/content absent. |
+| Content authenticity rules | Completed | Repeated across docs and metadata. |
+| Next.js app scaffold | Missing | No `app/`, `components/`, `lib/`, `styles/`, or package metadata. |
+| Guest welcome/language flow | Planned | Specified in PRD/UX/architecture only. |
+| Guest display name entry | Planned | Specified only. |
+| Timed quiz | Planned | 20-second timer and single-choice model specified; no implementation or questions. |
+| Submit-once behavior | Planned | Required and architecturally discussed; no server constraints yet. |
+| Result screen | Planned | UX specified only. |
+| Mobile leaderboard | Planned | UX and route specified only. |
+| TV/display leaderboard | Planned | Dedicated route planned; no implementation. |
+| Message submission | Planned | Data model and UX specified; no persistence. |
+| Timeline placeholder | Planned | Content model and UX specified; no screen. |
+| Gallery placeholder | Planned | Content model and UX specified; no screen/assets. |
+| Admin dashboard | Planned | Requirements and route ideas only. |
+| QA/test mode | Planned | Requirements only; no tooling. |
+| Supabase schema | Planned | Table plan exists; no migrations or policies. |
+| Real-time updates | Planned | Supabase realtime or polling fallback discussed; not built. |
+| Tests | Missing | QA strategy exists; no tests/tooling. |
+| Deployment | Missing | Vercel/Supabase planned; no config. |
+| Assets | Missing | Asset plan exists; no asset files. |
+
+---
+
+# 6. Screen Summary
+
+| Screen | Purpose | Implementation Status | Missing Work |
+| --- | --- | --- | --- |
+| QR Entry / Welcome | Orient guests and start experience | Planned | Route, UI, localized copy, assets, loading/error states. |
+| Language Selection | Choose English or Vietnamese | Planned | Locale routing, selector, persistence, fallback behavior. |
+| Guest Name Entry | Collect display name for leaderboard/submissions | Planned | Form, validation, duplicate recovery, participant persistence. |
+| Quiz Start | Explain timed quiz before first question | Planned | Copy, ready state, quiz session setup. |
+| Quiz Question | Show one timed question with answer options | Planned | Timer, option UI, transitions, expiration, network states, content. |
+| Quiz Completion / Submit | Finalize attempt exactly once | Planned | Submit mutation, idempotency, duplicate handling, retry. |
+| Result Screen | Celebrate completion and route to next actions | Planned | Score retrieval, celebratory UI, actions. |
+| Leaderboard Display | TV/laptop live ranked results | Planned | Display route, data subscription/polling, empty/few/active states. |
+| Mobile Leaderboard View | Let guests see rankings on phones | Planned | Mobile layout, current guest highlight, navigation. |
+| Leave A Message | Collect birthday message | Planned | Form, constraints, persistence, success/error states. |
+| Timeline Placeholder | Reserve future memory timeline space | Planned | Route/screen, honest empty state, future content rendering. |
+| Gallery Placeholder | Reserve future photo gallery space | Planned | Route/screen, placeholders, asset fallback. |
+| Admin Dashboard | Monitor submissions/messages/readiness | Planned | Auth/access, views, filters, status checks. |
+| Admin Messages | Review submitted birthday messages | Planned | Data table/list, statuses, moderation if needed. |
+| Admin Submissions | Monitor quiz attempts | Planned | Data view, QA/test separation, reset policy. |
+| QA Mode | Safely test flows without event data pollution | Planned | QA routes, visible QA labeling, test flags, reset path. |
+
+---
+
+# 7. Component Summary
+
+No reusable components currently exist. Planned major components from `docs/ARCHITECTURE.md` and `docs/UX.md` are:
+
+- Design primitives: tokens, shadcn/ui primitives, layout primitives, motion primitives.
+- Locale/navigation: language selector and route-aware controls.
+- Guest identity: guest name form with validation and duplicate/submit-once recovery messaging.
+- Quiz: quiz shell, timer, question card, answer option, flow controller, result summary.
+- Leaderboard: mobile leaderboard list and separate TV/display leaderboard table/list with stable row layout.
+- Message: message form, submission confirmation, error/retry states.
+- Content/asset states: empty state, asset placeholder, missing asset fallback.
+- Admin/QA: dashboard surfaces, submissions/messages views, QA/test mode controls.
+
+Component rules: content must come from locale JSON or Supabase, layouts must support mobile and Vietnamese text, guest/admin/display/QA concerns must stay separated, and visuals should follow the warm cream/blue/yellow/orange paper-cut birthday direction.
+
+---
+
+# 8. Data Model Summary
+
+Database: no database implementation exists. Supabase is planned for runtime event data. Planned tables are `participants`, `quiz_attempts`, `quiz_answers`, `messages`, and `event_settings`. Important planned fields include locale, display name, score, submitted timestamps, message status, and `is_test` flags.
+
+JSON content: `content/en.json` and `content/vi.json` exist as placeholder schemas. Both include `schemaVersion`, `locale`, `metadata`, `navigation`, `screens`, `quiz`, `timeline`, `gallery`, `messages`, `assets`, and `admin`. All guest/admin strings are empty. Quiz questions, timeline entries, gallery items, and assets are empty arrays.
+
+Translations: English and Vietnamese structures currently match except for `locale`. Translation completeness is zero for real copy. Docs require missing guest-facing translations to block production.
+
+Assets: no assets exist. `docs/ASSETS.md` plans future directories under `public/assets/` and possible Supabase Storage for production media. Content files are expected to reference assets by id.
+
+Runtime state: planned but absent. Client runtime state should hold quiz progress/timer/UI states. Server/runtime state should hold participants, attempts, answers, scores, messages, and QA/test tagging.
+
+Validation: planned but absent. Docs require content schema validation, locale key parity, quiz correctness validation, and submit-once database/server enforcement.
+
+---
+
+# 9. AI Documentation Summary
+
+`PROJECT_CONTEXT.md` is the canonical first-read. It compresses product purpose, audience, design direction, target stack, constraints, decision priority, and current repository state.
+
+`PROJECT_PHILOSOPHY.md` defines the enduring principles: preserve memories, reduce software friction, support bilingual hospitality, avoid fake content, and prioritize event reliability.
+
+`AGENTS.md` assigns future AI work into roles: Product Manager, Software Architect, Frontend Lead, UX Designer, Art Director, and QA Lead. Each role points to the docs it owns and supplies review checklists.
+
+`.github/instructions/birthday.instructions.md` is the repo-wide operational instruction file for AI coding/review tools. It requires reading `PROJECT_CONTEXT.md`, using the approved stack, externalizing content, separating route concerns, enforcing submit-once server-side, tagging QA data, and following UI/UX/content rules.
+
+`DECISIONS.md` contains accepted ADRs only. It locks in documentation-first development, the target stack, externalized content, bilingual core scope, Supabase runtime data, and mobile-first guest flow with TV leaderboard.
+
+`ROADMAP.md` sequences work from documentation foundation through scaffold, design system, guest quiz, Supabase/leaderboard, messages/placeholders, admin/QA, and deployment. It is the best file for determining what should happen next.
+
+The docs work together as layered guidance: context explains the project, philosophy explains why, PRD/UX/UI/content/assets/architecture/QA explain what to build, ADRs record accepted constraints, roadmap orders the work, and AI instructions keep future agents aligned.
+
+---
+
+# 10. Current Progress
+
+Estimated completion:
+
+| Area | Estimate | Reasoning |
+| --- | ---: | --- |
+| Foundation | 85% | Core documentation and placeholder schemas exist; roadmap still marks foundation in progress and no review outcome is recorded. |
+| Product | 80% | Vision, personas, MVP, success metrics, non-goals, and risks are documented; real content is absent. |
+| Architecture | 35% | Target stack and planned architecture are clear; no scaffold, migrations, APIs, or env design are implemented. |
+| Frontend | 0% | No app code, routes, components, styles, or assets exist. |
+| Backend/Supabase | 0% | Supabase is selected and schema is sketched; no migrations, policies, clients, or database config. |
+| Content/Localization | 15% | Schema files exist and match; actual localized copy/questions/assets are empty. |
+| Admin | 0% | Requirements only. |
+| QA | 10% | QA plan exists; no tests, scripts, environments, or device results. |
+| Deployment | 0% | Vercel/Supabase planned; no deploy config, env examples, URLs, or QR code. |
+| Overall | 15% | Strong planning foundation, no executable product. |
+
+---
+
+# 11. Technical Debt
+
+Architectural debt:
+
+- Planned stack not scaffolded, so architectural assumptions are unverified.
+- Supabase table design is descriptive only; constraints, RLS policies, indexes, and real-time strategy are undecided.
+- Admin access control is explicitly deferred.
+- Tie-break rules for leaderboard are not accepted unless future approval is given.
+- Route protection and final URLs are not defined.
+
+Documentation debt:
+
+- No foundation review record or sign-off despite roadmap Milestone 0 being in progress.
+- No environment variable inventory.
+- No content readiness checklist filled with real values.
+- No final schema contracts or generated schema validation specs.
+- No concrete asset inventory from Ian.
+
+Implementation debt:
+
+- No app scaffold, build tooling, package metadata, or TypeScript config.
+- No source code for routes, components, state, APIs, Supabase, or validation.
+- No tests or test runner.
+- No deployment configuration.
+- No real content, translations, quiz questions, images, audio, or placeholders.
+
+---
+
+# 12. Risks
+
+- Late real content can compress translation, content QA, and quiz validation time.
+- Current locale files are empty, so app scaffolding could accidentally ship missing text unless validation is added.
+- Submit-once behavior is central but not yet backed by database constraints or idempotent mutation design.
+- QA/test data separation is required but not yet implemented.
+- Admin route access control is unspecified.
+- Supabase realtime versus polling fallback is undecided.
+- Venue mobile network quality may affect guest submissions and leaderboard freshness.
+- TV leaderboard legibility has not been validated on the target display.
+- No assets exist, increasing the risk of generic visuals or accidental fake-memory placeholders.
+- All files appear untracked in git status at review time, so repository version control hygiene may still be incomplete.
+- No deployment/env documentation exists, so Vercel/Supabase setup may become a late blocker.
+
+---
+
+# 13. Missing Pieces
+
+Critical:
+
+- Next.js project scaffold with approved stack.
+- Locale routing and content loading.
+- Real bilingual UI copy and approved quiz content from Ian.
+- Quiz flow with 20-second timer, scoring, and submit-once enforcement.
+- Supabase schema, migrations, RLS/access rules, and runtime client/server integration.
+- Live leaderboard route for mobile and TV/display.
+- Message submission and persistence.
+- QA/test data tagging and production filtering.
+- Admin access strategy.
+- Production deployment and QR-code-ready URL.
+
+Important:
+
+- Content schema validation and locale parity checks.
+- Design tokens, typography choices, and shadcn/ui setup.
+- Placeholder asset system and approved placeholder visuals.
+- Error, loading, empty, duplicate, offline/poor-network states.
+- Tests for scoring, timer, duplicate prevention, locale parity, leaderboard ranking, and message submission.
+- Preview environment and device testing.
+- Environment variable documentation.
+- Release/rollback or disable plan.
+
+Nice to Have:
+
+- Timeline placeholder screen if not included in MVP path.
+- Gallery placeholder screen if not included in MVP path.
+- Sound effects with mute/respectful browser behavior.
+- Message export.
+- Post-event memory archive.
+- Additional mini-games or quiz rounds.
+
+---
+
+# 14. AI Handover
+
+Start with `PROJECT_CONTEXT.md`, then read `ROADMAP.md`, `DECISIONS.md`, and the relevant `docs/` file for the task. This repository is deliberately in documentation-first mode. Do not assume a working app exists.
+
+The product is a birthday-party experience for Han, not a reusable trivia platform. Every decision should prioritize user experience, emotional experience, maintainability, then developer convenience. The visual direction is warm cream, blue/yellow/orange accents, rounded paper-cut layers, tasteful cow-party details, and premium children's party energy.
+
+Never invent Han content. Do not create fake stories, milestones, facts, quiz answers, photos, captions, or memories. Real content must come from Ian or an approved source. Current `content/en.json` and `content/vi.json` are schemas only: empty strings, empty question arrays, empty gallery/timeline/assets.
+
+Accepted stack: Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Supabase, next-intl, Vercel. Changing this requires a new ADR.
+
+Planned route groups: guest routes under `/{locale}`, display leaderboard under `/display/leaderboard`, admin under `/{locale}/admin`, QA under `/{locale}/qa`. Guest, admin, QA, and display concerns must remain separated.
+
+Planned runtime data belongs in Supabase: participants, quiz attempts, quiz answers, messages, event settings, and `is_test` flags. Static content belongs in locale JSON. UI components must not hardcode copy or content.
+
+MVP guest path: QR entry/welcome, language selection, display name, quiz start, timed questions, exactly-once submission, result, leaderboard, message. Leaderboard should update live or with a lightweight fallback and filter QA/test data.
+
+Before implementation, resolve or create the scaffold. There is no `package.json`, app directory, components, Supabase config, env example, tests, scripts, assets, or deployment config. All implementation status is planned unless a future commit adds code.
+
+When adding code later, preserve documented constraints: mobile-first, bilingual parity, content validation, server-side duplicate prevention, QA data isolation, warm error states, no generic SaaS visual language, no nested card-heavy UI, no fake memories.
+
+Current likely next step after this review is Milestone 1: scaffold the project with the approved stack and wire placeholder locale files without feature logic. Do not jump to real features before the foundation review is accepted or Ian explicitly reprioritizes.
+
+---
+
+# 15. Repository Health Score
+
+| Category | Score | Explanation |
+| --- | ---: | --- |
+| Documentation | 8/10 | Comprehensive product, UX, UI, content, architecture, QA, AI, and roadmap docs exist. Missing sign-off, env details, final schemas, and real content inventories. |
+| Architecture | 6/10 | Target architecture is coherent and documented, but unimplemented and unvalidated. Supabase policies, route protection, and concrete API boundaries remain open. |
+| Maintainability | 6/10 | Principles favor separation and reviewability. Actual maintainability cannot be proven without code, tests, schemas, or tooling. |
+| AI Readiness | 9/10 | Excellent AI context, role guidance, instruction file, ADRs, and explicit non-negotiables. This summary further improves handoff. |
+| Code Quality | N/A | No application code exists to evaluate. If forced to score current executable code, it is 0/10 because there is none. |
+| Consistency | 8/10 | Documents largely agree: documentation-first, no invented content, bilingual core, approved stack. Roadmap still says foundation is in progress. |
+| Overall | 6/10 | Strong planning repository and AI handoff foundation, but no executable application, backend, tests, assets, or deployment yet. |
+
