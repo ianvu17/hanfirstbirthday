@@ -9,6 +9,8 @@ The initial locale files are:
 - [../content/en.json](../content/en.json)
 - [../content/vi.json](../content/vi.json)
 
+Milestone 1 also includes [../content/scaffold.json](../content/scaffold.json) for temporary diagnostic route-placeholder copy. It must not contain Han facts, memories, quiz answers, timeline entries, captions, or photo descriptions.
+
 ## Localization Model
 
 Each locale file should share the same structure so missing translations can be detected.

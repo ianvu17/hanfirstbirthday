@@ -24,7 +24,7 @@ Exit criteria:
 
 ## Milestone 1: Project Scaffold
 
-Status: Next.
+Status: Completed.
 
 Goals:
 
@@ -40,7 +40,13 @@ Exit criteria:
 - Locale routing works with placeholder content.
 - No real Han content is invented.
 
+Completion record:
+
+- See [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md).
+
 ## Milestone 2: Content And Design System Foundation
+
+Status: Next.
 
 Goals:
 

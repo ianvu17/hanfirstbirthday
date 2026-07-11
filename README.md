@@ -4,7 +4,7 @@ Public title: **WHO IS TURNING ONE?!**
 
 Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, play a short bilingual quiz, leave a message, and see a live leaderboard on a laptop or TV display.
 
-This repository has completed its documentation-first foundation review. The next approved step is Milestone 1 project scaffolding; no application implementation exists yet.
+This repository has completed its documentation-first foundation review and Milestone 1 runnable project scaffolding. The application now has a Next.js foundation, locale routing, placeholder content validation, theme tokens, and route boundaries, but feature logic is intentionally deferred to later milestones.
 
 ## Purpose
 
@@ -30,7 +30,7 @@ The planned stack is:
 - next-intl
 - Vercel
 
-No app scaffold or implementation code exists yet. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+The app scaffold now exists. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with Milestone 1 results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md).
 
 ## Documentation Structure
 
@@ -55,17 +55,42 @@ Content must come from external data files. The initial placeholder schemas are:
 
 - [content/en.json](content/en.json)
 - [content/vi.json](content/vi.json)
+- [content/scaffold.json](content/scaffold.json): temporary diagnostic copy for Milestone 1 route placeholders.
 
 These files intentionally contain no real Han stories, memories, timeline events, photos, or quiz questions.
+
+## Local Development
+
+Install dependencies and run the scaffold:
+
+```bash
+npm install
+npm run dev
+```
+
+Useful validation commands:
+
+```bash
+npm run validate:content
+npm run typecheck
+npm run lint
+npm run build
+```
+
+Milestone 1 intentionally provides only foundational routes:
+
+- `/en` and `/vi`: localized guest scaffold.
+- `/display/leaderboard`: display-route placeholder.
+- `/en/admin` and `/vi/admin`: admin-route boundary placeholder.
+- `/en/qa` and `/vi/qa`: QA-route boundary placeholder.
 
 ## Development Workflow
 
 1. Review the foundation documents.
 2. Confirm product scope, content ownership, and asset availability.
 3. Add real content only to external content files after Ian provides it.
-4. Scaffold the application with the target stack during Milestone 1.
-5. Build features milestone by milestone from [ROADMAP.md](ROADMAP.md).
-6. Validate each milestone through the QA process in [docs/QA.md](docs/QA.md).
+4. Build features milestone by milestone from [ROADMAP.md](ROADMAP.md).
+5. Validate each milestone through the QA process in [docs/QA.md](docs/QA.md).
 
 ## Non-Negotiable Rules
 

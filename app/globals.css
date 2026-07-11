@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 100% 96%;
+    --foreground: 28 25% 20%;
+    --card: 40 100% 98%;
+    --card-foreground: 28 25% 20%;
+    --primary: 201 68% 46%;
+    --primary-foreground: 42 100% 98%;
+    --secondary: 46 87% 68%;
+    --secondary-foreground: 28 25% 20%;
+    --accent: 24 87% 64%;
+    --accent-foreground: 28 25% 18%;
+    --warm: 36 100% 90%;
+    --warm-foreground: 28 25% 20%;
+    --muted: 204 32% 90%;
+    --muted-foreground: 210 19% 38%;
+    --destructive: 7 72% 50%;
+    --destructive-foreground: 42 100% 98%;
+    --border: 35 38% 78%;
+    --input: 35 38% 78%;
+    --ring: 201 68% 46%;
+    --shadow-warm: 28 25% 20%;
+    --radius: 1.375rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    min-height: 100%;
+    background: hsl(var(--background));
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .paper-grid {
+    background-image:
+      radial-gradient(circle at 16% 18%, hsl(var(--secondary) / 0.42) 0 6rem, transparent 6.1rem),
+      radial-gradient(circle at 86% 12%, hsl(var(--accent) / 0.24) 0 5.25rem, transparent 5.35rem),
+      radial-gradient(circle at 78% 82%, hsl(var(--primary) / 0.18) 0 7rem, transparent 7.1rem),
+      linear-gradient(135deg, hsl(var(--background)), hsl(var(--warm)));
+  }
+
+  .cow-soft-spots {
+    background-image:
+      radial-gradient(ellipse at 20% 35%, hsl(var(--foreground) / 0.08) 0 1.2rem, transparent 1.25rem),
+      radial-gradient(ellipse at 70% 60%, hsl(var(--foreground) / 0.06) 0 1.6rem, transparent 1.65rem);
+  }
+}

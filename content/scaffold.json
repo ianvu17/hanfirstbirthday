@@ -1,0 +1,36 @@
+{
+  "localeLabels": {
+    "en": "English",
+    "vi": "Tiếng Việt"
+  },
+  "display": {
+    "title": "Display route ready",
+    "description": "Leaderboard data and realtime behavior belong to a later milestone."
+  },
+  "en": {
+    "guest": {
+      "localeLabel": "Locale"
+    },
+    "admin": {
+      "title": "Admin route ready",
+      "description": "Minimal admin behavior is intentionally deferred beyond Milestone 1."
+    },
+    "qa": {
+      "title": "QA route ready",
+      "description": "QA data tagging and reset tools are intentionally deferred beyond Milestone 1."
+    }
+  },
+  "vi": {
+    "guest": {
+      "localeLabel": "Ngôn ngữ"
+    },
+    "admin": {
+      "title": "Đường dẫn admin đã sẵn sàng",
+      "description": "Chức năng admin tối giản được cố ý để dành cho các milestone sau Milestone 1."
+    },
+    "qa": {
+      "title": "Đường dẫn QA đã sẵn sàng",
+      "description": "Gắn nhãn dữ liệu QA và công cụ đặt lại được cố ý để dành cho các milestone sau Milestone 1."
+    }
+  }
+}

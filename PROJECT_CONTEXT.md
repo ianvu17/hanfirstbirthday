@@ -93,4 +93,4 @@ If decisions conflict, use this order:
 
 ## Current Repository State
 
-The repository currently contains project documentation, AI guidance, and placeholder content schemas only. It intentionally does not contain Next.js application code, package configuration, generated assets, Supabase migrations, or UI components.
+The repository currently contains project documentation, AI guidance, placeholder content schemas, and a Milestone 1 Next.js scaffold. It includes package configuration, App Router route boundaries, Tailwind theme tokens, next-intl locale routing, content validation, a shadcn-style button primitive, a small Framer Motion primitive, and neutral placeholder assets. It intentionally does not yet contain quiz logic, Supabase migrations/runtime behavior, real Han content, leaderboard behavior, message persistence, production deployment configuration, or complete guest/admin/QA feature flows.

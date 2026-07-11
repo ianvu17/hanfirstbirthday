@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder frame</title>
+  <desc id="desc">A neutral layered paper-style placeholder for future approved birthday assets.</desc>
+  <rect width="640" height="420" rx="34" fill="#FFF7E8"/>
+  <path d="M64 86c68-32 116-32 176 0s116 32 184 0 116-32 152 0v252H64z" fill="#F7D766" opacity=".78"/>
+  <path d="M98 128c58-24 100-24 150 0s98 24 156 0 98-24 138 0v168H98z" fill="#8BC6E6" opacity=".82"/>
+  <rect x="144" y="98" width="352" height="224" rx="28" fill="#FFFDF6" stroke="#5D4A38" stroke-opacity=".18" stroke-width="8"/>
+  <circle cx="210" cy="166" r="22" fill="#F39552" opacity=".65"/>
+  <circle cx="436" cy="252" r="30" fill="#5D4A38" opacity=".16"/>
+  <path d="M256 234c32-42 76-42 108 0" fill="none" stroke="#5D4A38" stroke-opacity=".32" stroke-width="12" stroke-linecap="round"/>
+</svg>
