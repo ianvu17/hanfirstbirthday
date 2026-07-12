@@ -162,6 +162,8 @@ Completion record:
 
 ## Milestone 5: Shared Session And Realtime Synchronization
 
+Status: Implemented; awaiting Ian human approval gate and live Supabase/device rehearsal.
+
 Goals:
 
 - Add Supabase schema and policies.
@@ -171,9 +173,13 @@ Goals:
 
 Exit criteria:
 
-- Around 10 guests can submit and appear in shared Party Screen leaderboard phases.
-- Party Screen updates without manual refresh or uses an approved fallback.
-- QA data can be isolated from event data.
+- Version-controlled Supabase migration defines sessions, participants, responses, host command log, constraints, indexes, RLS, and a response-touch function.
+- `/{locale}/play`, `/display/party`, and `/{locale}/host` use the remote runtime when Supabase env is configured, with local fallback for env-less development.
+- Host commands and guest responses are server-authoritative.
+- Participant resume and Host PIN session cookies exist.
+- Party Screen QR is generated from the runtime join URL.
+- QA/test data is tagged through `is_test`.
+- Remaining approval evidence requires live Supabase credentials, deployed/preview URL, and multi-device rehearsal.
 
 ## Milestone 6: Messages, Timeline Placeholder, Gallery Placeholder
 

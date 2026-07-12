@@ -197,6 +197,14 @@ Milestone 4 logic checks:
 - Use `npm run test:party-engine`.
 - The suite covers lifecycle transitions, invalid transitions, immutable response locking, exact duplicate retry idempotency, conflicting retry rejection, deadline boundary behavior, timeout materialization, projection secrecy before reveal, host capabilities, scoring, and manual-clock runtime scheduling.
 
+Milestone 5 checks:
+
+- Use `npm run test:party-runtime` for Host PIN/session and participant resume token logic.
+- Use `npm run test:supabase` or `npm run test:rls` for static migration assertions covering tables, constraints, indexes, RLS policies, and the response revision touch function.
+- Use `npm run check:visual:milestone5` against a running server to capture `/display/party`, English/Vietnamese guest controller, production Host PIN screen, and QA harness screenshots.
+- Live Supabase RLS/realtime behavior still requires a configured Supabase project and should be rehearsed before event approval.
+- Multi-device rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.
+
 ## Functional Acceptance Checklist
 
 - Guest can enter through QR code.

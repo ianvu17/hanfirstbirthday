@@ -4,6 +4,7 @@ import { useMemo } from "react";
 
 import { GuestController } from "@/components/party/guest-controller";
 import { PartyRuntimeShell } from "@/components/party/party-runtime-shell";
+import { RemoteGuestController } from "@/components/party/remote/remote-guest-controller";
 import type { Locale } from "@/lib/i18n/routing";
 
 const SESSION_KEY = "han-first-birthday:onboarding:v1";
@@ -64,8 +65,18 @@ function readGuestSession() {
   }
 }
 
-export function GuestPlayClient({ locale }: { locale: Locale }) {
+export function GuestPlayClient({
+  locale,
+  remoteEnabled = false
+}: {
+  locale: Locale;
+  remoteEnabled?: boolean;
+}) {
   const guest = useMemo(() => readGuestSession(), []);
+
+  if (remoteEnabled) {
+    return <RemoteGuestController locale={locale} displayName={guest.displayName} />;
+  }
 
   return (
     <PartyRuntimeShell>

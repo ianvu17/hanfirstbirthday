@@ -178,6 +178,15 @@ Milestone 4 implemented the local Party Engine foundation:
 
 The Milestone 4 runtime is local-only. It does not synchronize across browser tabs or devices, does not persist to Supabase, does not authenticate host commands, and does not make correct answers production-secret.
 
+Milestone 5 adds the remote runtime path:
+
+- `supabase/migrations/202607120001_milestone5_party_sessions.sql` defines `party_sessions`, `participants`, `question_responses`, `host_command_log`, indexes, constraints, RLS policies, and `touch_party_session_response`.
+- `lib/party-remote/repository.ts` maps Supabase rows to `PartyState`, runs Party Engine commands on the server, persists accepted snapshots, and builds surface projections.
+- `app/api/party/session`, `app/api/party/join`, `app/api/party/response`, `app/api/party/host/login`, `app/api/party/host/status`, and `app/api/party/host/command` are the production server boundaries.
+- `/{locale}/host` is the production Host Controller. `/{locale}/qa/party` remains the local developer harness.
+- `/display/party` and `/{locale}/play` choose the remote runtime when Supabase server env is configured and preserve the local Milestone 4 runtime when env is absent.
+- Browser clients use remote snapshots plus Supabase realtime wake-up subscriptions and periodic resync. They do not directly update authoritative tables.
+
 Domain components:
 
 - Language selector.
@@ -372,6 +381,26 @@ Fields:
 
 Future shared game state may live in `event_settings` or a dedicated table once the runtime model is approved. Milestone 3.6 intentionally does not choose a database shape.
 
+Milestone 5 database implementation supersedes the older draft table list for quiz runtime:
+
+### `party_sessions`
+
+Authoritative shared party snapshot: join code, lifecycle status, phase, current question references, question timestamps, display locale, `is_test`, and monotonic `revision`.
+
+### `participants`
+
+One guest in one party session: display name, locale, hashed resume token, joined/last-seen timestamps, and `is_test`. Display names are not identity; opaque participant ids and server-issued resume tokens are.
+
+### `question_responses`
+
+Immutable accepted response rows. A unique constraint enforces one response per party session, participant, and question. Rows store selected option or timeout, submission/lock timestamps, response duration, correctness, submission id, and `is_test`.
+
+### `host_command_log`
+
+Compact command audit for accepted/rejected host commands. It is bounded by party size and is not full event sourcing.
+
+The response endpoint calls `touch_party_session_response` after a new accepted response so realtime listeners can refetch counts and projections from the authoritative snapshot without exposing raw response rows to guests.
+
 ## Party Screen And Leaderboard Strategy
 
 - The Party Screen is the primary shared display and should not be implemented as only a leaderboard table.
@@ -405,6 +434,15 @@ Potential server actions or route handlers:
 - QA reset test data.
 
 All mutation paths should validate input, preserve immutable locked responses, and prevent duplicate question responses.
+
+Milestone 5 production route handlers:
+
+- `GET /api/party/session`: returns display-safe or participant-safe snapshot based on participant cookie.
+- `POST /api/party/join`: validates display name/locale, creates participant, sets `han_participant_session`.
+- `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
+- `POST /api/party/host/login`: verifies host PIN and sets `han_host_session`.
+- `GET /api/party/host/status`: reports host auth configuration/session status.
+- `POST /api/party/host/command`: verifies host cookie, expected revision, and Party Engine transition before persisting.
 
 ## Admin And QA Separation
 

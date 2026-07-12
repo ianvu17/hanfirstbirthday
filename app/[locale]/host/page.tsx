@@ -2,11 +2,10 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { PageShell } from "@/components/design/page-shell";
-import { GuestPlayClient } from "@/components/party/guest-play-client";
+import { ProductionHostController } from "@/components/party/host/production-host-controller";
 import { isLocale, type Locale } from "@/lib/i18n/routing";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
 
-export default async function GuestPlayPage({
+export default async function HostPage({
   params
 }: {
   params: Promise<{ locale: string }>;
@@ -21,8 +20,8 @@ export default async function GuestPlayPage({
   setRequestLocale(locale);
 
   return (
-    <PageShell variant="guest">
-      <GuestPlayClient locale={locale} remoteEnabled={isSupabaseConfigured()} />
+    <PageShell variant="admin" decorations={false}>
+      <ProductionHostController locale={locale} />
     </PageShell>
   );
 }

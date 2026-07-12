@@ -70,6 +70,8 @@ Validation rules:
 
 Question responses are runtime data and must be stored in Supabase or an approved runtime data store after implementation. They do not belong in `content/en.json` or `content/vi.json`.
 
+Milestone 5 stores runtime responses in Supabase `question_responses` rows. The active Party Session and participants are also runtime data. Development fixture questions remain placeholder-only until Ian provides real quiz content; they are suitable for validating synchronization but are not approved Han facts.
+
 Potential fields:
 
 - `quizAttemptId`: quiz session id.
@@ -81,6 +83,16 @@ Potential fields:
 - `lockedAt`: lock timestamp.
 - `timedOut`: timeout flag.
 - `idempotencyKey`: retry token or equivalent.
+
+Milestone 5 participant/session runtime fields:
+
+- `partySessionId`: shared session id.
+- `publicJoinCode`: stable join code for QR URLs.
+- `participantId`: opaque guest identity.
+- `displayName`: guest-provided leaderboard name.
+- `locale`: English or Vietnamese.
+- `resumeTokenHash`: server-side hash of the participant resume token.
+- `isTest`: separates QA/preview records from production event data.
 
 ## Message Model
 

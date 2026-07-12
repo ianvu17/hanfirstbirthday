@@ -184,9 +184,10 @@ These lifecycle terms are planning requirements only in Milestone 3.6. They do n
 
 ### Lightweight Host Controls
 
-- Host controls are expected in a future milestone but are not implemented in Milestone 3.6.
-- The host is Ian, so controls should stay minimal and direct.
-- Expected future controls include Start Game, Next, Reveal, and Pause.
+- Milestone 5 implements production host controls at `/{locale}/host`.
+- The host is Ian, so controls stay minimal and direct.
+- Host controls include the next valid phase action such as prepare/open/lock/reveal/show leaderboard/continue/next/finish.
+- Host access uses a PIN verified on the server and a signed HttpOnly host session cookie.
 - Host controls must not turn into a complex admin dashboard.
 
 ### QA Mode And Test Mode
@@ -228,6 +229,8 @@ These lifecycle terms are planning requirements only in Milestone 3.6. They do n
 - Network errors should be recoverable or clearly explained.
 - Production data should be protected from QA/test data.
 - Question response retries should preserve locked answers and timed-out responses.
+- Milestone 5 makes host commands and response submissions server-authoritative through route handlers and Supabase constraints.
+- Browser realtime is a sync signal; authoritative state comes from server snapshots with monotonic revisions.
 
 ### Privacy And Data Care
 

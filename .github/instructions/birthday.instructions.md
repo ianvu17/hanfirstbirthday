@@ -112,6 +112,6 @@ Before finishing a change, verify:
 - Guest, admin, QA, and display concerns remain separated.
 - Relevant docs were updated when decisions or behavior changed.
 
-## Next Milestone Guardrail
+## Current Milestone Guardrail
 
-Milestone 4 local Party Engine is implemented and stops at Ian's human approval gate. Do not begin Milestone 5 automatically. The next milestone owns Supabase-backed shared sessions, realtime or approved fallback synchronization, production participant joining, command authority, reconnect/resume, production leaderboard data, QA/test data persistence, and host access strategy. Do not implement messages, gallery, timeline, complex admin, deployment, or production QR generation unless Ian explicitly reprioritizes.
+Milestone 5 shared session and realtime synchronization has an implementation pass and stops at Ian's human approval gate. Do not begin Milestone 6 automatically. Milestone 5 owns Supabase-backed shared sessions, realtime or approved fallback synchronization, production participant joining, command authority, reconnect/resume, production leaderboard data, QA/test data persistence, and host access strategy. Remaining approval evidence requires a configured Supabase/Vercel environment and multi-device rehearsal. Do not implement messages, gallery, timeline, complex admin, or final production deployment unless Ian explicitly reprioritizes.

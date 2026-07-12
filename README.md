@@ -4,7 +4,7 @@ Public title: **WHO IS TURNING ONE?!**
 
 Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, use those phones as personal quiz controllers, watch a shared Party Screen on a laptop or TV, and leave a message.
 
-This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, Milestone 3 guest entry experience, Milestone 3.5 art-direction polish, Milestone 3.6 shared Party Screen architecture alignment, and Milestone 4 local Party Engine implementation. The application now has a React-independent local Party Engine, typed host-driven phases, immutable per-question response locking, a timestamp-based countdown, local projections for Party Screen/Guest/Host surfaces, development-only bilingual fixtures, and a focused QA simulation harness.
+This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, Milestone 3 guest entry experience, Milestone 3.5 art-direction polish, Milestone 3.6 shared Party Screen architecture alignment, Milestone 4 local Party Engine implementation, and a Milestone 5 remote-runtime implementation pass. The application now has a React-independent Party Engine, typed host-driven phases, immutable per-question response locking, a timestamp-based countdown, local and Supabase-backed runtime paths, server-authoritative guest/host API routes, production Host Controller route, generated QR lobby, and a focused QA simulation harness.
 
 ## Purpose
 
@@ -30,7 +30,7 @@ The planned stack is:
 - next-intl
 - Vercel
 
-The app scaffold, visual foundation, guest entry experience, art-direction polish, and Party Screen architecture alignment now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md), [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md), [docs/MILESTONE_3_REVIEW.md](docs/MILESTONE_3_REVIEW.md), [docs/MILESTONE_3_5_REVIEW.md](docs/MILESTONE_3_5_REVIEW.md), and [docs/MILESTONE_3_6_REVIEW.md](docs/MILESTONE_3_6_REVIEW.md).
+The app scaffold, visual foundation, guest entry experience, art-direction polish, Party Screen architecture alignment, local Party Engine, and Supabase-backed shared-session implementation now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in the `docs/MILESTONE_*_REVIEW.md` files.
 
 ## Documentation Structure
 
@@ -75,6 +75,8 @@ npm run validate:content
 npm run typecheck
 npm run lint
 npm run test
+npm run test:supabase
+npm run check:visual:milestone5
 npm run build
 npm run check:visual:milestone4
 npm run check:visual:milestone3
@@ -84,15 +86,32 @@ npm run check:visual:milestone3.5
 Current route status:
 
 - `/en` and `/vi`: localized guest onboarding flow.
-- `/en/play` and `/vi/play`: local guest controller backed by the Milestone 4 in-memory runtime.
+- `/en/play` and `/vi/play`: guest controller. Uses the Supabase-backed remote runtime when server Supabase env is configured; otherwise falls back to the local Milestone 4 runtime for development.
+- `/en/host` and `/vi/host`: production Host Controller with PIN-backed HttpOnly host session.
 - `/en/design-system` and `/vi/design-system`: internal visual foundation showcase.
-- `/display/party`: shared Party Screen for local lobby, question, countdown, reveal, leaderboard, waiting, and finished phases.
+- `/display/party`: shared Party Screen. Uses remote shared session, QR, live counts, and snapshot resync when Supabase env is configured; otherwise falls back to local lobby/question/reveal/leaderboard development behavior.
 - `/display/leaderboard`: compatibility redirect to `/display/party`.
 - `/en/admin` and `/vi/admin`: admin-route boundary placeholder.
 - `/en/qa` and `/vi/qa`: QA-route boundary placeholder.
 - `/en/qa/party` and `/vi/qa/party`: local host controls plus Party Screen and guest-controller simulation.
 
-Milestone 4 is local-only. It does not provide cross-device synchronization, production server authority, Supabase persistence, production QR generation, or host authentication.
+Milestone 5 adds version-controlled Supabase schema, RLS policy intent, server-authoritative host commands, server-authoritative response submission, participant resume cookies, Host PIN session cookies, remote snapshot polling/realtime resync, and QA/production data tagging. Live Supabase RLS/realtime and multi-device rehearsal require configured Supabase credentials and are documented as the remaining environment-dependent approval step.
+
+## Supabase Setup
+
+Create `.env.local` from `.env.example`, set the public Supabase URL/anon key, server-only service role key, host PIN hash/session secret, and public app URL. Apply migrations with Supabase CLI:
+
+```bash
+supabase start
+supabase db reset
+npm run dev
+```
+
+Generate the host PIN hash with:
+
+```bash
+node -e "console.log(require('crypto').createHash('sha256').update('123456').digest('hex'))"
+```
 
 ## Development Workflow
 

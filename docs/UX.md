@@ -19,6 +19,8 @@ The birthday game is host-driven, not autonomous. Ian controls phase transitions
 
 Future host controls should be intentionally lightweight. Expected controls include Start Game, Next, Reveal, and Pause, but Milestone 3.6 does not implement host controls.
 
+Milestone 5 implements the production Host Controller at `/{locale}/host`. It starts with a PIN screen, then shows party status, phase, question progress, participant count, submitted count, connection state, and one dominant valid next action. Finish Party requires confirmation. Developer diagnostics and fixture actions remain in `/{locale}/qa/party`.
+
 ## Primary Guest Flow
 
 1. Scan QR code.
@@ -248,6 +250,13 @@ Milestone 4 implementation:
 - `/{locale}/qa/party` provides a local simulation harness with host controls, Party Screen preview, and a guest-controller preview.
 - This is not cross-device synchronization. It is a deterministic local runtime for architecture, QA, and visual validation.
 
+Milestone 5 implementation:
+
+- `/display/party` uses the Supabase-backed remote runtime when configured.
+- Lobby QR is generated from the active party join URL.
+- Participant count, response count, reveal, and leaderboard projections come from server snapshots.
+- If Supabase env is absent, the route falls back to the local Milestone 4 runtime for development rather than running divergent device state.
+
 ### Mobile Leaderboard View
 
 Purpose: Let guests view rankings from phones.
@@ -348,6 +357,8 @@ UX notes:
 - QA mode should be visually identifiable to admins/testers.
 - It should never confuse real guests.
 - Test data should be resettable or clearly separated.
+
+Milestone 5 keeps `/{locale}/qa/party` as the local Developer Playground. Remote test data is marked with `is_test` through the party session configuration; production host controls do not expose QA reset or fixture actions.
 
 ## Loading States
 

@@ -266,3 +266,93 @@ Separate confirmation reduces accidental taps in a live party setting and makes 
 **Consequence**
 
 Guest draft selection remains local UI state. Authoritative Party State stores only accepted locked answers and timeout responses.
+
+## ADR-013: Supabase-Backed Remote Party Runtime
+
+**Decision**
+
+Milestone 5 adds a Supabase-backed remote runtime path while preserving the dependency direction established in Milestone 4: Party Engine -> runtime/mapping boundary -> React surfaces. Supabase rows are mapped to `PartyState`, processed through the existing Party Engine reducer, and projected back to display, guest, and host-safe views.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+The party needs real multi-device synchronization without replacing the tested engine with page-owned database conditionals.
+
+**Consequence**
+
+Remote code lives behind server routes and mapping helpers. The Party Engine does not import Supabase, React, Next.js routes, browser APIs, or authentication code.
+
+## ADR-014: Server-Authoritative Host Commands And Responses
+
+**Decision**
+
+Production host commands and guest responses go through trusted Next.js route handlers. Host commands require a verified host session cookie and expected revision. Guest responses require a participant resume cookie and are accepted only while the authoritative snapshot permits the active question and deadline.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+Guest phones and browser countdowns cannot be trusted to decide phase, deadline, correctness, duplicate response handling, score, or host permissions.
+
+**Consequence**
+
+Browser clients do not write authoritative rows directly. Service-role Supabase access remains server-only. Database constraints enforce one response per participant/session/question.
+
+## ADR-015: Minimal Host PIN Session
+
+**Decision**
+
+The production Host Controller at `/{locale}/host` uses a short PIN form. The server verifies `HOST_PIN_HASH` or `HOST_PIN` and sets a signed HttpOnly `han_host_session` cookie. Host commands require that cookie.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+Ian needs a simple event-day protection mechanism without accounts, OAuth, roles, or a large admin product.
+
+**Consequence**
+
+The host PIN is not included in the client bundle. This is event-level access control, not a general identity system. Repeated PIN protection remains modest and should be revisited before public launch if abuse risk changes.
+
+## ADR-016: Revision Plus Snapshot Resync Model
+
+**Decision**
+
+`party_sessions.revision` is the monotonic reconciliation value. Host commands compare expected revision before persisting transitions. Accepted guest responses touch the session revision so displays and hosts refetch authoritative projections. Clients ignore older revisions and periodically resync.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+Supabase realtime delivery is not guaranteed to be exactly once or perfectly ordered, and multiple host tabs or response bursts must not regress UI state.
+
+**Consequence**
+
+Host Controller disables actions while pending and reconciles to server snapshots. Realtime is used as a wake-up signal; server snapshots remain authoritative.
+
+## ADR-017: QA And Production Data Isolation
+
+**Decision**
+
+Party sessions, participants, responses, and host command logs include `is_test`. `PARTY_SESSION_IS_TEST` controls the default created session mode. The QA route remains a local developer harness; production routes filter and label session mode.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+Ian must be able to test repeatedly without polluting event data or the production leaderboard.
+
+**Consequence**
+
+Reset/destructive tools stay out of the production Host Controller. Live preview/local environments should set `PARTY_SESSION_IS_TEST=true`; the final event environment should explicitly set it to `false`.

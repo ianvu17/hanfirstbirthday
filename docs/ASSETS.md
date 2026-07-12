@@ -38,7 +38,9 @@ Examples of required assets:
 
 - Event backdrop reference image if Ian provides it in the repo.
 - Logo/title treatment if created later.
-- QR code image for production URL.
+- QR code for production join URL.
+
+Milestone 5 note: the lobby QR is generated at runtime from the active Party Session join URL using a QR library. Do not check in a manually rendered production QR image unless a later print-design workflow explicitly needs one; the source of truth should remain the configured public app URL and party join code.
 
 ### Illustrations
 

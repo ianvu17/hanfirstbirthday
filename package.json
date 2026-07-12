@@ -8,24 +8,31 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "npm run test:party-engine",
+    "test": "npm run test:party-engine && npm run test:party-runtime",
     "test:party-engine": "node --import tsx --test lib/party-engine/__tests__/*.test.ts",
+    "test:party-runtime": "node --import tsx --test lib/party-remote/__tests__/*.test.ts",
+    "test:supabase": "tsx scripts/check-supabase-migrations.ts",
+    "test:rls": "npm run test:supabase",
+    "test:realtime": "npm run test:party-runtime",
     "validate:content": "tsx scripts/validate-content.ts",
     "check:visual:milestone2": "tsx scripts/check-milestone-2-visual.ts",
     "check:visual:milestone3": "tsx scripts/check-milestone-3-visual.ts",
     "check:visual:milestone3.5": "tsx scripts/check-milestone-3-5-visual.ts",
     "check:visual:milestone4": "tsx scripts/check-milestone-4-visual.ts",
-    "validate": "npm run validate:content && npm run typecheck && npm run lint && npm run build"
+    "check:visual:milestone5": "tsx scripts/check-milestone-5-visual.ts",
+    "validate": "npm run validate:content && npm run typecheck && npm run lint && npm run test && npm run test:supabase && npm run build"
   },
   "dependencies": {
     "@radix-ui/react-slot": "latest",
     "@supabase/supabase-js": "latest",
+    "@types/qrcode": "^1.5.6",
     "class-variance-authority": "latest",
     "clsx": "latest",
     "framer-motion": "latest",
     "lucide-react": "latest",
     "next": "latest",
     "next-intl": "latest",
+    "qrcode": "^1.5.4",
     "react": "latest",
     "react-dom": "latest",
     "tailwind-merge": "latest",
@@ -33,6 +40,7 @@
     "zod": "latest"
   },
   "devDependencies": {
+    "@playwright/test": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
@@ -43,7 +51,6 @@
     "prettier": "latest",
     "tailwindcss": "^3.4.17",
     "tsx": "latest",
-    "@playwright/test": "latest",
     "typescript": "latest"
   }
 }

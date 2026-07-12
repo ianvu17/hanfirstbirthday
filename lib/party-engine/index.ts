@@ -11,5 +11,6 @@ export {
   selectRemainingMs,
   selectSubmittedCount
 } from "./selectors";
+export type { GuestProjection, SharedPartyProjection } from "./selectors";
 export { createInitialPartyState, responseKey } from "./state";
 export type * from "./types";
