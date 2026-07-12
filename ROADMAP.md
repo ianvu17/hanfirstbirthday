@@ -112,9 +112,33 @@ Completion record:
 
 - See [docs/MILESTONE_3_5_REVIEW.md](docs/MILESTONE_3_5_REVIEW.md).
 
+## Milestone 3.6: Shared Party Screen Architecture Alignment
+
+Status: Completed.
+
+Goals:
+
+- Align architecture and documentation around the laptop/TV as the main shared Party Screen.
+- Clarify that phones are personal controllers, not duplicate presentation screens.
+- Document the host-driven game model where Ian controls phase transitions.
+- Introduce shared lifecycle terms: `LOBBY`, `QUESTION_ACTIVE`, `QUESTION_LOCKED`, `ANSWER_REVEAL`, `LEADERBOARD`, `NEXT_QUESTION`, and `FINISHED`.
+- Redefine display route responsibility before quiz-engine implementation.
+- Do not implement quiz engine, realtime, Supabase, networking, host controls, or new runtime behavior.
+
+Exit criteria:
+
+- Product, UX, architecture, QA, roadmap, and decision docs describe the Party Screen model.
+- Desktop responsibilities include lobby, question, countdown, submitted-answer progress, reveal, Han fun fact, leaderboard, finished, celebration, and thank-you states.
+- Phone responsibilities are limited to individual guest actions and personal progress.
+- Future host controls are documented as lightweight and event-specific.
+
+Completion record:
+
+- See [docs/MILESTONE_3_6_REVIEW.md](docs/MILESTONE_3_6_REVIEW.md).
+
 ## Milestone 4: Quiz Engine
 
-Status: Recommended next milestone after Milestone 3.5.
+Status: Recommended next milestone after Milestone 3.6.
 
 Goals:
 
@@ -124,6 +148,7 @@ Goals:
 - Show correct/incorrect/timeout reveal states and approved fun facts when provided.
 - Show result screen.
 - Preserve the Milestone 3 onboarding handoff.
+- Preserve the Milestone 3.6 separation between phone personal controller behavior and future Party Screen behavior.
 
 Exit criteria:
 
@@ -133,19 +158,19 @@ Exit criteria:
 - Timed-out questions lock and cannot be edited.
 - Duplicate response requests recover gracefully.
 
-## Milestone 5: Supabase And Leaderboard
+## Milestone 5: Supabase And Party Screen Runtime
 
 Goals:
 
 - Add Supabase schema and policies.
 - Persist participants, quiz attempts, immutable question responses, and scores.
-- Build live leaderboard display route.
+- Build live Party Screen runtime for shared game state and leaderboard phases.
 - Add QA/test-data tagging and filtering.
 
 Exit criteria:
 
-- Around 10 guests can submit and appear on the leaderboard.
-- Leaderboard updates without manual refresh.
+- Around 10 guests can submit and appear in shared Party Screen leaderboard phases.
+- Party Screen updates without manual refresh or uses an approved fallback.
 - QA data can be isolated from event data.
 
 ## Milestone 6: Messages, Timeline Placeholder, Gallery Placeholder
@@ -168,7 +193,7 @@ Exit criteria:
 
 Goals:
 
-- Build lightweight admin utility for scores, messages, current leaderboard, TV leaderboard link, and necessary test resets.
+- Build lightweight admin utility for scores, messages, current Party Screen or leaderboard state, Party Screen link, and necessary test resets.
 - Build QA mode and test mode controls.
 - Add content validation checks.
 - Prepare pre-party test script.
@@ -186,7 +211,7 @@ Goals:
 
 - Deploy preview and production to Vercel.
 - Validate QR code entry.
-- Run full mobile and TV tests.
+- Run full mobile and Party Screen display tests.
 - Confirm Supabase production data safety.
 - Finalize real content and assets provided by Ian.
 
@@ -194,7 +219,7 @@ Exit criteria:
 
 - Production URL is stable.
 - QR code works from guest devices.
-- Live leaderboard is display-ready.
+- Live Party Screen is display-ready.
 - No placeholder content remains in required guest-facing MVP paths unless intentionally approved.
 
 ## Post-Event Enhancements

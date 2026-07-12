@@ -179,7 +179,7 @@ Timeline fallback:
 - Every meaningful image has localized alt text.
 - Placeholder assets are not confused with real memories.
 - File sizes are appropriate for mobile.
-- TV leaderboard visuals remain legible at display distance.
+- Party Screen visuals remain legible at display distance, including questions, countdowns, answer reveals, fun facts, and leaderboard rankings.
 
 Milestone 2 status:
 

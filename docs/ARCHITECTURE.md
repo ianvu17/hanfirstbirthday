@@ -17,10 +17,36 @@ This document describes the intended architecture. It is not an implementation p
 
 - Separate content, runtime data, and presentation.
 - Keep guest flows mobile-first and low-latency.
-- Keep display routes optimized for large screens.
+- Keep phone routes optimized as personal guest controllers.
+- Keep display routes optimized as the shared Party Screen for the room, not only as a leaderboard.
 - Keep admin and QA routes isolated from guest routes.
 - Treat localization and content validation as core architecture.
 - Avoid hardcoded Han content in components.
+
+## Product Surface Responsibilities
+
+Milestone 3.6 aligns the architecture around two simultaneous surfaces:
+
+- Phone: personal controller for QR entry, language selection, display name, answering active questions, submitting answers, viewing personal progress, viewing personal result, and choosing personal next actions.
+- Desktop/laptop/TV: shared Party Screen for lobby, QR code, join instructions, guest count, active question, countdown, submitted-answer progress, answer reveal, Han fun fact, leaderboard, final celebration, and thank-you.
+
+The phone must not become a second presentation screen. It should only display information useful to the current guest.
+
+The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic.
+
+Milestone 3.6 does not implement quiz runtime, realtime, Supabase, networking, or host controls. These responsibilities are architecture planning constraints for future milestones.
+
+## Shared Game Lifecycle
+
+Future runtime work should use explicit phase semantics:
+
+- `LOBBY`: Party Screen shows hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
+- `QUESTION_ACTIVE`: Party Screen shows the large question, automatic countdown, progress, and submitted-answer count while phones collect guest answers.
+- `QUESTION_LOCKED`: Answering is closed; phones show personal locked or timed-out state while the Party Screen waits for host reveal.
+- `ANSWER_REVEAL`: Party Screen reveals the correct answer, celebration, and approved Han fun fact.
+- `LEADERBOARD`: Party Screen shows animated rankings and current positions.
+- `NEXT_QUESTION`: Host advances the room toward the next question.
+- `FINISHED`: Party Screen shows final leaderboard, celebration, and thank-you.
 
 ## Planned Folder Structure
 
@@ -41,7 +67,8 @@ app/
     qa/
     design-system/
   display/
-    leaderboard/
+    party/
+    leaderboard/ # legacy placeholder or redirect candidate until the Party Screen route is built
 components/
   design/
   motion/
@@ -81,7 +108,8 @@ Guest routes:
 
 Display routes:
 
-- `/display/leaderboard`: TV/laptop leaderboard.
+- `/display/party`: planned shared Party Screen route for lobby, questions, reveal, fun fact, leaderboard, and finished states.
+- `/display/leaderboard`: existing placeholder path from earlier milestones. After Milestone 3.6 it should be treated as a legacy compatibility path or redirect candidate, not as the final product responsibility.
 
 Internal review routes:
 
@@ -89,7 +117,7 @@ Internal review routes:
 
 Admin routes:
 
-- `/{locale}/admin`: lightweight admin utility for scores, messages, leaderboard link/status, QA/test separation, and simple resets.
+- `/{locale}/admin`: lightweight admin utility for scores, messages, Party Screen link/status, QA/test separation, and simple resets.
 
 QA routes:
 
@@ -130,6 +158,14 @@ Milestone 3.5 refined the guest onboarding presentation without changing route o
 - `components/design/party-motifs.tsx` includes additional reusable decorative motifs for the richer party scene.
 - Existing `components/guest/` screens were visually recomposed while preserving the same session-only transitions and quiz placeholder boundary.
 
+Milestone 3.6 aligned planned surface responsibilities without adding runtime behavior:
+
+- Phones are documented as personal controllers.
+- Desktop/laptop/TV is documented as the shared Party Screen.
+- `/display/party` is the planned future Party Screen route.
+- `/display/leaderboard` remains an existing legacy placeholder or redirect candidate.
+- Host-driven phase transitions and shared lifecycle terms are documented for future implementation.
+
 Domain components:
 
 - Language selector.
@@ -150,7 +186,7 @@ Feature compositions:
 - Quiz flow controller.
 - Result page.
 - Mobile leaderboard page.
-- TV leaderboard page.
+- Shared Party Screen page.
 - Lightweight admin utility.
 - QA utility.
 
@@ -164,6 +200,15 @@ Client state:
 - Selected answer for the active question before submission.
 - Timer state.
 - Local UI state such as loading, submitting, and errors.
+
+Shared game state, once implemented:
+
+- Current phase from the shared lifecycle.
+- Current question index.
+- Opened-at and locked-at timing metadata.
+- Submitted-answer count for the active question.
+- Reveal/fun-fact visibility state controlled by the host.
+- Leaderboard visibility state.
 
 Milestone 3 client/session state:
 
@@ -180,6 +225,7 @@ Server/runtime state:
 - Immutable question responses.
 - Score.
 - Message submissions.
+- Shared game phase and host-controlled progression once approved.
 - QA/test flag.
 
 Persistence should happen at clear boundaries so refreshes and duplicate taps do not corrupt data.
@@ -278,8 +324,15 @@ Fields:
 - `value`.
 - `updated_at`.
 
-## Leaderboard Strategy
+Future shared game state may live in `event_settings` or a dedicated table once the runtime model is approved. Milestone 3.6 intentionally does not choose a database shape.
 
+## Party Screen And Leaderboard Strategy
+
+- The Party Screen is the primary shared display and should not be implemented as only a leaderboard table.
+- Before the game, it should show hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
+- During the game, it should show the active question, countdown, progress, submitted-answer count, locked state, answer reveal, and approved Han fun fact.
+- During leaderboard phases, it should show animated ranking and current positions.
+- At finish, it should show final leaderboard, celebration, and thank-you.
 - Source leaderboard from completed quiz attempts whose question responses are locked.
 - Rank by score first.
 - Use completion time or time remaining only if approved as a tie-breaker.
@@ -297,6 +350,8 @@ Potential server actions or route handlers:
 - Complete quiz attempt.
 - Fetch result.
 - Fetch leaderboard.
+- Fetch shared game state.
+- Advance shared game phase.
 - Submit message.
 - Admin fetch final quiz scores.
 - Admin fetch messages.
@@ -309,6 +364,7 @@ All mutation paths should validate input, preserve immutable locked responses, a
 
 - Admin routes should not be discoverable through guest navigation.
 - Admin access control must be defined before production.
+- Future host controls should be minimal, direct, and separated from normal guest navigation.
 - QA mode should tag all generated data with `is_test`.
 - Production leaderboard and message views should exclude test data by default.
 

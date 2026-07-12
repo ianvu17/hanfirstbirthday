@@ -4,23 +4,23 @@
 
 # 1. Executive Summary
 
-Han Birthday Experience is a planned bilingual, mobile-first web experience for Callahan (Han)'s first birthday. The public title is "WHO IS TURNING ONE?!". Guests are expected to scan a QR code at the party, choose English or Vietnamese, enter a lightweight display name, play a short timed quiz, view results and a live leaderboard, and optionally leave a birthday message.
+Han Birthday Experience is a planned bilingual, mobile-first web experience for Callahan (Han)'s first birthday. The public title is "WHO IS TURNING ONE?!". Guests are expected to scan a QR code at the party, choose English or Vietnamese, enter a lightweight display name, use phones as personal controllers for a short timed quiz, watch a shared Party Screen on a laptop or TV, view results and leaderboard states, and optionally leave a birthday message.
 
-The project is intentionally not a generic quiz app. All major documents frame it as a warm digital extension of the birthday party, with the quiz, leaderboard, messages, gallery, and timeline serving the emotional goal of guest connection and memory preservation.
+The project is intentionally not a generic quiz app. All major documents frame it as a warm digital extension of the birthday party, with the quiz, shared Party Screen, leaderboard phases, messages, gallery, and timeline serving the emotional goal of guest connection and memory preservation.
 
 Current maturity is runnable scaffold plus visual design-system foundation plus guest entry experience. The repository contains planning documents, AI guidance, localized onboarding copy, a Next.js App Router scaffold, project configuration, content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, decorative motifs, reduced-motion-aware motion patterns, intentional placeholder assets, route-boundary placeholders, localized internal design-system showcase routes, and a session-only onboarding flow. Supabase runtime behavior, quiz engine logic, real assets, persistent event data, and deployment wiring remain future work.
 
 The accepted target architecture is Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Supabase, next-intl, and Vercel. Milestone 1 scaffolds this stack and validates placeholder content, while state boundaries, data persistence, quiz logic, and deployment remain planned future work.
 
-The architecture direction separates static localized content from runtime event data. Locale JSON files under `content/` are intended to hold UI copy and structured content, while Supabase is intended to own participants, quiz attempts, immutable question responses, messages, event settings, QA/test flags, and live leaderboard data.
+The architecture direction separates static localized content from runtime event data. Locale JSON files under `content/` are intended to hold UI copy and structured content, while Supabase is intended to own participants, quiz attempts, immutable question responses, messages, shared Party Screen state, event settings, QA/test flags, and live leaderboard data.
 
 The repository strongly protects content authenticity. Multiple documents state that no Han stories, memories, quiz facts, timeline entries, photo captions, or fake photos may be invented. Real content must come from Ian or another approved source. Current locale files intentionally contain empty strings and empty arrays as schema placeholders.
 
-Roadmap Milestone 0: Foundation, Milestone 1: Project Scaffold, Milestone 2: Content and Design System Foundation, Milestone 3: Guest Entry Experience, and Milestone 3.5: Art Direction Polish are implemented. The next recommended milestone is Milestone 4: Quiz Engine, followed by Supabase and leaderboard, messages/placeholders, lightweight admin/QA, and event readiness/deployment.
+Roadmap Milestone 0: Foundation, Milestone 1: Project Scaffold, Milestone 2: Content and Design System Foundation, Milestone 3: Guest Entry Experience, Milestone 3.5: Art Direction Polish, and Milestone 3.6: Shared Party Screen Architecture Alignment are complete. The next recommended milestone is Milestone 4: Quiz Engine, followed by Supabase and Party Screen runtime, messages/placeholders, lightweight admin/QA, and event readiness/deployment.
 
 A functional guest entry flow now exists, but the quiz and runtime event features remain future risk: making per-question response locking reliable, separating test and production data, completing approved quiz content, and preparing for party-day device/network conditions.
 
-Repository health for AI handoff is high at the documentation level and early-to-mid at the implementation level. Another AI can run the app, validate content, inspect route boundaries, review the Milestone 2 design-system showcase, exercise the polished Milestone 3.5 onboarding flow, and continue from Milestone 4, but cannot test quiz, leaderboard, message, Supabase, admin, or QA runtime behavior because those features have not been implemented.
+Repository health for AI handoff is high at the documentation level and early-to-mid at the implementation level. Another AI can run the app, validate content, inspect route boundaries, review the Milestone 2 design-system showcase, exercise the polished Milestone 3.5 onboarding flow, and continue from Milestone 4, but cannot test quiz, Party Screen runtime, leaderboard, message, Supabase, host controls, admin, or QA runtime behavior because those features have not been implemented.
 
 ---
 
@@ -31,8 +31,9 @@ Product vision: create a premium, warm, bilingual birthday web experience that f
 Target users:
 
 - Guests at the birthday party using personal mobile phones.
-- Ian or a trusted host/admin checking readiness, scores, messages, leaderboard access, and QA/test separation.
-- People watching a shared laptop or TV leaderboard.
+- Ian or a trusted host pacing the shared game.
+- Ian or a trusted host/admin checking readiness, scores, messages, Party Screen access, and QA/test separation.
+- People watching a shared laptop or TV Party Screen, including guests who never touch a phone.
 - Future family viewers revisiting messages, gallery, or timeline content.
 
 Core experience:
@@ -43,11 +44,11 @@ Core experience:
 4. Play a short quiz with 20 seconds per question.
 5. Submit and lock each question response as accepted or timed out.
 6. See celebratory result.
-7. View live leaderboard.
+7. Watch shared Party Screen leaderboard/reveal phases and optionally view a mobile leaderboard.
 8. Leave birthday message.
 9. Optionally view timeline/gallery placeholders or future memory content.
 
-MVP requirements from `docs/PRD.md`: guest QR entry, language selection, display name, timed quiz, per-question immutable responses, result screen, live leaderboard, message submission, lightweight admin verification, QA/test separation, complete English/Vietnamese guest flows, and no unapproved real content.
+MVP requirements from `docs/PRD.md`: guest QR entry, language selection, display name, timed quiz, per-question immutable responses, result screen, shared Party Screen with leaderboard phases, message submission, lightweight admin verification, QA/test separation, complete English/Vietnamese guest flows, and no unapproved real content.
 
 Future plans: curated gallery, timeline, exportable messages, more quiz rounds or mini-games, private post-event family page, and possible media upload workflow if privacy and review requirements are later defined.
 
@@ -63,7 +64,7 @@ Key source documents: `PROJECT_CONTEXT.md`, `PROJECT_PHILOSOPHY.md`, `docs/PRD.m
 | `PROJECT_CONTEXT.md` | One-file briefing for future contributors and AI agents | Strong | Best first read; clearly states current repo has docs, placeholder schemas, and Milestone 1 scaffold only. |
 | `PROJECT_PHILOSOPHY.md` | Product, experience, design, content, technical, and decision principles | Strong | Useful guardrail against generic quiz implementation; no implementation detail. |
 | `DECISIONS.md` | Accepted ADRs | Good | Contains accepted decisions including per-question immutable responses and minimal admin MVP; future schema/policy/access details remain absent. |
-| `ROADMAP.md` | Milestone plan from foundation through deployment | Good | Milestone 0, Milestone 1, and Milestone 2 completed; Milestone 3 is next. |
+| `ROADMAP.md` | Milestone plan from foundation through deployment | Good | Milestone 0, Milestone 1, Milestone 2, Milestone 3, Milestone 3.5, and Milestone 3.6 are complete; Milestone 4 is next. |
 | `AGENTS.md` | Role-based AI guidance for PM, architect, frontend, UX, art, QA | Strong | Clear role responsibilities and review checklists. |
 | `.github/instructions/birthday.instructions.md` | Repository-wide AI coding/review instructions | Strong | Applies to all files; mirrors product/content/UI/architecture constraints. |
 | `docs/PRD.md` | Product requirements, personas, success metrics, requirements, risks | Strong | MVP and foundation acceptance are clear; real content and admin access details are pending. |
@@ -127,16 +128,16 @@ Planned architecture:
 ```mermaid
 flowchart LR
   Guest[Guest phone] --> Next[Next.js App Router]
-  Display[TV/laptop display] --> Next
+  Display[TV/laptop Party Screen] --> Next
   Admin[Admin/QA user] --> Next
   Next --> Intl[next-intl locale routing]
   Next --> Content[Locale JSON content]
   Next --> Supabase[(Supabase runtime data)]
-  Supabase --> Leaderboard[Live leaderboard]
+  Supabase --> PartyScreen[Shared Party Screen]
   Content --> UI[Guest/admin/display UI]
 ```
 
-Routing is partially scaffolded. Guest locale roots live at `/en` and `/vi`; display route boundary exists at `/display/leaderboard`; admin route boundaries exist at `/{locale}/admin`; QA route boundaries exist at `/{locale}/qa`. Quiz, result, mobile leaderboard, message, timeline, and gallery feature routes remain future work.
+Routing is partially scaffolded. Guest locale roots live at `/en` and `/vi`; the older display route boundary exists at `/display/leaderboard`; architecture now plans `/display/party` as the broader shared Party Screen route; admin route boundaries exist at `/{locale}/admin`; QA route boundaries exist at `/{locale}/qa`. Quiz, result, Party Screen runtime, mobile leaderboard, message, timeline, and gallery feature routes remain future work.
 
 State management is planned to stay simple. Client state will cover current question, the active selected answer before submission, timer, loading/submitting/error UI. Server/runtime state will cover participant identity, quiz attempts, immutable question responses, scores, messages, and QA/test flags.
 
@@ -144,7 +145,7 @@ Data flow is planned as: static localized content from `content/*.json`; runtime
 
 Localization is core scope. English and Vietnamese must have equivalent structure and content coverage. Missing guest-facing translations should block production.
 
-Supabase is selected for participants, quiz attempts, question responses, messages, event settings, real-time leaderboard updates, and QA/test separation. No migrations, policies, clients, or env variables exist yet.
+Supabase is selected for participants, quiz attempts, question responses, messages, event settings, shared Party Screen state, real-time leaderboard updates, and QA/test separation. No migrations, policies, clients, or env variables exist yet.
 
 APIs are planned as server actions or route handlers for participant creation/resume, quiz start, question response submission, timeout locking, quiz completion, result fetch, leaderboard fetch, message submit, lightweight admin fetches/resets, and QA reset. None exist yet.
 
@@ -170,7 +171,7 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 | Per-question response locking | Planned | Accepted answer and timeout locking are documented; no server constraints yet. |
 | Result screen | Planned | UX specified only. |
 | Mobile leaderboard | Planned | UX and route specified only. |
-| TV/display leaderboard | Planned | Dedicated route planned; no implementation. |
+| Shared Party Screen | Planned | Architecture now plans `/display/party` for lobby, question, countdown, reveal, fun fact, leaderboard, finished, celebration, and thank-you states; no runtime implementation. |
 | Message submission | Planned | Data model and UX specified; no persistence. |
 | Timeline placeholder | Planned | Content model and UX specified; no screen. |
 | Gallery placeholder | Planned | Content model and UX specified; no screen/assets. |
@@ -197,7 +198,7 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 | Quiz Question | Show one timed question with answer options | Planned | Timer, option UI, transitions, expiration, network states, content. |
 | Quiz Completion | Complete after all responses are locked | Planned | Completion mutation, scoring from locked responses, recovery. |
 | Result Screen | Celebrate completion and route to next actions | Planned | Score retrieval, celebratory UI, actions. |
-| Leaderboard Display | TV/laptop live ranked results | Planned | Display route, data subscription/polling, empty/few/active states. |
+| Shared Party Screen | TV/laptop shared birthday-game stage | Planned | Planned route, data subscription/polling, lobby/question/reveal/fun-fact/leaderboard/finished states, and host-paced progression remain future work. |
 | Mobile Leaderboard View | Let guests see rankings on phones | Planned | Mobile layout, current guest highlight, navigation. |
 | Leave A Message | Collect birthday message | Planned | Form, constraints, persistence, success/error states. |
 | Timeline Placeholder | Reserve future memory timeline space | Planned | Route/screen, honest empty state, future content rendering. |
@@ -240,7 +241,8 @@ Planned future feature components from `docs/ARCHITECTURE.md` and `docs/UX.md` a
 - Locale/navigation: language selector and route-aware controls.
 - Guest identity: guest name form with validation and duplicate/recovery messaging.
 - Quiz: quiz shell, timer, question card, answer option, flow controller, result summary.
-- Leaderboard: mobile leaderboard list and separate TV/display leaderboard table/list with stable row layout.
+- Party Screen: large-screen lobby, question, countdown, answer progress, reveal, fun fact, leaderboard, and finished compositions with stable layouts.
+- Leaderboard: mobile leaderboard list and Party Screen leaderboard phase with stable row layout.
 - Message: message form, submission confirmation, error/retry states.
 - Content/asset states: empty state, asset placeholder, missing asset fallback.
 - Admin/QA: lightweight utility surfaces, score/message views, QA/test mode controls.
@@ -255,7 +257,7 @@ Database: no database implementation exists. Supabase is planned for runtime eve
 
 JSON content: `content/en.json` and `content/vi.json` exist with localized Milestone 3 onboarding copy and placeholder schemas for future content. Both include `schemaVersion`, `locale`, `metadata`, `navigation`, `screens`, `quiz`, `timeline`, `gallery`, `messages`, `assets`, and `admin`. Quiz questions, timeline entries, gallery items, and assets remain empty arrays. `content/scaffold.json` still holds temporary diagnostic route-placeholder copy for internal and non-guest placeholders.
 
-Milestone 3.5 refined the onboarding copy for the Han photo placeholder and answer-locking instruction while preserving the same schema and locale parity.
+Milestone 3.5 refined the onboarding copy for the Han photo placeholder and answer-locking instruction while preserving the same schema and locale parity. Milestone 3.6 aligned documentation around the desktop/laptop as the shared Party Screen and phones as personal controllers.
 
 Translations: English and Vietnamese structures currently match except for `locale`. Translation completeness is zero for real copy. Docs require missing guest-facing translations to block production.
 
@@ -277,7 +279,7 @@ Validation: Milestone 1 includes content schema validation and locale key parity
 
 `.github/instructions/birthday.instructions.md` is the repo-wide operational instruction file for AI coding/review tools. It requires reading `PROJECT_CONTEXT.md` and `DECISIONS.md`, using the approved stack, externalizing content, separating route concerns, enforcing per-question immutable responses server-side, tagging QA data, and following UI/UX/content rules.
 
-`DECISIONS.md` contains accepted ADRs only. It locks in documentation-first development, the target stack, externalized content, bilingual core scope, Supabase runtime data, mobile-first guest flow with TV leaderboard, per-question immutable responses, and minimal admin MVP.
+`DECISIONS.md` contains accepted ADRs only. It locks in documentation-first development, the target stack, externalized content, bilingual core scope, Supabase runtime data, the phone-controller plus shared Party Screen model, per-question immutable responses, and minimal admin MVP.
 
 `ROADMAP.md` sequences work from completed documentation foundation through scaffold, design system, guest quiz, Supabase/leaderboard, messages/placeholders, lightweight admin/QA, and deployment. It is the best file for determining what should happen next.
 
@@ -342,7 +344,7 @@ Implementation debt:
 - Admin route access control is unspecified.
 - Supabase realtime versus polling fallback is undecided.
 - Venue mobile network quality may affect guest submissions and leaderboard freshness.
-- TV leaderboard legibility has been checked at 1366 x 768, but not yet on the actual target display.
+- Legacy TV leaderboard placeholder legibility has been checked at 1366 x 768, but the future Party Screen has not yet been built or checked on the actual target display.
 - No real assets exist, so future content work still needs approved photos/illustrations and asset QA.
 - No deployment/env documentation exists, so Vercel/Supabase setup may become a late blocker.
 
@@ -390,7 +392,7 @@ Never invent Han content. Do not create fake stories, milestones, facts, quiz an
 
 Accepted stack: Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Supabase, next-intl, Vercel. Changing this requires a new ADR.
 
-Planned route groups: guest routes under `/{locale}`, display leaderboard under `/display/leaderboard`, admin under `/{locale}/admin`, QA under `/{locale}/qa`. Guest, admin, QA, and display concerns must remain separated.
+Planned route groups: guest routes under `/{locale}`, future shared Party Screen under `/display/party`, legacy placeholder display route under `/display/leaderboard`, admin under `/{locale}/admin`, QA under `/{locale}/qa`. Guest, Party Screen, host/admin, QA, and display concerns must remain separated.
 
 Planned runtime data belongs in Supabase: participants, quiz attempts, immutable question responses, messages, event settings, and `is_test` flags. Static content belongs in locale JSON. UI components must not hardcode copy or content.
 

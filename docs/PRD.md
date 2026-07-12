@@ -10,7 +10,7 @@ WHO IS TURNING ONE?!
 
 ## Vision
 
-Create a premium interactive birthday experience that feels like part of Han's first birthday party. Guests should scan a QR code, participate in a short playful quiz, see the room's leaderboard, and leave a message that can become part of the family's memory archive.
+Create a premium interactive birthday experience that feels like part of Han's first birthday party. Guests should scan a QR code, use their phones as personal controllers for a short playful quiz, watch the laptop or TV as the shared Party Screen for the room, and leave a message that can become part of the family's memory archive.
 
 The product should make guests smile and help them feel connected to Han's celebration. It should not feel like a generic quiz platform.
 
@@ -20,7 +20,9 @@ The product should make guests smile and help them feel connected to Han's celeb
 - Support English and Vietnamese from the beginning.
 - Make the quiz short, playful, and reliable during the party.
 - Preserve memories through messages and future gallery/timeline content.
-- Display a live leaderboard on a laptop or TV.
+- Turn the laptop or TV into the main shared Party Screen for lobby, questions, answer reveals, Han fun facts, leaderboard, and finished moments.
+- Keep phones focused on each guest's personal flow rather than duplicating the shared presentation.
+- Support a host-driven game pace controlled by Ian.
 - Give Ian/admin tools to test and manage the experience before and during the event.
 - Keep content externalized and reviewable.
 
@@ -39,13 +41,17 @@ The product should make guests smile and help them feel connected to Han's celeb
 
 A family member or friend at the party. They scan the QR code on a personal phone, choose a language, play the quiz, view results, and optionally leave a message. They may be distracted, holding food, or helping children, so the flow must be quick and forgiving.
 
+### Host
+
+Ian or another trusted person pacing the birthday game for the room. The host decides when to start the game, open a question, reveal the answer, show a fun fact, show the leaderboard, and move to the next question. Host controls should be lightweight and event-focused, not a SaaS admin dashboard.
+
 ### Host/Admin
 
-Ian or another trusted person preparing the experience. They need confidence that content is correct, submissions work, the leaderboard displays properly, and test data can be separated from real event data.
+Ian or another trusted person preparing the experience. They need confidence that content is correct, submissions work, the Party Screen displays properly, and test data can be separated from real event data.
 
-### Leaderboard Viewer
+### Party Screen Viewer
 
-Someone watching the shared display during the party. They may not interact directly but should understand the room's progress and feel the energy of the experience.
+Someone watching the shared display during the party. They may not interact directly but should understand the room's progress, enjoy the question and reveal moments, learn Han fun facts, and feel the energy of the experience.
 
 ### Future Family Viewer
 
@@ -57,13 +63,13 @@ Quantitative:
 
 - At least 80% of participating guests complete the quiz once they start.
 - Median quiz completion time stays under 4 minutes.
-- Leaderboard updates within a few seconds of completed quiz attempts under expected party load.
+- Party Screen state updates within a few seconds under expected party load once realtime or fallback networking is implemented.
 - No duplicate accepted question responses from the same quiz attempt and question.
 - Zero guest-facing missing translation keys in production.
 
 Qualitative:
 
-- Guests understand the flow without instructions from the host.
+- Guests understand the phone flow quickly while the host can guide the shared room experience from the Party Screen.
 - The visual style feels connected to the birthday setup.
 - The quiz feels playful and personal once real content is provided.
 - Messages feel easy and meaningful to leave.
@@ -113,18 +119,37 @@ Qualitative:
 - There is no end-of-quiz page where all answers remain editable before completing the quiz.
 - Result scoring must be deterministic and reviewable from locked question responses.
 
+### Shared Game Lifecycle
+
+The shared game should be planned around explicit phases before quiz implementation:
+
+- `LOBBY`: Party Screen shows hero artwork, QR code, join instructions, guest count, and future countdown-until-start support. Phones handle personal join, language, and display name.
+- `QUESTION_ACTIVE`: Party Screen shows the large question, automatic 20-second countdown, progress, and number of answers submitted. Phones show answer controls only for the current guest.
+- `QUESTION_LOCKED`: Party Screen communicates that answering is closed and waits for the host-driven reveal. Phones show the guest's locked or timed-out state.
+- `ANSWER_REVEAL`: Party Screen reveals the correct answer and celebration. Phones show only personal feedback needed by the guest.
+- `LEADERBOARD`: Party Screen shows animated ranking and current positions. Phones may offer a smaller personal leaderboard view.
+- `NEXT_QUESTION`: Party Screen prepares the room for the next question under host control. Phones prepare the next personal answer state.
+- `FINISHED`: Party Screen shows final leaderboard, celebration, and thank-you. Phones show personal result and next actions.
+
+These lifecycle terms are planning requirements only in Milestone 3.6. They do not implement quiz state, realtime, Supabase, networking, or host controls.
+
 ### Result Screen
 
 - Guests must see a result summary after completion.
 - The result should feel celebratory regardless of score.
 - The screen should offer next actions such as viewing leaderboard or leaving a message.
 
-### Leaderboard
+### Shared Party Screen
 
-- A dedicated display route must show live ranked results.
-- The display must be legible on a laptop or TV.
-- It should update without manual refresh when new submissions arrive.
-- It should handle empty and low-participation states gracefully.
+- A dedicated display route must become the shared Party Screen, not only a leaderboard.
+- The Party Screen must be legible on a laptop or TV from across the room.
+- Before the game, it should support hero artwork, QR code, join instructions, guest count, and future countdown-until-start behavior.
+- During questions, it should support large question text, automatic countdown, progress, and number of answers submitted.
+- During reveal, it should support correct answer, Han fun fact, and celebration.
+- During leaderboard phases, it should support animated ranking and current positions.
+- At finish, it should support final leaderboard, celebration, and thank-you.
+- Once realtime or fallback networking is implemented, it should update without manual refresh when shared game state changes.
+- It should handle empty, waiting, and low-participation states gracefully.
 
 ### Messages
 
@@ -149,13 +174,20 @@ Qualitative:
 - Admin should be a small utility area for essential event-day and testing operations.
 - Admin should be able to view guest names and final quiz scores.
 - Admin should be able to view submitted birthday messages.
-- Admin should be able to view the current leaderboard.
+- Admin should be able to view current Party Screen or leaderboard state.
 - Admin should distinguish QA/test data from real event data.
 - Admin should allow removal or reset of an incorrect test record or quiz attempt when necessary.
-- Admin should open or link to the TV leaderboard.
+- Admin should open or link to the Party Screen.
 - Admin may show a small readiness summary if it remains simple.
 - Admin access must be separated from guest access.
 - Admin MVP must not include content editing, translation editing, media upload, advanced analytics, complex moderation, role management, or a reusable CMS.
+
+### Lightweight Host Controls
+
+- Host controls are expected in a future milestone but are not implemented in Milestone 3.6.
+- The host is Ian, so controls should stay minimal and direct.
+- Expected future controls include Start Game, Next, Reveal, and Pause.
+- Host controls must not turn into a complex admin dashboard.
 
 ### QA Mode And Test Mode
 
@@ -175,7 +207,7 @@ Qualitative:
 
 - First mobile load should be lightweight.
 - Animations should remain smooth on common phones.
-- The leaderboard should remain responsive for the expected party size.
+- The Party Screen should remain responsive for the expected party size.
 
 ### Accessibility
 
@@ -208,6 +240,7 @@ Qualitative:
 MVP acceptance:
 
 - Guest can scan QR code, choose language, enter display name, complete the quiz, see result, view leaderboard, and leave a message.
+- Party Screen can guide the room through lobby, question, reveal, leaderboard, and finished phases once the shared game runtime is implemented.
 - Quiz enforces 20-second question timing.
 - A quiz attempt can have at most one accepted response per question.
 - A submitted response is immutable.
@@ -216,8 +249,8 @@ MVP acceptance:
 - Retried question-response requests are idempotent.
 - Final scoring uses accepted locked responses.
 - No editable end-of-quiz answer review exists.
-- Leaderboard updates live for expected party load.
-- Admin can verify quiz attempts, leaderboard state, messages, and QA/test separation through a lightweight utility page.
+- Party Screen updates live for expected party load once realtime or fallback networking is implemented.
+- Admin can verify quiz attempts, Party Screen or leaderboard state, messages, and QA/test separation through a lightweight utility page.
 - QA mode can test flows without polluting production event data.
 - English and Vietnamese guest flows are complete.
 - No real content is present unless Ian provided it.
@@ -233,7 +266,7 @@ Foundation acceptance:
 - Real content may arrive late, increasing translation and QA pressure.
 - Mobile network conditions at the venue may be weaker than expected.
 - Browser autoplay rules may limit sound effects.
-- Leaderboard excitement could make the experience feel too competitive if not designed carefully.
+- Party Screen excitement could make the experience feel too competitive or distracting if reveals and rankings are not paced carefully.
 - Admin/test data could pollute event data without clear separation.
 - Placeholder timeline/gallery could feel empty if not visually handled with care.
 

@@ -2,7 +2,7 @@
 
 ## QA Goal
 
-Protect the birthday-day experience. Testing should prove that guests can scan, play, answer timed questions with immutable locked responses, see results, view the leaderboard, and leave messages without confusion.
+Protect the birthday-day experience. Testing should prove that guests can scan, play from phones as personal controllers, answer timed questions with immutable locked responses, watch the shared Party Screen move through the room experience, see results, view the leaderboard, and leave messages without confusion.
 
 ## Test Environments
 
@@ -17,7 +17,7 @@ Purpose:
 Expectations:
 
 - Local data must be clearly separate from production data.
-- Developers should be able to run guest, display, admin, and QA flows.
+- Developers should be able to run guest, Party Screen/display, admin, and QA flows.
 
 ### Preview Deployment
 
@@ -42,7 +42,7 @@ Expectations:
 
 - Production content must be approved.
 - Required translations must be complete.
-- Test data must not appear on production leaderboard.
+- Test data must not appear on the production Party Screen or leaderboard.
 - Admin access must be controlled.
 
 ## QA Mode
@@ -53,7 +53,7 @@ Requirements:
 
 - Clearly mark QA/test mode in the UI for testers.
 - Tag all QA-generated records with `is_test`.
-- Exclude test data from normal guest leaderboard and production display.
+- Exclude test data from normal guest leaderboard, production Party Screen, and production display views.
 - Provide a reset path for test data if approved.
 - Keep QA routes out of public guest navigation.
 
@@ -68,6 +68,8 @@ Use cases:
 - Simulate duplicate question-response retry.
 - Simulate network failure or retry.
 - Simulate empty leaderboard.
+- Simulate Party Screen lobby, active question, locked question, reveal, leaderboard, and finished phases once runtime exists.
+- Simulate host-driven phase advancement once host controls exist.
 - Simulate missing optional assets.
 
 Test mode must not invent real Han content. Use neutral placeholder content only.
@@ -106,7 +108,7 @@ Cover:
 - Guest starts and completes quiz.
 - Each accepted question response persists once.
 - Duplicate question-response requests recover gracefully.
-- Leaderboard updates after submission.
+- Party Screen and leaderboard state update after relevant game events.
 - Message submission persists.
 - QA/test data is filtered from production views.
 
@@ -117,7 +119,8 @@ Cover:
 - QR entry to result path.
 - English and Vietnamese flows.
 - Mobile viewport guest path.
-- TV leaderboard route.
+- Party Screen route.
+- Host-driven phase progression once implemented.
 - Admin review path.
 - Offline or poor-network recovery if feasible.
 
@@ -128,7 +131,7 @@ Required before production:
 - iPhone Safari.
 - Android Chrome if available.
 - Laptop Chrome/Safari.
-- Target TV or display setup.
+- Target TV or Party Screen display setup.
 - QR code scan from printed or displayed code.
 
 ## Content QA
@@ -150,7 +153,7 @@ Checklist:
 - Mobile layout has no overlapping text.
 - Vietnamese text wraps cleanly.
 - Timer and answer choices remain stable.
-- Leaderboard is legible from display distance.
+- Party Screen questions, countdowns, reveals, fun facts, and leaderboard states are legible from display distance.
 - Placeholder assets are clearly placeholders.
 
 Milestone 2 visual checks:
@@ -159,7 +162,7 @@ Milestone 2 visual checks:
 - Review `/en` and `/vi` at mobile widths for title wrapping, language controls, placeholder stability, and Vietnamese text expansion.
 - Review `/vi/design-system` at mobile width with long Vietnamese copy.
 - Review `/en/design-system` on desktop for token, typography, control, panel, placeholder, motif, loading, and motion examples.
-- Review `/display/leaderboard` at 16:9 desktop size for distance-readable type and stable placeholder rows.
+- Review `/display/leaderboard` at 16:9 desktop size for distance-readable type and stable placeholder rows. After the Party Screen route is introduced, review that route for lobby, question, reveal, leaderboard, and finished compositions.
 - Review `/{locale}/admin` for restrained utility styling.
 - Review `/{locale}/qa` for clear QA/test marking.
 - Review with reduced motion enabled where practical; global CSS and Framer Motion primitives should suppress nonessential movement.
@@ -191,9 +194,9 @@ Milestone 3.5 visual checks:
 - Timed-out questions lock and cannot be edited.
 - Safe retries do not create duplicate question responses.
 - Guest sees a result screen.
-- Leaderboard updates after submission.
+- Party Screen and leaderboard update after submission or host-driven phase changes once runtime exists.
 - Guest can leave a message.
-- Admin can see final quiz scores, messages, leaderboard state, and QA/test separation through a lightweight utility area.
+- Admin can see final quiz scores, messages, Party Screen or leaderboard state, and QA/test separation through a lightweight utility area.
 - QA/test data is separate from production data.
 - Timeline and gallery placeholders do not invent content.
 
@@ -208,4 +211,5 @@ Milestone 3.5 visual checks:
 - QR code points to production URL.
 - Critical path tested on target devices.
 - Admin access confirmed.
+- Party Screen display and host-paced run-of-show checked on the target display once implemented.
 - Rollback or disable plan defined.

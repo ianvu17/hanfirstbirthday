@@ -2,9 +2,9 @@
 
 Public title: **WHO IS TURNING ONE?!**
 
-Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, play a short bilingual quiz, leave a message, and see a live leaderboard on a laptop or TV display.
+Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, use those phones as personal quiz controllers, watch a shared Party Screen on a laptop or TV, and leave a message.
 
-This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, Milestone 3 guest entry experience, and Milestone 3.5 art-direction polish. The application now has a Next.js foundation, locale routing, placeholder content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, intentional Han photo placeholders, route boundaries, and a session-only onboarding flow from welcome through the ready screen.
+This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, Milestone 3 guest entry experience, Milestone 3.5 art-direction polish, and Milestone 3.6 shared Party Screen architecture alignment. The application now has a Next.js foundation, locale routing, placeholder content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, intentional Han photo placeholders, route boundaries, a session-only onboarding flow from welcome through the ready screen, and documentation that defines the desktop/laptop as the main shared Party Screen.
 
 ## Purpose
 
@@ -30,7 +30,7 @@ The planned stack is:
 - next-intl
 - Vercel
 
-The app scaffold, visual foundation, guest entry experience, and art-direction polish now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md), [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md), [docs/MILESTONE_3_REVIEW.md](docs/MILESTONE_3_REVIEW.md), and [docs/MILESTONE_3_5_REVIEW.md](docs/MILESTONE_3_5_REVIEW.md).
+The app scaffold, visual foundation, guest entry experience, art-direction polish, and Party Screen architecture alignment now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md), [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md), [docs/MILESTONE_3_REVIEW.md](docs/MILESTONE_3_REVIEW.md), [docs/MILESTONE_3_5_REVIEW.md](docs/MILESTONE_3_5_REVIEW.md), and [docs/MILESTONE_3_6_REVIEW.md](docs/MILESTONE_3_6_REVIEW.md).
 
 ## Documentation Structure
 
@@ -83,7 +83,7 @@ Current route status:
 
 - `/en` and `/vi`: localized guest onboarding flow.
 - `/en/design-system` and `/vi/design-system`: internal visual foundation showcase.
-- `/display/leaderboard`: display-route placeholder.
+- `/display/leaderboard`: legacy display-route placeholder from earlier milestones. Milestone 3.6 defines the future desktop/laptop responsibility as the broader shared Party Screen, with `/display/party` planned in architecture.
 - `/en/admin` and `/vi/admin`: admin-route boundary placeholder.
 - `/en/qa` and `/vi/qa`: QA-route boundary placeholder.
 

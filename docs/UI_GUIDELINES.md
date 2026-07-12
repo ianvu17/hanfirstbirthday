@@ -66,7 +66,7 @@ Rules:
 - Do not scale font size directly with viewport width.
 - Avoid negative letter spacing.
 - Keep quiz and form text large enough for phones.
-- TV leaderboard typography should prioritize distance readability.
+- Party Screen typography should prioritize distance readability, especially for questions, countdowns, answer reveals, fun facts, and leaderboard rankings.
 
 ## Spacing
 
@@ -76,7 +76,7 @@ Direction:
 
 - Mobile screens should have comfortable thumb spacing.
 - Quiz answer choices need stable height and clear separation.
-- Leaderboard rows should be spacious on TV.
+- Party Screen layouts should stay spacious on TV, with stable areas for questions, countdowns, reveal content, and leaderboard rows.
 - Avoid nested card layouts.
 
 ## Radius
@@ -172,6 +172,8 @@ Use motion for:
 - Answer selection feedback.
 - Timer urgency near the end of a question.
 - Result reveal.
+- Shared Party Screen phase transitions.
+- Answer and Han fun fact reveals.
 - New leaderboard entries.
 - Message submission confirmation.
 
@@ -179,7 +181,7 @@ Avoid:
 
 - Constant background movement.
 - Long animations that slow guests down.
-- Motion that makes leaderboard rows hard to read.
+- Motion that makes Party Screen content or leaderboard rows hard to read.
 - Effects that fail on lower-powered phones.
 
 Respect reduced-motion preferences.
@@ -193,12 +195,13 @@ Guest experience:
 - Ensure text wraps cleanly in English and Vietnamese.
 - Avoid layout shifts when timer, answers, or validation text changes.
 
-TV leaderboard:
+Party Screen:
 
 - Use a dedicated large-screen layout.
 - Increase type size and row spacing.
 - Avoid tiny controls or dense admin information.
 - Keep the top results visible and stable.
+- Treat leaderboard as one Party Screen phase, not the only desktop responsibility.
 
 Admin:
 

@@ -4,6 +4,21 @@
 
 The experience should feel instantly understandable, warm, and festive. Guests should be able to complete the core flow while standing at a party, using one hand, with minimal instruction.
 
+## Surface Model
+
+The birthday game has two simultaneous experiences:
+
+- Phone: the personal controller for one guest. It handles QR entry, language choice, display name, answer selection, answer submission, personal progress, personal result, and next actions.
+- Desktop/laptop/TV: the shared Party Screen for the room. It is the birthday-game stage and should remain entertaining for guests who never touch a phone.
+
+The phone should not duplicate the desktop presentation. It should show only information useful to the current guest at that moment.
+
+## Host Model
+
+The birthday game is host-driven, not autonomous. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, the 20-second countdown is automatic.
+
+Future host controls should be intentionally lightweight. Expected controls include Start Game, Next, Reveal, and Pause, but Milestone 3.6 does not implement host controls.
+
 ## Primary Guest Flow
 
 1. Scan QR code.
@@ -17,6 +32,33 @@ The experience should feel instantly understandable, warm, and festive. Guests s
 9. View leaderboard.
 10. Leave a birthday message.
 11. Optionally browse placeholder timeline/gallery areas if enabled.
+
+## Shared Party Screen Flow
+
+The shared Party Screen should eventually support:
+
+1. Lobby with hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
+2. Large active question with automatic countdown, progress, and number of answers submitted.
+3. Locked-question state after the timer ends or the host closes answering.
+4. Correct-answer reveal.
+5. Han fun fact reveal when approved content exists.
+6. Leaderboard with animated ranking and current positions.
+7. Next-question preparation.
+8. Finished state with final leaderboard, celebration, and thank-you.
+
+This is a planning flow only. Quiz runtime, realtime updates, Supabase, networking, and host controls are deferred.
+
+## Game Phases
+
+Use these shared lifecycle terms for future planning:
+
+- `LOBBY`: Guests join by phone while the Party Screen provides QR and room context.
+- `QUESTION_ACTIVE`: Phones collect answers; the Party Screen shows the question, countdown, progress, and submitted-answer count.
+- `QUESTION_LOCKED`: Phones show locked or timed-out personal state; the Party Screen holds the room before reveal.
+- `ANSWER_REVEAL`: The Party Screen reveals the correct answer and celebration; phones show concise personal feedback.
+- `LEADERBOARD`: The Party Screen shows current rankings; phones may show a smaller personal leaderboard view.
+- `NEXT_QUESTION`: The host advances the room to the next question.
+- `FINISHED`: The Party Screen closes with final leaderboard, celebration, and thank-you; phones show personal result and next actions.
 
 Milestone 3 implemented the guest entry portion only:
 
@@ -174,22 +216,29 @@ States:
 - Score pending due to network delay.
 - Score unavailable with recovery guidance.
 
-### Leaderboard Display
+### Shared Party Screen
 
-Purpose: Show live party results on a shared screen.
+Purpose: Host the shared birthday-game stage on a laptop or TV.
 
 UX notes:
 
 - Must be legible from across a room.
-- Use restrained celebratory motion for new entries or rank changes.
+- Must be enjoyable even for guests who are only watching.
+- Use restrained celebratory motion for phase changes, answer reveals, fun facts, new leaderboard entries, or rank changes.
 - Keep layout stable to avoid visual chaos.
 - Avoid overemphasizing losing positions.
+- Do not show dense admin controls or private guest data.
 
 States:
 
-- Empty leaderboard before submissions.
-- Few participants.
-- Active updates.
+- Lobby before the game starts.
+- Empty or low-participation join state.
+- Question active with countdown.
+- Question locked.
+- Answer reveal.
+- Fun fact reveal.
+- Leaderboard.
+- Finished.
 - Connection interrupted.
 
 ### Mobile Leaderboard View
@@ -201,6 +250,7 @@ UX notes:
 - Present fewer columns than TV view.
 - Highlight the current guest if known.
 - Provide a clear path back to message leaving.
+- Do not duplicate the full Party Screen choreography on phones.
 
 ### Leave A Message
 
@@ -266,10 +316,10 @@ Approved capabilities:
 
 - View guest names and final quiz scores.
 - View submitted birthday messages.
-- View current leaderboard.
+- View current Party Screen or leaderboard state.
 - Distinguish QA/test data from real event data.
 - Remove or reset an incorrect test record or quiz attempt when necessary.
-- Open or link to the TV leaderboard.
+- Open or link to the Party Screen.
 - Optionally show a small readiness summary if it remains simple.
 
 Out of MVP scope:

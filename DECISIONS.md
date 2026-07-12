@@ -100,7 +100,7 @@ Optimize guest interaction for mobile phones and provide a separate display rout
 
 **Status**
 
-Accepted.
+Superseded by ADR-010 where it describes the desktop display as primarily a leaderboard.
 
 **Reason**
 
@@ -109,6 +109,43 @@ Guests will access the experience through QR code on personal phones while a lap
 **Consequence**
 
 Responsive design and QA must cover phone screens and large display screens as distinct experiences.
+
+## ADR-010: Phone Controller And Shared Party Screen
+
+**Context**
+
+The product direction was clarified after Milestone 3.5. The laptop or TV is not merely a leaderboard display; it is the main shared Party Screen for the birthday game. Phones remain personal controller surfaces for individual guests.
+
+**Decision**
+
+Model the experience as two simultaneous surfaces:
+
+- Phone: personal guest controller for QR entry, language choice, display name, answering questions, submitting answers, and viewing personal progress.
+- Desktop/laptop/TV: shared Party Screen for the room, including lobby/join, question, countdown, answer progress, answer reveal, Han fun fact, leaderboard, finished, celebration, and thank-you moments.
+
+The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+The shared display should entertain the entire room, including guests who never use a phone. This better matches the birthday-party setting and prevents future implementation from treating the desktop as a narrow results table.
+
+**Consequence**
+
+Future architecture, UX, QA, and route responsibilities must distinguish phone controller behavior from Party Screen behavior. The quiz engine, realtime state, Supabase schema, networking, and host controls remain deferred until their approved implementation milestones.
+
+**Recommended Lifecycle Terms**
+
+- `LOBBY`
+- `QUESTION_ACTIVE`
+- `QUESTION_LOCKED`
+- `ANSWER_REVEAL`
+- `LEADERBOARD`
+- `NEXT_QUESTION`
+- `FINISHED`
 
 ## ADR-007: Per-Question Immutable Responses
 
@@ -145,7 +182,7 @@ Ian is not expected to use admin tools frequently. Admin functionality exists to
 
 **Decision**
 
-Admin MVP is a small utility area. It may view guest names and final quiz scores, view submitted birthday messages, view the current leaderboard, distinguish QA/test data from real event data, remove or reset incorrect test records or quiz attempts when necessary, open or link to the TV leaderboard, and optionally show a simple readiness summary.
+Admin MVP is a small utility area. It may view guest names and final quiz scores, view submitted birthday messages, view the current Party Screen or leaderboard state, distinguish QA/test data from real event data, remove or reset incorrect test records or quiz attempts when necessary, open or link to the Party Screen, and optionally show a simple readiness summary.
 
 **Status**
 

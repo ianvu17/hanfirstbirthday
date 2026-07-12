@@ -11,8 +11,8 @@
   },
   "display": {
     "eyebrow": "Display foundation",
-    "title": "Leaderboard display ready",
-    "description": "This route now demonstrates large-screen typography, spacing, and calm celebration. Live scores and realtime behavior belong to a later milestone.",
+    "title": "Party Screen foundation ready",
+    "description": "This legacy display route demonstrates large-screen typography, spacing, and calm celebration for the future shared Party Screen. Live game phases, scores, host controls, and realtime behavior belong to later milestones.",
     "statusLabel": "Placeholder data only",
     "rows": [
       {
