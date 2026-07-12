@@ -123,6 +123,13 @@ Milestone 3 implemented guest onboarding components in `components/guest/`:
 - The localized guest root `/{locale}` now renders onboarding instead of the scaffold placeholder.
 - Display, admin, QA, and design-system routes remain separate from guest onboarding.
 
+Milestone 3.5 refined the guest onboarding presentation without changing route or runtime state boundaries:
+
+- `components/design/title-lockup.tsx` owns the public title treatment.
+- `components/design/hero-photo-frame.tsx` owns the primary future Han photo frame and fallback behavior.
+- `components/design/party-motifs.tsx` includes additional reusable decorative motifs for the richer party scene.
+- Existing `components/guest/` screens were visually recomposed while preserving the same session-only transitions and quiz placeholder boundary.
+
 Domain components:
 
 - Language selector.

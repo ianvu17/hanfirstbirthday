@@ -83,10 +83,17 @@
 @layer utilities {
   .paper-grid {
     background-image:
-      radial-gradient(circle at 14% 18%, hsl(var(--accent-yellow) / 0.38) 0 6rem, transparent 6.1rem),
-      radial-gradient(circle at 88% 10%, hsl(var(--accent-pink) / 0.25) 0 5.5rem, transparent 5.6rem),
-      radial-gradient(circle at 80% 84%, hsl(var(--accent-blue) / 0.18) 0 7.25rem, transparent 7.35rem),
+      linear-gradient(90deg, hsl(var(--text-primary) / 0.018) 1px, transparent 1px),
+      linear-gradient(0deg, hsl(var(--text-primary) / 0.014) 1px, transparent 1px),
+      radial-gradient(circle at 14% 18%, hsl(var(--accent-yellow) / 0.28) 0 5.6rem, transparent 5.7rem),
+      radial-gradient(circle at 90% 12%, hsl(var(--accent-pink) / 0.2) 0 5.4rem, transparent 5.5rem),
       linear-gradient(135deg, hsl(var(--background-page)), hsl(var(--surface-paper-deep)));
+    background-size:
+      34px 34px,
+      34px 34px,
+      auto,
+      auto,
+      auto;
   }
 
   .paper-texture {
@@ -115,6 +122,55 @@
       0 3px 0 hsl(var(--surface-paper)),
       3px 0 0 hsl(var(--surface-paper)),
       0 8px 0 hsl(var(--accent-blue) / 0.35);
+  }
+
+  .paper-stage {
+    background-image:
+      linear-gradient(90deg, hsl(var(--text-on-color) / 0.45) 50%, transparent 50%),
+      linear-gradient(0deg, hsl(var(--text-on-color) / 0.45) 50%, transparent 50%);
+    background-color: hsl(var(--surface-highlight));
+    background-size: 30px 30px;
+  }
+
+  .blue-runner {
+    background-image:
+      linear-gradient(90deg, hsl(var(--surface-paper) / 0.1) 1px, transparent 1px),
+      linear-gradient(0deg, hsl(var(--surface-paper) / 0.08) 1px, transparent 1px);
+    background-color: hsl(var(--accent-blue-deep));
+    background-size: 28px 28px;
+  }
+
+  .storybook-letter {
+    position: relative;
+    display: inline-flex;
+    min-width: 0.52em;
+    justify-content: center;
+    color: hsl(var(--letter-color, var(--accent-orange)));
+    -webkit-text-stroke: 0.035em hsl(var(--surface-paper));
+    paint-order: stroke fill;
+    text-shadow:
+      0.045em 0.045em 0 hsl(var(--accent-red)),
+      0.12em 0.14em 0 hsl(var(--accent-blue-deep) / 0.58),
+      0 0.18em 0.28em hsl(var(--shadow-warm) / 0.26);
+  }
+
+  .storybook-letter::after {
+    content: "";
+    position: absolute;
+    inset: 0.16em 0.08em 0.12em;
+    z-index: -1;
+    border-radius: 999px;
+    background: hsl(var(--surface-paper) / 0.46);
+    transform: rotate(-2deg);
+  }
+
+  .storybook-letter[data-pattern="gingham"] {
+    color: hsl(var(--accent-yellow));
+    background-image:
+      linear-gradient(90deg, hsl(var(--accent-orange) / 0.48) 1px, transparent 1px),
+      linear-gradient(0deg, hsl(var(--accent-orange) / 0.48) 1px, transparent 1px);
+    background-size: 0.23em 0.23em;
+    background-clip: text;
   }
 
   .touch-target {

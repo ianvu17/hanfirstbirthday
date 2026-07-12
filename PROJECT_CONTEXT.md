@@ -73,7 +73,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the planned technical desig
 
 ## Constraints
 
-- Documentation-first workflow: Milestones 0, 1, and 2 are complete. Milestone 3 guest entry experience is implemented and awaiting Ian approval before Milestone 4 begins.
+- Documentation-first workflow: Milestones 0, 1, 2, 3, and 3.5 are complete. Milestone 3 guest entry behavior is implemented, and Milestone 3.5 elevates the existing flow's art direction before Milestone 4 begins.
 - Do not invent stories, memories, quiz facts, timeline events, images, or photo descriptions.
 - Do not hardcode content in components.
 - All content-related data must come from external data files or Supabase records.
@@ -93,6 +93,6 @@ If decisions conflict, use this order:
 
 ## Current Repository State
 
-The repository currently contains project documentation, AI guidance, localized onboarding copy, a Milestone 1 Next.js scaffold, the completed Milestone 2 visual foundation, and the implemented Milestone 3 guest entry experience. It includes App Router route boundaries, bilingual locale routing, content validation, centralized Tailwind/CSS design tokens, Baloo 2 and Be Vietnam Pro typography, paper-cut visual primitives, lightweight decorative motifs, reduced-motion-aware motion patterns, robust asset placeholders, a localized internal design-system showcase at `/en/design-system` and `/vi/design-system`, and a session-only guest onboarding flow at `/en` and `/vi`.
+The repository currently contains project documentation, AI guidance, localized onboarding copy, a Milestone 1 Next.js scaffold, the completed Milestone 2 visual foundation, the implemented Milestone 3 guest entry experience, and Milestone 3.5 art-direction polish. It includes App Router route boundaries, bilingual locale routing, content validation, centralized Tailwind/CSS design tokens, Baloo 2 and Be Vietnam Pro typography, paper-cut visual primitives, richer party-scene motifs, a layered title lockup, a reusable Han photo frame placeholder, reduced-motion-aware motion patterns, a localized internal design-system showcase at `/en/design-system` and `/vi/design-system`, and a session-only guest onboarding flow at `/en` and `/vi`.
 
 The localized guest root routes implement Welcome, Language, Guest Name, How to Play, Ready, and Quiz Coming Soon placeholder screens. Existing placeholder routes still demonstrate the visual system at `/display/leaderboard`, `/{locale}/admin`, and `/{locale}/qa` without runtime behavior. The project intentionally does not yet contain quiz logic, Supabase migrations/runtime behavior, real Han content, live leaderboard data, message persistence, production deployment configuration, admin actions, or complete guest/admin/QA feature flows.

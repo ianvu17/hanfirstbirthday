@@ -184,26 +184,33 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
 
   const visibleProgressStep = step === "quizPlaceholder" ? "ready" : step;
   const shouldShowProgress = step !== "welcome";
+  const shouldShowLanguageSwitcher = shouldShowProgress && step !== "language";
 
   return (
     <div className="space-y-5">
       {shouldShowProgress ? (
-        <div className="space-y-4 pt-2">
-          <div className="flex justify-center gap-2" data-testid="language-switcher">
-            {locales.map((targetLocale) => (
-              <Button
-                key={targetLocale}
-                type="button"
-                variant={targetLocale === locale ? "default" : "outline"}
-                size="sm"
-                onClick={() => switchLanguage(targetLocale)}
-                aria-label={`${content.screens.language.switchLabel}: ${targetLocale.toUpperCase()}`}
-              >
-                {targetLocale.toUpperCase()}
-              </Button>
-            ))}
-          </div>
+        <div className="grid gap-3 pt-2 md:grid-cols-[1fr_auto] md:items-center">
           <ProgressIndicator steps={progressSteps} currentStep={visibleProgressStep} />
+          {shouldShowLanguageSwitcher ? (
+            <div
+              className="mx-auto flex rounded-[1rem] border border-border bg-surface-paper/80 p-1 shadow-lift md:mx-0"
+              data-testid="language-switcher"
+            >
+              {locales.map((targetLocale) => (
+                <Button
+                  key={targetLocale}
+                  type="button"
+                  variant={targetLocale === locale ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => switchLanguage(targetLocale)}
+                  aria-label={`${content.screens.language.switchLabel}: ${targetLocale.toUpperCase()}`}
+                  className="h-9 rounded-[0.75rem] px-3"
+                >
+                  {targetLocale.toUpperCase()}
+                </Button>
+              ))}
+            </div>
+          ) : null}
         </div>
       ) : null}
 

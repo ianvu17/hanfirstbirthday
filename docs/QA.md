@@ -173,6 +173,14 @@ Milestone 3 visual checks:
 - Review screenshots in `.next/milestone-3-screenshots/after/` before considering the milestone ready for approval.
 - Before/after comparison screenshots for this milestone are stored under `.next/milestone-3-screenshots/before/` and `.next/milestone-3-screenshots/after/`.
 
+Milestone 3.5 visual checks:
+
+- Use `npm run check:visual:milestone3.5` against a running server. Set `MILESTONE35_BASE_URL` when the server is not on `http://localhost:3000`.
+- The script captures mobile English and Vietnamese onboarding screenshots for Welcome, Language, Display Name empty, How to Play, and Ready.
+- It captures English focused name input, small-phone welcome/name-focused/how-to-play, desktop welcome/language/name/how-to-play/ready, tablet Vietnamese ready, and reduced-motion Vietnamese welcome.
+- Screenshots are stored in `.next/milestone-3-5-screenshots/`.
+- The script checks horizontal overflow for every captured state, but screenshots must still be visually inspected before milestone acceptance.
+
 ## Functional Acceptance Checklist
 
 - Guest can enter through QR code.

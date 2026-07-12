@@ -25,8 +25,8 @@
             "title": "WHO IS TURNING ONE?!",
             "subtitle": "Một bất ngờ sinh nhật nhỏ đang chờ bạn.",
             "primaryAction": "Bắt đầu",
-            "heroPlaceholderLabel": "Khung ảnh sinh nhật tạm thời",
-            "heroPlaceholderAlt": "Khung trang trí tạm thời cho ảnh chủ đề sinh nhật sau này"
+            "heroPlaceholderLabel": "Ảnh của Han sẽ được đặt ở đây",
+            "heroPlaceholderAlt": "Khung chân dung trang trí dành cho ảnh Han đã được duyệt sau này"
         },
         "language": {
             "title": "Chọn ngôn ngữ",
@@ -61,8 +61,8 @@
                 },
                 {
                     "id": "locked",
-                    "title": "Chọn một lần",
-                    "description": "Câu trả lời đã gửi sẽ không đổi được."
+                    "title": "Gửi câu trả lời",
+                    "description": "Sau khi gửi, câu trả lời sẽ không đổi được."
                 },
                 {
                     "id": "reveal",

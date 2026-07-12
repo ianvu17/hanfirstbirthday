@@ -4,7 +4,7 @@ Public title: **WHO IS TURNING ONE?!**
 
 Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, play a short bilingual quiz, leave a message, and see a live leaderboard on a laptop or TV display.
 
-This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, and Milestone 3 guest entry experience. The application now has a Next.js foundation, locale routing, placeholder content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, intentional placeholders, route boundaries, and a session-only onboarding flow from welcome through the ready screen.
+This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, Milestone 3 guest entry experience, and Milestone 3.5 art-direction polish. The application now has a Next.js foundation, locale routing, placeholder content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, intentional Han photo placeholders, route boundaries, and a session-only onboarding flow from welcome through the ready screen.
 
 ## Purpose
 
@@ -30,7 +30,7 @@ The planned stack is:
 - next-intl
 - Vercel
 
-The app scaffold, visual foundation, and guest entry experience now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md), [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md), and [docs/MILESTONE_3_REVIEW.md](docs/MILESTONE_3_REVIEW.md).
+The app scaffold, visual foundation, guest entry experience, and art-direction polish now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md), [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md), [docs/MILESTONE_3_REVIEW.md](docs/MILESTONE_3_REVIEW.md), and [docs/MILESTONE_3_5_REVIEW.md](docs/MILESTONE_3_5_REVIEW.md).
 
 ## Documentation Structure
 
@@ -76,6 +76,7 @@ npm run typecheck
 npm run lint
 npm run build
 npm run check:visual:milestone3
+npm run check:visual:milestone3.5
 ```
 
 Current route status:

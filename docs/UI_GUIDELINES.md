@@ -100,6 +100,12 @@ Milestone 2 implementation:
 - `shadow-sticker` and `shadow-outline` support offset paper/title effects.
 - Use `PaperPanel` for reusable framed paper surfaces instead of creating ad hoc card stacks.
 
+Milestone 3.5 implementation:
+
+- Guest-facing paper panels now include a standardized offset backplate and inner border for stronger physical depth.
+- The page shell includes a stage/table base and blue runner inspired by the physical party setup.
+- `TitleLockup` creates the public title with colored chunky lettering, cream stroke, warm red outline, and blue offset depth while keeping accessible text in the DOM.
+
 Direction:
 
 - Use soft shadows with warm undertones.
@@ -117,6 +123,11 @@ Milestone 2 implementation:
 - Current motifs: bunting, clouds, star cluster, and wave divider.
 - Motifs are original SVG/CSS shapes, decorative by default, and hidden from assistive technology.
 - Gingham, paper texture, and soft cow-spot treatments live as CSS utilities.
+
+Milestone 3.5 implementation:
+
+- Additional reusable motifs include `BalloonCluster`, `GiftStack`, and `PartyHat`.
+- Decorative motifs remain original SVGs, `aria-hidden`, pointer-event-free through the shell, and subordinate to content.
 
 Allowed direction:
 
@@ -210,5 +221,7 @@ Milestone 2 primitives:
 - `DecorativeHeading` for title treatment and bilingual-safe descriptions.
 - `BirthdayBadge` for labels and QA/admin markers.
 - `AssetPlaceholder` for honest missing/provided-image frames with stable ratios.
+- `HeroPhotoFrame` for the primary future Han portrait slot with layered birthday framing, missing-image fallback, and image-load error handling.
+- `TitleLockup` for the public "WHO IS TURNING ONE?!" treatment.
 - `LoadingTreatment` for soft skeleton-like loading.
 - `Button` keeps the shadcn-style API but uses custom birthday visual treatment.

@@ -67,7 +67,7 @@ Completion record:
 
 ## Milestone 3: Guest Entry Experience
 
-Status: Implemented, awaiting Ian approval gate.
+Status: Completed.
 
 Goals:
 
@@ -90,9 +90,31 @@ Completion record:
 
 - See [docs/MILESTONE_3_REVIEW.md](docs/MILESTONE_3_REVIEW.md).
 
+## Milestone 3.5: Art Direction Polish
+
+Status: Completed.
+
+Goals:
+
+- Elevate the existing Milestone 3 guest-entry flow without changing behavior.
+- Strengthen Han-specific identity through a reusable future-photo frame and title lockup.
+- Replace generic onboarding/card cues with warmer paper-party composition, party progress tags, and staged layouts.
+- Preserve bilingual, mobile-first, accessible behavior and the quiz-coming-soon boundary.
+
+Exit criteria:
+
+- Welcome, language, name, how-to-play, and ready screens feel custom to Han's first birthday.
+- No real Han photos, facts, memories, quiz questions, answer behavior, scoring, persistence, or leaderboard data are added.
+- English and Vietnamese onboarding copy remains externalized.
+- Milestone 3.5 visual screenshots cover mobile, desktop, small phone, focused input, reduced motion, and overflow checks.
+
+Completion record:
+
+- See [docs/MILESTONE_3_5_REVIEW.md](docs/MILESTONE_3_5_REVIEW.md).
+
 ## Milestone 4: Quiz Engine
 
-Status: Recommended next milestone after Ian approval.
+Status: Recommended next milestone after Milestone 3.5.
 
 Goals:
 

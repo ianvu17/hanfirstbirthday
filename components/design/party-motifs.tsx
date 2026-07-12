@@ -117,3 +117,150 @@ export function WaveDivider({ className, ...props }: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function BalloonCluster({ className, ...props }: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 190 250"
+      className={cn("h-auto", className)}
+      aria-hidden="true"
+      focusable="false"
+      {...props}
+    >
+      <path
+        d="M84 118c-20 35-32 70-36 114M102 120c11 36 18 73 22 112M70 118c-8 36-9 73-4 112"
+        fill="none"
+        stroke="hsl(var(--border-strong) / 0.24)"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <ellipse
+        cx="58"
+        cy="70"
+        rx="42"
+        ry="56"
+        className="fill-party-orange"
+        transform="rotate(-12 58 70)"
+      />
+      <ellipse
+        cx="105"
+        cy="58"
+        rx="43"
+        ry="58"
+        className="fill-party-blue"
+        transform="rotate(8 105 58)"
+      />
+      <ellipse
+        cx="124"
+        cy="103"
+        rx="43"
+        ry="55"
+        className="fill-party-red"
+        transform="rotate(15 124 103)"
+      />
+      <ellipse
+        cx="70"
+        cy="126"
+        rx="34"
+        ry="42"
+        className="fill-surface-paper"
+        stroke="hsl(var(--border-strong) / 0.22)"
+        strokeWidth="3"
+      />
+      <path
+        d="M54 113c6-4 12-5 18-2M78 119c7 2 13 6 16 12"
+        fill="none"
+        stroke="hsl(var(--border-strong) / 0.72)"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <circle cx="60" cy="128" r="4" className="fill-foreground" />
+      <circle cx="82" cy="125" r="4" className="fill-foreground" />
+      <circle cx="49" cy="142" r="6" className="fill-party-pink" />
+      <circle cx="92" cy="140" r="6" className="fill-party-pink" />
+    </svg>
+  );
+}
+
+export function GiftStack({ className, ...props }: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 220 150"
+      className={cn("h-auto", className)}
+      aria-hidden="true"
+      focusable="false"
+      {...props}
+    >
+      <rect
+        x="18"
+        y="72"
+        width="72"
+        height="58"
+        rx="10"
+        className="fill-party-orange"
+        stroke="hsl(var(--border-strong) / 0.14)"
+        strokeWidth="3"
+      />
+      <path d="M52 72v58M18 92h72" className="stroke-surface-paper" strokeWidth="8" />
+      <rect
+        x="82"
+        y="40"
+        width="80"
+        height="90"
+        rx="11"
+        className="fill-party-blue"
+        stroke="hsl(var(--border-strong) / 0.14)"
+        strokeWidth="3"
+      />
+      <path d="M122 40v90M82 67h80" className="stroke-surface-paper" strokeWidth="9" />
+      <rect
+        x="144"
+        y="82"
+        width="56"
+        height="48"
+        rx="9"
+        className="fill-party-green"
+        stroke="hsl(var(--border-strong) / 0.14)"
+        strokeWidth="3"
+      />
+      <path d="M172 82v48M144 102h56" className="stroke-surface-paper" strokeWidth="7" />
+      <path
+        d="M93 36c14-24 28-20 29 4M154 36c-16-24-29-18-31 4"
+        fill="none"
+        className="stroke-surface-paper"
+        strokeWidth="7"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function PartyHat({ className, ...props }: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 90 110"
+      className={cn("h-auto", className)}
+      aria-hidden="true"
+      focusable="false"
+      {...props}
+    >
+      <circle cx="46" cy="16" r="10" className="fill-party-blue" />
+      <path
+        d="M20 96 45 22l25 74z"
+        className="fill-party-yellow"
+        stroke="hsl(var(--border-strong) / 0.16)"
+        strokeWidth="4"
+        strokeLinejoin="round"
+      />
+      <circle cx="41" cy="52" r="4" className="fill-party-blue" />
+      <circle cx="54" cy="72" r="4" className="fill-party-orange" />
+      <path
+        d="M27 78c11 7 24 8 39 2"
+        fill="none"
+        className="stroke-party-blue"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}

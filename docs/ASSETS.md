@@ -76,6 +76,13 @@ Milestone 2 implementation:
 - The placeholder does not depict a baby, a real memory, or a fake Han photo.
 - The original SVG placeholder remains at [../public/assets/placeholders/placeholder-gallery-frame-01.svg](../public/assets/placeholders/placeholder-gallery-frame-01.svg) for future reference/reuse.
 
+Milestone 3.5 implementation:
+
+- `components/design/hero-photo-frame.tsx` provides the primary guest-entry Han photo frame.
+- The frame uses a portrait-oriented stable ratio, layered paper/gingham/backplate styling, localized placeholder copy, and a neutral camera icon.
+- Future approved photos can be inserted through `src`, `alt`, and `objectPosition` without changing the surrounding welcome layout.
+- Missing images and failed image loads fall back to the same honest non-photo placeholder treatment.
+
 ### Photos
 
 Purpose:

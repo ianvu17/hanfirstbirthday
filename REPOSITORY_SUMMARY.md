@@ -16,11 +16,11 @@ The architecture direction separates static localized content from runtime event
 
 The repository strongly protects content authenticity. Multiple documents state that no Han stories, memories, quiz facts, timeline entries, photo captions, or fake photos may be invented. Real content must come from Ian or another approved source. Current locale files intentionally contain empty strings and empty arrays as schema placeholders.
 
-Roadmap Milestone 0: Foundation, Milestone 1: Project Scaffold, Milestone 2: Content and Design System Foundation, and Milestone 3: Guest Entry Experience are implemented. Milestone 3 is awaiting Ian's approval gate. The next recommended milestone after approval is Milestone 4: Quiz Engine, followed by Supabase and leaderboard, messages/placeholders, lightweight admin/QA, and event readiness/deployment.
+Roadmap Milestone 0: Foundation, Milestone 1: Project Scaffold, Milestone 2: Content and Design System Foundation, Milestone 3: Guest Entry Experience, and Milestone 3.5: Art Direction Polish are implemented. The next recommended milestone is Milestone 4: Quiz Engine, followed by Supabase and leaderboard, messages/placeholders, lightweight admin/QA, and event readiness/deployment.
 
 A functional guest entry flow now exists, but the quiz and runtime event features remain future risk: making per-question response locking reliable, separating test and production data, completing approved quiz content, and preparing for party-day device/network conditions.
 
-Repository health for AI handoff is high at the documentation level and early-to-mid at the implementation level. Another AI can run the app, validate content, inspect route boundaries, review the Milestone 2 design-system showcase, exercise the Milestone 3 onboarding flow, and continue from Milestone 4 after Ian approval, but cannot test quiz, leaderboard, message, Supabase, admin, or QA runtime behavior because those features have not been implemented.
+Repository health for AI handoff is high at the documentation level and early-to-mid at the implementation level. Another AI can run the app, validate content, inspect route boundaries, review the Milestone 2 design-system showcase, exercise the polished Milestone 3.5 onboarding flow, and continue from Milestone 4, but cannot test quiz, leaderboard, message, Supabase, admin, or QA runtime behavior because those features have not been implemented.
 
 ---
 
@@ -178,7 +178,7 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 | QA/test mode | Planned | Requirements only; no tooling. |
 | Supabase schema | Planned | Table plan exists; no migrations or policies. |
 | Real-time updates | Planned | Supabase realtime or polling fallback discussed; not built. |
-| Tests | Partial | Content validation, typecheck, lint, build, Milestone 2 browser screenshot checks, and Milestone 3 onboarding screenshot checks exist as process; quiz/runtime feature tests remain future work. |
+| Tests | Partial | Content validation, typecheck, lint, build, Milestone 2 browser screenshot checks, Milestone 3 onboarding screenshot checks, and Milestone 3.5 art-direction screenshot checks exist as process; quiz/runtime feature tests remain future work. |
 | Deployment | Missing | Vercel/Supabase planned; no config. |
 | Assets | Partial | Asset plan, placeholder SVG, and reusable placeholder component exist; real assets are absent. |
 
@@ -254,6 +254,8 @@ Component rules: content must come from locale JSON or Supabase, layouts must su
 Database: no database implementation exists. Supabase is planned for runtime event data. Planned tables are `participants`, `quiz_attempts`, `question_responses`, `messages`, and `event_settings`. Important planned fields include locale, display name, score, response submitted/locked timestamps, message status, and `is_test` flags.
 
 JSON content: `content/en.json` and `content/vi.json` exist with localized Milestone 3 onboarding copy and placeholder schemas for future content. Both include `schemaVersion`, `locale`, `metadata`, `navigation`, `screens`, `quiz`, `timeline`, `gallery`, `messages`, `assets`, and `admin`. Quiz questions, timeline entries, gallery items, and assets remain empty arrays. `content/scaffold.json` still holds temporary diagnostic route-placeholder copy for internal and non-guest placeholders.
+
+Milestone 3.5 refined the onboarding copy for the Han photo placeholder and answer-locking instruction while preserving the same schema and locale parity.
 
 Translations: English and Vietnamese structures currently match except for `locale`. Translation completeness is zero for real copy. Docs require missing guest-facing translations to block production.
 
