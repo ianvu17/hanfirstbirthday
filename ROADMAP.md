@@ -136,36 +136,38 @@ Completion record:
 
 - See [docs/MILESTONE_3_6_REVIEW.md](docs/MILESTONE_3_6_REVIEW.md).
 
-## Milestone 4: Quiz Engine
+## Milestone 4: Party Engine
 
-Status: Recommended next milestone after Milestone 3.6.
+Status: Completed; awaiting Ian human approval gate.
 
 Goals:
 
-- Implement quiz flow with the approved content model.
-- Add the 20-second timer per question.
-- Enforce per-question locked responses in local/runtime architecture appropriate for this milestone.
-- Show correct/incorrect/timeout reveal states and approved fun facts when provided.
-- Show result screen.
-- Preserve the Milestone 3 onboarding handoff.
-- Preserve the Milestone 3.6 separation between phone personal controller behavior and future Party Screen behavior.
+- Implement a React-independent local Party Engine.
+- Add explicit host-driven phases for lobby, question ready, question active, question locked, answer reveal, leaderboard, waiting for host, and finished.
+- Add a timestamp-based 20-second question deadline through a clock abstraction.
+- Enforce per-question immutable locked responses, timeout responses, idempotent retry, and conflicting retry rejection.
+- Add local runtime, React provider/hooks, and distinct Party Screen, Guest Controller, and Host QA projections.
+- Implement `/display/party`, `/{locale}/play`, and `/{locale}/qa/party`.
+- Redirect `/display/leaderboard` to `/display/party`.
+- Use clearly marked development-only bilingual fixtures without real Han facts.
 
 Exit criteria:
 
-- Guest can complete a quiz once using approved or neutral test content.
-- Timer and scoring are tested.
-- Each question can have at most one accepted locked response per attempt.
-- Timed-out questions lock and cannot be edited.
-- Duplicate response requests recover gracefully.
+- Domain, timer, runtime, projection, browser, visual, content, typecheck, lint, and build validation pass.
+- Local-only limitations are documented.
 
-## Milestone 5: Supabase And Party Screen Runtime
+Completion record:
+
+- See [docs/MILESTONE_4_REVIEW.md](docs/MILESTONE_4_REVIEW.md).
+
+## Milestone 5: Shared Session And Realtime Synchronization
 
 Goals:
 
 - Add Supabase schema and policies.
-- Persist participants, quiz attempts, immutable question responses, and scores.
-- Build live Party Screen runtime for shared game state and leaderboard phases.
-- Add QA/test-data tagging and filtering.
+- Persist party sessions, participants, immutable question responses, and scores.
+- Build server-authoritative shared snapshots and realtime or approved fallback updates.
+- Add participant joining, command authority, reconnect/resume behavior, production leaderboard data, QA/test-data tagging, and host access strategy.
 
 Exit criteria:
 

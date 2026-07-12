@@ -114,4 +114,4 @@ Before finishing a change, verify:
 
 ## Next Milestone Guardrail
 
-Milestone 3 guest entry is implemented and must stop for Ian approval. Do not begin Milestone 4 automatically. After approval, the next milestone is Quiz Engine only; do not implement Supabase runtime, leaderboard, messages, admin, QA tools, deployment, or QR generation unless Ian explicitly reprioritizes.
+Milestone 4 local Party Engine is implemented and stops at Ian's human approval gate. Do not begin Milestone 5 automatically. The next milestone owns Supabase-backed shared sessions, realtime or approved fallback synchronization, production participant joining, command authority, reconnect/resume, production leaderboard data, QA/test data persistence, and host access strategy. Do not implement messages, gallery, timeline, complex admin, deployment, or production QR generation unless Ian explicitly reprioritizes.

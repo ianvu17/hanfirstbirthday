@@ -184,6 +184,19 @@ Milestone 3.5 visual checks:
 - Screenshots are stored in `.next/milestone-3-5-screenshots/`.
 - The script checks horizontal overflow for every captured state, but screenshots must still be visually inspected before milestone acceptance.
 
+Milestone 4 visual checks:
+
+- Use `npm run check:visual:milestone4` against a running server. Set `MILESTONE4_BASE_URL` when the server is not on `http://localhost:3000`.
+- The script captures `/display/party`, `/{locale}/play`, and `/{locale}/qa/party` states.
+- Screenshots are stored in `.next/milestone-4-screenshots/`.
+- Captured states include lobby, question ready, active, locked, reveal, leaderboard, waiting, finished, guest join-required, Vietnamese active question, mobile active harness, and reduced-motion Vietnamese active harness.
+- The script checks horizontal overflow, but screenshots must still be visually inspected before Milestone 4 approval.
+
+Milestone 4 logic checks:
+
+- Use `npm run test:party-engine`.
+- The suite covers lifecycle transitions, invalid transitions, immutable response locking, exact duplicate retry idempotency, conflicting retry rejection, deadline boundary behavior, timeout materialization, projection secrecy before reveal, host capabilities, scoring, and manual-clock runtime scheduling.
+
 ## Functional Acceptance Checklist
 
 - Guest can enter through QR code.

@@ -4,7 +4,7 @@ Public title: **WHO IS TURNING ONE?!**
 
 Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, use those phones as personal quiz controllers, watch a shared Party Screen on a laptop or TV, and leave a message.
 
-This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, Milestone 3 guest entry experience, Milestone 3.5 art-direction polish, and Milestone 3.6 shared Party Screen architecture alignment. The application now has a Next.js foundation, locale routing, placeholder content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, intentional Han photo placeholders, route boundaries, a session-only onboarding flow from welcome through the ready screen, and documentation that defines the desktop/laptop as the main shared Party Screen.
+This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, Milestone 3 guest entry experience, Milestone 3.5 art-direction polish, Milestone 3.6 shared Party Screen architecture alignment, and Milestone 4 local Party Engine implementation. The application now has a React-independent local Party Engine, typed host-driven phases, immutable per-question response locking, a timestamp-based countdown, local projections for Party Screen/Guest/Host surfaces, development-only bilingual fixtures, and a focused QA simulation harness.
 
 ## Purpose
 
@@ -74,7 +74,9 @@ Useful validation commands:
 npm run validate:content
 npm run typecheck
 npm run lint
+npm run test
 npm run build
+npm run check:visual:milestone4
 npm run check:visual:milestone3
 npm run check:visual:milestone3.5
 ```
@@ -82,10 +84,15 @@ npm run check:visual:milestone3.5
 Current route status:
 
 - `/en` and `/vi`: localized guest onboarding flow.
+- `/en/play` and `/vi/play`: local guest controller backed by the Milestone 4 in-memory runtime.
 - `/en/design-system` and `/vi/design-system`: internal visual foundation showcase.
-- `/display/leaderboard`: legacy display-route placeholder from earlier milestones. Milestone 3.6 defines the future desktop/laptop responsibility as the broader shared Party Screen, with `/display/party` planned in architecture.
+- `/display/party`: shared Party Screen for local lobby, question, countdown, reveal, leaderboard, waiting, and finished phases.
+- `/display/leaderboard`: compatibility redirect to `/display/party`.
 - `/en/admin` and `/vi/admin`: admin-route boundary placeholder.
 - `/en/qa` and `/vi/qa`: QA-route boundary placeholder.
+- `/en/qa/party` and `/vi/qa/party`: local host controls plus Party Screen and guest-controller simulation.
+
+Milestone 4 is local-only. It does not provide cross-device synchronization, production server authority, Supabase persistence, production QR generation, or host authentication.
 
 ## Development Workflow
 

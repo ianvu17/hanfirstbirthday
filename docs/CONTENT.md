@@ -8,8 +8,12 @@ The initial locale files are:
 
 - [../content/en.json](../content/en.json)
 - [../content/vi.json](../content/vi.json)
+- [../content/party-fixtures.json](../content/party-fixtures.json) for Milestone 4 development-only Party Engine fixtures.
+- [../content/party-ui.json](../content/party-ui.json) for Milestone 4 localized development UI labels.
 
 Milestone 1 also includes [../content/scaffold.json](../content/scaffold.json) for temporary diagnostic route-placeholder copy. It must not contain Han facts, memories, quiz answers, timeline entries, captions, or photo descriptions.
+
+The Milestone 4 fixture files are not approved production Han content. They are visibly marked development-only, use placeholder questions and placeholder fun facts, and exist only to validate the Party Engine until Ian provides real quiz content.
 
 ## Localization Model
 

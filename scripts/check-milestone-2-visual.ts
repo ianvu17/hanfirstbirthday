@@ -9,13 +9,13 @@ const checks = [
   {
     name: "en-mobile",
     path: "/en",
-    selector: "text=WHO IS TURNING ONE?!",
+    selector: "text=A tiny birthday surprise is waiting.",
     viewport: { width: 390, height: 844 }
   },
   {
     name: "vi-mobile",
     path: "/vi",
-    selector: "text=WHO IS TURNING ONE?!",
+    selector: "text=Một bất ngờ sinh nhật nhỏ đang chờ bạn.",
     viewport: { width: 390, height: 844 }
   },
   {
@@ -35,7 +35,7 @@ const checks = [
   {
     name: "display-1366x768",
     path: "/display/leaderboard",
-    selector: "text=Leaderboard display ready",
+    selector: "text=QR placeholder",
     viewport: { width: 1366, height: 768 }
   },
   {

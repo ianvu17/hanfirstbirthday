@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0.0",
+  "developmentOnly": true,
+  "settings": {
+    "questionDurationSeconds": 20
+  },
+  "guests": [
+    {
+      "id": "test-guest-01",
+      "displayName": "Test Guest 01",
+      "locale": "en"
+    },
+    {
+      "id": "test-guest-02",
+      "displayName": "Test Guest 02",
+      "locale": "en"
+    },
+    {
+      "id": "qa-guest",
+      "displayName": "QA Guest",
+      "locale": "vi"
+    }
+  ],
+  "questions": [
+    {
+      "id": "dev-question-1",
+      "enabled": true,
+      "sortOrder": 1,
+      "correctOptionId": "option-b",
+      "assetId": "dev-placeholder-image",
+      "prompt": {
+        "en": "Development question 1: Which placeholder answer is marked correct?",
+        "vi": "Câu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?"
+      },
+      "funFact": {
+        "en": "Development-only fun fact placeholder. Replace with an approved Han fact before production.",
+        "vi": "Thông tin mẫu chỉ dùng để thử nghiệm. Hãy thay bằng thông tin về Han đã được duyệt trước khi chạy thật."
+      },
+      "options": [
+        {
+          "id": "option-a",
+          "label": {
+            "en": "Placeholder option A",
+            "vi": "Đáp án mẫu A"
+          }
+        },
+        {
+          "id": "option-b",
+          "label": {
+            "en": "Placeholder option B",
+            "vi": "Đáp án mẫu B"
+          }
+        },
+        {
+          "id": "option-c",
+          "label": {
+            "en": "Placeholder option C",
+            "vi": "Đáp án mẫu C"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dev-question-2",
+      "enabled": true,
+      "sortOrder": 2,
+      "correctOptionId": "option-c",
+      "prompt": {
+        "en": "Development question 2: Choose the third test answer.",
+        "vi": "Câu hỏi thử nghiệm 2: Hãy chọn đáp án thử nghiệm thứ ba."
+      },
+      "funFact": {
+        "en": "Development-only fun fact placeholder for the second question.",
+        "vi": "Thông tin mẫu chỉ dùng để thử nghiệm cho câu hỏi thứ hai."
+      },
+      "options": [
+        {
+          "id": "option-a",
+          "label": {
+            "en": "First test answer",
+            "vi": "Đáp án thử nghiệm thứ nhất"
+          }
+        },
+        {
+          "id": "option-b",
+          "label": {
+            "en": "Second test answer",
+            "vi": "Đáp án thử nghiệm thứ hai"
+          }
+        },
+        {
+          "id": "option-c",
+          "label": {
+            "en": "Third test answer",
+            "vi": "Đáp án thử nghiệm thứ ba"
+          }
+        }
+      ]
+    }
+  ]
+}

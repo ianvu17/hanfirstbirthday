@@ -8,10 +8,13 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "test": "npm run test:party-engine",
+    "test:party-engine": "node --import tsx --test lib/party-engine/__tests__/*.test.ts",
     "validate:content": "tsx scripts/validate-content.ts",
     "check:visual:milestone2": "tsx scripts/check-milestone-2-visual.ts",
     "check:visual:milestone3": "tsx scripts/check-milestone-3-visual.ts",
     "check:visual:milestone3.5": "tsx scripts/check-milestone-3-5-visual.ts",
+    "check:visual:milestone4": "tsx scripts/check-milestone-4-visual.ts",
     "validate": "npm run validate:content && npm run typecheck && npm run lint && npm run build"
   },
   "dependencies": {
@@ -30,7 +33,6 @@
     "zod": "latest"
   },
   "devDependencies": {
-    "@playwright/test": "^1.61.1",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",

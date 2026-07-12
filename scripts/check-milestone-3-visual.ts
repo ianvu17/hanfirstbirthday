@@ -50,8 +50,8 @@ const flowSteps = [
     }
   },
   {
-    name: "06-quiz-placeholder",
-    testId: "onboarding-quiz-placeholder",
+    name: "06-guest-play-handoff",
+    testId: "guest-controller",
     afterScreenshot: async () => undefined
   }
 ] as const;

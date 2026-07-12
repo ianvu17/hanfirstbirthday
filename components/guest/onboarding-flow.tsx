@@ -272,7 +272,7 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
             subtitle={content.screens.ready.subtitle}
             primaryAction={content.screens.ready.primaryAction}
             guestName={playerName}
-            onStartQuiz={() => goToStep("quizPlaceholder")}
+            onStartQuiz={() => router.push(`/${locale}/play`)}
           />
         ) : null}
 

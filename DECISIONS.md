@@ -224,3 +224,45 @@ Milestone 2 requires a playful title treatment and a highly legible body font th
 **Consequence**
 
 Future UI work should use the display font for celebratory headings and title moments only, and use Be Vietnam Pro for body, forms, controls, admin, QA, and leaderboard supporting text. Any future font change must preserve Vietnamese rendering, mobile readability, and build reliability.
+
+## ADR-011: React-Independent Local Party Engine
+
+**Context**
+
+Milestone 4 introduces the core party runtime before Supabase synchronization. The runtime must coordinate the shared Party Screen, guest phones, host pacing, the 20-second question timer, immutable responses, reveal phases, and local leaderboard projection without becoming a React page state machine.
+
+**Decision**
+
+Implement a React-independent Party Engine under `lib/party-engine/` with explicit typed phases, typed commands, structured domain errors, pure selectors, a clock abstraction, and deterministic fixture content. React consumes the engine through a local runtime contract in `lib/party-runtime/`, with surface-specific projections for Party Screen, Guest Controller, and Host QA controls.
+
+Milestone 4 uses a local in-memory runtime only. It does not implement Supabase, realtime synchronization, server authority, production QR generation, host authentication, or cross-device state sharing.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+This keeps the highest-risk product behavior testable without a browser, avoids contradictory UI-owned lifecycle state, and leaves a clean adapter boundary for a future Supabase-backed runtime.
+
+**Consequence**
+
+Future remote synchronization should replace the runtime adapter rather than rewriting the Party Screen or Guest Controller. Local simulation is useful for QA, but it must not be described as production realtime behavior.
+
+## ADR-012: Select-Then-Confirm Answer Submission
+
+**Decision**
+
+Milestone 4 guest answering uses select-then-confirm: tapping an option only selects it, and pressing Submit Answer dispatches the authoritative response command. Accepted responses become immutable. Exact duplicate retries are idempotent, conflicting retries are rejected, and submissions are accepted only when received by the runtime before `deadlineAt`.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+Separate confirmation reduces accidental taps in a live party setting and makes locking behavior obvious to guests.
+
+**Consequence**
+
+Guest draft selection remains local UI state. Authoritative Party State stores only accepted locked answers and timeout responses.

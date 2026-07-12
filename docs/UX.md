@@ -182,9 +182,9 @@ States:
 - Safe retry.
 - Transition to next question.
 
-Open UX decision:
+Milestone 4 decision:
 
-- Whether tapping an answer immediately submits it or whether a separate confirmation action is required. Existing documentation does not resolve this, so implementation must decide explicitly before building the quiz interaction.
+- Answering uses select-then-confirm. Tapping an option selects it; pressing Submit Answer sends the authoritative runtime command and locks the response if accepted.
 
 ### Quiz Completion
 
@@ -240,6 +240,13 @@ States:
 - Leaderboard.
 - Finished.
 - Connection interrupted.
+
+Milestone 4 implementation:
+
+- `/display/party` renders the local shared Party Screen for lobby, question ready, active question, locked question, answer reveal, leaderboard, waiting, and finished states.
+- `/display/leaderboard` redirects to `/display/party` so there is no competing primary display route.
+- `/{locale}/qa/party` provides a local simulation harness with host controls, Party Screen preview, and a guest-controller preview.
+- This is not cross-device synchronization. It is a deterministic local runtime for architecture, QA, and visual validation.
 
 ### Mobile Leaderboard View
 

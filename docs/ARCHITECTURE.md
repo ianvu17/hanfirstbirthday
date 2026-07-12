@@ -166,6 +166,18 @@ Milestone 3.6 aligned planned surface responsibilities without adding runtime be
 - `/display/leaderboard` remains an existing legacy placeholder or redirect candidate.
 - Host-driven phase transitions and shared lifecycle terms are documented for future implementation.
 
+Milestone 4 implemented the local Party Engine foundation:
+
+- `lib/party-engine/` owns the React-independent domain model, typed phases, commands, reducer, selectors, fixture loading, clock abstraction, and tests.
+- `lib/party-runtime/` owns the local runtime contract, in-memory adapter, runtime provider, hooks, and localized development UI copy loader.
+- `components/party/` owns the Party Screen, Guest Controller, Host QA controls, and QA simulation harness.
+- `/display/party` is the primary shared Party Screen route.
+- `/display/leaderboard` redirects to `/display/party`.
+- `/{locale}/play` is the phone Guest Controller route.
+- `/{locale}/qa/party` renders local host controls, Party Screen preview, and guest controller preview from one local runtime.
+
+The Milestone 4 runtime is local-only. It does not synchronize across browser tabs or devices, does not persist to Supabase, does not authenticate host commands, and does not make correct answers production-secret.
+
 Domain components:
 
 - Language selector.
@@ -217,6 +229,40 @@ Milestone 3 client/session state:
 - Current onboarding step.
 
 This state is stored in browser `sessionStorage` only. It does not create participant IDs, Supabase records, quiz attempts, question responses, leaderboard entries, messages, admin records, or QA/test data.
+
+Milestone 4 local party state:
+
+- `PartyState.phase` is the single authoritative lifecycle phase.
+- Allowed phases are `lobby`, `question_ready`, `question_active`, `question_locked`, `answer_reveal`, `leaderboard`, `waiting_for_host`, and `finished`.
+- Static question text remains in development fixtures; runtime state stores question ids and responses.
+- Guest draft answer selection remains local UI state until the Submit Answer command is accepted.
+- Locked responses are immutable. Exact duplicate retry returns the existing state; conflicting retry is rejected.
+- Submissions are accepted only when `receivedAt < deadlineAt`.
+- Timeout responses are materialized when the question locks.
+- Scores are derived from locked responses only: correct equals 1, incorrect/timeout equals 0.
+
+```mermaid
+flowchart TD
+  Content[Development fixture content] --> Engine[React-independent Party Engine]
+  Engine --> Runtime[Local runtime contract]
+  Runtime --> React[Runtime provider and hooks]
+  React --> Display[Party Screen projection]
+  React --> Guest[Guest Controller projection]
+  React --> Host[Host QA capabilities]
+```
+
+```mermaid
+stateDiagram-v2
+  [*] --> lobby
+  lobby --> question_ready: PREPARE_FIRST_QUESTION
+  question_ready --> question_active: OPEN_QUESTION
+  question_active --> question_locked: LOCK_QUESTION / deadline
+  question_locked --> answer_reveal: REVEAL_ANSWER
+  answer_reveal --> leaderboard: SHOW_LEADERBOARD
+  leaderboard --> waiting_for_host: COMPLETE_PRESENTATION
+  waiting_for_host --> question_ready: PREPARE_NEXT_QUESTION
+  waiting_for_host --> finished: FINISH_PARTY
+```
 
 Server/runtime state:
 
