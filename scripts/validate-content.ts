@@ -10,30 +10,89 @@ const ScaffoldCopySchema = z.object({
     en: z.string().min(1),
     vi: z.string().min(1)
   }),
+  common: z.object({
+    assetPlaceholder: z.object({
+      label: z.string().min(1),
+      alt: z.string().min(1)
+    })
+  }),
   display: z.object({
+    eyebrow: z.string().min(1),
     title: z.string().min(1),
-    description: z.string().min(1)
+    description: z.string().min(1),
+    statusLabel: z.string().min(1),
+    rows: z
+      .array(
+        z.object({
+          rank: z.string().min(1),
+          name: z.string().min(1),
+          score: z.string().min(1)
+        })
+      )
+      .min(1)
   }),
   en: z.object({
-    guest: z.object({ localeLabel: z.string().min(1) }),
-    admin: z.object({
+    guest: z.object({
+      eyebrow: z.string().min(1),
+      localeLabel: z.string().min(1),
       title: z.string().min(1),
-      description: z.string().min(1)
+      description: z.string().min(1),
+      primaryAction: z.string().min(1),
+      secondaryAction: z.string().min(1),
+      timerLabel: z.string().min(1)
+    }),
+    admin: z.object({
+      eyebrow: z.string().min(1),
+      title: z.string().min(1),
+      description: z.string().min(1),
+      items: z.array(z.string().min(1)).min(1)
     }),
     qa: z.object({
+      eyebrow: z.string().min(1),
       title: z.string().min(1),
-      description: z.string().min(1)
+      description: z.string().min(1),
+      warning: z.string().min(1)
+    }),
+    designSystem: z.object({
+      eyebrow: z.string().min(1),
+      title: z.string().min(1),
+      description: z.string().min(1),
+      longCopy: z.string().min(1),
+      sections: z.record(z.string(), z.string().min(1)),
+      buttons: z.record(z.string(), z.string().min(1)),
+      labels: z.record(z.string(), z.string().min(1))
     })
   }),
   vi: z.object({
-    guest: z.object({ localeLabel: z.string().min(1) }),
-    admin: z.object({
+    guest: z.object({
+      eyebrow: z.string().min(1),
+      localeLabel: z.string().min(1),
       title: z.string().min(1),
-      description: z.string().min(1)
+      description: z.string().min(1),
+      primaryAction: z.string().min(1),
+      secondaryAction: z.string().min(1),
+      timerLabel: z.string().min(1)
+    }),
+    admin: z.object({
+      eyebrow: z.string().min(1),
+      title: z.string().min(1),
+      description: z.string().min(1),
+      items: z.array(z.string().min(1)).min(1)
     }),
     qa: z.object({
+      eyebrow: z.string().min(1),
       title: z.string().min(1),
-      description: z.string().min(1)
+      description: z.string().min(1),
+      warning: z.string().min(1)
+    }),
+    designSystem: z.object({
+      eyebrow: z.string().min(1),
+      title: z.string().min(1),
+      description: z.string().min(1),
+      longCopy: z.string().min(1),
+      sections: z.record(z.string(), z.string().min(1)),
+      buttons: z.record(z.string(), z.string().min(1)),
+      labels: z.record(z.string(), z.string().min(1))
     })
   })
 });

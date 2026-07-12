@@ -4,7 +4,7 @@ Public title: **WHO IS TURNING ONE?!**
 
 Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, play a short bilingual quiz, leave a message, and see a live leaderboard on a laptop or TV display.
 
-This repository has completed its documentation-first foundation review and Milestone 1 runnable project scaffolding. The application now has a Next.js foundation, locale routing, placeholder content validation, theme tokens, and route boundaries, but feature logic is intentionally deferred to later milestones.
+This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, and Milestone 2 visual design-system foundation. The application now has a Next.js foundation, locale routing, placeholder content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, intentional placeholders, and route boundaries, but feature logic is intentionally deferred to later milestones.
 
 ## Purpose
 
@@ -30,7 +30,7 @@ The planned stack is:
 - next-intl
 - Vercel
 
-The app scaffold now exists. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with Milestone 1 results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md).
+The app scaffold and visual foundation now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md) and [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md).
 
 ## Documentation Structure
 
@@ -80,6 +80,7 @@ npm run build
 Milestone 1 intentionally provides only foundational routes:
 
 - `/en` and `/vi`: localized guest scaffold.
+- `/en/design-system` and `/vi/design-system`: internal visual foundation showcase.
 - `/display/leaderboard`: display-route placeholder.
 - `/en/admin` and `/vi/admin`: admin-route boundary placeholder.
 - `/en/qa` and `/vi/qa`: QA-route boundary placeholder.

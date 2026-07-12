@@ -5,6 +5,10 @@ export function getScaffoldCopy(locale: Locale) {
   return scaffoldCopy[locale];
 }
 
+export function getCommonScaffoldCopy() {
+  return scaffoldCopy.common;
+}
+
 export function getLocaleLabel(locale: Locale) {
   return scaffoldCopy.localeLabels[locale];
 }

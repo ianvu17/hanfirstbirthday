@@ -3,34 +3,141 @@
     "en": "English",
     "vi": "Tiếng Việt"
   },
+  "common": {
+    "assetPlaceholder": {
+      "label": "Approved asset placeholder",
+      "alt": "Decorative paper-style placeholder for future approved birthday assets"
+    }
+  },
   "display": {
-    "title": "Display route ready",
-    "description": "Leaderboard data and realtime behavior belong to a later milestone."
+    "eyebrow": "Display foundation",
+    "title": "Leaderboard display ready",
+    "description": "This route now demonstrates large-screen typography, spacing, and calm celebration. Live scores and realtime behavior belong to a later milestone.",
+    "statusLabel": "Placeholder data only",
+    "rows": [
+      {
+        "rank": "01",
+        "name": "Future participant",
+        "score": "0"
+      },
+      {
+        "rank": "02",
+        "name": "Score placeholder",
+        "score": "0"
+      },
+      {
+        "rank": "03",
+        "name": "Awaiting quiz data",
+        "score": "0"
+      }
+    ]
   },
   "en": {
     "guest": {
-      "localeLabel": "Locale"
+      "eyebrow": "Milestone 2 design foundation",
+      "localeLabel": "Locale",
+      "title": "WHO IS TURNING ONE?!",
+      "description": "A birthday-themed visual system is being prepared here. The real guest entry, quiz, leaderboard, and messages remain intentionally deferred.",
+      "primaryAction": "Design system",
+      "secondaryAction": "Switch language",
+      "timerLabel": "Future quiz timer"
     },
     "admin": {
-      "title": "Admin route ready",
-      "description": "Minimal admin behavior is intentionally deferred beyond Milestone 1."
+      "eyebrow": "Admin placeholder",
+      "title": "Admin utility foundation",
+      "description": "This page demonstrates the calmer admin visual treatment only. Scores, messages, QA separation, access control, and resets are not implemented yet.",
+      "items": [
+        "Future scores view",
+        "Future messages review",
+        "Future QA/test separation"
+      ]
     },
     "qa": {
-      "title": "QA route ready",
-      "description": "QA data tagging and reset tools are intentionally deferred beyond Milestone 1."
+      "eyebrow": "QA/test context",
+      "title": "QA route foundation",
+      "description": "This route is visibly separate from the guest flow. Test data tagging, reset tools, and flow simulations remain deferred.",
+      "warning": "No event data is created here."
+    },
+    "designSystem": {
+      "eyebrow": "Internal review route",
+      "title": "Design system foundation",
+      "description": "A development-only surface for reviewing tokens, typography, controls, placeholders, motifs, motion, and bilingual text expansion.",
+      "longCopy": "Vietnamese and English copy must wrap comfortably on mobile screens, stay readable inside touch targets, and preserve the warm birthday tone without pretending that real stories or photos have already been provided.",
+      "sections": {
+        "colors": "Color tokens",
+        "typography": "Typography",
+        "controls": "Controls",
+        "panels": "Panels and labels",
+        "placeholders": "Asset placeholders",
+        "motifs": "Motifs",
+        "motion": "Motion and loading"
+      },
+      "buttons": {
+        "primary": "Primary action",
+        "secondary": "Secondary action",
+        "outline": "Outline action",
+        "ghost": "Quiet action"
+      },
+      "labels": {
+        "badge": "Birthday label",
+        "qa": "QA only",
+        "loading": "Loading treatment",
+        "focus": "Keyboard focus"
+      }
     }
   },
   "vi": {
     "guest": {
-      "localeLabel": "Ngôn ngữ"
+      "eyebrow": "Nền tảng thiết kế Milestone 2",
+      "localeLabel": "Ngôn ngữ",
+      "title": "WHO IS TURNING ONE?!",
+      "description": "Hệ thống hình ảnh theo chủ đề sinh nhật đang được chuẩn bị tại đây. Luồng vào của khách, câu đố, bảng xếp hạng và lời chúc vẫn được cố ý để dành cho các milestone sau.",
+      "primaryAction": "Hệ thống thiết kế",
+      "secondaryAction": "Đổi ngôn ngữ",
+      "timerLabel": "Bộ đếm giờ câu đố sau này"
     },
     "admin": {
-      "title": "Đường dẫn admin đã sẵn sàng",
-      "description": "Chức năng admin tối giản được cố ý để dành cho các milestone sau Milestone 1."
+      "eyebrow": "Trang admin tạm thời",
+      "title": "Nền tảng tiện ích admin",
+      "description": "Trang này chỉ minh họa phong cách admin gọn gàng hơn. Điểm số, lời chúc, tách dữ liệu QA, phân quyền và đặt lại dữ liệu chưa được triển khai.",
+      "items": [
+        "Bảng điểm sau này",
+        "Duyệt lời chúc sau này",
+        "Tách dữ liệu QA/test sau này"
+      ]
     },
     "qa": {
-      "title": "Đường dẫn QA đã sẵn sàng",
-      "description": "Gắn nhãn dữ liệu QA và công cụ đặt lại được cố ý để dành cho các milestone sau Milestone 1."
+      "eyebrow": "Ngữ cảnh QA/test",
+      "title": "Nền tảng đường dẫn QA",
+      "description": "Đường dẫn này được tách biệt rõ với luồng dành cho khách. Gắn nhãn dữ liệu test, công cụ đặt lại và mô phỏng luồng vẫn để dành cho sau.",
+      "warning": "Không tạo dữ liệu sự kiện tại đây."
+    },
+    "designSystem": {
+      "eyebrow": "Đường dẫn rà soát nội bộ",
+      "title": "Nền tảng hệ thống thiết kế",
+      "description": "Bề mặt chỉ dành cho phát triển để rà soát token, chữ, nút, placeholder, họa tiết, chuyển động và khả năng giãn nở của tiếng Việt.",
+      "longCopy": "Các đoạn tiếng Việt dài cần xuống dòng thoải mái trên màn hình điện thoại, vẫn dễ đọc trong vùng chạm, và giữ được cảm giác sinh nhật ấm áp mà không giả vờ rằng câu chuyện hay hình ảnh thật đã được cung cấp.",
+      "sections": {
+        "colors": "Token màu",
+        "typography": "Kiểu chữ",
+        "controls": "Nút điều khiển",
+        "panels": "Mảng giấy và nhãn",
+        "placeholders": "Placeholder tài sản",
+        "motifs": "Họa tiết",
+        "motion": "Chuyển động và tải"
+      },
+      "buttons": {
+        "primary": "Hành động chính",
+        "secondary": "Hành động phụ",
+        "outline": "Hành động viền",
+        "ghost": "Hành động nhẹ"
+      },
+      "labels": {
+        "badge": "Nhãn sinh nhật",
+        "qa": "Chỉ QA",
+        "loading": "Trạng thái tải",
+        "focus": "Focus bàn phím"
+      }
     }
   }
 }

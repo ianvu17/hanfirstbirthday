@@ -18,6 +18,13 @@ Keywords:
 
 Use semantic tokens rather than raw colors in components.
 
+Milestone 2 implementation:
+
+- Tokens live primarily in [../app/globals.css](../app/globals.css) as CSS custom properties and are exposed through [../tailwind.config.ts](../tailwind.config.ts).
+- Core semantic surfaces include `background-page`, `surface-paper`, `surface-paper-deep`, `surface-highlight`, `surface-sky`, `surface-coral`, `text-primary`, `text-muted`, `border-playful`, `shadow-paper`, and `focus-ring`.
+- Accent tokens are `accent-blue`, `accent-blue-deep`, `accent-yellow`, `accent-orange`, `accent-red`, `accent-pink`, and `accent-green`.
+- Component code should prefer semantic Tailwind classes such as `bg-surface-paper`, `text-muted-foreground`, `bg-party-blue`, and `shadow-paper` over raw color values.
+
 Suggested palette direction:
 
 - Background cream: warm, soft, not stark white.
@@ -39,6 +46,13 @@ Usage rules:
 ## Typography
 
 Typography should feel playful but readable.
+
+Milestone 2 implementation:
+
+- Display font: Baloo 2 via `next/font/google`, used for title moments, large headings, celebratory numerals, and limited display emphasis.
+- Body/UI font: Be Vietnam Pro via `next/font/google`, used for body copy, buttons, controls, admin, QA, and longer Vietnamese text.
+- Both fonts are loaded with Vietnamese support and `display: "swap"`.
+- Typography decisions are recorded in [../DECISIONS.md](../DECISIONS.md) as ADR-009.
 
 Direction:
 
@@ -79,6 +93,13 @@ Direction:
 
 The visual style should suggest layered paper and handmade party decor.
 
+Milestone 2 implementation:
+
+- `shadow-paper` is the default warm paper depth.
+- `shadow-lift` is used for buttons, badges, and compact raised elements.
+- `shadow-sticker` and `shadow-outline` support offset paper/title effects.
+- Use `PaperPanel` for reusable framed paper surfaces instead of creating ad hoc card stacks.
+
 Direction:
 
 - Use soft shadows with warm undertones.
@@ -89,6 +110,13 @@ Direction:
 ## Illustrations And Decorative Shapes
 
 Illustrations should be simple, warm, and handmade-feeling.
+
+Milestone 2 implementation:
+
+- Lightweight motif primitives live in `components/design/party-motifs.tsx`.
+- Current motifs: bunting, clouds, star cluster, and wave divider.
+- Motifs are original SVG/CSS shapes, decorative by default, and hidden from assistive technology.
+- Gingham, paper texture, and soft cow-spot treatments live as CSS utilities.
 
 Allowed direction:
 
@@ -118,6 +146,13 @@ Direction:
 ## Animation Language
 
 Motion should feel soft, celebratory, and intentional.
+
+Milestone 2 implementation:
+
+- `components/motion/soft-entrance.tsx` provides a reduced-motion-aware entrance primitive.
+- `components/motion/motion-patterns.tsx` provides page, paper-layer, celebratory reveal, and staggered reveal patterns.
+- Global reduced-motion CSS removes nonessential animation for users who request it.
+- Do not add continuous background animation to guest or display screens.
 
 Use motion for:
 
@@ -167,3 +202,13 @@ Admin:
 - Do not style whole page sections as floating cards unless the section is an actual framed tool.
 - Build stable dimensions for quiz options, timer areas, counters, and leaderboard rows.
 - Use content placeholders that are visually intentional and clearly replaceable.
+
+Milestone 2 primitives:
+
+- `PageShell` for guest/admin/display/QA/showcase route surfaces.
+- `PaperPanel` for framed paper surfaces.
+- `DecorativeHeading` for title treatment and bilingual-safe descriptions.
+- `BirthdayBadge` for labels and QA/admin markers.
+- `AssetPlaceholder` for honest missing/provided-image frames with stable ratios.
+- `LoadingTreatment` for soft skeleton-like loading.
+- `Button` keeps the shadcn-style API but uses custom birthday visual treatment.

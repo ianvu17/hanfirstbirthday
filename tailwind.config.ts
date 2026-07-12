@@ -50,6 +50,26 @@ const config: Config = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))"
+        },
+        surface: {
+          paper: "hsl(var(--surface-paper))",
+          deep: "hsl(var(--surface-paper-deep))",
+          highlight: "hsl(var(--surface-highlight))",
+          sky: "hsl(var(--surface-sky))",
+          coral: "hsl(var(--surface-coral))"
+        },
+        ink: {
+          DEFAULT: "hsl(var(--text-primary))",
+          muted: "hsl(var(--text-muted))"
+        },
+        party: {
+          blue: "hsl(var(--accent-blue))",
+          "blue-deep": "hsl(var(--accent-blue-deep))",
+          yellow: "hsl(var(--accent-yellow))",
+          orange: "hsl(var(--accent-orange))",
+          red: "hsl(var(--accent-red))",
+          pink: "hsl(var(--accent-pink))",
+          green: "hsl(var(--accent-green))"
         }
       },
       borderRadius: {
@@ -59,11 +79,23 @@ const config: Config = {
       },
       boxShadow: {
         paper: "0 18px 45px -26px hsl(var(--shadow-warm) / 0.65)",
-        lift: "0 12px 28px -18px hsl(var(--shadow-warm) / 0.55)"
+        lift: "0 12px 28px -18px hsl(var(--shadow-warm) / 0.55)",
+        sticker:
+          "0 8px 0 hsl(var(--accent-blue-deep) / 0.26), 0 20px 42px -28px hsl(var(--shadow-warm) / 0.72)",
+        outline: "6px 6px 0 hsl(var(--border-strong) / 0.12)"
       },
       fontFamily: {
         display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"]
+      },
+      transitionDuration: {
+        fast: "var(--motion-fast)",
+        medium: "var(--motion-medium)",
+        slow: "var(--motion-slow)"
+      },
+      transitionTimingFunction: {
+        paper: "var(--ease-paper)",
+        "bounce-soft": "var(--ease-bounce-soft)"
       }
     }
   },

@@ -67,6 +67,15 @@ Rules:
 - Placeholder captions must not describe fake events.
 - Placeholder assets should be replaceable without component changes.
 
+Milestone 2 implementation:
+
+- The reusable placeholder component is `components/design/asset-placeholder.tsx`.
+- It supports square, portrait, landscape, and wide ratios.
+- It accepts optional `src`, `alt`, and `objectPosition` values for future real assets.
+- Missing or failed images fall back to a paper-textured placeholder with a neutral image icon and localized/internal scaffold label.
+- The placeholder does not depict a baby, a real memory, or a fake Han photo.
+- The original SVG placeholder remains at [../public/assets/placeholders/placeholder-gallery-frame-01.svg](../public/assets/placeholders/placeholder-gallery-frame-01.svg) for future reference/reuse.
+
 ### Photos
 
 Purpose:
@@ -164,3 +173,9 @@ Timeline fallback:
 - Placeholder assets are not confused with real memories.
 - File sizes are appropriate for mobile.
 - TV leaderboard visuals remain legible at display distance.
+
+Milestone 2 status:
+
+- No real photos or real Han assets were added.
+- Current placeholders are visual-system placeholders only.
+- Future production content should move approved asset references into locale content metadata or Supabase Storage records before use in guest-facing memory features.

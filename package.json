@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "validate:content": "tsx scripts/validate-content.ts",
+    "check:visual:milestone2": "tsx scripts/check-milestone-2-visual.ts",
     "validate": "npm run validate:content && npm run typecheck && npm run lint && npm run build"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
     "zod": "latest"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
@@ -37,6 +39,7 @@
     "prettier": "latest",
     "tailwindcss": "^3.4.17",
     "tsx": "latest",
+    "@playwright/test": "latest",
     "typescript": "latest"
   }
 }

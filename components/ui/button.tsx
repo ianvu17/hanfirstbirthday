@@ -5,20 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[1.15rem] text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "touch-target inline-flex items-center justify-center gap-2 whitespace-normal rounded-[1.15rem] border text-center text-sm font-extrabold leading-5 shadow-lift transition duration-medium ease-paper active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-lift hover:bg-primary/92",
+          "border-party-blue-deep/20 bg-primary text-primary-foreground hover:bg-party-blue-deep",
         secondary:
-          "border border-border bg-card text-card-foreground shadow-lift hover:bg-warm",
-        ghost: "text-foreground hover:bg-warm"
+          "border-party-orange/30 bg-surface-highlight text-card-foreground hover:bg-party-yellow",
+        ghost: "border-transparent bg-transparent text-foreground shadow-none hover:bg-warm",
+        outline:
+          "border-border bg-surface-paper text-foreground hover:border-party-blue hover:bg-surface-sky/55"
       },
       size: {
         default: "h-11 px-5 py-2",
         sm: "h-9 px-4",
-        lg: "h-14 px-6 text-base"
+        lg: "min-h-14 px-6 py-3 text-base"
       }
     },
     defaultVariants: {

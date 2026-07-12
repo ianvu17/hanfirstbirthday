@@ -4,27 +4,54 @@
 
 @layer base {
   :root {
-    --background: 42 100% 96%;
-    --foreground: 28 25% 20%;
-    --card: 40 100% 98%;
-    --card-foreground: 28 25% 20%;
-    --primary: 201 68% 46%;
-    --primary-foreground: 42 100% 98%;
-    --secondary: 46 87% 68%;
-    --secondary-foreground: 28 25% 20%;
-    --accent: 24 87% 64%;
-    --accent-foreground: 28 25% 18%;
-    --warm: 36 100% 90%;
-    --warm-foreground: 28 25% 20%;
-    --muted: 204 32% 90%;
-    --muted-foreground: 210 19% 38%;
-    --destructive: 7 72% 50%;
-    --destructive-foreground: 42 100% 98%;
-    --border: 35 38% 78%;
-    --input: 35 38% 78%;
-    --ring: 201 68% 46%;
-    --shadow-warm: 28 25% 20%;
+    --background-page: 40 100% 96%;
+    --surface-paper: 42 100% 98%;
+    --surface-paper-deep: 37 100% 91%;
+    --surface-highlight: 44 100% 73%;
+    --surface-sky: 197 68% 79%;
+    --surface-coral: 10 92% 72%;
+    --text-primary: 28 30% 18%;
+    --text-muted: 208 19% 37%;
+    --text-on-color: 42 100% 98%;
+    --accent-blue: 197 61% 46%;
+    --accent-blue-deep: 198 64% 35%;
+    --accent-yellow: 43 100% 58%;
+    --accent-orange: 17 88% 55%;
+    --accent-red: 10 89% 50%;
+    --accent-pink: 348 80% 73%;
+    --accent-green: 94 35% 52%;
+    --border-playful: 31 48% 74%;
+    --border-strong: 27 30% 25%;
+    --shadow-warm: 28 28% 18%;
+    --focus-ring: 198 64% 35%;
+    --motion-fast: 150ms;
+    --motion-medium: 280ms;
+    --motion-slow: 460ms;
+    --ease-paper: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --ease-bounce-soft: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --safe-page-x: max(1rem, env(safe-area-inset-left));
+    --safe-page-y: max(1rem, env(safe-area-inset-top));
     --radius: 1.375rem;
+
+    --background: var(--background-page);
+    --foreground: var(--text-primary);
+    --card: var(--surface-paper);
+    --card-foreground: var(--text-primary);
+    --primary: var(--accent-blue);
+    --primary-foreground: var(--text-on-color);
+    --secondary: var(--surface-highlight);
+    --secondary-foreground: var(--text-primary);
+    --accent: var(--accent-orange);
+    --accent-foreground: var(--text-primary);
+    --warm: var(--surface-paper-deep);
+    --warm-foreground: var(--text-primary);
+    --muted: 202 38% 90%;
+    --muted-foreground: var(--text-muted);
+    --destructive: var(--accent-red);
+    --destructive-foreground: var(--text-on-color);
+    --border: var(--border-playful);
+    --input: var(--border-playful);
+    --ring: var(--focus-ring);
   }
 
   * {
@@ -34,25 +61,75 @@
   html {
     min-height: 100%;
     background: hsl(var(--background));
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply min-h-screen bg-background text-foreground antialiased;
+    @apply min-h-screen bg-background font-sans text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    color: hsl(var(--text-primary));
+    background: hsl(var(--accent-yellow) / 0.55);
+  }
+
+  :focus-visible {
+    outline: 3px solid hsl(var(--focus-ring));
+    outline-offset: 4px;
   }
 }
 
 @layer utilities {
   .paper-grid {
     background-image:
-      radial-gradient(circle at 16% 18%, hsl(var(--secondary) / 0.42) 0 6rem, transparent 6.1rem),
-      radial-gradient(circle at 86% 12%, hsl(var(--accent) / 0.24) 0 5.25rem, transparent 5.35rem),
-      radial-gradient(circle at 78% 82%, hsl(var(--primary) / 0.18) 0 7rem, transparent 7.1rem),
-      linear-gradient(135deg, hsl(var(--background)), hsl(var(--warm)));
+      radial-gradient(circle at 14% 18%, hsl(var(--accent-yellow) / 0.38) 0 6rem, transparent 6.1rem),
+      radial-gradient(circle at 88% 10%, hsl(var(--accent-pink) / 0.25) 0 5.5rem, transparent 5.6rem),
+      radial-gradient(circle at 80% 84%, hsl(var(--accent-blue) / 0.18) 0 7.25rem, transparent 7.35rem),
+      linear-gradient(135deg, hsl(var(--background-page)), hsl(var(--surface-paper-deep)));
+  }
+
+  .paper-texture {
+    background-image:
+      linear-gradient(90deg, hsl(var(--text-primary) / 0.035) 1px, transparent 1px),
+      linear-gradient(0deg, hsl(var(--text-primary) / 0.025) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .gingham-yellow {
+    background-color: hsl(var(--surface-highlight));
+    background-image:
+      linear-gradient(90deg, hsl(var(--text-on-color) / 0.45) 50%, transparent 50%),
+      linear-gradient(0deg, hsl(var(--text-on-color) / 0.45) 50%, transparent 50%);
+    background-size: 28px 28px;
   }
 
   .cow-soft-spots {
     background-image:
       radial-gradient(ellipse at 20% 35%, hsl(var(--foreground) / 0.08) 0 1.2rem, transparent 1.25rem),
       radial-gradient(ellipse at 70% 60%, hsl(var(--foreground) / 0.06) 0 1.6rem, transparent 1.65rem);
+  }
+
+  .headline-outline {
+    text-shadow:
+      0 3px 0 hsl(var(--surface-paper)),
+      3px 0 0 hsl(var(--surface-paper)),
+      0 8px 0 hsl(var(--accent-blue) / 0.35);
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

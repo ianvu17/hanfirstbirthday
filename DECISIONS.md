@@ -169,3 +169,21 @@ Admin implementation should be clear and visually consistent, but it does not re
 - Complex moderation workflow.
 - Role-management system.
 - Reusable admin platform.
+
+## ADR-009: Bilingual Typography Pairing For Visual Foundation
+
+**Decision**
+
+Use Baloo 2 as the expressive display font and Be Vietnam Pro as the primary body/UI font, loaded through `next/font/google` with Latin and Vietnamese subsets.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+Milestone 2 requires a playful title treatment and a highly legible body font that both support Vietnamese diacritics. Baloo 2 provides rounded, party-appropriate display shapes without requiring local font assets. Be Vietnam Pro keeps body copy, buttons, admin labels, and longer Vietnamese strings readable on phones.
+
+**Consequence**
+
+Future UI work should use the display font for celebratory headings and title moments only, and use Be Vietnam Pro for body, forms, controls, admin, QA, and leaderboard supporting text. Any future font change must preserve Vietnamese rendering, mobile readability, and build reliability.

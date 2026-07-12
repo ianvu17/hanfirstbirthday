@@ -153,6 +153,17 @@ Checklist:
 - Leaderboard is legible from display distance.
 - Placeholder assets are clearly placeholders.
 
+Milestone 2 visual checks:
+
+- Use `npm run check:visual:milestone2` against a running production or dev server. Set `MILESTONE2_BASE_URL` when the server is not on `http://localhost:3002`.
+- Review `/en` and `/vi` at mobile widths for title wrapping, language controls, placeholder stability, and Vietnamese text expansion.
+- Review `/vi/design-system` at mobile width with long Vietnamese copy.
+- Review `/en/design-system` on desktop for token, typography, control, panel, placeholder, motif, loading, and motion examples.
+- Review `/display/leaderboard` at 16:9 desktop size for distance-readable type and stable placeholder rows.
+- Review `/{locale}/admin` for restrained utility styling.
+- Review `/{locale}/qa` for clear QA/test marking.
+- Review with reduced motion enabled where practical; global CSS and Framer Motion primitives should suppress nonessential movement.
+
 ## Functional Acceptance Checklist
 
 - Guest can enter through QR code.

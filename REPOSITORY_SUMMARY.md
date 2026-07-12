@@ -8,7 +8,7 @@ Han Birthday Experience is a planned bilingual, mobile-first web experience for 
 
 The project is intentionally not a generic quiz app. All major documents frame it as a warm digital extension of the birthday party, with the quiz, leaderboard, messages, gallery, and timeline serving the emotional goal of guest connection and memory preservation.
 
-Current maturity is runnable scaffold foundation. The repository contains planning documents, AI guidance, placeholder locale schemas, a Next.js App Router scaffold, project configuration, content validation, theme tokens, route-boundary placeholders, and neutral placeholder assets. Supabase runtime behavior, tests, feature logic, real assets, and deployment wiring remain future work.
+Current maturity is runnable scaffold plus visual design-system foundation. The repository contains planning documents, AI guidance, placeholder locale schemas, a Next.js App Router scaffold, project configuration, content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, decorative motifs, reduced-motion-aware motion patterns, intentional placeholder assets, route-boundary placeholders, and localized internal design-system showcase routes. Supabase runtime behavior, feature logic, real assets, persistent event data, and deployment wiring remain future work.
 
 The accepted target architecture is Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Supabase, next-intl, and Vercel. Milestone 1 scaffolds this stack and validates placeholder content, while state boundaries, data persistence, quiz logic, and deployment remain planned future work.
 
@@ -16,11 +16,11 @@ The architecture direction separates static localized content from runtime event
 
 The repository strongly protects content authenticity. Multiple documents state that no Han stories, memories, quiz facts, timeline entries, photo captions, or fake photos may be invented. Real content must come from Ian or another approved source. Current locale files intentionally contain empty strings and empty arrays as schema placeholders.
 
-Roadmap Milestone 0: Foundation and Milestone 1: Project Scaffold are completed. The next planned milestone is content and design system foundation, followed by guest entry and quiz MVP, Supabase and leaderboard, messages/placeholders, lightweight admin/QA, and event readiness/deployment.
+Roadmap Milestone 0: Foundation, Milestone 1: Project Scaffold, and Milestone 2: Content and Design System Foundation are completed. The next recommended milestone is guest entry and quiz MVP, followed by Supabase and leaderboard, messages/placeholders, lightweight admin/QA, and event readiness/deployment.
 
 No functional birthday feature flow exists yet, so implementation risk is mostly future risk: preserving the documented product intent beyond scaffolding, making per-question response locking reliable, separating test and production data, completing bilingual content, and preparing for party-day device/network conditions.
 
-Repository health for AI handoff is high at the documentation level and early at the implementation level. Another AI can run the scaffold, validate content, inspect route boundaries, and continue from Milestone 2, but cannot test real birthday feature behavior because it has not been implemented.
+Repository health for AI handoff is high at the documentation level and early at the implementation level. Another AI can run the scaffold, validate content, inspect route boundaries, review the Milestone 2 design-system showcase, and continue from Milestone 3, but cannot test real birthday feature behavior because it has not been implemented.
 
 ---
 
@@ -63,17 +63,17 @@ Key source documents: `PROJECT_CONTEXT.md`, `PROJECT_PHILOSOPHY.md`, `docs/PRD.m
 | `PROJECT_CONTEXT.md` | One-file briefing for future contributors and AI agents | Strong | Best first read; clearly states current repo has docs, placeholder schemas, and Milestone 1 scaffold only. |
 | `PROJECT_PHILOSOPHY.md` | Product, experience, design, content, technical, and decision principles | Strong | Useful guardrail against generic quiz implementation; no implementation detail. |
 | `DECISIONS.md` | Accepted ADRs | Good | Contains accepted decisions including per-question immutable responses and minimal admin MVP; future schema/policy/access details remain absent. |
-| `ROADMAP.md` | Milestone plan from foundation through deployment | Good | Milestone 0 and Milestone 1 completed; Milestone 2 is next. |
+| `ROADMAP.md` | Milestone plan from foundation through deployment | Good | Milestone 0, Milestone 1, and Milestone 2 completed; Milestone 3 is next. |
 | `AGENTS.md` | Role-based AI guidance for PM, architect, frontend, UX, art, QA | Strong | Clear role responsibilities and review checklists. |
 | `.github/instructions/birthday.instructions.md` | Repository-wide AI coding/review instructions | Strong | Applies to all files; mirrors product/content/UI/architecture constraints. |
 | `docs/PRD.md` | Product requirements, personas, success metrics, requirements, risks | Strong | MVP and foundation acceptance are clear; real content and admin access details are pending. |
 | `docs/ARCHITECTURE.md` | Planned technical architecture | Good | Target stack, folders, routes, state, Supabase schema plan, APIs; explicitly not immediate implementation plan. |
 | `docs/FOUNDATION_REVIEW.md` | Milestone 0 review record | Complete | Records applied clarifications, open decisions, and scaffold-only next milestone. |
 | `docs/UX.md` | Guest/admin/display flows, screen states, interaction direction | Strong | Comprehensive screen/state planning; no wireframes or final copy. |
-| `docs/UI_GUIDELINES.md` | Visual system direction | Good | Clear design language and constraints; token values, fonts, and actual assets not chosen. |
+| `docs/UI_GUIDELINES.md` | Visual system direction | Good | Includes Milestone 2 token, typography, primitive, motif, and motion implementation notes. |
 | `docs/CONTENT.md` | Content model and validation rules | Good | Defines locale, quiz, message, timeline, gallery, asset models; no real content. |
-| `docs/ASSETS.md` | Asset categories, naming, replacement, fallback rules | Good | Planned `public/assets` structure; no actual assets yet. |
-| `docs/QA.md` | QA strategy, environments, test layers, release checklist | Good | Detailed planned coverage; no actual test tooling or scripts yet. |
+| `docs/ASSETS.md` | Asset categories, naming, replacement, fallback rules | Good | Includes Milestone 2 placeholder component behavior; no real Han assets yet. |
+| `docs/QA.md` | QA strategy, environments, test layers, release checklist | Good | Includes Milestone 2 visual check targets; feature test tooling remains future work. |
 | `content/en.json` | English placeholder content schema | Partial | Shape exists; strings, questions, timeline, gallery, assets are empty. |
 | `content/vi.json` | Vietnamese placeholder content schema | Partial | Shape matches English except locale value; strings, questions, timeline, gallery, assets are empty. |
 | `content/scaffold.json` | Temporary scaffold route copy | Temporary | Holds diagnostic placeholder route text only; not real Han content. |
@@ -159,6 +159,7 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 | Documentation foundation | Completed | Foundation docs exist, alignment clarifications are applied, and Milestone 0 is marked complete. |
 | AI role/instruction system | Completed | `AGENTS.md` and `.github/instructions/birthday.instructions.md` are present and detailed. |
 | Target stack decision | Completed | Accepted in `DECISIONS.md`; Milestone 1 scaffold uses the approved stack. |
+| Visual design system foundation | Completed | Milestone 2 tokens, typography, primitives, motifs, placeholders, motion patterns, and showcase route exist. |
 | Locale schema files | Partial | English and Vietnamese schemas exist and match; actual strings/content absent. |
 | Content authenticity rules | Completed | Repeated across docs and metadata. |
 | Next.js app scaffold | Completed | App Router, TypeScript, Tailwind, next-intl, shadcn config, Framer Motion primitive, Supabase dependency, and validation scripts exist. |
@@ -176,9 +177,9 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 | QA/test mode | Planned | Requirements only; no tooling. |
 | Supabase schema | Planned | Table plan exists; no migrations or policies. |
 | Real-time updates | Planned | Supabase realtime or polling fallback discussed; not built. |
-| Tests | Missing | QA strategy exists; no tests/tooling. |
+| Tests | Partial | Content validation, typecheck, lint, build, and Milestone 2 browser screenshot checks exist as process; feature tests/tooling remain future work. |
 | Deployment | Missing | Vercel/Supabase planned; no config. |
-| Assets | Partial | Asset plan exists and one neutral placeholder SVG exists; real assets are absent. |
+| Assets | Partial | Asset plan, placeholder SVG, and reusable placeholder component exist; real assets are absent. |
 
 ---
 
@@ -207,7 +208,20 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 
 # 7. Component Summary
 
-No reusable components currently exist. Planned major components from `docs/ARCHITECTURE.md` and `docs/UX.md` are:
+Milestone 2 reusable visual primitives now exist:
+
+- `components/design/page-shell.tsx`
+- `components/design/paper-panel.tsx`
+- `components/design/decorative-heading.tsx`
+- `components/design/birthday-badge.tsx`
+- `components/design/asset-placeholder.tsx`
+- `components/design/loading-treatment.tsx`
+- `components/design/party-motifs.tsx`
+- `components/ui/button.tsx`
+- `components/motion/soft-entrance.tsx`
+- `components/motion/motion-patterns.tsx`
+
+Planned future feature components from `docs/ARCHITECTURE.md` and `docs/UX.md` are:
 
 - Design primitives: tokens, shadcn/ui primitives, layout primitives, motion primitives.
 - Locale/navigation: language selector and route-aware controls.
@@ -230,7 +244,7 @@ JSON content: `content/en.json` and `content/vi.json` exist as placeholder schem
 
 Translations: English and Vietnamese structures currently match except for `locale`. Translation completeness is zero for real copy. Docs require missing guest-facing translations to block production.
 
-Assets: one neutral placeholder SVG exists under `public/assets/placeholders/`. Real assets do not exist. `docs/ASSETS.md` plans future directories under `public/assets/` and possible Supabase Storage for production media. Content files are expected to reference assets by id.
+Assets: one placeholder SVG exists under `public/assets/placeholders/`, and `AssetPlaceholder` provides stable square, portrait, landscape, and wide fallback frames. Real assets do not exist. `docs/ASSETS.md` plans future directories under `public/assets/` and possible Supabase Storage for production media. Content files are expected to reference assets by id when approved assets are added.
 
 Runtime state: planned but absent. Client runtime state should hold quiz progress/timer/UI states. Server/runtime state should hold participants, attempts, immutable question responses, scores, messages, and QA/test tagging.
 
@@ -252,7 +266,7 @@ Validation: Milestone 1 includes content schema validation and locale key parity
 
 `ROADMAP.md` sequences work from completed documentation foundation through scaffold, design system, guest quiz, Supabase/leaderboard, messages/placeholders, lightweight admin/QA, and deployment. It is the best file for determining what should happen next.
 
-`content/scaffold.json` is temporary Milestone 1 diagnostic copy for route-boundary placeholders. It is not a source for real Han content and should be reduced or replaced as real localized copy arrives in later milestones.
+`content/scaffold.json` is temporary scaffold and design-system copy for route-boundary placeholders and internal review surfaces. It is not a source for real Han content and should be reduced or replaced as real localized copy arrives in later milestones.
 
 The docs work together as layered guidance: context explains the project, philosophy explains why, PRD/UX/UI/content/assets/architecture/QA explain what to build, ADRs record accepted constraints, roadmap orders the work, and AI instructions keep future agents aligned.
 
@@ -267,7 +281,7 @@ Estimated completion:
 | Foundation | 100% | Core documentation, placeholder schemas, and Milestone 1 scaffold exist. |
 | Product | 80% | Vision, personas, MVP, success metrics, non-goals, and risks are documented; real content is absent. |
 | Architecture | 45% | Target stack and route boundaries are scaffolded; migrations, APIs, runtime state, and full feature flows remain planned. |
-| Frontend | 15% | App shell, theme tokens, placeholder route pages, one UI primitive, and one motion primitive exist; feature UI is not built. |
+| Frontend | 30% | App shell, visual tokens, typography, design primitives, placeholder route pages, motifs, and motion primitives exist; feature UI is not built. |
 | Backend/Supabase | 0% | Supabase is selected and schema is sketched; no migrations, policies, clients, or database config. |
 | Content/Localization | 15% | Schema files exist and match; actual localized copy/questions/assets are empty. |
 | Admin | 0% | Requirements only. |
@@ -313,9 +327,8 @@ Implementation debt:
 - Admin route access control is unspecified.
 - Supabase realtime versus polling fallback is undecided.
 - Venue mobile network quality may affect guest submissions and leaderboard freshness.
-- TV leaderboard legibility has not been validated on the target display.
-- No assets exist, increasing the risk of generic visuals or accidental fake-memory placeholders.
-- All files appear untracked in git status at review time, so repository version control hygiene may still be incomplete.
+- TV leaderboard legibility has been checked at 1366 x 768, but not yet on the actual target display.
+- No real assets exist, so future content work still needs approved photos/illustrations and asset QA.
 - No deployment/env documentation exists, so Vercel/Supabase setup may become a late blocker.
 
 ---

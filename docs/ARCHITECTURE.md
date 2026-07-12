@@ -39,9 +39,12 @@ app/
       gallery/
     admin/
     qa/
+    design-system/
   display/
     leaderboard/
 components/
+  design/
+  motion/
   ui/
   layout/
   guest/
@@ -62,7 +65,7 @@ styles/
   globals.css
 ```
 
-The exact structure should be confirmed during Milestone 1.
+The exact structure started in Milestone 1 and Milestone 2. Feature folders should still be introduced only as their milestones begin.
 
 ## Routing Plan
 
@@ -79,6 +82,10 @@ Guest routes:
 Display routes:
 
 - `/display/leaderboard`: TV/laptop leaderboard.
+
+Internal review routes:
+
+- `/{locale}/design-system`: development-facing visual foundation showcase. It demonstrates tokens, typography, controls, panels, placeholders, motifs, loading treatment, motion, and bilingual text expansion. It is not a production guest flow.
 
 Admin routes:
 
@@ -99,6 +106,15 @@ Base layer:
 - shadcn/ui primitives.
 - Layout primitives.
 - Motion primitives.
+
+Milestone 2 implemented base layer:
+
+- Central tokens in `app/globals.css` and Tailwind mappings in `tailwind.config.ts`.
+- Typography loaded in `app/layout.tsx` through `next/font/google`.
+- Design primitives in `components/design/`.
+- Motion primitives in `components/motion/`.
+- Internal design-system route at `/{locale}/design-system` for visual review.
+- Guest, display, admin, and QA route boundaries remain placeholders and do not perform runtime data actions.
 
 Domain components:
 

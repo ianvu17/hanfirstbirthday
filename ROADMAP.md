@@ -46,7 +46,7 @@ Completion record:
 
 ## Milestone 2: Content And Design System Foundation
 
-Status: Next.
+Status: Completed.
 
 Goals:
 
@@ -61,7 +61,13 @@ Exit criteria:
 - Placeholder states are honest and polished.
 - No feature flow is fully launched yet.
 
+Completion record:
+
+- See [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md).
+
 ## Milestone 3: Guest Entry And Quiz MVP
+
+Status: Recommended next milestone.
 
 Goals:
 
