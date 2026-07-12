@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
+import { HtmlLangSync } from "@/components/i18n/html-lang-sync";
 import { getContent } from "@/lib/content";
 import { isLocale, locales, type Locale } from "@/lib/i18n/routing";
 
@@ -28,6 +29,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      <HtmlLangSync locale={locale} />
       {children}
     </NextIntlClientProvider>
   );

@@ -29,6 +29,7 @@ type StoredOnboardingState = {
   step: OnboardingStep;
   selectedLanguage: Locale;
   playerName: string;
+  guestSessionId: string | null;
 };
 
 type OnboardingFlowProps = {
@@ -66,7 +67,8 @@ function getDefaultState(locale: Locale): StoredOnboardingState {
   return {
     step: "welcome",
     selectedLanguage: locale,
-    playerName: ""
+    playerName: "",
+    guestSessionId: null
   };
 }
 
@@ -82,11 +84,14 @@ function readStoredState(locale: Locale): StoredOnboardingState | null {
     const step = isOnboardingStep(parsed.step) ? parsed.step : "welcome";
     const playerName =
       typeof parsed.playerName === "string" ? parsed.playerName : "";
+    const guestSessionId =
+      typeof parsed.guestSessionId === "string" ? parsed.guestSessionId : null;
 
     return {
       step,
       selectedLanguage: locale,
-      playerName
+      playerName,
+      guestSessionId
     };
   } catch {
     return null;
@@ -118,7 +123,8 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
     const nextState: StoredOnboardingState = {
       step: state.step,
       selectedLanguage: locale,
-      playerName: state.playerName
+      playerName: state.playerName,
+      guestSessionId: state.guestSessionId
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
@@ -133,7 +139,8 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
     const nextState: StoredOnboardingState = {
       step: "name",
       selectedLanguage: nextLocale,
-      playerName
+      playerName,
+      guestSessionId: state.guestSessionId
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
@@ -149,7 +156,8 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
     const nextState: StoredOnboardingState = {
       step,
       selectedLanguage: nextLocale,
-      playerName
+      playerName,
+      guestSessionId: state.guestSessionId
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));

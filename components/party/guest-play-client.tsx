@@ -8,13 +8,13 @@ import type { Locale } from "@/lib/i18n/routing";
 
 const SESSION_KEY = "han-first-birthday:onboarding:v1";
 
-function slugifyGuestId(name: string) {
-  return `guest-${name
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .slice(0, 48)}`;
+function createGuestSessionId() {
+  const randomId =
+    typeof window.crypto?.randomUUID === "function"
+      ? window.crypto.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+
+  return `guest-${randomId}`;
 }
 
 function readGuestSession() {
@@ -29,7 +29,10 @@ function readGuestSession() {
       return { guestId: null, displayName: null };
     }
 
-    const parsed = JSON.parse(raw) as { playerName?: unknown };
+    const parsed = JSON.parse(raw) as {
+      playerName?: unknown;
+      guestSessionId?: unknown;
+    };
     const displayName =
       typeof parsed.playerName === "string" ? parsed.playerName.trim() : "";
 
@@ -37,8 +40,23 @@ function readGuestSession() {
       return { guestId: null, displayName: null };
     }
 
+    const guestSessionId =
+      typeof parsed.guestSessionId === "string" && parsed.guestSessionId
+        ? parsed.guestSessionId
+        : createGuestSessionId();
+
+    if (guestSessionId !== parsed.guestSessionId) {
+      window.sessionStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify({
+          ...parsed,
+          guestSessionId
+        })
+      );
+    }
+
     return {
-      guestId: slugifyGuestId(displayName),
+      guestId: guestSessionId,
       displayName
     };
   } catch {

@@ -40,6 +40,20 @@ function accept(state: PartyState, commandType: PartyCommand["type"]): PartyComm
   };
 }
 
+function acceptIdempotent(
+  state: PartyState,
+  commandType: PartyCommand["type"]
+): PartyCommandResult {
+  return {
+    ok: true,
+    state: {
+      ...state,
+      lastAcceptedCommand: commandType,
+      lastError: null
+    }
+  };
+}
+
 function currentQuestion(config: PartyConfig, state: PartyState) {
   if (state.currentQuestionIndex === null) {
     return null;
@@ -119,6 +133,15 @@ export function processPartyCommand(
         createdOrder: existing?.createdOrder ?? Object.keys(state.guests).length,
         isFixture: existing?.isFixture ?? false
       };
+
+      if (
+        existing &&
+        existing.displayName === nextGuest.displayName &&
+        existing.locale === nextGuest.locale &&
+        existing.isFixture === nextGuest.isFixture
+      ) {
+        return acceptIdempotent(state, command.type);
+      }
 
       return accept(
         {
@@ -346,7 +369,7 @@ export function processPartyCommand(
           existing.submissionId === command.submissionId &&
           existing.selectedOptionId === command.selectedOptionId
         ) {
-          return { ok: true, state };
+          return acceptIdempotent(state, command.type);
         }
 
         return reject(

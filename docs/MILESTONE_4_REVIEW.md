@@ -81,7 +81,7 @@ Allowed transitions:
 - Response acceptance uses `receivedAt < deadlineAt`; exact deadline submissions are rejected.
 - One guest can have at most one locked response per question.
 - Locked responses never change.
-- Exact duplicate retry returns success without duplicate revision/score/count.
+- Exact duplicate retry returns success without duplicate revision/score/count and clears stale local error state.
 - Conflicting retry is rejected with `response_already_locked`.
 - Reveal cannot occur before lock.
 - Leaderboard cannot occur before reveal.
@@ -95,6 +95,8 @@ Allowed transitions:
 - `/display/leaderboard`: redirects to `/display/party`.
 - `/{locale}/play`: guest phone controller. If no session display name exists, it shows a join-required state.
 - `/{locale}/qa/party`: local QA harness with host controls, Party Screen preview, and guest controller preview.
+
+The local guest controller uses a session-scoped `guestSessionId` stored in browser `sessionStorage` rather than deriving participant identity from display name. This keeps same-name guests from colliding during local Milestone 4 testing while preserving the local-only, non-persistent constraint.
 
 ## Timer And Race Rule
 
@@ -114,7 +116,7 @@ Commands run:
 - `npm run typecheck` passed.
 - `npm run lint` passed.
 - `npm run test` passed.
-- `npm run test:party-engine` passed: 8 tests, 8 passing.
+- `npm run test:party-engine` passed: 9 tests, 9 passing.
 - `npm run build` passed.
 - `npm run validate` passed.
 - `MILESTONE2_BASE_URL=http://localhost:3002 npm run check:visual:milestone2` passed.
@@ -129,6 +131,7 @@ Domain tests cover:
 - Invalid transition rejection.
 - Immutable response locking.
 - Exact duplicate retry idempotency.
+- Idempotent retry stale-error cleanup.
 - Conflicting retry rejection.
 - Deadline boundary behavior.
 - Timeout materialization.

@@ -117,6 +117,72 @@ test("submission locks once, exact retry is idempotent, conflicting retry is rej
   assert.equal(conflict.ok === false && conflict.error.code, "response_already_locked");
 });
 
+test("idempotent retries clear stale local errors without changing revision", () => {
+  let state = createInitialPartyState(config);
+  state = mustAccept(state, {
+    type: "REGISTER_GUEST",
+    guestId: "session-guest",
+    displayName: "Session Guest",
+    locale: "en",
+    now: 0
+  });
+  const duplicateRegister = processPartyCommand(
+    {
+      ...state,
+      lastError: {
+        code: "command_not_allowed",
+        message: "Previous local error."
+      }
+    },
+    {
+      type: "REGISTER_GUEST",
+      guestId: "session-guest",
+      displayName: "Session Guest",
+      locale: "en",
+      now: 1
+    },
+    config
+  );
+
+  assert.equal(duplicateRegister.ok, true);
+  assert.equal(duplicateRegister.state.revision, state.revision);
+  assert.equal(duplicateRegister.state.lastError, null);
+
+  state = mustAccept(duplicateRegister.state, { type: "PREPARE_FIRST_QUESTION", now: 2 });
+  state = mustAccept(state, { type: "OPEN_QUESTION", now: 3 });
+  state = mustAccept(state, {
+    type: "SUBMIT_RESPONSE",
+    guestId: "session-guest",
+    questionId: config.questions[0].id,
+    selectedOptionId: "option-b",
+    submissionId: "same-submit",
+    receivedAt: 4
+  });
+
+  const duplicateSubmit = processPartyCommand(
+    {
+      ...state,
+      lastError: {
+        code: "response_already_locked",
+        message: "Previous local error."
+      }
+    },
+    {
+      type: "SUBMIT_RESPONSE",
+      guestId: "session-guest",
+      questionId: config.questions[0].id,
+      selectedOptionId: "option-b",
+      submissionId: "same-submit",
+      receivedAt: 5
+    },
+    config
+  );
+
+  assert.equal(duplicateSubmit.ok, true);
+  assert.equal(duplicateSubmit.state.revision, state.revision);
+  assert.equal(duplicateSubmit.state.lastError, null);
+});
+
 test("deadline boundary accepts before deadline and rejects at deadline", () => {
   let state = createInitialPartyState(config);
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
