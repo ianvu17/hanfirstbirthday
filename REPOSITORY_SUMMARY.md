@@ -8,7 +8,7 @@ Han Birthday Experience is a planned bilingual, mobile-first web experience for 
 
 The project is intentionally not a generic quiz app. All major documents frame it as a warm digital extension of the birthday party, with the quiz, leaderboard, messages, gallery, and timeline serving the emotional goal of guest connection and memory preservation.
 
-Current maturity is runnable scaffold plus visual design-system foundation. The repository contains planning documents, AI guidance, placeholder locale schemas, a Next.js App Router scaffold, project configuration, content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, decorative motifs, reduced-motion-aware motion patterns, intentional placeholder assets, route-boundary placeholders, and localized internal design-system showcase routes. Supabase runtime behavior, feature logic, real assets, persistent event data, and deployment wiring remain future work.
+Current maturity is runnable scaffold plus visual design-system foundation plus guest entry experience. The repository contains planning documents, AI guidance, localized onboarding copy, a Next.js App Router scaffold, project configuration, content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, decorative motifs, reduced-motion-aware motion patterns, intentional placeholder assets, route-boundary placeholders, localized internal design-system showcase routes, and a session-only onboarding flow. Supabase runtime behavior, quiz engine logic, real assets, persistent event data, and deployment wiring remain future work.
 
 The accepted target architecture is Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Supabase, next-intl, and Vercel. Milestone 1 scaffolds this stack and validates placeholder content, while state boundaries, data persistence, quiz logic, and deployment remain planned future work.
 
@@ -16,11 +16,11 @@ The architecture direction separates static localized content from runtime event
 
 The repository strongly protects content authenticity. Multiple documents state that no Han stories, memories, quiz facts, timeline entries, photo captions, or fake photos may be invented. Real content must come from Ian or another approved source. Current locale files intentionally contain empty strings and empty arrays as schema placeholders.
 
-Roadmap Milestone 0: Foundation, Milestone 1: Project Scaffold, and Milestone 2: Content and Design System Foundation are completed. The next recommended milestone is guest entry and quiz MVP, followed by Supabase and leaderboard, messages/placeholders, lightweight admin/QA, and event readiness/deployment.
+Roadmap Milestone 0: Foundation, Milestone 1: Project Scaffold, Milestone 2: Content and Design System Foundation, and Milestone 3: Guest Entry Experience are implemented. Milestone 3 is awaiting Ian's approval gate. The next recommended milestone after approval is Milestone 4: Quiz Engine, followed by Supabase and leaderboard, messages/placeholders, lightweight admin/QA, and event readiness/deployment.
 
-No functional birthday feature flow exists yet, so implementation risk is mostly future risk: preserving the documented product intent beyond scaffolding, making per-question response locking reliable, separating test and production data, completing bilingual content, and preparing for party-day device/network conditions.
+A functional guest entry flow now exists, but the quiz and runtime event features remain future risk: making per-question response locking reliable, separating test and production data, completing approved quiz content, and preparing for party-day device/network conditions.
 
-Repository health for AI handoff is high at the documentation level and early at the implementation level. Another AI can run the scaffold, validate content, inspect route boundaries, review the Milestone 2 design-system showcase, and continue from Milestone 3, but cannot test real birthday feature behavior because it has not been implemented.
+Repository health for AI handoff is high at the documentation level and early-to-mid at the implementation level. Another AI can run the app, validate content, inspect route boundaries, review the Milestone 2 design-system showcase, exercise the Milestone 3 onboarding flow, and continue from Milestone 4 after Ian approval, but cannot test quiz, leaderboard, message, Supabase, admin, or QA runtime behavior because those features have not been implemented.
 
 ---
 
@@ -160,11 +160,12 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 | AI role/instruction system | Completed | `AGENTS.md` and `.github/instructions/birthday.instructions.md` are present and detailed. |
 | Target stack decision | Completed | Accepted in `DECISIONS.md`; Milestone 1 scaffold uses the approved stack. |
 | Visual design system foundation | Completed | Milestone 2 tokens, typography, primitives, motifs, placeholders, motion patterns, and showcase route exist. |
-| Locale schema files | Partial | English and Vietnamese schemas exist and match; actual strings/content absent. |
+| Locale schema files | Partial | English and Vietnamese schemas exist and match; onboarding strings are present; real quiz/memory/gallery content is absent. |
 | Content authenticity rules | Completed | Repeated across docs and metadata. |
 | Next.js app scaffold | Completed | App Router, TypeScript, Tailwind, next-intl, shadcn config, Framer Motion primitive, Supabase dependency, and validation scripts exist. |
-| Guest welcome/language flow | Planned | Specified in PRD/UX/architecture only. |
-| Guest display name entry | Planned | Specified only. |
+| Guest welcome/language flow | Implemented | Milestone 3 localized onboarding covers welcome and language selection with session-only language state. |
+| Guest display name entry | Implemented | Milestone 3 trims whitespace, rejects blank names, supports long Vietnamese names, and stores the name in session only. |
+| Guest how-to-play and ready screens | Implemented | Milestone 3 explains 20 seconds, locked answers, reveal/fun fact/next question, then stops at quiz placeholder. |
 | Timed quiz | Planned | 20-second timer and single-choice model specified; no implementation or questions. |
 | Per-question response locking | Planned | Accepted answer and timeout locking are documented; no server constraints yet. |
 | Result screen | Planned | UX specified only. |
@@ -177,7 +178,7 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 | QA/test mode | Planned | Requirements only; no tooling. |
 | Supabase schema | Planned | Table plan exists; no migrations or policies. |
 | Real-time updates | Planned | Supabase realtime or polling fallback discussed; not built. |
-| Tests | Partial | Content validation, typecheck, lint, build, and Milestone 2 browser screenshot checks exist as process; feature tests/tooling remain future work. |
+| Tests | Partial | Content validation, typecheck, lint, build, Milestone 2 browser screenshot checks, and Milestone 3 onboarding screenshot checks exist as process; quiz/runtime feature tests remain future work. |
 | Deployment | Missing | Vercel/Supabase planned; no config. |
 | Assets | Partial | Asset plan, placeholder SVG, and reusable placeholder component exist; real assets are absent. |
 
@@ -187,10 +188,12 @@ Deployment is planned for Vercel plus Supabase. No Vercel config, env example, d
 
 | Screen | Purpose | Implementation Status | Missing Work |
 | --- | --- | --- | --- |
-| QR Entry / Welcome | Orient guests and start experience | Planned | Route, UI, localized copy, assets, loading/error states. |
-| Language Selection | Choose English or Vietnamese | Planned | Locale routing, selector, persistence, fallback behavior. |
-| Guest Name Entry | Collect display name for leaderboard/submissions | Planned | Form, validation, duplicate recovery, participant persistence. |
-| Quiz Start | Explain timed quiz before first question | Planned | Copy, ready state, quiz session setup. |
+| QR Entry / Welcome | Orient guests and start experience | Implemented | Hero image remains an honest placeholder; no quiz information appears on the welcome screen. |
+| Language Selection | Choose English or Vietnamese | Implemented | Two large options, session persistence, and later switching are implemented. |
+| Guest Name Entry | Collect display name for leaderboard/submissions | Implemented | Session-only form with trimming and blank-name validation; backend participant persistence is deferred. |
+| How To Play | Explain rules before quiz | Implemented | Short illustrated cards cover 20 seconds, locked answers, reveal/fun fact/next. |
+| Ready / Quiz Placeholder | Build excitement and stop before quiz | Implemented | Start Quiz routes to an in-flow quiz-coming-soon placeholder for Milestone 4. |
+| Quiz Start | Explain timed quiz before first question | Planned | Real quiz session setup is deferred to Milestone 4. |
 | Quiz Question | Show one timed question with answer options | Planned | Timer, option UI, transitions, expiration, network states, content. |
 | Quiz Completion | Complete after all responses are locked | Planned | Completion mutation, scoring from locked responses, recovery. |
 | Result Screen | Celebrate completion and route to next actions | Planned | Score retrieval, celebratory UI, actions. |
@@ -221,6 +224,16 @@ Milestone 2 reusable visual primitives now exist:
 - `components/motion/soft-entrance.tsx`
 - `components/motion/motion-patterns.tsx`
 
+Milestone 3 guest onboarding components now exist:
+
+- `components/guest/onboarding-flow.tsx`
+- `components/guest/onboarding-hero.tsx`
+- `components/guest/language-selector.tsx`
+- `components/guest/guest-name-card.tsx`
+- `components/guest/instruction-card.tsx`
+- `components/guest/progress-indicator.tsx`
+- `components/guest/celebration-banner.tsx`
+
 Planned future feature components from `docs/ARCHITECTURE.md` and `docs/UX.md` are:
 
 - Design primitives: tokens, shadcn/ui primitives, layout primitives, motion primitives.
@@ -240,13 +253,13 @@ Component rules: content must come from locale JSON or Supabase, layouts must su
 
 Database: no database implementation exists. Supabase is planned for runtime event data. Planned tables are `participants`, `quiz_attempts`, `question_responses`, `messages`, and `event_settings`. Important planned fields include locale, display name, score, response submitted/locked timestamps, message status, and `is_test` flags.
 
-JSON content: `content/en.json` and `content/vi.json` exist as placeholder schemas. Both include `schemaVersion`, `locale`, `metadata`, `navigation`, `screens`, `quiz`, `timeline`, `gallery`, `messages`, `assets`, and `admin`. All guest/admin strings are empty. Quiz questions, timeline entries, gallery items, and assets are empty arrays. `content/scaffold.json` holds temporary diagnostic route-placeholder copy for the runnable scaffold.
+JSON content: `content/en.json` and `content/vi.json` exist with localized Milestone 3 onboarding copy and placeholder schemas for future content. Both include `schemaVersion`, `locale`, `metadata`, `navigation`, `screens`, `quiz`, `timeline`, `gallery`, `messages`, `assets`, and `admin`. Quiz questions, timeline entries, gallery items, and assets remain empty arrays. `content/scaffold.json` still holds temporary diagnostic route-placeholder copy for internal and non-guest placeholders.
 
 Translations: English and Vietnamese structures currently match except for `locale`. Translation completeness is zero for real copy. Docs require missing guest-facing translations to block production.
 
 Assets: one placeholder SVG exists under `public/assets/placeholders/`, and `AssetPlaceholder` provides stable square, portrait, landscape, and wide fallback frames. Real assets do not exist. `docs/ASSETS.md` plans future directories under `public/assets/` and possible Supabase Storage for production media. Content files are expected to reference assets by id when approved assets are added.
 
-Runtime state: planned but absent. Client runtime state should hold quiz progress/timer/UI states. Server/runtime state should hold participants, attempts, immutable question responses, scores, messages, and QA/test tagging.
+Runtime state: Milestone 3 uses browser `sessionStorage` for selected language, guest display name, and onboarding step only. Client quiz progress/timer/UI states, server participants, attempts, immutable question responses, scores, messages, and QA/test tagging remain planned and absent.
 
 Validation: Milestone 1 includes content schema validation and locale key parity checks. Quiz correctness validation and database/server enforcement for one accepted question response per attempt per question remain future work.
 
@@ -281,13 +294,13 @@ Estimated completion:
 | Foundation | 100% | Core documentation, placeholder schemas, and Milestone 1 scaffold exist. |
 | Product | 80% | Vision, personas, MVP, success metrics, non-goals, and risks are documented; real content is absent. |
 | Architecture | 45% | Target stack and route boundaries are scaffolded; migrations, APIs, runtime state, and full feature flows remain planned. |
-| Frontend | 30% | App shell, visual tokens, typography, design primitives, placeholder route pages, motifs, and motion primitives exist; feature UI is not built. |
+| Frontend | 40% | App shell, visual tokens, typography, design primitives, placeholder route pages, motifs, motion primitives, and guest onboarding flow exist; quiz/message/leaderboard feature UI remains future work. |
 | Backend/Supabase | 0% | Supabase is selected and schema is sketched; no migrations, policies, clients, or database config. |
-| Content/Localization | 15% | Schema files exist and match; actual localized copy/questions/assets are empty. |
+| Content/Localization | 25% | Schema files exist and match; onboarding copy is localized; actual quiz questions/assets/memories are empty. |
 | Admin | 0% | Requirements only. |
-| QA | 15% | QA plan and validation scripts exist; no automated feature tests, environments, or device results. |
+| QA | 20% | QA plan and milestone visual scripts exist; no automated quiz/runtime feature tests, environments, or device results. |
 | Deployment | 5% | Vercel-compatible Next build and env example exist; no deployed URLs or QR code. |
-| Overall | 20% | Strong planning foundation and runnable scaffold, but no executable birthday feature flow yet. |
+| Overall | 25% | Strong planning foundation, runnable scaffold, visual foundation, and guest onboarding flow exist; core quiz/runtime features remain future work. |
 
 ---
 
@@ -295,7 +308,7 @@ Estimated completion:
 
 Architectural debt:
 
-- Runtime architecture beyond the scaffold is unverified.
+- Runtime architecture beyond session-only onboarding is unverified.
 - Supabase table design is descriptive only; constraints, RLS policies, indexes, and real-time strategy are undecided.
 - Admin access control is explicitly deferred.
 - Tie-break rules for leaderboard are not accepted unless future approval is given.
@@ -310,18 +323,18 @@ Documentation debt:
 
 Implementation debt:
 
-- No feature tests or runtime data layer yet.
-- No source code for routes, components, state, APIs, Supabase, or validation.
-- No tests or test runner.
+- No quiz feature tests or runtime data layer yet.
+- No source code for quiz routes, APIs, Supabase, or runtime validation.
+- No automated test runner beyond validation and browser screenshot scripts.
 - No deployment configuration.
-- No real content, translations, quiz questions, images, audio, or placeholders.
+- No real quiz questions, approved Han facts, images, audio, or memory content.
 
 ---
 
 # 12. Risks
 
 - Late real content can compress translation, content QA, and quiz validation time.
-- Current locale files are empty, so app scaffolding could accidentally ship missing text unless validation is added.
+- Current locale files include onboarding copy, but real quiz/memory content is still absent.
 - Per-question response locking is central but not yet backed by database constraints or idempotent mutation design.
 - QA/test data separation is required but not yet implemented.
 - Admin route access control is unspecified.
@@ -337,9 +350,7 @@ Implementation debt:
 
 Critical:
 
-- Next.js project scaffold with approved stack.
-- Locale routing and content loading.
-- Real bilingual UI copy and approved quiz content from Ian.
+- Approved quiz content from Ian.
 - Quiz flow with 20-second timer, scoring, per-question locking, and safe retry enforcement.
 - Supabase schema, migrations, RLS/access rules, and runtime client/server integration.
 - Live leaderboard route for mobile and TV/display.
@@ -350,9 +361,6 @@ Critical:
 
 Important:
 
-- Content schema validation and locale parity checks.
-- Design tokens, typography choices, and shadcn/ui setup.
-- Placeholder asset system and approved placeholder visuals.
 - Error, loading, empty, duplicate, offline/poor-network states.
 - Tests for scoring, timer, question-response duplicate prevention, locale parity, leaderboard ranking, and message submission.
 - Preview environment and device testing.

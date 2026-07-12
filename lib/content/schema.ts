@@ -15,10 +15,22 @@ const ScreensSchema = z.object({
   welcome: z.object({
     title: LocalizedStringSchema,
     subtitle: LocalizedStringSchema,
-    primaryAction: LocalizedStringSchema
+    primaryAction: LocalizedStringSchema,
+    heroPlaceholderLabel: LocalizedStringSchema,
+    heroPlaceholderAlt: LocalizedStringSchema
+  }),
+  language: z.object({
+    title: LocalizedStringSchema,
+    subtitle: LocalizedStringSchema,
+    englishLabel: LocalizedStringSchema,
+    englishDescription: LocalizedStringSchema,
+    vietnameseLabel: LocalizedStringSchema,
+    vietnameseDescription: LocalizedStringSchema,
+    switchLabel: LocalizedStringSchema
   }),
   guestEntry: z.object({
     title: LocalizedStringSchema,
+    description: LocalizedStringSchema,
     nameLabel: LocalizedStringSchema,
     namePlaceholder: LocalizedStringSchema,
     primaryAction: LocalizedStringSchema,
@@ -27,6 +39,35 @@ const ScreensSchema = z.object({
       tooLong: LocalizedStringSchema,
       alreadySubmitted: LocalizedStringSchema
     })
+  }),
+  howToPlay: z.object({
+    title: LocalizedStringSchema,
+    subtitle: LocalizedStringSchema,
+    primaryAction: LocalizedStringSchema,
+    cards: z.array(
+      z.object({
+        id: z.enum(["timer", "locked", "reveal"]),
+        title: LocalizedStringSchema,
+        description: LocalizedStringSchema
+      })
+    )
+  }),
+  ready: z.object({
+    title: LocalizedStringSchema,
+    subtitle: LocalizedStringSchema,
+    primaryAction: LocalizedStringSchema
+  }),
+  quizPlaceholder: z.object({
+    title: LocalizedStringSchema,
+    description: LocalizedStringSchema,
+    backAction: LocalizedStringSchema
+  }),
+  onboardingProgress: z.object({
+    welcome: LocalizedStringSchema,
+    language: LocalizedStringSchema,
+    name: LocalizedStringSchema,
+    howToPlay: LocalizedStringSchema,
+    ready: LocalizedStringSchema
   }),
   quizStart: z.object({
     title: LocalizedStringSchema,

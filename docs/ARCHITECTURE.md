@@ -116,6 +116,13 @@ Milestone 2 implemented base layer:
 - Internal design-system route at `/{locale}/design-system` for visual review.
 - Guest, display, admin, and QA route boundaries remain placeholders and do not perform runtime data actions.
 
+Milestone 3 implemented guest onboarding components in `components/guest/`:
+
+- `OnboardingFlow` owns the welcome-to-ready client flow.
+- `OnboardingHero`, `LanguageSelector`, `GuestNameCard`, `InstructionCard`, `ProgressIndicator`, and `CelebrationBanner` compose the onboarding screens.
+- The localized guest root `/{locale}` now renders onboarding instead of the scaffold placeholder.
+- Display, admin, QA, and design-system routes remain separate from guest onboarding.
+
 Domain components:
 
 - Language selector.
@@ -150,6 +157,14 @@ Client state:
 - Selected answer for the active question before submission.
 - Timer state.
 - Local UI state such as loading, submitting, and errors.
+
+Milestone 3 client/session state:
+
+- Selected language.
+- Guest display name.
+- Current onboarding step.
+
+This state is stored in browser `sessionStorage` only. It does not create participant IDs, Supabase records, quiz attempts, question responses, leaderboard entries, messages, admin records, or QA/test data.
 
 Server/runtime state:
 

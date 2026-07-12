@@ -4,7 +4,7 @@
     "metadata": {
         "projectName": "Han Birthday Experience",
         "publicTitle": "WHO IS TURNING ONE?!",
-        "contentStatus": "placeholder-schema-only",
+        "contentStatus": "milestone-3-onboarding-copy-no-real-han-content",
         "contentRules": {
             "realContentRequiredFromIan": true,
             "inventedMemoriesAllowed": false,
@@ -13,77 +13,128 @@
         }
     },
     "navigation": {
-        "home": "",
-        "quiz": "",
-        "leaderboard": "",
-        "message": "",
-        "timeline": "",
-        "gallery": ""
+        "home": "Home",
+        "quiz": "Quiz",
+        "leaderboard": "Leaderboard",
+        "message": "Message",
+        "timeline": "Timeline",
+        "gallery": "Gallery"
     },
     "screens": {
         "welcome": {
-            "title": "",
-            "subtitle": "",
-            "primaryAction": ""
+            "title": "WHO IS TURNING ONE?!",
+            "subtitle": "A tiny birthday surprise is waiting.",
+            "primaryAction": "Let's go",
+            "heroPlaceholderLabel": "Birthday hero image placeholder",
+            "heroPlaceholderAlt": "Decorative placeholder frame for a future birthday hero image"
+        },
+        "language": {
+            "title": "Choose your language",
+            "subtitle": "Pick the language that feels easiest for the party.",
+            "englishLabel": "English",
+            "englishDescription": "Continue in English.",
+            "vietnameseLabel": "Tiếng Việt",
+            "vietnameseDescription": "Tiếp tục bằng tiếng Việt.",
+            "switchLabel": "Language"
         },
         "guestEntry": {
-            "title": "",
-            "nameLabel": "",
-            "namePlaceholder": "",
-            "primaryAction": "",
+            "title": "What name should we show?",
+            "description": "We'll use this for your quiz and celebration screens.",
+            "nameLabel": "Your display name",
+            "namePlaceholder": "Type your name",
+            "primaryAction": "Continue",
             "validation": {
-                "required": "",
-                "tooLong": "",
-                "alreadySubmitted": ""
+                "required": "Please enter your name.",
+                "tooLong": "Please use a shorter display name.",
+                "alreadySubmitted": "This name is saved for this session."
             }
         },
+        "howToPlay": {
+            "title": "How to play",
+            "subtitle": "Quick, playful, and done in about 3 to 5 minutes.",
+            "primaryAction": "I'm ready",
+            "cards": [
+                {
+                    "id": "timer",
+                    "title": "20 seconds",
+                    "description": "Each question has a short timer."
+                },
+                {
+                    "id": "locked",
+                    "title": "Tap once",
+                    "description": "Submitted answers cannot be changed."
+                },
+                {
+                    "id": "reveal",
+                    "title": "See the reveal",
+                    "description": "Correct answer, fun fact, then next question."
+                }
+            ]
+        },
+        "ready": {
+            "title": "Ready?",
+            "subtitle": "Let's see how well you know Han!",
+            "primaryAction": "Start Quiz"
+        },
+        "quizPlaceholder": {
+            "title": "Quiz coming soon",
+            "description": "This is the stop before the quiz engine. Milestone 4 will replace this placeholder.",
+            "backAction": "Back to Ready"
+        },
+        "onboardingProgress": {
+            "welcome": "Welcome",
+            "language": "Language",
+            "name": "Name",
+            "howToPlay": "How to play",
+            "ready": "Ready"
+        },
         "quizStart": {
-            "title": "",
-            "description": "",
-            "timerNotice": "",
-            "primaryAction": ""
+            "title": "Ready?",
+            "description": "Let's see how well you know Han.",
+            "timerNotice": "20 seconds per question.",
+            "primaryAction": "Start Quiz"
         },
         "quiz": {
-            "questionCounterLabel": "",
-            "timerLabel": "",
-            "timeExpiredLabel": "",
-            "nextAction": "",
-            "submitAction": ""
+            "questionCounterLabel": "Question",
+            "timerLabel": "Time",
+            "timeExpiredLabel": "Time's up",
+            "nextAction": "Next",
+            "submitAction": "Submit"
         },
         "result": {
-            "title": "",
-            "scoreLabel": "",
-            "leaderboardAction": "",
-            "messageAction": ""
+            "title": "All done",
+            "scoreLabel": "Score",
+            "leaderboardAction": "View leaderboard",
+            "messageAction": "Leave a message"
         },
         "leaderboard": {
-            "title": "",
-            "emptyTitle": "",
-            "emptyDescription": ""
+            "title": "Leaderboard",
+            "emptyTitle": "No scores yet",
+            "emptyDescription": "Scores will appear after guests finish the quiz."
         },
         "message": {
-            "title": "",
-            "description": "",
-            "fieldLabel": "",
-            "fieldPlaceholder": "",
-            "submitAction": "",
-            "successTitle": "",
-            "successDescription": ""
+            "title": "Leave a message",
+            "description": "Write a birthday note for Han and family.",
+            "fieldLabel": "Birthday message",
+            "fieldPlaceholder": "Type your message",
+            "submitAction": "Send message",
+            "successTitle": "Message saved",
+            "successDescription": "Thank you for adding to the celebration."
         },
         "timeline": {
-            "title": "",
-            "emptyTitle": "",
-            "emptyDescription": ""
+            "title": "Timeline",
+            "emptyTitle": "Memories coming later",
+            "emptyDescription": "Timeline moments will appear when real content is provided."
         },
         "gallery": {
-            "title": "",
-            "emptyTitle": "",
-            "emptyDescription": ""
+            "title": "Gallery",
+            "emptyTitle": "Photos coming later",
+            "emptyDescription": "Real photos will appear when approved assets are provided."
         },
         "errors": {
-            "generic": "",
-            "network": "",
-            "retryAction": ""
+            "generic": "Something went wrong.",
+            "network": "The connection had a small hiccup.",
+            "retryAction": "Try again"
         }
     },
     "quiz": {

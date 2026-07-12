@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "validate:content": "tsx scripts/validate-content.ts",
     "check:visual:milestone2": "tsx scripts/check-milestone-2-visual.ts",
+    "check:visual:milestone3": "tsx scripts/check-milestone-3-visual.ts",
     "validate": "npm run validate:content && npm run typecheck && npm run lint && npm run build"
   },
   "dependencies": {

@@ -65,27 +65,53 @@ Completion record:
 
 - See [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md).
 
-## Milestone 3: Guest Entry And Quiz MVP
+## Milestone 3: Guest Entry Experience
 
-Status: Recommended next milestone.
+Status: Implemented, awaiting Ian approval gate.
 
 Goals:
 
 - Build QR entry landing flow.
 - Add language selection and guest identification.
-- Implement quiz flow with 20-second timer.
-- Enforce per-question locked responses with safe retries.
-- Show result screen.
+- Explain the quiz rules before the timer starts.
+- Show a celebratory ready screen.
+- Stop at an honest quiz-coming-soon placeholder.
+- Do not implement quiz engine, leaderboard runtime, Supabase persistence, admin behavior, or QA tools.
 
 Exit criteria:
 
-- Guest can complete a quiz once.
+- Guest can open the app, choose language, enter a display name, understand the rules, and reach the ready screen in under 30 seconds.
+- English and Vietnamese onboarding flows are complete.
+- Onboarding state uses client/session storage only.
+- No real Han facts, memories, quiz questions, answers, or photos are invented.
+- The ready CTA stops at a placeholder for the next milestone.
+
+Completion record:
+
+- See [docs/MILESTONE_3_REVIEW.md](docs/MILESTONE_3_REVIEW.md).
+
+## Milestone 4: Quiz Engine
+
+Status: Recommended next milestone after Ian approval.
+
+Goals:
+
+- Implement quiz flow with the approved content model.
+- Add the 20-second timer per question.
+- Enforce per-question locked responses in local/runtime architecture appropriate for this milestone.
+- Show correct/incorrect/timeout reveal states and approved fun facts when provided.
+- Show result screen.
+- Preserve the Milestone 3 onboarding handoff.
+
+Exit criteria:
+
+- Guest can complete a quiz once using approved or neutral test content.
 - Timer and scoring are tested.
 - Each question can have at most one accepted locked response per attempt.
 - Timed-out questions lock and cannot be edited.
 - Duplicate response requests recover gracefully.
 
-## Milestone 4: Supabase And Leaderboard
+## Milestone 5: Supabase And Leaderboard
 
 Goals:
 
@@ -100,7 +126,7 @@ Exit criteria:
 - Leaderboard updates without manual refresh.
 - QA data can be isolated from event data.
 
-## Milestone 5: Messages, Timeline Placeholder, Gallery Placeholder
+## Milestone 6: Messages, Timeline Placeholder, Gallery Placeholder
 
 Goals:
 
@@ -116,7 +142,7 @@ Exit criteria:
 - Timeline and gallery do not imply fake content.
 - Empty states feel intentional and warm.
 
-## Milestone 6: Lightweight Admin And QA Mode
+## Milestone 7: Lightweight Admin And QA Mode
 
 Goals:
 
@@ -132,7 +158,7 @@ Exit criteria:
 - Test data does not pollute production event data.
 - QA checklist passes on target devices.
 
-## Milestone 7: Event Readiness And Deployment
+## Milestone 8: Event Readiness And Deployment
 
 Goals:
 

@@ -164,6 +164,15 @@ Milestone 2 visual checks:
 - Review `/{locale}/qa` for clear QA/test marking.
 - Review with reduced motion enabled where practical; global CSS and Framer Motion primitives should suppress nonessential movement.
 
+Milestone 3 visual checks:
+
+- Use `npm run check:visual:milestone3` against a running server. Set `MILESTONE3_BASE_URL` when the server is not on `http://localhost:3000`.
+- The script captures mobile screenshots for Welcome, Language, Name, How to play, Ready, and Quiz Coming Soon in both English and Vietnamese.
+- The script checks horizontal overflow on the ready screen at iPhone SE, modern iPhone, Pixel width, iPad, desktop, and large-TV viewports.
+- The script captures a reduced-motion Vietnamese welcome screenshot.
+- Review screenshots in `.next/milestone-3-screenshots/after/` before considering the milestone ready for approval.
+- Before/after comparison screenshots for this milestone are stored under `.next/milestone-3-screenshots/before/` and `.next/milestone-3-screenshots/after/`.
+
 ## Functional Acceptance Checklist
 
 - Guest can enter through QR code.

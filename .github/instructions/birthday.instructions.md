@@ -114,4 +114,4 @@ Before finishing a change, verify:
 
 ## Next Milestone Guardrail
 
-The next milestone is runnable project scaffolding only. It must not implement the full quiz, Supabase runtime, leaderboard, admin, or complete feature flows unless Ian explicitly reprioritizes.
+Milestone 3 guest entry is implemented and must stop for Ian approval. Do not begin Milestone 4 automatically. After approval, the next milestone is Quiz Engine only; do not implement Supabase runtime, leaderboard, messages, admin, QA tools, deployment, or QR generation unless Ian explicitly reprioritizes.

@@ -4,7 +4,7 @@
     "metadata": {
         "projectName": "Han Birthday Experience",
         "publicTitle": "WHO IS TURNING ONE?!",
-        "contentStatus": "placeholder-schema-only",
+        "contentStatus": "milestone-3-onboarding-copy-no-real-han-content",
         "contentRules": {
             "realContentRequiredFromIan": true,
             "inventedMemoriesAllowed": false,
@@ -13,77 +13,128 @@
         }
     },
     "navigation": {
-        "home": "",
-        "quiz": "",
-        "leaderboard": "",
-        "message": "",
-        "timeline": "",
-        "gallery": ""
+        "home": "Trang chủ",
+        "quiz": "Đố vui",
+        "leaderboard": "Bảng điểm",
+        "message": "Lời chúc",
+        "timeline": "Dòng thời gian",
+        "gallery": "Thư viện"
     },
     "screens": {
         "welcome": {
-            "title": "",
-            "subtitle": "",
-            "primaryAction": ""
+            "title": "WHO IS TURNING ONE?!",
+            "subtitle": "Một bất ngờ sinh nhật nhỏ đang chờ bạn.",
+            "primaryAction": "Bắt đầu",
+            "heroPlaceholderLabel": "Khung ảnh sinh nhật tạm thời",
+            "heroPlaceholderAlt": "Khung trang trí tạm thời cho ảnh chủ đề sinh nhật sau này"
+        },
+        "language": {
+            "title": "Chọn ngôn ngữ",
+            "subtitle": "Hãy chọn ngôn ngữ dễ dùng nhất trong buổi tiệc.",
+            "englishLabel": "English",
+            "englishDescription": "Continue in English.",
+            "vietnameseLabel": "Tiếng Việt",
+            "vietnameseDescription": "Tiếp tục bằng tiếng Việt.",
+            "switchLabel": "Ngôn ngữ"
         },
         "guestEntry": {
-            "title": "",
-            "nameLabel": "",
-            "namePlaceholder": "",
-            "primaryAction": "",
+            "title": "Bạn muốn hiện tên nào?",
+            "description": "Tên này sẽ xuất hiện trong phần đố vui và màn hình chúc mừng.",
+            "nameLabel": "Tên hiển thị",
+            "namePlaceholder": "Nhập tên của bạn",
+            "primaryAction": "Tiếp tục",
             "validation": {
-                "required": "",
-                "tooLong": "",
-                "alreadySubmitted": ""
+                "required": "Vui lòng nhập tên của bạn.",
+                "tooLong": "Vui lòng dùng tên hiển thị ngắn hơn.",
+                "alreadySubmitted": "Tên này đã được lưu cho phiên này."
             }
         },
+        "howToPlay": {
+            "title": "Cách chơi",
+            "subtitle": "Nhanh, vui, và chỉ mất khoảng 3 đến 5 phút.",
+            "primaryAction": "Tôi sẵn sàng",
+            "cards": [
+                {
+                    "id": "timer",
+                    "title": "20 giây",
+                    "description": "Mỗi câu hỏi có thời gian ngắn."
+                },
+                {
+                    "id": "locked",
+                    "title": "Chọn một lần",
+                    "description": "Câu trả lời đã gửi sẽ không đổi được."
+                },
+                {
+                    "id": "reveal",
+                    "title": "Xem đáp án",
+                    "description": "Đáp án đúng, điều vui về Han, rồi câu tiếp theo."
+                }
+            ]
+        },
+        "ready": {
+            "title": "Sẵn sàng chưa?",
+            "subtitle": "Cùng xem bạn hiểu Han đến đâu nhé!",
+            "primaryAction": "Bắt đầu đố vui"
+        },
+        "quizPlaceholder": {
+            "title": "Phần đố vui sắp có",
+            "description": "Đây là điểm dừng trước khi có quiz engine. Milestone 4 sẽ thay phần tạm thời này.",
+            "backAction": "Quay lại"
+        },
+        "onboardingProgress": {
+            "welcome": "Chào mừng",
+            "language": "Ngôn ngữ",
+            "name": "Tên",
+            "howToPlay": "Cách chơi",
+            "ready": "Sẵn sàng"
+        },
         "quizStart": {
-            "title": "",
-            "description": "",
-            "timerNotice": "",
-            "primaryAction": ""
+            "title": "Sẵn sàng chưa?",
+            "description": "Cùng xem bạn hiểu Han đến đâu nhé.",
+            "timerNotice": "20 giây cho mỗi câu hỏi.",
+            "primaryAction": "Bắt đầu đố vui"
         },
         "quiz": {
-            "questionCounterLabel": "",
-            "timerLabel": "",
-            "timeExpiredLabel": "",
-            "nextAction": "",
-            "submitAction": ""
+            "questionCounterLabel": "Câu hỏi",
+            "timerLabel": "Thời gian",
+            "timeExpiredLabel": "Hết giờ",
+            "nextAction": "Tiếp theo",
+            "submitAction": "Gửi"
         },
         "result": {
-            "title": "",
-            "scoreLabel": "",
-            "leaderboardAction": "",
-            "messageAction": ""
+            "title": "Hoàn thành",
+            "scoreLabel": "Điểm",
+            "leaderboardAction": "Xem bảng điểm",
+            "messageAction": "Gửi lời chúc"
         },
         "leaderboard": {
-            "title": "",
-            "emptyTitle": "",
-            "emptyDescription": ""
+            "title": "Bảng điểm",
+            "emptyTitle": "Chưa có điểm",
+            "emptyDescription": "Điểm sẽ hiện sau khi khách hoàn thành phần đố vui."
         },
         "message": {
-            "title": "",
-            "description": "",
-            "fieldLabel": "",
-            "fieldPlaceholder": "",
-            "submitAction": "",
-            "successTitle": "",
-            "successDescription": ""
+            "title": "Gửi lời chúc",
+            "description": "Viết một lời chúc sinh nhật cho Han và gia đình.",
+            "fieldLabel": "Lời chúc sinh nhật",
+            "fieldPlaceholder": "Nhập lời chúc của bạn",
+            "submitAction": "Gửi lời chúc",
+            "successTitle": "Đã lưu lời chúc",
+            "successDescription": "Cảm ơn bạn đã góp thêm niềm vui cho buổi tiệc."
         },
         "timeline": {
-            "title": "",
-            "emptyTitle": "",
-            "emptyDescription": ""
+            "title": "Dòng thời gian",
+            "emptyTitle": "Kỷ niệm sẽ được thêm sau",
+            "emptyDescription": "Các khoảnh khắc sẽ xuất hiện khi nội dung thật được cung cấp."
         },
         "gallery": {
-            "title": "",
-            "emptyTitle": "",
-            "emptyDescription": ""
+            "title": "Thư viện",
+            "emptyTitle": "Ảnh sẽ được thêm sau",
+            "emptyDescription": "Ảnh thật sẽ xuất hiện khi tài sản đã được duyệt."
         },
         "errors": {
-            "generic": "",
-            "network": "",
-            "retryAction": ""
+            "generic": "Có lỗi xảy ra.",
+            "network": "Kết nối vừa bị gián đoạn nhẹ.",
+            "retryAction": "Thử lại"
         }
     },
     "quiz": {

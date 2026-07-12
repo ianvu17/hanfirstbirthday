@@ -18,6 +18,17 @@ The experience should feel instantly understandable, warm, and festive. Guests s
 10. Leave a birthday message.
 11. Optionally browse placeholder timeline/gallery areas if enabled.
 
+Milestone 3 implemented the guest entry portion only:
+
+1. Welcome.
+2. Language selection.
+3. Guest display name.
+4. How to play.
+5. Ready.
+6. Quiz-coming-soon placeholder.
+
+The quiz engine, result, leaderboard, messages, admin behavior, QA tools, and Supabase persistence remain deferred.
+
 ## Screen Specifications
 
 ### QR Entry / Welcome
@@ -36,6 +47,7 @@ UX notes:
 - Should feel like entering the party, not launching software.
 - Avoid dense instructions.
 - Provide immediate visual connection to the birthday theme.
+- Milestone 3 shows only delight and entry context here; quiz details are intentionally delayed until the instructions screen.
 
 States:
 
@@ -51,6 +63,7 @@ UX notes:
 - Language options should be obvious and tappable.
 - Language can be changed later through a small accessible control.
 - Do not bury language behind settings.
+- Milestone 3 uses two large options and stores the selected locale in session-only state.
 
 States:
 
@@ -66,6 +79,7 @@ UX notes:
 - Keep the form short.
 - Explain why the name is needed in a friendly way.
 - Use validation that feels helpful, not punitive.
+- Milestone 3 trims whitespace, rejects blank names, supports long Vietnamese names, and stores the display name only in session storage.
 
 States:
 
@@ -82,6 +96,7 @@ UX notes:
 - Make the quiz feel playful and celebratory.
 - Mention timing clearly before the first question.
 - Avoid creating anxiety around score.
+- Milestone 3 splits this preparation into a short illustrated "How to play" screen and a celebratory "Ready" screen. The Start Quiz button stops at a placeholder until Milestone 4.
 
 States:
 

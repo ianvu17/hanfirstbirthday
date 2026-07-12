@@ -4,7 +4,7 @@ Public title: **WHO IS TURNING ONE?!**
 
 Han Birthday Experience is a premium interactive web experience for Callahan (Han)'s first birthday. It is designed as a digital extension of the party: guests enter from a QR code on their phones, play a short bilingual quiz, leave a message, and see a live leaderboard on a laptop or TV display.
 
-This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, and Milestone 2 visual design-system foundation. The application now has a Next.js foundation, locale routing, placeholder content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, intentional placeholders, and route boundaries, but feature logic is intentionally deferred to later milestones.
+This repository has completed its documentation-first foundation review, Milestone 1 runnable scaffold, Milestone 2 visual design-system foundation, and Milestone 3 guest entry experience. The application now has a Next.js foundation, locale routing, placeholder content validation, centralized birthday-theme tokens, bilingual-safe typography, reusable visual primitives, intentional placeholders, route boundaries, and a session-only onboarding flow from welcome through the ready screen.
 
 ## Purpose
 
@@ -30,7 +30,7 @@ The planned stack is:
 - next-intl
 - Vercel
 
-The app scaffold and visual foundation now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md) and [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md).
+The app scaffold, visual foundation, and guest entry experience now exist. The intended architecture is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with milestone results recorded in [docs/MILESTONE_1_REVIEW.md](docs/MILESTONE_1_REVIEW.md), [docs/MILESTONE_2_REVIEW.md](docs/MILESTONE_2_REVIEW.md), and [docs/MILESTONE_3_REVIEW.md](docs/MILESTONE_3_REVIEW.md).
 
 ## Documentation Structure
 
@@ -75,11 +75,12 @@ npm run validate:content
 npm run typecheck
 npm run lint
 npm run build
+npm run check:visual:milestone3
 ```
 
-Milestone 1 intentionally provides only foundational routes:
+Current route status:
 
-- `/en` and `/vi`: localized guest scaffold.
+- `/en` and `/vi`: localized guest onboarding flow.
 - `/en/design-system` and `/vi/design-system`: internal visual foundation showcase.
 - `/display/leaderboard`: display-route placeholder.
 - `/en/admin` and `/vi/admin`: admin-route boundary placeholder.

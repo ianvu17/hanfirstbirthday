@@ -73,7 +73,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the planned technical desig
 
 ## Constraints
 
-- Documentation-first workflow: Milestone 0 foundation review is complete; next implementation work is limited to Milestone 1 scaffolding unless Ian explicitly reprioritizes.
+- Documentation-first workflow: Milestones 0, 1, and 2 are complete. Milestone 3 guest entry experience is implemented and awaiting Ian approval before Milestone 4 begins.
 - Do not invent stories, memories, quiz facts, timeline events, images, or photo descriptions.
 - Do not hardcode content in components.
 - All content-related data must come from external data files or Supabase records.
@@ -93,6 +93,6 @@ If decisions conflict, use this order:
 
 ## Current Repository State
 
-The repository currently contains project documentation, AI guidance, placeholder content schemas, a Milestone 1 Next.js scaffold, and the completed Milestone 2 visual foundation. It includes App Router route boundaries, bilingual locale routing, content validation, centralized Tailwind/CSS design tokens, Baloo 2 and Be Vietnam Pro typography, paper-cut visual primitives, lightweight decorative motifs, reduced-motion-aware motion patterns, robust asset placeholders, and a localized internal design-system showcase at `/en/design-system` and `/vi/design-system`.
+The repository currently contains project documentation, AI guidance, localized onboarding copy, a Milestone 1 Next.js scaffold, the completed Milestone 2 visual foundation, and the implemented Milestone 3 guest entry experience. It includes App Router route boundaries, bilingual locale routing, content validation, centralized Tailwind/CSS design tokens, Baloo 2 and Be Vietnam Pro typography, paper-cut visual primitives, lightweight decorative motifs, reduced-motion-aware motion patterns, robust asset placeholders, a localized internal design-system showcase at `/en/design-system` and `/vi/design-system`, and a session-only guest onboarding flow at `/en` and `/vi`.
 
-Existing placeholder routes demonstrate the visual system at `/en`, `/vi`, `/display/leaderboard`, `/{locale}/admin`, and `/{locale}/qa` without implementing feature behavior. The project intentionally does not yet contain quiz logic, Supabase migrations/runtime behavior, real Han content, live leaderboard data, message persistence, production deployment configuration, admin actions, or complete guest/admin/QA feature flows.
+The localized guest root routes implement Welcome, Language, Guest Name, How to Play, Ready, and Quiz Coming Soon placeholder screens. Existing placeholder routes still demonstrate the visual system at `/display/leaderboard`, `/{locale}/admin`, and `/{locale}/qa` without runtime behavior. The project intentionally does not yet contain quiz logic, Supabase migrations/runtime behavior, real Han content, live leaderboard data, message persistence, production deployment configuration, admin actions, or complete guest/admin/QA feature flows.
