@@ -15,7 +15,8 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 const joinSchema = z.object({
   displayName: z.string().min(1).max(80),
-  locale: z.string()
+  locale: z.string(),
+  joinCode: z.string().trim().max(80).optional()
 });
 
 export async function POST(request: Request) {
@@ -61,6 +62,21 @@ export async function POST(request: Request) {
           }
         },
         { status: 404 }
+      );
+    }
+
+    if (
+      parsed.data.joinCode !== undefined &&
+      parsed.data.joinCode !== partySession.public_join_code
+    ) {
+      return NextResponse.json(
+        {
+          error: {
+            code: "invalid_join_code",
+            message: "That QR code is not for the current party session."
+          }
+        },
+        { status: 400 }
       );
     }
 

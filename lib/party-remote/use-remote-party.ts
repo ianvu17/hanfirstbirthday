@@ -20,6 +20,61 @@ type RemoteSnapshotState<TSnapshot> = {
   applySnapshot: (snapshot: TSnapshot) => void;
 };
 
+export type RemoteSnapshotTrackingState = {
+  sessionId: string | null;
+  revision: number;
+};
+
+type TrackableRemoteSnapshot = {
+  session: {
+    id: string;
+    revision: number;
+  } | null;
+};
+
+export function resolveRemoteSnapshotTracking(
+  current: RemoteSnapshotTrackingState,
+  nextSnapshot: TrackableRemoteSnapshot
+): { accept: boolean; next: RemoteSnapshotTrackingState } {
+  const nextSessionId = nextSnapshot.session?.id ?? null;
+  const nextRevision = nextSnapshot.session?.revision ?? -1;
+
+  if (nextSessionId !== current.sessionId) {
+    return {
+      accept: true,
+      next: {
+        sessionId: nextSessionId,
+        revision: nextRevision
+      }
+    };
+  }
+
+  if (!nextSnapshot.session) {
+    return {
+      accept: true,
+      next: {
+        sessionId: null,
+        revision: -1
+      }
+    };
+  }
+
+  if (nextRevision < current.revision) {
+    return {
+      accept: false,
+      next: current
+    };
+  }
+
+  return {
+    accept: true,
+    next: {
+      sessionId: nextSessionId,
+      revision: nextRevision
+    }
+  };
+}
+
 function isRemoteGuestSnapshot(
   snapshot: RemotePartySnapshot | RemoteGuestSnapshot
 ): snapshot is RemoteGuestSnapshot {
@@ -34,17 +89,25 @@ export function useRemotePartySnapshot<
   const [snapshot, setSnapshot] = useState<TSnapshot | null>(null);
   const [connection, setConnection] = useState<RemoteConnectionState>("connecting");
   const [error, setError] = useState<RemoteApiError | null>(null);
+  const currentSessionIdRef = useRef<string | null>(null);
   const revisionRef = useRef(-1);
   const refreshInFlightRef = useRef<Promise<void> | null>(null);
 
   const applySnapshot = useCallback((nextSnapshot: TSnapshot) => {
-    const nextRevision = nextSnapshot.session?.revision ?? -1;
+    const tracking = resolveRemoteSnapshotTracking(
+      {
+        sessionId: currentSessionIdRef.current,
+        revision: revisionRef.current
+      },
+      nextSnapshot
+    );
 
-    if (nextSnapshot.session && nextRevision < revisionRef.current) {
+    if (!tracking.accept) {
       return;
     }
 
-    revisionRef.current = nextRevision;
+    currentSessionIdRef.current = tracking.next.sessionId;
+    revisionRef.current = tracking.next.revision;
     setSnapshot({
       ...nextSnapshot,
       connection: "connected"

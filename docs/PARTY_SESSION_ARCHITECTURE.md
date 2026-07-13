@@ -10,6 +10,8 @@
 
 `participants` stores one guest identity for one session. Display names are not permanent identity; the browser receives an opaque resume cookie and Supabase stores only its hash.
 
+The guest display name entered during onboarding is intentionally kept in browser `sessionStorage` so a guest does not have to type it again across reconnects or a new game run. That stored display name is not participant identity. A new current session creates or validates a new `participants` row through the server-issued resume cookie, scoped to the current session id.
+
 `question_responses` stores immutable locked answers or timeouts. The database enforces one response per `party_session_id`, `participant_id`, and `question_id`.
 
 `host_command_log` stores compact command audit rows. `command_id` is unique within a session so retries of the same host command can be recognized.
@@ -25,6 +27,18 @@ party_key + deployment_environment + is_current = true
 The database has a partial unique index that allows only one current session per party/environment context. Finished and archived sessions are not current. Historical rows remain queryable through the host session history.
 
 The public join code is no longer a current-session pointer. It remains a public room code used for QR URLs.
+
+## QR Routing
+
+The Party Screen QR uses one stable URL across game runs:
+
+```text
+/{locale}/play?join=<public join code>
+```
+
+The QR must not include `party_session_id`. When a guest opens the URL, the server validates the optional `join` query value against the current session's public join code, then resolves the session through `party_key + deployment_environment + is_current = true`.
+
+This keeps one reusable QR for the event while still rejecting malformed or stale join codes.
 
 ## Lifecycle
 
