@@ -41,7 +41,7 @@ Required or recommended `preview-validation` Environment variables:
 - `PARTY_JOIN_CODE`
 - `LIVE_REALTIME_JOIN_CODE`
 
-The workflow forces `PARTY_SESSION_IS_TEST=true`. Use validation-owned join codes so cleanup cannot affect event rows.
+The workflow forces `PARTY_SESSION_IS_TEST=true` as metadata. Use validation-owned join codes or deployment environments so cleanup cannot affect event rows.
 
 ## Vercel Git Integration
 
@@ -87,7 +87,7 @@ After Git integration is connected, verify:
 - A push to a feature branch creates a Preview Deployment, not Production.
 - A pull request into `main` shows GitHub CI and Vercel preview status.
 - The Vercel deployment metadata includes the GitHub commit SHA.
-- Preview deployment uses `PARTY_SESSION_IS_TEST=true`.
+- Preview deployment uses `deployment_environment=preview`; `PARTY_SESSION_IS_TEST=true` only marks rehearsal rows.
 - Production deployment is still guarded or intentionally configured.
 - `/api/party/session` on Preview reports remote mode, `isTest=true`, and a non-localhost join URL.
 
@@ -100,7 +100,7 @@ Current verified state on July 13, 2026:
 - Preview routes `/en` and `/display/party` returned HTTP 200.
 - Preview `/api/party/session` returned remote mode with `isTest=true`.
 - GitHub PR `#1` is open, clean, and intentionally unmerged until Production environment variables are reviewed.
-- Vercel Production environment variables are configured. `HOST_SESSION_SECRET` is separated between Production and Preview. `HOST_PIN_HASH` may remain shared for this project. `PARTY_SESSION_IS_TEST=true` in Production is supported because it only selects the default test-tagged session row.
+- Vercel Production environment variables are configured. `HOST_SESSION_SECRET` is separated between Production and Preview. `HOST_PIN_HASH` may remain shared for this project. Production current-session selection is scoped by `party_key + deployment_environment`, not by `PARTY_SESSION_IS_TEST`.
 - GitHub ruleset `feature_branch_protection` is active for the default branch, blocks direct deletion/force-pushes, requires pull requests, and requires the `Validate` status check before merge.
 
 ## Environment Separation
@@ -116,11 +116,11 @@ Preview should keep:
 
 ### Production
 
-Production means the app can be deployed from `main` to the stable Vercel Production target. Production with `PARTY_SESSION_IS_TEST=true` is normal and supported; that variable is only the default session selector.
+Production means the app can be deployed from `main` to the stable Vercel Production target. `PARTY_SESSION_IS_TEST` is metadata only and must not be used as the current-session selector.
 
 - Production deploys are enabled.
 - `NEXT_PUBLIC_APP_URL`: stable production origin.
-- `PARTY_SESSION_IS_TEST=true`: production-origin data uses the test-tagged default session.
+- `PARTY_SESSION_IS_TEST`: optional rehearsal/test metadata for rows created in Production.
 - `HOST_SESSION_SECRET`: independent Production signing secret.
 - `HOST_PIN_HASH`: may remain shared with Preview for this project.
 - `PARTY_JOIN_CODE`: production join code.
@@ -132,7 +132,7 @@ Production environment variables must be reviewed before Production Deployment:
 - `SUPABASE_SERVICE_ROLE_KEY`: server-only
 - `NEXT_PUBLIC_APP_URL`: stable production origin
 - `PARTY_JOIN_CODE`: production join code
-- `PARTY_SESSION_IS_TEST=true`: supported production default session selector
+- `PARTY_SESSION_IS_TEST`: metadata only; current sessions are selected by party key and deployment environment
 - `HOST_PIN_HASH`: reviewed event Host PIN hash
 - `HOST_SESSION_SECRET`: independent production signing secret
 
@@ -156,7 +156,7 @@ npm run check:release-readiness -- --pr=1
 npm run check:release-readiness -- --pr=1 --preview-url=https://hanfirstbirthday-f5wol7z9g-ianalysed.vercel.app
 ```
 
-The checker is read-only. It verifies PR `Validate` and Vercel signals, checks whether `main` has visible branch protection or rulesets, confirms that required Vercel Production environment variable names exist, treats shared `HOST_PIN_HASH` as informational, accepts Production `PARTY_SESSION_IS_TEST=true`, and can optionally recheck Preview routes plus `/api/party/session` with `--preview-url`. It does not print encrypted secret values.
+The checker is read-only. It verifies PR `Validate` and Vercel signals, checks whether `main` has visible branch protection or rulesets, confirms that required Vercel Production environment variable names exist, treats shared `HOST_PIN_HASH` as informational, and can optionally recheck Preview routes plus `/api/party/session` with `--preview-url`. It does not print encrypted secret values.
 
 ## Safe Release Flow
 

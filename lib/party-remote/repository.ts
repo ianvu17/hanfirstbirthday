@@ -15,6 +15,8 @@ import type { Locale } from "@/lib/i18n/routing";
 import type { RuntimePartyCommand } from "@/lib/party-runtime/runtime-contract";
 import {
   getDefaultPartyJoinCode,
+  getPartyDeploymentEnvironment,
+  getPartyKey,
   getPublicAppUrl,
   isDefaultPartyTestMode
 } from "@/lib/supabase/env";
@@ -24,8 +26,10 @@ import type {
   ParticipantRow,
   PartySessionRow,
   QuestionResponseRow,
+  RemoteNoSessionSnapshot,
   RemoteGuestSnapshot,
-  RemotePartySnapshot
+  RemotePartySnapshot,
+  SessionHistoryItem
 } from "./types";
 
 type PartyBundle = {
@@ -86,6 +90,15 @@ function buildJoinUrl(publicJoinCode: string, locale: Locale = "en") {
   return url.toString();
 }
 
+function getPartyContext() {
+  return {
+    partyKey: getPartyKey(),
+    deploymentEnvironment: getPartyDeploymentEnvironment(),
+    publicJoinCode: getDefaultPartyJoinCode(),
+    isTest: isDefaultPartyTestMode()
+  };
+}
+
 function rowToPartyState(bundle: PartyBundle): PartyState {
   const state = createInitialPartyState({
     ...bundle.config,
@@ -142,8 +155,10 @@ function rowToPartyState(bundle: PartyBundle): PartyState {
 }
 
 function partyStateToSessionPatch(state: PartyState, status: PartySessionRow["status"]) {
+  const nextStatus = state.phase === "finished" ? "finished" : status;
+
   return {
-    status: state.phase === "finished" ? "finished" : status,
+    status: nextStatus,
     phase: state.phase,
     current_question_index: state.currentQuestionIndex,
     current_question_id: state.currentQuestionId,
@@ -151,59 +166,160 @@ function partyStateToSessionPatch(state: PartyState, status: PartySessionRow["st
     question_deadline_at: isoFromMs(state.questionDeadlineAt),
     question_locked_at: isoFromMs(state.questionLockedAt),
     answer_revealed_at: isoFromMs(state.answerRevealedAt),
+    is_current: nextStatus === "finished" ? false : true,
+    started_at: undefined as string | undefined,
+    finished_at: nextStatus === "finished" ? new Date().toISOString() : undefined,
     revision: state.revision,
     last_command_id: state.lastAcceptedCommand,
     updated_at: new Date().toISOString()
   };
 }
 
-export async function ensureActivePartySession() {
+export async function loadCurrentPartySession() {
   const supabase = createSupabaseServiceClient();
-  const publicJoinCode = getDefaultPartyJoinCode();
-  const isTest = isDefaultPartyTestMode();
+  const context = getPartyContext();
 
   const existing = await supabase
     .from("party_sessions")
     .select("*")
-    .eq("public_join_code", publicJoinCode)
-    .eq("is_test", isTest)
+    .eq("party_key", context.partyKey)
+    .eq("deployment_environment", context.deploymentEnvironment)
+    .eq("is_current", true)
+    .order("updated_at", { ascending: false })
+    .limit(1)
     .maybeSingle<PartySessionRow>();
 
   if (existing.error) {
     throw existing.error;
   }
 
-  if (existing.data) {
-    return existing.data;
-  }
+  return existing.data;
+}
 
-  const inserted = await supabase
-    .from("party_sessions")
-    .insert({
-      public_join_code: publicJoinCode,
-      status: "active",
-      phase: "lobby",
-      display_locale: "en",
-      is_test: isTest
-    })
-    .select("*")
-    .single<PartySessionRow>();
+export async function createPartySession(
+  idempotencyKey: string,
+  options: { label?: string | null; archiveExisting?: boolean } = {}
+) {
+  const supabase = createSupabaseServiceClient();
+  const context = getPartyContext();
+  const inserted = await supabase.rpc("create_party_session", {
+    p_party_key: context.partyKey,
+    p_deployment_environment: context.deploymentEnvironment,
+    p_public_join_code: context.publicJoinCode,
+    p_is_test: context.isTest,
+    p_idempotency_key: idempotencyKey,
+    p_session_label: options.label ?? null,
+    p_archive_existing: options.archiveExisting ?? false
+  });
 
   if (inserted.error) {
     throw inserted.error;
   }
 
-  return inserted.data;
+  return inserted.data as PartySessionRow;
+}
+
+export async function archivePartySession(sessionId: string) {
+  const supabase = createSupabaseServiceClient();
+  const context = getPartyContext();
+  const archived = await supabase.rpc("archive_party_session", {
+    p_session_id: sessionId,
+    p_party_key: context.partyKey,
+    p_deployment_environment: context.deploymentEnvironment
+  });
+
+  if (archived.error) {
+    throw archived.error;
+  }
+
+  return archived.data as PartySessionRow;
+}
+
+export async function listSessionHistory(limit = 12): Promise<SessionHistoryItem[]> {
+  const supabase = createSupabaseServiceClient();
+  const context = getPartyContext();
+  const sessions = await supabase
+    .from("party_sessions")
+    .select("*")
+    .eq("party_key", context.partyKey)
+    .eq("deployment_environment", context.deploymentEnvironment)
+    .order("created_at", { ascending: false })
+    .limit(limit)
+    .returns<PartySessionRow[]>();
+
+  if (sessions.error) {
+    throw sessions.error;
+  }
+
+  const ids = sessions.data.map((session) => session.id);
+
+  if (ids.length === 0) {
+    return [];
+  }
+
+  const [participants, responses, commands] = await Promise.all([
+    supabase.from("participants").select("party_session_id").in("party_session_id", ids),
+    supabase.from("question_responses").select("party_session_id").in("party_session_id", ids),
+    supabase.from("host_command_log").select("party_session_id").in("party_session_id", ids)
+  ]);
+
+  if (participants.error) {
+    throw participants.error;
+  }
+  if (responses.error) {
+    throw responses.error;
+  }
+  if (commands.error) {
+    throw commands.error;
+  }
+
+  function counts(rows: { party_session_id: string }[]) {
+    const map = new Map<string, number>();
+
+    for (const row of rows) {
+      map.set(row.party_session_id, (map.get(row.party_session_id) ?? 0) + 1);
+    }
+
+    return map;
+  }
+
+  const participantCounts = counts(participants.data ?? []);
+  const responseCounts = counts(responses.data ?? []);
+  const commandCounts = counts(commands.data ?? []);
+
+  return sessions.data.map((session) => ({
+    id: session.id,
+    publicJoinCode: session.public_join_code,
+    status: session.status,
+    phase: session.phase,
+    revision: session.revision,
+    currentQuestionIndex: session.current_question_index,
+    currentQuestionId: session.current_question_id,
+    isTest: session.is_test,
+    isCurrent: session.is_current,
+    label: session.session_label,
+    createdAt: session.created_at,
+    updatedAt: session.updated_at,
+    finishedAt: session.finished_at,
+    archivedAt: session.archived_at,
+    participantCount: participantCounts.get(session.id) ?? 0,
+    responseCount: responseCounts.get(session.id) ?? 0,
+    hostCommandCount: commandCounts.get(session.id) ?? 0
+  }));
 }
 
 export async function loadPartyBundle(sessionId?: string): Promise<PartyBundle> {
   const supabase = createSupabaseServiceClient();
   const session = sessionId
     ? await supabase.from("party_sessions").select("*").eq("id", sessionId).single<PartySessionRow>()
-    : { data: await ensureActivePartySession(), error: null };
+    : { data: await loadCurrentPartySession(), error: null };
 
   if (session.error) {
     throw session.error;
+  }
+
+  if (!session.data) {
+    throw new Error("no_active_session");
   }
 
   const [participants, responses] = await Promise.all([
@@ -242,9 +358,15 @@ async function persistSessionState(
   expectedRevision: number
 ) {
   const supabase = createSupabaseServiceClient();
+  const patch = partyStateToSessionPatch(state, bundle.session.status);
+
+  if (!bundle.session.started_at && state.phase !== "lobby") {
+    patch.started_at = new Date().toISOString();
+  }
+
   const updated = await supabase
     .from("party_sessions")
-    .update(partyStateToSessionPatch(state, bundle.session.status))
+    .update(patch)
     .eq("id", bundle.session.id)
     .eq("revision", expectedRevision)
     .select("*")
@@ -309,8 +431,23 @@ async function persistTimeoutResponses(bundle: PartyBundle, state: PartyState) {
 
 export async function buildRemotePartySnapshot(
   participantSession?: ParticipantSession | null
-): Promise<RemotePartySnapshot | RemoteGuestSnapshot> {
-  const bundle = await autoLockExpiredQuestion(await loadPartyBundle());
+): Promise<RemotePartySnapshot | RemoteGuestSnapshot | RemoteNoSessionSnapshot> {
+  const session = await loadCurrentPartySession();
+
+  if (!session) {
+    const context = getPartyContext();
+    return {
+      mode: "remote",
+      configured: true,
+      session: null,
+      reason: "no_active_session",
+      context,
+      connection: "connected",
+      serverNow: Date.now()
+    };
+  }
+
+  const bundle = await autoLockExpiredQuestion(await loadPartyBundle(session.id));
   const state = rowToPartyState(bundle);
   const now = Date.now();
   const base: RemotePartySnapshot = {
@@ -319,10 +456,18 @@ export async function buildRemotePartySnapshot(
     session: {
       id: bundle.session.id,
       publicJoinCode: bundle.session.public_join_code,
+      partyKey: bundle.session.party_key,
+      deploymentEnvironment: bundle.session.deployment_environment,
       status: bundle.session.status,
       phase: bundle.session.phase,
       revision: bundle.session.revision,
-      isTest: bundle.session.is_test
+      isTest: bundle.session.is_test,
+      isCurrent: bundle.session.is_current,
+      label: bundle.session.session_label,
+      createdAt: bundle.session.created_at,
+      updatedAt: bundle.session.updated_at,
+      finishedAt: bundle.session.finished_at,
+      archivedAt: bundle.session.archived_at
     },
     projection: buildSharedPartyProjection(state, bundle.config, now),
     joinUrl: buildJoinUrl(bundle.session.public_join_code, bundle.session.display_locale),
@@ -401,9 +546,19 @@ export async function joinActiveParty(displayNameInput: string, locale: Locale) 
     };
   }
 
-  const session = await ensureActivePartySession();
+  const session = await loadCurrentPartySession();
 
-  if (session.status !== "active" || session.phase === "finished") {
+  if (!session) {
+    return {
+      ok: false as const,
+      error: {
+        code: "party_not_found" as const,
+        message: "No active party session is open yet."
+      }
+    };
+  }
+
+  if (!session.is_current || session.status !== "active" || session.phase === "finished") {
     return {
       ok: false as const,
       error: {
@@ -447,7 +602,19 @@ export async function submitRemoteResponse(
   selectedOptionId: string,
   submissionId: string
 ) {
-  const bundle = await autoLockExpiredQuestion(await loadPartyBundle());
+  const currentSession = await loadCurrentPartySession();
+
+  if (!currentSession) {
+    return {
+      ok: false as const,
+      error: {
+        code: "party_not_found" as const,
+        message: "No active party session is open."
+      }
+    };
+  }
+
+  const bundle = await autoLockExpiredQuestion(await loadPartyBundle(currentSession.id));
   const participant = await validateParticipantSession(bundle.session.id, participantSession);
 
   if (!participant) {
@@ -557,7 +724,38 @@ export async function runHostCommand(
   expectedRevision: number,
   commandId: string
 ) {
-  const bundle = await autoLockExpiredQuestion(await loadPartyBundle());
+  const currentSession = await loadCurrentPartySession();
+
+  if (!currentSession) {
+    return {
+      ok: false as const,
+      error: {
+        code: "party_not_found" as const,
+        message: "No active party session is open.",
+        revision: 0
+      },
+      snapshot: await buildRemotePartySnapshot()
+    };
+  }
+
+  const bundle = await autoLockExpiredQuestion(await loadPartyBundle(currentSession.id));
+  const duplicate = await loadHostCommand(bundle.session.id, commandId);
+
+  if (duplicate) {
+    return {
+      ok: duplicate.status === "accepted",
+      error:
+        duplicate.status === "accepted"
+          ? undefined
+          : {
+              code: "invalid_transition" as const,
+              message: duplicate.error_code ?? "That host action was already handled.",
+              revision: bundle.session.revision
+            },
+      snapshot: await buildRemotePartySnapshot()
+    };
+  }
+
   const state = rowToPartyState(bundle);
 
   if (state.revision !== expectedRevision) {
@@ -660,6 +858,26 @@ async function recordHostCommand(
     },
     { onConflict: "party_session_id,command_id", ignoreDuplicates: true }
   );
+}
+
+async function loadHostCommand(partySessionId: string, commandId: string) {
+  const supabase = createSupabaseServiceClient();
+  const command = await supabase
+    .from("host_command_log")
+    .select("status, error_code, accepted_revision")
+    .eq("party_session_id", partySessionId)
+    .eq("command_id", commandId)
+    .maybeSingle<{
+      status: "accepted" | "duplicate" | "rejected";
+      error_code: string | null;
+      accepted_revision: number | null;
+    }>();
+
+  if (command.error) {
+    throw command.error;
+  }
+
+  return command.data;
 }
 
 async function autoLockExpiredQuestion(bundle: PartyBundle): Promise<PartyBundle> {

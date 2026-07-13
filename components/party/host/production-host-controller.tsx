@@ -16,7 +16,12 @@ import type { Locale } from "@/lib/i18n/routing";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import type { RuntimePartyCommand } from "@/lib/party-runtime/runtime-contract";
 import { useRemotePartySnapshot } from "@/lib/party-remote/use-remote-party";
-import type { RemotePartySnapshot } from "@/lib/party-remote/types";
+import type {
+  RemoteNoSessionSnapshot,
+  RemotePartySnapshot,
+  SessionHistoryItem,
+  SessionManagementSnapshot
+} from "@/lib/party-remote/types";
 
 type HostStatus = {
   configured: boolean;
@@ -66,26 +71,64 @@ function nextAction(
 export function ProductionHostController({ locale }: { locale: Locale }) {
   const copy = getPartyUiCopy(locale);
   const { snapshot, connection, error, refresh, applySnapshot } =
-    useRemotePartySnapshot<RemotePartySnapshot>(false);
+    useRemotePartySnapshot<RemotePartySnapshot | RemoteNoSessionSnapshot>(false);
   const [hostStatus, setHostStatus] = useState<HostStatus | null>(null);
+  const [recentSessions, setRecentSessions] = useState<SessionHistoryItem[]>([]);
   const [pin, setPin] = useState("");
   const [loginError, setLoginError] = useState("");
   const [pending, setPending] = useState(false);
   const [commandMessage, setCommandMessage] = useState("");
   const [confirmFinish, setConfirmFinish] = useState(false);
 
+  async function loadSessionManagement() {
+    const response = await fetch("/api/party/sessions", { cache: "no-store" });
+
+    if (!response.ok) {
+      return;
+    }
+
+    const payload = (await response.json()) as SessionManagementSnapshot;
+    setRecentSessions(payload.recentSessions);
+    applySnapshot(payload.current);
+  }
+
   useEffect(() => {
     async function loadStatus() {
       const response = await fetch("/api/party/host/status", { cache: "no-store" });
-      setHostStatus(await response.json());
+      const status = (await response.json()) as HostStatus;
+      setHostStatus(status);
     }
 
     void loadStatus();
   }, []);
 
+  useEffect(() => {
+    if (!hostStatus?.authorized) {
+      return;
+    }
+
+    let cancelled = false;
+    const handle = window.setTimeout(async () => {
+      const response = await fetch("/api/party/sessions", { cache: "no-store" });
+
+      if (!response.ok || cancelled) {
+        return;
+      }
+
+      const payload = (await response.json()) as SessionManagementSnapshot;
+      setRecentSessions(payload.recentSessions);
+      applySnapshot(payload.current);
+    }, 0);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(handle);
+    };
+  }, [applySnapshot, hostStatus?.authorized]);
+
   const capabilities = useMemo(
     () =>
-      snapshot
+      snapshot?.session
         ? selectHostCapabilities({
             sessionId: snapshot.session.id,
             phase: snapshot.projection.phase,
@@ -109,7 +152,7 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
     [snapshot]
   );
   const action =
-    snapshot && capabilities
+    snapshot?.session && capabilities
       ? nextAction(snapshot.projection.phase, capabilities, copy)
       : null;
 
@@ -134,11 +177,52 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
 
     setHostStatus({ configured: true, authorized: true });
     setPin("");
-    void refresh();
+    void loadSessionManagement();
+  }
+
+  async function mutateSession(body: Record<string, unknown>) {
+    setPending(true);
+    setCommandMessage("");
+
+    const response = await fetch("/api/party/sessions", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+    const payload = await response.json();
+    setPending(false);
+
+    if (!response.ok) {
+      setCommandMessage(payload.error?.message ?? "That session action was not accepted.");
+      return;
+    }
+
+    const management = payload as SessionManagementSnapshot;
+    setRecentSessions(management.recentSessions);
+    applySnapshot(management.current);
+    setCommandMessage(copy.connected);
+  }
+
+  function createSession() {
+    void mutateSession({
+      action: "create",
+      idempotencyKey: `host-create:${globalThis.crypto.randomUUID()}`,
+      label: `Session ${new Date().toLocaleString()}`
+    });
+  }
+
+  function archiveSession(sessionId: string) {
+    void mutateSession({
+      action: "archive",
+      sessionId
+    });
   }
 
   async function runCommand(command: RuntimePartyCommand["type"]) {
-    if (!snapshot) {
+    if (!snapshot?.session) {
       return;
     }
 
@@ -154,7 +238,7 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
       body: JSON.stringify({
         type: command,
         expectedRevision: snapshot.session.revision,
-        commandId: `${command}:${snapshot.session.revision}:${Date.now()}`
+        commandId: `${snapshot.session.id}:${command}:${snapshot.session.revision}`
       })
     });
     const payload = await response.json();
@@ -164,14 +248,14 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
     if (!response.ok || !payload.ok) {
       setCommandMessage(payload.error?.message ?? "That host action was not accepted.");
       if (payload.snapshot) {
-        applySnapshot(payload.snapshot as RemotePartySnapshot);
+        applySnapshot(payload.snapshot as RemotePartySnapshot | RemoteNoSessionSnapshot);
       } else {
         void refresh();
       }
       return;
     }
 
-    applySnapshot(payload.snapshot as RemotePartySnapshot);
+    applySnapshot(payload.snapshot as RemotePartySnapshot | RemoteNoSessionSnapshot);
     setCommandMessage(copy.connected);
   }
 
@@ -230,6 +314,42 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
             <p className="font-bold text-muted-foreground">
               {error?.message ?? copy.connecting}
             </p>
+          </div>
+        </PaperPanel>
+      </section>
+    );
+  }
+
+  const currentSession = snapshot.session;
+
+  if (!currentSession) {
+    return (
+      <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-2xl items-center pb-[env(safe-area-inset-bottom)]">
+        <PaperPanel tone="admin" className="w-full">
+          <div className="space-y-5">
+            <div>
+              <BirthdayBadge tone="yellow">{copy.hostControls}</BirthdayBadge>
+              <h1 className="mt-3 font-display text-4xl font-extrabold text-foreground">
+                {copy.noActiveSession}
+              </h1>
+              <p className="mt-2 font-bold leading-7 text-muted-foreground">
+                {copy.createNewSessionDescription}
+              </p>
+            </div>
+
+            {commandMessage ? (
+              <div className="flex gap-2 rounded-[0.9rem] border border-party-orange/30 bg-surface-highlight/70 p-3 text-sm font-bold" role="status">
+                <AlertCircle className="h-5 w-5 text-party-red" aria-hidden="true" />
+                <span>{commandMessage}</span>
+              </div>
+            ) : null}
+
+            <Button type="button" disabled={pending} onClick={createSession} className="min-h-16 w-full text-lg">
+              <PartyPopper aria-hidden="true" />
+              {pending ? copy.submitting : copy.createNewSession}
+            </Button>
+
+            <SessionHistory copy={copy} sessions={recentSessions} onArchive={archiveSession} pending={pending} />
           </div>
         </PaperPanel>
       </section>
@@ -296,6 +416,25 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
             </p>
           </div>
 
+          <div className="grid grid-cols-2 gap-3 text-sm font-bold text-muted-foreground">
+            <p>
+              {copy.sessionShortId}:{" "}
+              <span className="text-foreground">{currentSession.id.slice(0, 8)}</span>
+            </p>
+            <p>
+              {copy.environment}:{" "}
+              <span className="text-foreground">{currentSession.deploymentEnvironment}</span>
+            </p>
+            <p>
+              {copy.joinCode}:{" "}
+              <span className="text-foreground">{currentSession.publicJoinCode}</span>
+            </p>
+            <p>
+              {copy.created}:{" "}
+              <span className="text-foreground">{new Date(currentSession.createdAt).toLocaleString()}</span>
+            </p>
+          </div>
+
           {commandMessage ? (
             <div className="flex gap-2 rounded-[0.9rem] border border-party-orange/30 bg-surface-highlight/70 p-3 text-sm font-bold" role="status">
               {commandMessage === copy.connected ? (
@@ -336,11 +475,99 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
               className="min-h-16 w-full text-lg"
             >
               <PartyPopper aria-hidden="true" />
-              {pending ? copy.submitting : action?.label ?? copy.waitingHost}
+              {pending
+                ? copy.submitting
+                : action?.command === "PREPARE_FIRST_QUESTION"
+                  ? copy.startGame
+                  : action?.label ?? copy.waitingHost}
             </Button>
           )}
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={pending}
+              onClick={() => archiveSession(currentSession.id)}
+            >
+              {copy.archiveSession}
+            </Button>
+            <Button type="button" variant="outline" disabled={pending} onClick={() => void loadSessionManagement()}>
+              {copy.reconnecting}
+            </Button>
+          </div>
+
+          <SessionHistory copy={copy} sessions={recentSessions} onArchive={archiveSession} pending={pending} />
         </div>
       </PaperPanel>
+    </section>
+  );
+}
+
+function SessionHistory({
+  copy,
+  sessions,
+  onArchive,
+  pending
+}: {
+  copy: ReturnType<typeof getPartyUiCopy>;
+  sessions: SessionHistoryItem[];
+  onArchive: (sessionId: string) => void;
+  pending: boolean;
+}) {
+  if (sessions.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="space-y-3">
+      <h2 className="font-display text-2xl font-extrabold text-foreground">
+        {copy.sessionHistory}
+      </h2>
+      <div className="grid gap-3">
+        {sessions.map((session) => (
+          <div
+            key={session.id}
+            className="rounded-[1rem] border border-border bg-surface-paper p-4 shadow-lift"
+          >
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-extrabold uppercase text-muted-foreground">
+                  {copy.sessionShortId} {session.id.slice(0, 8)}
+                </p>
+                <p className="mt-1 font-extrabold text-foreground">
+                  {session.phase} - {session.status}
+                  {session.isCurrent ? ` - ${copy.current}` : ""}
+                </p>
+              </div>
+              <BirthdayBadge tone={session.isTest ? "yellow" : "blue"}>
+                {session.isTest ? copy.testSession : copy.productionSession}
+              </BirthdayBadge>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs font-bold text-muted-foreground">
+              <span>{copy.participants}: {session.participantCount}</span>
+              <span>{copy.responses}: {session.responseCount}</span>
+              <span>{copy.commands}: {session.hostCommandCount}</span>
+              <span>{copy.revision}: {session.revision}</span>
+              <span className="col-span-2">{copy.created}: {new Date(session.createdAt).toLocaleString()}</span>
+              {session.finishedAt ? (
+                <span className="col-span-2">{copy.finishedAt}: {new Date(session.finishedAt).toLocaleString()}</span>
+              ) : null}
+            </div>
+            {session.status !== "archived" ? (
+              <Button
+                type="button"
+                variant="outline"
+                disabled={pending}
+                onClick={() => onArchive(session.id)}
+                className="mt-3 w-full"
+              >
+                {copy.archiveSession}
+              </Button>
+            ) : null}
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

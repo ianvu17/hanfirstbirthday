@@ -7,7 +7,7 @@ import {
   joinActiveParty,
   parseParticipantCookieValue,
   validateParticipantSession,
-  ensureActivePartySession,
+  loadCurrentPartySession,
   buildRemotePartySnapshot
 } from "@/lib/party-remote/repository";
 import { isLocale } from "@/lib/i18n/routing";
@@ -50,7 +50,20 @@ export async function POST(request: Request) {
     const existingSession = parseParticipantCookieValue(
       cookieStore.get("han_participant_session")?.value
     );
-    const partySession = await ensureActivePartySession();
+    const partySession = await loadCurrentPartySession();
+
+    if (!partySession) {
+      return NextResponse.json(
+        {
+          error: {
+            code: "party_not_found",
+            message: "No active party session is open yet."
+          }
+        },
+        { status: 404 }
+      );
+    }
+
     const existingParticipant = await validateParticipantSession(partySession.id, existingSession);
 
     if (existingParticipant) {

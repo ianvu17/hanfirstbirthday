@@ -15,6 +15,8 @@ export type RemoteConnectionState =
 export type PartySessionRow = {
   id: string;
   public_join_code: string;
+  party_key: string;
+  deployment_environment: "development" | "preview" | "production";
   status: "draft" | "active" | "finished" | "archived";
   phase:
     | "lobby"
@@ -33,8 +35,14 @@ export type PartySessionRow = {
   answer_revealed_at: string | null;
   display_locale: Locale;
   is_test: boolean;
+  is_current: boolean;
   revision: number;
   last_command_id: string | null;
+  session_label: string | null;
+  create_idempotency_key: string | null;
+  started_at: string | null;
+  finished_at: string | null;
+  archived_at: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -65,19 +73,68 @@ export type QuestionResponseRow = {
   is_test: boolean;
 };
 
+export type SessionHistoryItem = {
+  id: string;
+  publicJoinCode: string;
+  status: PartySessionRow["status"];
+  phase: PartySessionRow["phase"];
+  revision: number;
+  currentQuestionIndex: number | null;
+  currentQuestionId: string | null;
+  isTest: boolean;
+  isCurrent: boolean;
+  label: string | null;
+  createdAt: string;
+  updatedAt: string;
+  finishedAt: string | null;
+  archivedAt: string | null;
+  participantCount: number;
+  responseCount: number;
+  hostCommandCount: number;
+};
+
+export type SessionManagementSnapshot = {
+  current: RemotePartySnapshot | RemoteNoSessionSnapshot;
+  recentSessions: SessionHistoryItem[];
+};
+
 export type RemotePartySnapshot = {
   mode: "remote";
   configured: true;
+  reason?: never;
   session: {
     id: string;
     publicJoinCode: string;
+    partyKey: string;
+    deploymentEnvironment: PartySessionRow["deployment_environment"];
     status: PartySessionRow["status"];
     phase: PartySessionRow["phase"];
     revision: number;
     isTest: boolean;
+    isCurrent: boolean;
+    label: string | null;
+    createdAt: string;
+    updatedAt: string;
+    finishedAt: string | null;
+    archivedAt: string | null;
   };
   projection: SharedPartyProjection;
   joinUrl: string;
+  connection: RemoteConnectionState;
+  serverNow: number;
+};
+
+export type RemoteNoSessionSnapshot = {
+  mode: "remote";
+  configured: true;
+  session: null;
+  reason: "no_active_session";
+  context: {
+    partyKey: string;
+    deploymentEnvironment: PartySessionRow["deployment_environment"];
+    publicJoinCode: string;
+    isTest: boolean;
+  };
   connection: RemoteConnectionState;
   serverNow: number;
 };
@@ -93,6 +150,7 @@ export type RemoteGuestSnapshot = RemotePartySnapshot & {
 
 export type RemoteApiErrorCode =
   | "supabase_not_configured"
+  | "no_active_session"
   | "party_not_found"
   | "join_closed"
   | "invalid_name"

@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import type { Locale } from "@/lib/i18n/routing";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import { useRemotePartySnapshot } from "@/lib/party-remote/use-remote-party";
-import type { RemoteGuestSnapshot } from "@/lib/party-remote/types";
+import type { RemoteGuestSnapshot, RemoteNoSessionSnapshot } from "@/lib/party-remote/types";
 
 type RemoteGuestControllerProps = {
   locale: Locale;
@@ -82,7 +82,7 @@ function phaseLabel(phase: string, copy: ReturnType<typeof getPartyUiCopy>) {
 export function RemoteGuestController({ locale, displayName }: RemoteGuestControllerProps) {
   const copy = getPartyUiCopy(locale);
   const { snapshot, connection, error, refresh, applySnapshot } =
-    useRemotePartySnapshot<RemoteGuestSnapshot>(true);
+    useRemotePartySnapshot<RemoteGuestSnapshot | RemoteNoSessionSnapshot>(true);
   const [joinError, setJoinError] = useState("");
   const [isJoining, setIsJoining] = useState(false);
   const [draft, setDraft] = useState<{
@@ -91,8 +91,8 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
     error: string;
   }>({ questionId: null, selectedOptionId: null, error: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const projection = snapshot?.guest ?? null;
-  const participant = snapshot?.participant ?? null;
+  const projection = snapshot?.session && "guest" in snapshot ? snapshot.guest : null;
+  const participant = snapshot?.session && "participant" in snapshot ? snapshot.participant : null;
   const question = projection?.currentQuestion ?? null;
 
   useEffect(() => {
@@ -215,6 +215,24 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
                 {copy.backToWelcome}
               </Link>
             </Button>
+          </div>
+        </PaperPanel>
+      </section>
+    );
+  }
+
+  if (snapshot && !snapshot.session) {
+    return (
+      <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-xl items-center">
+        <PaperPanel tone="paper" className="w-full text-center">
+          <div className="space-y-4">
+            <BirthdayBadge tone="yellow">{copy.remoteProductionSession}</BirthdayBadge>
+            <h1 className="font-display text-4xl font-extrabold text-foreground">
+              {copy.noActiveSession}
+            </h1>
+            <p className="font-bold text-muted-foreground">
+              {copy.noActiveSessionDescription}
+            </p>
           </div>
         </PaperPanel>
       </section>
