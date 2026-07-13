@@ -162,7 +162,7 @@ Completion record:
 
 ## Milestone 5: Shared Session And Realtime Synchronization
 
-Status: Implemented; hosted Supabase validation and Vercel preview deployment passed; awaiting Ian human approval gate, physical device rehearsal, and final production setup.
+Status: Implemented; hosted Supabase validation and Vercel preview deployment passed; awaiting Ian human approval gate, physical device rehearsal, real Host PIN rehearsal, final production activation review, and production QR verification.
 
 Goals:
 
@@ -180,9 +180,33 @@ Exit criteria:
 - Party Screen QR is generated from the runtime join URL.
 - QA/test data is tagged through `is_test`.
 - Hosted Supabase migrations, live anon RLS validation, Vercel preview deployment, and browser-context realtime rehearsal have passed.
-- Remaining approval evidence requires real Host PIN entry rehearsal, final production environment setup, production QR origin verification, and physical multi-device rehearsal.
+- Remaining approval evidence requires real Host PIN entry rehearsal, final production activation review, production QR origin verification, and physical multi-device rehearsal.
 
-## Milestone 6: Messages, Timeline Placeholder, Gallery Placeholder
+## Milestone 6: Event Readiness And Content Lock
+
+Status: Recommended next milestone from the July 13, 2026 repository audit.
+
+Goals:
+
+- Replace development quiz fixtures with Ian-approved bilingual quiz content or introduce an approved production content-loading path.
+- Verify English and Vietnamese player, display, and host flows with approved content.
+- Validate production or final-preview QR origin from real phones.
+- Rehearse real Host PIN entry end to end.
+- Run a physical laptop/TV plus two-phone rehearsal on the target network.
+- Capture final readiness evidence in documentation.
+
+Exit criteria:
+
+- `npm run validate` passes locally and in CI.
+- Hosted RLS and realtime validation pass against the release candidate.
+- Party Screen QR resolves to a non-localhost approved origin.
+- Host can unlock, create/start/advance/finish a session with the real event credential.
+- Two real phones can join, answer, refresh/reconnect, reject duplicates/late submissions, and see final score behavior.
+- Party Screen is legible on the target display.
+- No invented Han content is introduced.
+- Rehearsal/test data is tagged and separated from event rows.
+
+## Milestone 7: Messages, Timeline Placeholder, Gallery Placeholder
 
 Goals:
 
@@ -198,7 +222,7 @@ Exit criteria:
 - Timeline and gallery do not imply fake content.
 - Empty states feel intentional and warm.
 
-## Milestone 7: Lightweight Admin And QA Mode
+## Milestone 8: Lightweight Admin And QA Mode
 
 Goals:
 
@@ -214,21 +238,20 @@ Exit criteria:
 - Test data does not pollute production event data.
 - QA checklist passes on target devices.
 
-## Milestone 8: Event Readiness And Deployment
+## Milestone 9: Deployment Hardening And Post-Readiness
 
 Goals:
 
-- Deploy preview and production to Vercel.
-- Validate QR code entry.
-- Run full mobile and Party Screen display tests.
-- Confirm Supabase production data safety.
-- Finalize real content and assets provided by Ian.
+- Harden the already configured GitHub/Vercel deployment path after Milestone 6 readiness evidence.
+- Validate production deployment health after merge or release activation.
+- Confirm Supabase production data safety after final rehearsal cleanup.
+- Finalize any remaining real assets provided by Ian.
 
 Exit criteria:
 
-- Production URL is stable.
-- QR code works from guest devices.
-- Live Party Screen is display-ready.
+- Production URL remains stable after release activation.
+- QR code continues to work from guest devices.
+- Live Party Screen remains display-ready.
 - No placeholder content remains in required guest-facing MVP paths unless intentionally approved.
 
 ## Post-Event Enhancements

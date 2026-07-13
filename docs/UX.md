@@ -48,7 +48,7 @@ The shared Party Screen should eventually support:
 7. Next-question preparation.
 8. Finished state with final leaderboard, celebration, and thank-you.
 
-This is a planning flow only. Quiz runtime, realtime updates, Supabase, networking, and host controls are deferred.
+Milestone 5 implements this flow for the quiz runtime, Supabase-backed shared state, realtime wake-up, server snapshots, and host controls. Messages, timeline, gallery, and standalone mobile leaderboard remain future work.
 
 ## Game Phases
 
@@ -71,7 +71,7 @@ Milestone 3 implemented the guest entry portion only:
 5. Ready.
 6. Quiz-coming-soon placeholder.
 
-The quiz engine, result, leaderboard, messages, admin behavior, QA tools, and Supabase persistence remain deferred.
+Milestone 4 replaced the quiz-coming-soon boundary with the local Party Engine and Milestone 5 added the Supabase-backed remote runtime. Messages, gallery, timeline, standalone mobile leaderboard, and full admin message/score utilities remain deferred.
 
 ## Screen Specifications
 

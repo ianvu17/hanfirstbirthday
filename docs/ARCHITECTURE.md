@@ -34,7 +34,7 @@ The phone must not become a second presentation screen. It should only display i
 
 The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic.
 
-Milestone 3.6 does not implement quiz runtime, realtime, Supabase, networking, or host controls. These responsibilities are architecture planning constraints for future milestones.
+Milestone 3.6 originally documented this surface model before runtime work. Milestone 4 implemented the local Party Engine and Milestone 5 implemented the Supabase-backed remote runtime, realtime wake-up model, server route boundaries, and production Host Controller.
 
 ## Shared Game Lifecycle
 
@@ -96,15 +96,16 @@ The exact structure started in Milestone 1 and Milestone 2. Feature folders shou
 
 ## Routing Plan
 
-Guest routes:
+Current and planned guest routes:
 
 - `/{locale}`: welcome and entry.
-- `/{locale}/quiz`: quiz flow.
-- `/{locale}/result`: result screen.
-- `/{locale}/leaderboard`: mobile leaderboard.
-- `/{locale}/message`: leave a birthday message.
-- `/{locale}/timeline`: placeholder or future timeline.
-- `/{locale}/gallery`: placeholder or future gallery.
+- `/{locale}/play`: implemented phone Guest Controller route for local or remote runtime.
+- `/{locale}/quiz`: older planned quiz-flow route; current implementation uses `/{locale}/play`.
+- `/{locale}/result`: planned result screen if separated from the controller.
+- `/{locale}/leaderboard`: planned mobile leaderboard.
+- `/{locale}/message`: planned leave-a-birthday-message route.
+- `/{locale}/timeline`: planned placeholder or future timeline.
+- `/{locale}/gallery`: planned placeholder or future gallery.
 
 Display routes:
 
@@ -122,7 +123,8 @@ Admin routes:
 QA routes:
 
 - `/{locale}/qa`: QA mode entry.
-- `/{locale}/qa/quiz`: test quiz flow.
+- `/{locale}/qa/party`: implemented local Party Engine harness with host controls, display preview, and guest preview.
+- `/{locale}/qa/quiz`: older planned test quiz route; current implementation uses `/{locale}/qa/party`.
 
 Route protection and final URLs should be decided during implementation planning.
 
@@ -294,66 +296,63 @@ Persistence should happen at clear boundaries so refreshes and duplicate taps do
 - Content schema validation should run during development/build once implementation begins.
 - Missing translation keys should block production release.
 
-## Supabase Schema Plan
+## Supabase Schema
 
-Tables should be finalized before migration implementation.
+Milestone 5 implements the runtime schema in `supabase/migrations/`. The older draft list below is retained only as historical planning context for features that are not yet implemented, such as messages.
 
-### `participants`
+### Implemented Runtime Tables
+
+#### `party_sessions`
+
+Authoritative shared party snapshot: join code, party key, deployment environment, current-session flag, lifecycle status, phase, current question references, question timestamps, display locale, test metadata, monotonic revision, session label, creation idempotency key, and lifecycle timestamps.
+
+#### `participants`
 
 Purpose: Store guest identity for event interactions.
 
 Fields:
 
 - `id`.
+- `party_session_id`.
 - `display_name`.
 - `locale`.
-- `device_fingerprint` or equivalent non-sensitive duplicate-prevention token if approved.
+- `resume_token_hash`.
+- `joined_at`.
+- `last_seen_at`.
 - `is_test`.
-- `created_at`.
 
-### `quiz_attempts`
+#### `question_responses`
 
-Purpose: Store one guest's quiz session.
+Purpose: Store one immutable response for one participant/question in one party session.
 
 Fields:
 
 - `id`.
+- `party_session_id`.
 - `participant_id`.
-- `status`.
-- `score`.
-- `total_questions`.
-- `started_at`.
-- `completed_at`.
-- `is_test`.
-
-Constraints:
-
-- Enforce one active or completed attempt per participant/event scope if the approved guest identity model needs it.
-
-### `question_responses`
-
-Purpose: Store one immutable response for one question within one quiz attempt.
-
-Fields:
-
-- `id`.
-- `attempt_id`.
 - `question_id`.
-- `selected_answer_id` or null for timeout.
-- `status`, such as `accepted` or `timed_out`.
-- `is_correct`.
-- `timed_out`.
+- `selected_option_id` or null for timeout.
+- `status`: `locked_answer` or `locked_timeout`.
 - `submitted_at`.
 - `locked_at`.
 - `response_duration_ms`.
-- `idempotency_key` or equivalent retry token.
+- `is_correct`.
+- `submission_id`.
+- `is_test`.
 
 Constraints:
 
-- Enforce one accepted question response per quiz attempt per question.
-- Once accepted or timed out, a question response must not be reopened or edited.
-- Retried requests with the same idempotency key or equivalent retry token should return the existing locked response instead of creating a duplicate.
+- Enforce one response per party session, participant, and question.
+- Enforce timeout rows with no selected option and answer rows with a selected option.
+- Enforce non-negative response duration when present.
+- Enforce unique submission ids per party session and participant.
 - Final score should be calculated from accepted locked question responses.
+
+#### `host_command_log`
+
+Compact command audit for accepted or rejected host commands. Command ids are unique within a party session.
+
+### Planned Future Tables
 
 ### `messages`
 
@@ -381,7 +380,7 @@ Fields:
 - `value`.
 - `updated_at`.
 
-Future shared game state may live in `event_settings` or a dedicated table once the runtime model is approved. Milestone 3.6 intentionally does not choose a database shape.
+Future non-game settings may live in `event_settings` or a dedicated table if needed. Shared quiz runtime state now lives in `party_sessions` plus immutable response rows.
 
 Milestone 5 database implementation supersedes the older draft table list for quiz runtime:
 
@@ -418,17 +417,21 @@ The response endpoint calls `touch_party_session_response` after a new accepted 
 
 ## API Structure
 
-Potential server actions or route handlers:
+Implemented Milestone 5 route handlers:
 
-- Create or resume participant.
-- Start quiz attempt.
-- Submit question response.
-- Lock timed-out question response.
-- Complete quiz attempt.
+- `GET /api/party/session`: returns display-safe or participant-safe snapshot based on participant cookie.
+- `GET /api/party/sessions`: host-authorized current plus recent session history.
+- `POST /api/party/sessions`: host-authorized create/archive session actions.
+- `POST /api/party/join`: validates display name/locale, creates participant, sets `han_participant_session`.
+- `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
+- `POST /api/party/host/login`: verifies host PIN and sets `han_host_session`.
+- `GET /api/party/host/status`: reports host auth configuration/session status.
+- `POST /api/party/host/command`: verifies host cookie, expected revision, and Party Engine transition before persisting.
+
+Planned future route handlers:
+
 - Fetch result.
-- Fetch leaderboard.
-- Fetch shared game state.
-- Advance shared game phase.
+- Fetch standalone mobile leaderboard.
 - Submit message.
 - Admin fetch final quiz scores.
 - Admin fetch messages.
@@ -436,15 +439,6 @@ Potential server actions or route handlers:
 - QA reset test data.
 
 All mutation paths should validate input, preserve immutable locked responses, and prevent duplicate question responses.
-
-Milestone 5 production route handlers:
-
-- `GET /api/party/session`: returns display-safe or participant-safe snapshot based on participant cookie.
-- `POST /api/party/join`: validates display name/locale, creates participant, sets `han_participant_session`.
-- `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
-- `POST /api/party/host/login`: verifies host PIN and sets `han_host_session`.
-- `GET /api/party/host/status`: reports host auth configuration/session status.
-- `POST /api/party/host/command`: verifies host cookie, expected revision, and Party Engine transition before persisting.
 
 ## Admin And QA Separation
 
@@ -458,8 +452,10 @@ Milestone 5 production route handlers:
 
 - Vercel hosts the Next.js application.
 - Supabase hosts database and real-time services.
-- Environment variables should be documented when implementation begins.
-- Preview deployments should use separate or clearly tagged test data.
+- Environment variables are documented in `.env.example`, `README.md`, `docs/MILESTONE_5_REVIEW.md`, and `docs/DEPLOYMENT.md`.
+- GitHub Actions runs `npm run validate`; manual live validation runs hosted RLS and optional realtime rehearsal.
+- Normal deployments should use GitHub-driven Vercel integration. Local Vercel CLI deploys are reserved for diagnostics or approved emergency/manual fallback.
+- Preview and production current sessions are isolated by `party_key + deployment_environment + is_current`; `PARTY_SESSION_IS_TEST` is metadata for rehearsal/test rows.
 
 ## Future Scalability
 

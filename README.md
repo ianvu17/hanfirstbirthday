@@ -95,11 +95,11 @@ Current route status:
 - `/en/qa` and `/vi/qa`: QA-route boundary placeholder.
 - `/en/qa/party` and `/vi/qa/party`: local host controls plus Party Screen and guest-controller simulation.
 
-Milestone 5 adds version-controlled Supabase schema, RLS policy intent, server-authoritative host commands, server-authoritative response submission, participant resume cookies, Host PIN session cookies, remote snapshot polling/realtime resync, and QA/production data tagging. Hosted Supabase migrations, live anon RLS validation, Vercel preview deployment, and browser-context realtime rehearsal have passed; physical laptop/two-phone rehearsal, real Host PIN entry rehearsal, final production env setup, and production QR origin verification remain.
+Milestone 5 adds version-controlled Supabase schema, RLS policies, server-authoritative host commands, server-authoritative response submission, participant resume cookies, Host PIN session cookies, remote snapshot polling/realtime resync, and QA/production data tagging. Hosted Supabase migrations, live anon RLS validation, Vercel preview deployment, and browser-context realtime rehearsal have passed; physical laptop/two-phone rehearsal, real Host PIN entry rehearsal, final production activation review, and production QR origin verification remain.
 
 ## Supabase Setup
 
-Create `.env.local` from `.env.example`, set the public Supabase URL/anon key, server-only service role key, host PIN hash/session secret, and public app URL. Keep preview/local validation on `PARTY_SESSION_IS_TEST=true`. Production with `PARTY_SESSION_IS_TEST=true` is supported; the value only selects the default session row.
+Create `.env.local` from `.env.example`, set the public Supabase URL/anon key, server-only service role key, host PIN hash/session secret, and public app URL. Keep preview/local validation on `PARTY_SESSION_IS_TEST=true`. That flag is metadata for rehearsal/test rows only; current session selection is scoped by `PARTY_KEY`, `PARTY_DEPLOYMENT_ENVIRONMENT` or `VERCEL_ENV`, and the database `is_current` flag.
 
 To create a safe local skeleton and generate a missing `HOST_SESSION_SECRET` without printing it:
 

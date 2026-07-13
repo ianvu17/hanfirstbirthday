@@ -381,12 +381,12 @@ function checkVercelProductionEnv(): CheckResult {
     originBlocker
   ].filter(Boolean);
   const info = [
-    "Production with PARTY_SESSION_IS_TEST=true is a supported deployment; the value only selects the default session row.",
+    "Production with PARTY_SESSION_IS_TEST=true is a supported deployment; the value is metadata for rehearsal/test rows, not the current-session selector.",
     hostPinHash?.target?.includes("preview")
       ? "HOST_PIN_HASH is shared between Preview and Production; accepted for this project."
       : "",
     partySessionMode?.target?.includes("preview")
-      ? "PARTY_SESSION_IS_TEST targets both Preview and Production; this is accepted because it is only the default session selector."
+      ? "PARTY_SESSION_IS_TEST targets both Preview and Production; this is accepted because current sessions are scoped by party key, deployment environment, and is_current."
       : "",
     productionIsTest
       ? `Production PARTY_SESSION_IS_TEST is detected as ${productionIsTest}; readiness does not require switching this value.`
