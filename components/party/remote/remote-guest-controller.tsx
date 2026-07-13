@@ -366,9 +366,7 @@ export function RemoteGuestController({
                   ? `${seconds(projection.remainingMs)}s`
                   : phaseLabel(projection.phase, copy)}
               </BirthdayBadge>
-              {connection === "connected" ? (
-                <span className="sr-only">{`${copy.connection}: ${copy.connected}`}</span>
-              ) : (
+              {connection === "connected" ? null : (
                 <ConnectionStatusBadge connection={connection} copy={copy} />
               )}
             </div>
