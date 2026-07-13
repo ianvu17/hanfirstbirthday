@@ -205,7 +205,7 @@ Milestone 5 checks:
 - Use `npm run test:realtime:live` against an isolated local server and `LIVE_REALTIME_JOIN_CODE=codex-m5-*` to rehearse hosted Supabase realtime with independent display, host, English guest, and Vietnamese guest browser contexts.
 - Set `LIVE_REALTIME_HOST_PIN` through a silent shell prompt for final rehearsal when the real Host PIN route must be validated end to end.
 - Use `npm run vercel:push-env -- --target=preview --dry-run` after Vercel linking to verify required preview env values without printing secrets, then rerun without `--dry-run` to push them.
-- Use `npx vercel deploy --yes` for preview deployment. The default CLI deploy is preview; do not pass `--target=preview`.
+- Use native Vercel Git integration for normal preview deployments from GitHub commits. `npx vercel deploy --yes` is now a legacy/manual preview fallback only; do not pass `--target=preview`.
 - Use `npm run check:visual:milestone5` against a running server to capture `/display/party`, English/Vietnamese guest controller, production Host PIN screen, and QA harness screenshots.
 - Hosted Supabase RLS, Vercel preview deployment, and browser-context realtime validation have passed; physical multi-device rehearsal remains required before event approval.
 - Physical rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.

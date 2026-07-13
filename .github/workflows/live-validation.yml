@@ -1,0 +1,70 @@
+name: Live Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_realtime:
+        description: Run browser realtime validation after RLS validation
+        required: true
+        type: boolean
+        default: false
+      live_realtime_base_url:
+        description: Deployed preview URL for realtime validation, without trailing slash
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-validation-preview
+  cancel-in-progress: false
+
+jobs:
+  hosted-validation:
+    name: Hosted Supabase Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: preview-validation
+
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      NEXT_PUBLIC_APP_URL: ${{ vars.NEXT_PUBLIC_APP_URL }}
+      PARTY_JOIN_CODE: ${{ vars.PARTY_JOIN_CODE }}
+      PARTY_SESSION_IS_TEST: "true"
+      HOST_PIN_HASH: ${{ secrets.HOST_PIN_HASH }}
+      HOST_SESSION_SECRET: ${{ secrets.HOST_SESSION_SECRET }}
+      LIVE_REALTIME_BASE_URL: ${{ inputs.live_realtime_base_url }}
+      LIVE_REALTIME_JOIN_CODE: ${{ vars.LIVE_REALTIME_JOIN_CODE }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate hosted RLS
+        run: npm run test:rls:live
+
+      - name: Check realtime validation inputs
+        if: ${{ inputs.run_realtime }}
+        run: |
+          test -n "$LIVE_REALTIME_BASE_URL"
+          test -n "$LIVE_REALTIME_JOIN_CODE"
+
+      - name: Install Playwright Chromium
+        if: ${{ inputs.run_realtime }}
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate hosted realtime preview
+        if: ${{ inputs.run_realtime }}
+        run: npm run test:realtime:live

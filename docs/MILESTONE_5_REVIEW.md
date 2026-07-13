@@ -284,6 +284,8 @@ Confirm participant joins, host phase changes, question transitions, answer subm
 
 Set the same environment variable names in Vercel before preview or production deployment. Preview deployments should keep `PARTY_SESSION_IS_TEST=true`; the final event production environment should explicitly set `PARTY_SESSION_IS_TEST=false`. `SUPABASE_SERVICE_ROLE_KEY`, `HOST_PIN_HASH`, `HOST_PIN`, and `HOST_SESSION_SECRET` must remain server-only environment variables and must never be exposed with a `NEXT_PUBLIC_` prefix.
 
+For current release workflow guidance, see [DEPLOYMENT.md](DEPLOYMENT.md). GitHub plus native Vercel Git integration is the normal deployment path. Local Vercel CLI deployments are now reserved for diagnostics, preview troubleshooting, or an explicitly approved emergency/manual fallback.
+
 After Vercel CLI login and project linking, use:
 
 ```bash
@@ -293,13 +295,13 @@ npm run vercel:push-env -- --target=preview
 
 The helper reads `.env.local`, reports only present/missing status, refuses to run if the CLI is unauthenticated or the project is not linked, and feeds values to `vercel env add` through stdin. It skips a localhost `NEXT_PUBLIC_APP_URL` for preview so QR links can use Vercel's `VERCEL_URL` fallback. Production env pushes require explicit `ALLOW_PRODUCTION_ENV_PUSH=true` and a deployed-origin `VERCEL_NEXT_PUBLIC_APP_URL`.
 
-Preview deployment:
+Legacy/manual preview deployment:
 
 ```bash
 npx vercel deploy --yes
 ```
 
-The default CLI deployment is preview. Do not pass `--target=preview`; that produced a production-target deployment in this validation run. The accidental production aliases were removed, production env remained empty, and the final validated preview is the active branch preview. `.vercelignore` excludes `.env.local`, `.vercel`, `.next`, `node_modules`, `supabase/.temp`, and TypeScript build info from deployment uploads.
+The default CLI deployment is preview. Do not pass `--target=preview`; that produced a production-target deployment in this validation run. The accidental production aliases were removed, production env remained empty, and the final validated preview is the active branch preview. This command should not replace the GitHub-driven Vercel workflow. `.vercelignore` excludes `.env.local`, `.vercel`, `.next`, `node_modules`, `supabase/.temp`, and TypeScript build info from deployment uploads.
 
 Validated Vercel preview evidence:
 

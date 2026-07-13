@@ -356,3 +356,21 @@ Ian must be able to test repeatedly without polluting event data or the producti
 **Consequence**
 
 Reset/destructive tools stay out of the production Host Controller. Live preview/local environments should set `PARTY_SESSION_IS_TEST=true`; the final event environment should explicitly set it to `false`.
+
+## ADR-018: GitHub-Driven Vercel Deployment
+
+**Decision**
+
+Use GitHub as the source of truth for release commits and use native Vercel Git integration for Preview and Production deployments. GitHub Actions runs quality gates and optional protected live validation only; it does not deploy through `vercel deploy` in the normal path.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+The project needs repeatable CI, visible commit status, Vercel preview URLs tied to GitHub commits and pull requests, and safer production activation than local CLI-driven deployments.
+
+**Consequence**
+
+`origin/main` becomes the production branch once production environment setup is approved. Local Vercel CLI deployments are reserved for diagnostics or explicitly approved emergency/manual work. Live hosted validation remains manually triggered and test-mode only.
