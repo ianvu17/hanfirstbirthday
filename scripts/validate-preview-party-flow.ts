@@ -71,10 +71,15 @@ async function installDiagnostics(page: Page, surface: string) {
     ({ surfaceName }) => {
       const labels = [
         "Live",
+        "LIVE",
         "Reconnecting",
+        "RECONNECTING",
         "Offline",
+        "OFFLINE",
         "Resyncing",
+        "RESYNCING",
         "Needs attention",
+        "NEEDS ATTENTION",
         "Đang trực tuyến",
         "Đang kết nối lại",
         "Mất kết nối",
@@ -270,20 +275,19 @@ async function waitForGuestPhase(page: Page, pattern: RegExp, timeout = 15000) {
 
 async function setGuestSession(page: Page, locale: Locale, displayName: string) {
   console.log(`join-start ${locale} ${displayName}`);
-  await page.goto(`${baseUrl}/${locale}`, { waitUntil: "domcontentloaded" });
-  await page.evaluate(
-    ({ key, name }) => {
+  await page.addInitScript(
+    ({ key, name, language }) => {
       window.sessionStorage.setItem(
         key,
         JSON.stringify({
           step: "ready",
-          selectedLanguage: location.pathname.startsWith("/vi") ? "vi" : "en",
+          selectedLanguage: language,
           playerName: name,
           guestSessionId: `codex-${crypto.randomUUID()}`
         })
       );
     },
-    { key: sessionStorageKey, name: displayName }
+    { key: sessionStorageKey, name: displayName, language: locale }
   );
   await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, { waitUntil: "domcontentloaded" });
   try {

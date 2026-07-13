@@ -15,6 +15,10 @@ Before making a change, every agent must:
 7. Validate relevant behavior.
 8. Update documentation when approved behavior changes.
 
+## Deployed Validation Rule
+
+This project already has functional CI/CD and Vercel deployments. UX, browser, realtime, QR-origin, environment-sensitive, and release-candidate validation should be performed against the relevant Vercel Preview or Production deployment whenever practical. Agents must use Vercel CLI to discover the correct deployment URL and use Playwright or equivalent browser automation against the deployed HTTPS environment. Localhost remains useful for development and unit-level debugging, but it is not sufficient evidence for deployed UX, mobile viewport, realtime, authentication, environment variable, cookie, or network behavior. Reports must state the exact deployed URL, deployment type, branch or commit, and test time. Agents must not claim an issue is fixed based only on localhost when the issue can differ in Vercel.
+
 ## Documentation Precedence
 
 When guidance conflicts, use this order:

@@ -1,0 +1,574 @@
+[
+  {
+    "at": "2026-07-13T11:36:06.908Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:07.318Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:07.726Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:08.130Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:08.536Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:08.941Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:09.354Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:09.760Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:10.167Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:10.575Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:10.986Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:11.396Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:11.804Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:12.213Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:12.619Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:13.030Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:13.438Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:13.845Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:14.253Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:14.660Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:15.064Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:15.473Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:15.884Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:16.293Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:16.697Z",
+    "surface": "idle",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:21.418Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:21.827Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:22.231Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:22.637Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:23.042Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:23.449Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:23.857Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:24.263Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:24.668Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:25.073Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:25.479Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:25.885Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:26.289Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:26.696Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:27.099Z",
+    "surface": "after-host-transition",
+    "route": "/en/play",
+    "online": true,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:27.506Z",
+    "surface": "offline-start",
+    "route": "/en/play",
+    "online": false,
+    "phase": "question_ready",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:29.709Z",
+    "surface": "offline-2200ms",
+    "route": "/en/play",
+    "online": false,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Offline",
+      "text": "Offline",
+      "iconClass": "lucide lucide-wifi-off h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-wifi-off h-4 w-4\" aria-hidden=\"true\"><path d=\"M12 20h.01\"></path><path d=\"M8.5 16.429a5 5 0 0 1 7 0\"></path><path d=\"M5 12.859a10 10 0 0 1 5.17-2.69\"></path><path d=\"M19 12.859a10 10 0 0 0-2.007-1.523\"></path><path d=\"M2 8.82a15 15 0 0 1 4.177-2.643\"></path><path d=\"M22 8.82a15 15 0 0 0-11.288-3.7"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:29.711Z",
+    "surface": "online-start",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Offline",
+      "text": "Offline",
+      "iconClass": "lucide lucide-wifi-off h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-wifi-off h-4 w-4\" aria-hidden=\"true\"><path d=\"M12 20h.01\"></path><path d=\"M8.5 16.429a5 5 0 0 1 7 0\"></path><path d=\"M5 12.859a10 10 0 0 1 5.17-2.69\"></path><path d=\"M19 12.859a10 10 0 0 0-2.007-1.523\"></path><path d=\"M2 8.82a15 15 0 0 1 4.177-2.643\"></path><path d=\"M22 8.82a15 15 0 0 0-11.288-3.7"
+    }
+  },
+  {
+    "at": "2026-07-13T11:36:33.915Z",
+    "surface": "recovered",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "iconClass": "lucide lucide-circle-check h-4 w-4",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  }
+]

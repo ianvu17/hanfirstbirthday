@@ -208,6 +208,7 @@ Milestone 5 checks:
 - Set `LIVE_REALTIME_HOST_PIN` through a silent shell prompt for final rehearsal when the real Host PIN route must be validated end to end.
 - Use `npm run vercel:push-env -- --target=preview --dry-run` after Vercel linking to verify required preview env values without printing secrets, then rerun without `--dry-run` to push them.
 - Use native Vercel Git integration for normal preview deployments from GitHub commits. `npx vercel deploy --yes` is now a legacy/manual preview fallback only; do not pass `--target=preview`.
+- Use `PREVIEW_PARTY_BASE_URL=<preview-url> PREVIEW_PARTY_EVIDENCE_DIR=<evidence-dir> npx tsx scripts/validate-preview-party-flow.ts` for deployed Preview host/guest/Party Screen validation when checking mobile no-scroll, connection status stability, and host-driven question flow. The script creates only Preview test sessions and writes screenshots plus `results.json`.
 - Use `npm run check:visual:milestone5` against a running server to capture `/display/party`, English/Vietnamese guest controller, production Host PIN screen, and QA harness screenshots.
 - Hosted Supabase RLS, Vercel preview deployment, and browser-context realtime validation have passed; physical multi-device rehearsal remains required before event approval.
 - Physical rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.

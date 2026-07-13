@@ -1,0 +1,88 @@
+[
+  {
+    "at": "2026-07-13T10:59:17.038Z",
+    "t": 1783940357039,
+    "type": "visible-badge",
+    "detail": {
+      "url": "https://hanfirstbirthday.vercel.app/en/play?join=han-turns-one",
+      "scrollHeight": 667,
+      "clientHeight": 667,
+      "exact": [],
+      "body": ""
+    }
+  },
+  {
+    "at": "2026-07-13T10:59:17.108Z",
+    "t": 1783940357108,
+    "type": "request",
+    "detail": {
+      "url": "/api/party/join",
+      "method": "POST"
+    }
+  },
+  {
+    "at": "2026-07-13T10:59:17.108Z",
+    "t": 1783940357108,
+    "type": "request",
+    "detail": {
+      "url": "/api/party/session",
+      "method": "GET"
+    }
+  },
+  {
+    "at": "2026-07-13T10:59:17.143Z",
+    "t": 1783940357143,
+    "type": "visible-badge",
+    "detail": {
+      "url": "https://hanfirstbirthday.vercel.app/en/play?join=han-turns-one",
+      "scrollHeight": 667,
+      "clientHeight": 667,
+      "exact": [
+        {
+          "text": "Connecting",
+          "tag": "h1",
+          "cls": "font-display text-4xl font-extrabold text-foreground",
+          "svgClass": null,
+          "svgHtml": null
+        }
+      ],
+      "body": "Connecting\n\nScan placeholder QR, join on your phone, and wait for Ian to start."
+    }
+  },
+  {
+    "at": "2026-07-13T10:59:17.814Z",
+    "t": 1783940357814,
+    "type": "response",
+    "detail": {
+      "url": "/api/party/join",
+      "status": 500
+    }
+  },
+  {
+    "at": "2026-07-13T10:59:18.511Z",
+    "t": 1783940358511,
+    "type": "response",
+    "detail": {
+      "url": "/api/party/session",
+      "status": 200
+    }
+  },
+  {
+    "at": "2026-07-13T10:59:26.519Z",
+    "t": 1783940366519,
+    "type": "request",
+    "detail": {
+      "url": "/api/party/session",
+      "method": "GET"
+    }
+  },
+  {
+    "at": "2026-07-13T10:59:27.738Z",
+    "t": 1783940367738,
+    "type": "response",
+    "detail": {
+      "url": "/api/party/session",
+      "status": 200
+    }
+  }
+]

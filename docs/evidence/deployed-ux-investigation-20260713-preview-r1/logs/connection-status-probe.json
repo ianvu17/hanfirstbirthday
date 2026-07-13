@@ -1,0 +1,530 @@
+[
+  {
+    "at": "2026-07-13T11:26:10.315Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:10.723Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:11.136Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:11.540Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:11.945Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:12.349Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:12.754Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:13.157Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:13.562Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:13.965Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:14.371Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:14.775Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:15.179Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:15.585Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:15.993Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:16.396Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:16.799Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:17.201Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:17.603Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:18.006Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:18.410Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:18.814Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:19.217Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:19.627Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:20.032Z",
+    "surface": "guest",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:24.661Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:25.065Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:25.473Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:25.880Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:26.284Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:26.687Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:27.090Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:27.494Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:27.900Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:28.304Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:28.712Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:29.116Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:29.523Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:29.931Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:30.338Z",
+    "surface": "guest-after-host",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:30.742Z",
+    "surface": "guest-offline-start",
+    "route": "/en/play",
+    "online": false,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Reconnecting",
+      "text": "Reconnecting",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw h-4 w-4 animate-spin motion-reduce:animate-none\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:32.945Z",
+    "surface": "guest-offline-2200ms",
+    "route": "/en/play",
+    "online": false,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:32.946Z",
+    "surface": "guest-online-start",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  },
+  {
+    "at": "2026-07-13T11:26:37.152Z",
+    "surface": "guest-recovered",
+    "route": "/en/play",
+    "online": true,
+    "phase": "unknown",
+    "connection": {
+      "aria": "Live",
+      "text": "Live",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-check h-4 w-4\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m9 12 2 2 4-4\"></path></svg>"
+    }
+  }
+]

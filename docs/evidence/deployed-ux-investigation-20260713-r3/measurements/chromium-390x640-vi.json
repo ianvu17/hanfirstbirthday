@@ -1,0 +1,1253 @@
+{
+  "profile": {
+    "name": "390x640-vi",
+    "width": 390,
+    "height": 640,
+    "language": "vi"
+  },
+  "browserName": "chromium",
+  "baseUrl": "https://hanfirstbirthday.vercel.app",
+  "startedAt": "2026-07-13T10:55:25.568Z",
+  "states": [
+    {
+      "label": "question-preview-before-scroll",
+      "url": "https://hanfirstbirthday.vercel.app/vi/play",
+      "viewport": {
+        "innerWidth": 390,
+        "innerHeight": 640,
+        "visualWidth": 390,
+        "visualHeight": 640,
+        "visualOffsetTop": 0,
+        "devicePixelRatio": 2
+      },
+      "document": {
+        "scrollHeight": 718,
+        "clientHeight": 640,
+        "bodyScrollHeight": 718,
+        "bodyClientHeight": 718,
+        "bodyOffsetHeight": 718,
+        "scrollY": 0,
+        "overflowPixels": 78,
+        "hasPageVerticalScroll": true
+      },
+      "rects": {
+        "pageShell": {
+          "name": "page-shell",
+          "selector": "main",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": 0,
+            "right": 390,
+            "bottom": 718,
+            "left": 0,
+            "width": 390,
+            "height": 718
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "640px",
+          "height": "718px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "hidden"
+        },
+        "controller": {
+          "name": "guest-controller",
+          "selector": "[data-testid='guest-controller']",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": 16,
+            "right": 374,
+            "bottom": 702,
+            "left": 16,
+            "width": 358,
+            "height": 686
+          },
+          "position": "static",
+          "display": "flex",
+          "minHeight": "512px",
+          "height": "686px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "topHeader": null,
+        "questionText": {
+          "name": "question-text",
+          "selector": "[data-testid='guest-controller'] h1",
+          "text": "Câu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?",
+          "rect": {
+            "top": 177,
+            "right": 353,
+            "bottom": 357,
+            "left": 37,
+            "width": 316,
+            "height": 180
+          },
+          "position": "static",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "180px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "8px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "timer": {
+          "name": "timer",
+          "selector": "[data-testid='guest-controller'] div:has(svg)",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": 53,
+            "right": 353,
+            "bottom": 665,
+            "left": 37,
+            "width": 316,
+            "height": 612
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "612px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "answerList": {
+          "name": "answer-list",
+          "selector": "[role='radiogroup']",
+          "text": "Đáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C",
+          "rect": {
+            "top": 377,
+            "right": 353,
+            "bottom": 569,
+            "left": 37,
+            "width": 316,
+            "height": 192
+          },
+          "position": "static",
+          "display": "grid",
+          "minHeight": "0px",
+          "height": "192px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "20px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "submitButton": {
+          "name": "submit-button",
+          "selector": "[data-testid='guest-submit-answer']",
+          "text": "Gửi câu trả lời",
+          "rect": {
+            "top": 621,
+            "right": 353,
+            "bottom": 665,
+            "left": 37,
+            "width": 316,
+            "height": 44
+          },
+          "position": "relative",
+          "display": "flex",
+          "minHeight": "44px",
+          "height": "44px",
+          "paddingTop": "8px",
+          "paddingBottom": "8px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "connectionBadge": null,
+        "bottomStatus": null
+      },
+      "extending": [
+        {
+          "tag": "main",
+          "className": "paper-grid relative min-h-screen overflow-hidden px-[var(--safe-page-x)] py-[var(--safe-page-y)] text-foreground",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": 0,
+            "bottom": 718,
+            "height": 718
+          },
+          "position": "relative",
+          "minHeight": "640px",
+          "height": "718px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 718,
+            "height": 718
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "718px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 606,
+            "bottom": 718,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 590,
+            "bottom": 718,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "relative z-10 w-full mx-auto max-w-6xl",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": 16,
+            "bottom": 702,
+            "height": 686
+          },
+          "position": "relative",
+          "minHeight": "0px",
+          "height": "686px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "section",
+          "className": "mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl items-center py-4",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": 16,
+            "bottom": 702,
+            "height": 686
+          },
+          "position": "static",
+          "minHeight": "512px",
+          "height": "686px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "section",
+          "className": "relative rounded-[1.55rem] border p-5 shadow-paper sm:p-7 after:pointer-events-none after:absolute after:-bottom-2 after:left-4 after:right-1 after:top-2 after:",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": 32,
+            "bottom": 686,
+            "height": 654
+          },
+          "position": "relative",
+          "minHeight": "auto",
+          "height": "654px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "relative",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": 53,
+            "bottom": 665,
+            "height": 612
+          },
+          "position": "relative",
+          "minHeight": "0px",
+          "height": "612px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "space-y-5",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": 53,
+            "bottom": 665,
+            "height": 612
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "612px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center",
+          "text": "Điểm của bạn: 0/2\n\nGửi câu trả lời",
+          "rect": {
+            "top": 589,
+            "bottom": 665,
+            "height": 76
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "76px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "button",
+          "className": "touch-target relative inline-flex items-center justify-center gap-2 whitespace-normal rounded-[1.05rem] border text-center text-sm font-extrabold leading-5 shad",
+          "text": "Gửi câu trả lời",
+          "rect": {
+            "top": 621,
+            "bottom": 665,
+            "height": 44
+          },
+          "position": "relative",
+          "minHeight": "44px",
+          "height": "44px",
+          "overflowY": "visible"
+        }
+      ],
+      "sizedElements": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 718,
+            "height": 718
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "718px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 81,
+            "height": 81
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "81.2812px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 144,
+            "bottom": 256,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 606,
+            "bottom": 718,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 590,
+            "bottom": 718,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        }
+      ]
+    },
+    {
+      "label": "question-preview-after-scroll",
+      "url": "https://hanfirstbirthday.vercel.app/vi/play",
+      "viewport": {
+        "innerWidth": 390,
+        "innerHeight": 640,
+        "visualWidth": 390,
+        "visualHeight": 640,
+        "visualOffsetTop": 0,
+        "devicePixelRatio": 2
+      },
+      "document": {
+        "scrollHeight": 718,
+        "clientHeight": 640,
+        "bodyScrollHeight": 718,
+        "bodyClientHeight": 718,
+        "bodyOffsetHeight": 718,
+        "scrollY": 78,
+        "overflowPixels": 78,
+        "hasPageVerticalScroll": true
+      },
+      "rects": {
+        "pageShell": {
+          "name": "page-shell",
+          "selector": "main",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": -78,
+            "right": 390,
+            "bottom": 640,
+            "left": 0,
+            "width": 390,
+            "height": 718
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "640px",
+          "height": "718px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "hidden"
+        },
+        "controller": {
+          "name": "guest-controller",
+          "selector": "[data-testid='guest-controller']",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": -62,
+            "right": 374,
+            "bottom": 624,
+            "left": 16,
+            "width": 358,
+            "height": 686
+          },
+          "position": "static",
+          "display": "flex",
+          "minHeight": "512px",
+          "height": "686px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "topHeader": null,
+        "questionText": {
+          "name": "question-text",
+          "selector": "[data-testid='guest-controller'] h1",
+          "text": "Câu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?",
+          "rect": {
+            "top": 99,
+            "right": 353,
+            "bottom": 279,
+            "left": 37,
+            "width": 316,
+            "height": 180
+          },
+          "position": "static",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "180px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "8px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "timer": {
+          "name": "timer",
+          "selector": "[data-testid='guest-controller'] div:has(svg)",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": -25,
+            "right": 353,
+            "bottom": 587,
+            "left": 37,
+            "width": 316,
+            "height": 612
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "612px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "answerList": {
+          "name": "answer-list",
+          "selector": "[role='radiogroup']",
+          "text": "Đáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C",
+          "rect": {
+            "top": 299,
+            "right": 353,
+            "bottom": 491,
+            "left": 37,
+            "width": 316,
+            "height": 192
+          },
+          "position": "static",
+          "display": "grid",
+          "minHeight": "0px",
+          "height": "192px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "20px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "submitButton": {
+          "name": "submit-button",
+          "selector": "[data-testid='guest-submit-answer']",
+          "text": "Gửi câu trả lời",
+          "rect": {
+            "top": 543,
+            "right": 353,
+            "bottom": 587,
+            "left": 37,
+            "width": 316,
+            "height": 44
+          },
+          "position": "relative",
+          "display": "flex",
+          "minHeight": "44px",
+          "height": "44px",
+          "paddingTop": "8px",
+          "paddingBottom": "8px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "connectionBadge": null,
+        "bottomStatus": null
+      },
+      "extending": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -78,
+            "bottom": -78,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "main",
+          "className": "paper-grid relative min-h-screen overflow-hidden px-[var(--safe-page-x)] py-[var(--safe-page-y)] text-foreground",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": -78,
+            "bottom": 640,
+            "height": 718
+          },
+          "position": "relative",
+          "minHeight": "640px",
+          "height": "718px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": -78,
+            "bottom": 640,
+            "height": 718
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "718px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -78,
+            "bottom": 3,
+            "height": 81
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "81.2812px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -67,
+            "bottom": -47,
+            "height": 20
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -63,
+            "bottom": -14,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -60,
+            "bottom": -11,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -60,
+            "bottom": -11,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -63,
+            "bottom": -14,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -66,
+            "bottom": -17,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -66,
+            "bottom": -18,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -64,
+            "bottom": -15,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -61,
+            "bottom": -12,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -60,
+            "bottom": -11,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -62,
+            "bottom": -13,
+            "height": 49
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "relative z-10 w-full mx-auto max-w-6xl",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": -62,
+            "bottom": 624,
+            "height": 686
+          },
+          "position": "relative",
+          "minHeight": "0px",
+          "height": "686px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "section",
+          "className": "mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl items-center py-4",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": -62,
+            "bottom": 624,
+            "height": 686
+          },
+          "position": "static",
+          "minHeight": "512px",
+          "height": "686px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "section",
+          "className": "relative rounded-[1.55rem] border p-5 shadow-paper sm:p-7 after:pointer-events-none after:absolute after:-bottom-2 after:left-4 after:right-1 after:top-2 after:",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": -46,
+            "bottom": 608,
+            "height": 654
+          },
+          "position": "relative",
+          "minHeight": "auto",
+          "height": "654px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "relative",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": -25,
+            "bottom": 587,
+            "height": 612
+          },
+          "position": "relative",
+          "minHeight": "0px",
+          "height": "612px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "space-y-5",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án ",
+          "rect": {
+            "top": -25,
+            "bottom": 587,
+            "height": 612
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "612px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "flex flex-wrap items-center justify-between gap-3",
+          "text": "CODEX 390X640-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI",
+          "rect": {
+            "top": -25,
+            "bottom": 51,
+            "height": 76
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "76px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "span",
+          "className": "inline-flex min-h-8 items-center gap-2 rounded-[0.95rem] border px-3 py-1 text-xs font-extrabold uppercase tracking-normal shadow-lift border-party-blue-deep/30",
+          "text": "CODEX 390X640-VI",
+          "rect": {
+            "top": -25,
+            "bottom": 7,
+            "height": 32
+          },
+          "position": "static",
+          "minHeight": "32px",
+          "height": "32px",
+          "overflowY": "visible"
+        }
+      ],
+      "sizedElements": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -78,
+            "bottom": -78,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": -78,
+            "bottom": 640,
+            "height": 718
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "718px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -78,
+            "bottom": 3,
+            "height": 81
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "81.2812px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 66,
+            "bottom": 178,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 528,
+            "bottom": 640,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 512,
+            "bottom": 640,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        }
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/vi/play?_rsc=mLXdJXt5y5Ml-p0F"
+      },
+      "at": "2026-07-13T10:55:30.201Z",
+      "performanceMs": 4633
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/vi/play?_rsc=mLXdJXt5y5Ml-p0F",
+        "status": 200,
+        "ok": true,
+        "durationMs": 352
+      },
+      "at": "2026-07-13T10:55:30.552Z",
+      "performanceMs": 4984
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/join"
+      },
+      "at": "2026-07-13T10:55:30.596Z",
+      "performanceMs": 5028
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:55:30.598Z",
+      "performanceMs": 5029
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 2755
+      },
+      "at": "2026-07-13T10:55:33.353Z",
+      "performanceMs": 7784
+    },
+    {
+      "type": "websocket:create",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:55:33.358Z",
+      "performanceMs": 7789
+    },
+    {
+      "type": "websocket:open",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:55:33.452Z",
+      "performanceMs": 7884
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/join",
+        "status": 200,
+        "ok": true,
+        "durationMs": 3272
+      },
+      "at": "2026-07-13T10:55:33.868Z",
+      "performanceMs": 8300
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:55:34.048Z",
+      "performanceMs": 8480
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 2293
+      },
+      "at": "2026-07-13T10:55:36.341Z",
+      "performanceMs": 10773
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:55:36.639Z",
+      "performanceMs": 11070
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1730
+      },
+      "at": "2026-07-13T10:55:38.369Z",
+      "performanceMs": 12800
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:55:38.683Z",
+      "performanceMs": 13115
+    }
+  ],
+  "finishedAt": "2026-07-13T10:55:40.142Z"
+}

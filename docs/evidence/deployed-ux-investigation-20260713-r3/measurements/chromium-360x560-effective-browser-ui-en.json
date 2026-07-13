@@ -1,0 +1,117 @@
+{
+  "profile": {
+    "name": "360x560-effective-browser-ui-en",
+    "width": 360,
+    "height": 560,
+    "language": "en",
+    "emulateReducedVisualHeight": true
+  },
+  "browserName": "chromium",
+  "baseUrl": "https://hanfirstbirthday.vercel.app",
+  "startedAt": "2026-07-13T10:56:43.883Z",
+  "states": [],
+  "error": "page.waitForSelector: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\\'guest-controller\\']') to be visible\u001b[22m\n",
+  "trace": [
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en/play?_rsc=IEbPg-Maawlshv1s"
+      },
+      "at": "2026-07-13T10:56:48.427Z",
+      "performanceMs": 4544
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en/play?_rsc=IEbPg-Maawlshv1s",
+        "status": 200,
+        "ok": true,
+        "durationMs": 287
+      },
+      "at": "2026-07-13T10:56:48.714Z",
+      "performanceMs": 4831
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/join"
+      },
+      "at": "2026-07-13T10:56:48.777Z",
+      "performanceMs": 4894
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:56:48.779Z",
+      "performanceMs": 4895
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1633
+      },
+      "at": "2026-07-13T10:56:50.412Z",
+      "performanceMs": 6529
+    },
+    {
+      "type": "websocket:create",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:56:50.415Z",
+      "performanceMs": 6532
+    },
+    {
+      "type": "websocket:open",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:56:50.504Z",
+      "performanceMs": 6621
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:56:51.461Z",
+      "performanceMs": 7578
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/join",
+        "status": 200,
+        "ok": true,
+        "durationMs": 2725
+      },
+      "at": "2026-07-13T10:56:51.502Z",
+      "performanceMs": 7619
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1198
+      },
+      "at": "2026-07-13T10:56:52.659Z",
+      "performanceMs": 8776
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:57:00.665Z",
+      "performanceMs": 16782
+    }
+  ],
+  "finishedAt": "2026-07-13T10:57:00.860Z"
+}

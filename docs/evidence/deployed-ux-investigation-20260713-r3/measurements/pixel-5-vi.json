@@ -1,0 +1,457 @@
+{
+  "device": "Pixel 5",
+  "language": "vi",
+  "baseUrl": "https://hanfirstbirthday.vercel.app",
+  "startedAt": "2026-07-13T10:57:15.610Z",
+  "states": [
+    {
+      "label": "device-question-preview",
+      "url": "https://hanfirstbirthday.vercel.app/vi/play",
+      "viewport": {
+        "innerWidth": 393,
+        "innerHeight": 727,
+        "visualWidth": 393,
+        "visualHeight": 727,
+        "visualOffsetTop": 0,
+        "devicePixelRatio": 2.75
+      },
+      "document": {
+        "scrollHeight": 727,
+        "clientHeight": 727,
+        "bodyScrollHeight": 727,
+        "bodyClientHeight": 727,
+        "bodyOffsetHeight": 727,
+        "scrollY": 0,
+        "overflowPixels": 0,
+        "hasPageVerticalScroll": false
+      },
+      "rects": {
+        "pageShell": {
+          "name": "page-shell",
+          "selector": "main",
+          "text": "CODEX PIXEL-5-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": 0,
+            "right": 393,
+            "bottom": 727,
+            "left": 0,
+            "width": 393,
+            "height": 727
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "727px",
+          "height": "727px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "hidden"
+        },
+        "controller": {
+          "name": "guest-controller",
+          "selector": "[data-testid='guest-controller']",
+          "text": "CODEX PIXEL-5-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": 16,
+            "right": 377,
+            "bottom": 702,
+            "left": 16,
+            "width": 361,
+            "height": 686
+          },
+          "position": "static",
+          "display": "flex",
+          "minHeight": "599px",
+          "height": "686px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "topHeader": null,
+        "questionText": {
+          "name": "question-text",
+          "selector": "[data-testid='guest-controller'] h1",
+          "text": "Câu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?",
+          "rect": {
+            "top": 177,
+            "right": 356,
+            "bottom": 357,
+            "left": 37,
+            "width": 319,
+            "height": 180
+          },
+          "position": "static",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "180px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "8px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "timer": {
+          "name": "timer",
+          "selector": "[data-testid='guest-controller'] div:has(svg)",
+          "text": "CODEX PIXEL-5-VI\nCHUẨN BỊ NHÉ\nĐANG KẾT NỐI LẠI\n\n1/2\n\nCâu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\nĐáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C\n\nĐiểm của bạn: 0/2\n\nGửi câu ",
+          "rect": {
+            "top": 53,
+            "right": 356,
+            "bottom": 665,
+            "left": 37,
+            "width": 319,
+            "height": 612
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "612px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "answerList": {
+          "name": "answer-list",
+          "selector": "[role='radiogroup']",
+          "text": "Đáp án mẫu A\nĐáp án mẫu B\nĐáp án mẫu C",
+          "rect": {
+            "top": 377,
+            "right": 356,
+            "bottom": 569,
+            "left": 37,
+            "width": 319,
+            "height": 192
+          },
+          "position": "static",
+          "display": "grid",
+          "minHeight": "0px",
+          "height": "192px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "20px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "submitButton": {
+          "name": "submit-button",
+          "selector": "[data-testid='guest-submit-answer']",
+          "text": "Gửi câu trả lời",
+          "rect": {
+            "top": 621,
+            "right": 356,
+            "bottom": 665,
+            "left": 37,
+            "width": 319,
+            "height": 44
+          },
+          "position": "relative",
+          "display": "flex",
+          "minHeight": "44px",
+          "height": "44px",
+          "paddingTop": "8px",
+          "paddingBottom": "8px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "connectionBadge": null,
+        "bottomStatus": null
+      },
+      "extending": [],
+      "sizedElements": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 727,
+            "height": 727
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "727px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 82,
+            "height": 82
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "81.9062px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 144,
+            "bottom": 256,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 615,
+            "bottom": 727,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 599,
+            "bottom": 727,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        }
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/vi/play?_rsc=mLXdJXt5y5Ml-p0F"
+      },
+      "at": "2026-07-13T10:57:19.791Z",
+      "performanceMs": 4181
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/vi/play?_rsc=mLXdJXt5y5Ml-p0F",
+        "status": 200,
+        "ok": true,
+        "durationMs": 289
+      },
+      "at": "2026-07-13T10:57:20.081Z",
+      "performanceMs": 4470
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/join"
+      },
+      "at": "2026-07-13T10:57:20.129Z",
+      "performanceMs": 4518
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:57:20.130Z",
+      "performanceMs": 4519
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1692
+      },
+      "at": "2026-07-13T10:57:21.822Z",
+      "performanceMs": 6211
+    },
+    {
+      "type": "websocket:create",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:57:21.829Z",
+      "performanceMs": 6218
+    },
+    {
+      "type": "websocket:open",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:57:21.911Z",
+      "performanceMs": 6301
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/join",
+        "status": 200,
+        "ok": true,
+        "durationMs": 2749
+      },
+      "at": "2026-07-13T10:57:22.877Z",
+      "performanceMs": 7266
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:57:22.994Z",
+      "performanceMs": 7383
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1757
+      },
+      "at": "2026-07-13T10:57:24.751Z",
+      "performanceMs": 9140
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:57:25.048Z",
+      "performanceMs": 9438
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1811
+      },
+      "at": "2026-07-13T10:57:26.860Z",
+      "performanceMs": 11249
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:57:27.102Z",
+      "performanceMs": 11492
+    }
+  ],
+  "finishedAt": "2026-07-13T10:57:28.140Z"
+}

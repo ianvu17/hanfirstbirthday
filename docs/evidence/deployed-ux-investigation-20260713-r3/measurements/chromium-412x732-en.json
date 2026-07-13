@@ -1,0 +1,781 @@
+{
+  "profile": {
+    "name": "412x732-en",
+    "width": 412,
+    "height": 732,
+    "language": "en"
+  },
+  "browserName": "chromium",
+  "baseUrl": "https://hanfirstbirthday.vercel.app",
+  "startedAt": "2026-07-13T10:56:10.304Z",
+  "states": [
+    {
+      "label": "question-preview-before-scroll",
+      "url": "https://hanfirstbirthday.vercel.app/en/play",
+      "viewport": {
+        "innerWidth": 412,
+        "innerHeight": 732,
+        "visualWidth": 412,
+        "visualHeight": 732,
+        "visualOffsetTop": 0,
+        "devicePixelRatio": 2
+      },
+      "document": {
+        "scrollHeight": 732,
+        "clientHeight": 732,
+        "bodyScrollHeight": 732,
+        "bodyClientHeight": 732,
+        "bodyOffsetHeight": 732,
+        "scrollY": 0,
+        "overflowPixels": 0,
+        "hasPageVerticalScroll": false
+      },
+      "rects": {
+        "pageShell": {
+          "name": "page-shell",
+          "selector": "main",
+          "text": "CODEX 412X732-EN\nGET READY\nLIVE\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYour score",
+          "rect": {
+            "top": 0,
+            "right": 412,
+            "bottom": 732,
+            "left": 0,
+            "width": 412,
+            "height": 732
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "732px",
+          "height": "732px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "hidden"
+        },
+        "controller": {
+          "name": "guest-controller",
+          "selector": "[data-testid='guest-controller']",
+          "text": "CODEX 412X732-EN\nGET READY\nLIVE\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYour score",
+          "rect": {
+            "top": 16,
+            "right": 396,
+            "bottom": 702,
+            "left": 16,
+            "width": 380,
+            "height": 686
+          },
+          "position": "static",
+          "display": "flex",
+          "minHeight": "604px",
+          "height": "686px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "topHeader": null,
+        "questionText": {
+          "name": "question-text",
+          "selector": "[data-testid='guest-controller'] h1",
+          "text": "Development question 1: Which placeholder answer is marked correct?",
+          "rect": {
+            "top": 177,
+            "right": 375,
+            "bottom": 357,
+            "left": 37,
+            "width": 338,
+            "height": 180
+          },
+          "position": "static",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "180px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "8px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "timer": {
+          "name": "timer",
+          "selector": "[data-testid='guest-controller'] div:has(svg)",
+          "text": "CODEX 412X732-EN\nGET READY\nLIVE\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYour score",
+          "rect": {
+            "top": 53,
+            "right": 375,
+            "bottom": 665,
+            "left": 37,
+            "width": 338,
+            "height": 612
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "612px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "answerList": {
+          "name": "answer-list",
+          "selector": "[role='radiogroup']",
+          "text": "Placeholder option A\nPlaceholder option B\nPlaceholder option C",
+          "rect": {
+            "top": 377,
+            "right": 375,
+            "bottom": 569,
+            "left": 37,
+            "width": 338,
+            "height": 192
+          },
+          "position": "static",
+          "display": "grid",
+          "minHeight": "0px",
+          "height": "192px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "20px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "submitButton": {
+          "name": "submit-button",
+          "selector": "[data-testid='guest-submit-answer']",
+          "text": "Submit answer",
+          "rect": {
+            "top": 621,
+            "right": 375,
+            "bottom": 665,
+            "left": 37,
+            "width": 338,
+            "height": 44
+          },
+          "position": "relative",
+          "display": "flex",
+          "minHeight": "44px",
+          "height": "44px",
+          "paddingTop": "8px",
+          "paddingBottom": "8px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "connectionBadge": null,
+        "bottomStatus": null
+      },
+      "extending": [],
+      "sizedElements": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 732,
+            "height": 732
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "732px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 86,
+            "height": 86
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "85.8594px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 144,
+            "bottom": 256,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 620,
+            "bottom": 732,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 604,
+            "bottom": 732,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        }
+      ]
+    },
+    {
+      "label": "question-preview-after-scroll",
+      "url": "https://hanfirstbirthday.vercel.app/en/play",
+      "viewport": {
+        "innerWidth": 412,
+        "innerHeight": 732,
+        "visualWidth": 412,
+        "visualHeight": 732,
+        "visualOffsetTop": 0,
+        "devicePixelRatio": 2
+      },
+      "document": {
+        "scrollHeight": 732,
+        "clientHeight": 732,
+        "bodyScrollHeight": 732,
+        "bodyClientHeight": 732,
+        "bodyOffsetHeight": 732,
+        "scrollY": 0,
+        "overflowPixels": 0,
+        "hasPageVerticalScroll": false
+      },
+      "rects": {
+        "pageShell": {
+          "name": "page-shell",
+          "selector": "main",
+          "text": "CODEX 412X732-EN\nGET READY\nLIVE\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYour score",
+          "rect": {
+            "top": 0,
+            "right": 412,
+            "bottom": 732,
+            "left": 0,
+            "width": 412,
+            "height": 732
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "732px",
+          "height": "732px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "hidden"
+        },
+        "controller": {
+          "name": "guest-controller",
+          "selector": "[data-testid='guest-controller']",
+          "text": "CODEX 412X732-EN\nGET READY\nLIVE\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYour score",
+          "rect": {
+            "top": 16,
+            "right": 396,
+            "bottom": 702,
+            "left": 16,
+            "width": 380,
+            "height": 686
+          },
+          "position": "static",
+          "display": "flex",
+          "minHeight": "604px",
+          "height": "686px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "topHeader": null,
+        "questionText": {
+          "name": "question-text",
+          "selector": "[data-testid='guest-controller'] h1",
+          "text": "Development question 1: Which placeholder answer is marked correct?",
+          "rect": {
+            "top": 177,
+            "right": 375,
+            "bottom": 357,
+            "left": 37,
+            "width": 338,
+            "height": 180
+          },
+          "position": "static",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "180px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "8px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "timer": {
+          "name": "timer",
+          "selector": "[data-testid='guest-controller'] div:has(svg)",
+          "text": "CODEX 412X732-EN\nGET READY\nLIVE\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYour score",
+          "rect": {
+            "top": 53,
+            "right": 375,
+            "bottom": 665,
+            "left": 37,
+            "width": 338,
+            "height": 612
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "612px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "answerList": {
+          "name": "answer-list",
+          "selector": "[role='radiogroup']",
+          "text": "Placeholder option A\nPlaceholder option B\nPlaceholder option C",
+          "rect": {
+            "top": 377,
+            "right": 375,
+            "bottom": 569,
+            "left": 37,
+            "width": 338,
+            "height": 192
+          },
+          "position": "static",
+          "display": "grid",
+          "minHeight": "0px",
+          "height": "192px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "20px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "submitButton": {
+          "name": "submit-button",
+          "selector": "[data-testid='guest-submit-answer']",
+          "text": "Submit answer",
+          "rect": {
+            "top": 621,
+            "right": 375,
+            "bottom": 665,
+            "left": 37,
+            "width": 338,
+            "height": 44
+          },
+          "position": "relative",
+          "display": "flex",
+          "minHeight": "44px",
+          "height": "44px",
+          "paddingTop": "8px",
+          "paddingBottom": "8px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "connectionBadge": null,
+        "bottomStatus": null
+      },
+      "extending": [],
+      "sizedElements": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 732,
+            "height": 732
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "732px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 86,
+            "height": 86
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "85.8594px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 144,
+            "bottom": 256,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 620,
+            "bottom": 732,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 604,
+            "bottom": 732,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        }
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en/play?_rsc=IEbPg-Maawlshv1s"
+      },
+      "at": "2026-07-13T10:56:14.444Z",
+      "performanceMs": 4140
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en/play?_rsc=IEbPg-Maawlshv1s",
+        "status": 200,
+        "ok": true,
+        "durationMs": 284
+      },
+      "at": "2026-07-13T10:56:14.728Z",
+      "performanceMs": 4423
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/join"
+      },
+      "at": "2026-07-13T10:56:14.780Z",
+      "performanceMs": 4475
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:56:14.782Z",
+      "performanceMs": 4477
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1222
+      },
+      "at": "2026-07-13T10:56:16.004Z",
+      "performanceMs": 5699
+    },
+    {
+      "type": "websocket:create",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:56:16.009Z",
+      "performanceMs": 5704
+    },
+    {
+      "type": "websocket:open",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:56:16.098Z",
+      "performanceMs": 5794
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:56:17.039Z",
+      "performanceMs": 6734
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1680
+      },
+      "at": "2026-07-13T10:56:18.719Z",
+      "performanceMs": 8415
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/join",
+        "status": 200,
+        "ok": true,
+        "durationMs": 5700
+      },
+      "at": "2026-07-13T10:56:20.480Z",
+      "performanceMs": 10175
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:56:20.621Z",
+      "performanceMs": 10316
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 2687
+      },
+      "at": "2026-07-13T10:56:23.308Z",
+      "performanceMs": 13003
+    }
+  ],
+  "finishedAt": "2026-07-13T10:56:27.345Z"
+}
