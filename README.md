@@ -95,23 +95,81 @@ Current route status:
 - `/en/qa` and `/vi/qa`: QA-route boundary placeholder.
 - `/en/qa/party` and `/vi/qa/party`: local host controls plus Party Screen and guest-controller simulation.
 
-Milestone 5 adds version-controlled Supabase schema, RLS policy intent, server-authoritative host commands, server-authoritative response submission, participant resume cookies, Host PIN session cookies, remote snapshot polling/realtime resync, and QA/production data tagging. Live Supabase RLS/realtime and multi-device rehearsal require configured Supabase credentials and are documented as the remaining environment-dependent approval step.
+Milestone 5 adds version-controlled Supabase schema, RLS policy intent, server-authoritative host commands, server-authoritative response submission, participant resume cookies, Host PIN session cookies, remote snapshot polling/realtime resync, and QA/production data tagging. Hosted Supabase migrations, live anon RLS validation, Vercel preview deployment, and browser-context realtime rehearsal have passed; physical laptop/two-phone rehearsal, real Host PIN entry rehearsal, final production env setup, and production QR origin verification remain.
 
 ## Supabase Setup
 
-Create `.env.local` from `.env.example`, set the public Supabase URL/anon key, server-only service role key, host PIN hash/session secret, and public app URL. Apply migrations with Supabase CLI:
+Create `.env.local` from `.env.example`, set the public Supabase URL/anon key, server-only service role key, host PIN hash/session secret, and public app URL. Keep preview/local validation on `PARTY_SESSION_IS_TEST=true`; set it to `false` only for the final event environment.
+
+To create a safe local skeleton and generate a missing `HOST_SESSION_SECRET` without printing it:
 
 ```bash
-supabase start
-supabase db reset
+npm run prepare:milestone5-env
+```
+
+The script leaves Supabase credentials and the host PIN blank for Ian to fill.
+
+For the hosted Supabase project, link the project and apply migrations with:
+
+```bash
+npx supabase login
+npx supabase link --project-ref <project-ref>
+npx supabase db push --dry-run
+npx supabase db push
+npx supabase migration list
+```
+
+Do not run `supabase db reset` against the hosted project.
+
+For local-only Supabase development, use the local CLI lifecycle:
+
+```bash
+npx supabase start
+npx supabase db reset
 npm run dev
 ```
 
-Generate the host PIN hash with:
+Generate the host PIN hash without storing the raw PIN in the command history:
 
 ```bash
-node -e "console.log(require('crypto').createHash('sha256').update('123456').digest('hex'))"
+read -s HOST_PIN
+HOST_PIN="$HOST_PIN" node -e "console.log(require('crypto').createHash('sha256').update(process.env.HOST_PIN).digest('hex'))"
 ```
+
+Run static migration checks with `npm run test:supabase`. After hosted env values are configured, run live anon-policy validation with `npm run test:rls:live`.
+
+After Vercel CLI login and project linking, preview environment variables can be pushed from `.env.local` without printing values:
+
+```bash
+npm run vercel:push-env -- --target=preview --dry-run
+npm run vercel:push-env -- --target=preview
+```
+
+For preview, the helper skips a localhost `NEXT_PUBLIC_APP_URL` so Vercel's `VERCEL_URL` fallback can generate QR links for the actual deployment origin. To force an explicit deployed origin, set `VERCEL_NEXT_PUBLIC_APP_URL` for that one command.
+
+Deploy a preview with:
+
+```bash
+npx vercel deploy --yes
+```
+
+Do not pass `--target=preview`; the default CLI deployment is preview. A `.vercelignore` file keeps `.env.local`, `.vercel`, `.next`, `node_modules`, `supabase/.temp`, and TypeScript build info out of deployment uploads.
+
+For browser-context realtime rehearsal against hosted Supabase, start an isolated local server with a validation join code:
+
+```bash
+PARTY_JOIN_CODE=codex-m5-... NEXT_PUBLIC_APP_URL=http://localhost:3001 PARTY_SESSION_IS_TEST=true npm run dev -- -p 3001
+LIVE_REALTIME_BASE_URL=http://localhost:3001 LIVE_REALTIME_JOIN_CODE=codex-m5-... npm run test:realtime:live
+```
+
+To validate the real Host PIN unlock route during that rehearsal, provide the PIN through a silent shell prompt instead of putting it in command history:
+
+```bash
+read -s LIVE_REALTIME_HOST_PIN
+LIVE_REALTIME_HOST_PIN="$LIVE_REALTIME_HOST_PIN" LIVE_REALTIME_BASE_URL=http://localhost:3001 LIVE_REALTIME_JOIN_CODE=codex-m5-... npm run test:realtime:live
+```
+
+Use a `codex-m5-*` join code so cleanup can safely remove only validation-owned rows.
 
 ## Development Workflow
 

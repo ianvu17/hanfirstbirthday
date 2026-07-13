@@ -76,7 +76,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the planned technical desig
 
 ## Constraints
 
-- Documentation-first workflow: Milestones 0, 1, 2, 3, 3.5, 3.6, and 4 are complete. Milestone 5 has an implementation pass for Supabase-backed shared sessions, server-authoritative host/guest routes, production Host Controller, generated QR lobby, participant resume, remote snapshot resync, and QA/production data tagging. Final live Supabase RLS/realtime and multi-device rehearsal still require Ian's configured Supabase/Vercel environment.
+- Documentation-first workflow: Milestones 0, 1, 2, 3, 3.5, 3.6, and 4 are complete. Milestone 5 has an implementation pass for Supabase-backed shared sessions, server-authoritative host/guest routes, production Host Controller, generated QR lobby, participant resume, remote snapshot resync, and QA/production data tagging. Hosted Supabase migrations, live RLS validation, Vercel preview deployment, and browser-context realtime rehearsal have passed; physical laptop/two-phone rehearsal, real Host PIN entry rehearsal, final production environment setup, and production QR origin verification remain.
 - Do not invent stories, memories, quiz facts, timeline events, images, or photo descriptions.
 - Do not hardcode content in components.
 - All content-related data must come from external data files or Supabase records.

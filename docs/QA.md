@@ -201,9 +201,14 @@ Milestone 5 checks:
 
 - Use `npm run test:party-runtime` for Host PIN/session and participant resume token logic.
 - Use `npm run test:supabase` or `npm run test:rls` for static migration assertions covering tables, constraints, indexes, RLS policies, and the response revision touch function.
+- Use `npm run test:rls:live` only after hosted Supabase env values are configured. It creates `codex-m5-validation-*` test rows, validates anon RLS behavior with browser-equivalent credentials, verifies direct REST tampering is denied, reports cleanup counts, and deletes only its own validation sessions.
+- Use `npm run test:realtime:live` against an isolated local server and `LIVE_REALTIME_JOIN_CODE=codex-m5-*` to rehearse hosted Supabase realtime with independent display, host, English guest, and Vietnamese guest browser contexts.
+- Set `LIVE_REALTIME_HOST_PIN` through a silent shell prompt for final rehearsal when the real Host PIN route must be validated end to end.
+- Use `npm run vercel:push-env -- --target=preview --dry-run` after Vercel linking to verify required preview env values without printing secrets, then rerun without `--dry-run` to push them.
+- Use `npx vercel deploy --yes` for preview deployment. The default CLI deploy is preview; do not pass `--target=preview`.
 - Use `npm run check:visual:milestone5` against a running server to capture `/display/party`, English/Vietnamese guest controller, production Host PIN screen, and QA harness screenshots.
-- Live Supabase RLS/realtime behavior still requires a configured Supabase project and should be rehearsed before event approval.
-- Multi-device rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.
+- Hosted Supabase RLS, Vercel preview deployment, and browser-context realtime validation have passed; physical multi-device rehearsal remains required before event approval.
+- Physical rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.
 
 ## Functional Acceptance Checklist
 

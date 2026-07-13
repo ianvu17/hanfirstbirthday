@@ -5,6 +5,7 @@ out
 build
 dist
 .vercel
+supabase/.temp
 .env*
 !.env.example
 npm-debug.log*

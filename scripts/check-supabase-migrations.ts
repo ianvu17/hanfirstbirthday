@@ -1,11 +1,13 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const migrationPath = join(
-  process.cwd(),
-  "supabase/migrations/202607120001_milestone5_party_sessions.sql"
-);
-const sql = readFileSync(migrationPath, "utf8");
+const migrationsDir = join(process.cwd(), "supabase/migrations");
+const migrationFiles = readdirSync(migrationsDir)
+  .filter((file) => file.endsWith(".sql"))
+  .sort();
+const sql = migrationFiles
+  .map((file) => readFileSync(join(migrationsDir, file), "utf8"))
+  .join("\n\n");
 
 const requiredFragments = [
   "create table if not exists public.party_sessions",
@@ -23,7 +25,14 @@ const requiredFragments = [
   "No anonymous response writes",
   "No anonymous host command writes",
   "party_sessions_one_active_production_idx",
-  "question_responses_leaderboard_idx"
+  "question_responses_leaderboard_idx",
+  "party_sessions_join_code_mode_unique_idx",
+  "Public can read active party session wakeups",
+  "Public can read active participant wakeups",
+  "grant select (",
+  "grant execute on function public.touch_party_session_response(uuid) to service_role",
+  "alter publication supabase_realtime add table public.party_sessions",
+  "alter publication supabase_realtime add table public.participants"
 ];
 
 const missing = requiredFragments.filter((fragment) => !sql.includes(fragment));

@@ -32,6 +32,7 @@ export function useRemotePartySnapshot<TSnapshot extends RemotePartySnapshot | R
   const [connection, setConnection] = useState<RemoteConnectionState>("connecting");
   const [error, setError] = useState<RemoteApiError | null>(null);
   const revisionRef = useRef(-1);
+  const refreshInFlightRef = useRef<Promise<void> | null>(null);
 
   const applySnapshot = useCallback((nextSnapshot: TSnapshot) => {
     const nextRevision = nextSnapshot.session.revision;
@@ -50,37 +51,53 @@ export function useRemotePartySnapshot<TSnapshot extends RemotePartySnapshot | R
   }, []);
 
   const refresh = useCallback(async () => {
-    setConnection((current) => (current === "connected" ? "reconnecting" : "connecting"));
+    if (refreshInFlightRef.current) {
+      return refreshInFlightRef.current;
+    }
+
+    const refreshPromise = (async () => {
+      setConnection((current) => (current === "connected" ? "reconnecting" : "connecting"));
+
+      try {
+        const response = await fetch("/api/party/session", {
+          headers: {
+            accept: "application/json"
+          },
+          cache: "no-store"
+        });
+        const payload = await response.json();
+
+        if (!response.ok) {
+          setConnection("error");
+          setError(payload.error ?? {
+            code: "temporary_server_failure",
+            message: "Could not refresh the party state."
+          });
+          return;
+        }
+
+        if (includeGuest && !isRemoteGuestSnapshot(payload)) {
+          setConnection("stale");
+        }
+
+        applySnapshot(payload as TSnapshot);
+      } catch {
+        setConnection(window.navigator.onLine ? "stale" : "offline");
+        setError({
+          code: "temporary_server_failure",
+          message: "Connection paused. Trying to reconnect."
+        });
+      }
+    })();
+
+    refreshInFlightRef.current = refreshPromise;
 
     try {
-      const response = await fetch("/api/party/session", {
-        headers: {
-          accept: "application/json"
-        },
-        cache: "no-store"
-      });
-      const payload = await response.json();
-
-      if (!response.ok) {
-        setConnection("error");
-        setError(payload.error ?? {
-          code: "temporary_server_failure",
-          message: "Could not refresh the party state."
-        });
-        return;
+      await refreshPromise;
+    } finally {
+      if (refreshInFlightRef.current === refreshPromise) {
+        refreshInFlightRef.current = null;
       }
-
-      if (includeGuest && !isRemoteGuestSnapshot(payload)) {
-        setConnection("stale");
-      }
-
-      applySnapshot(payload as TSnapshot);
-    } catch {
-      setConnection(window.navigator.onLine ? "stale" : "offline");
-      setError({
-        code: "temporary_server_failure",
-        message: "Connection paused. Trying to reconnect."
-      });
     }
   }, [applySnapshot, includeGuest]);
 

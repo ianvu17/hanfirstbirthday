@@ -18,6 +18,40 @@ type RemoteGuestControllerProps = {
   displayName: string | null;
 };
 
+const pendingJoins = new Map<string, Promise<{ ok: boolean; payload: unknown }>>();
+
+function joinKey(displayName: string, locale: Locale) {
+  return `${locale}:${displayName}`;
+}
+
+function joinOnce(displayName: string, locale: Locale) {
+  const key = joinKey(displayName, locale);
+  const pending = pendingJoins.get(key);
+
+  if (pending) {
+    return pending;
+  }
+
+  const request = fetch("/api/party/join", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json"
+    },
+    body: JSON.stringify({ displayName, locale })
+  })
+    .then(async (response) => ({
+      ok: response.ok,
+      payload: await response.json()
+    }))
+    .finally(() => {
+      pendingJoins.delete(key);
+    });
+
+  pendingJoins.set(key, request);
+  return request;
+}
+
 function seconds(remainingMs: number) {
   return Math.ceil(remainingMs / 1000);
 }
@@ -66,6 +100,7 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
       return;
     }
 
+    const joiningDisplayName = displayName;
     let cancelled = false;
 
     async function join() {
@@ -73,22 +108,17 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
       setJoinError("");
 
       try {
-        const response = await fetch("/api/party/join", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            accept: "application/json"
-          },
-          body: JSON.stringify({ displayName, locale })
-        });
-        const payload = await response.json();
+        const { ok, payload } = await joinOnce(joiningDisplayName, locale);
 
         if (cancelled) {
           return;
         }
 
-        if (!response.ok) {
-          setJoinError(payload.error?.message ?? copy.joinRequiredDescription);
+        if (!ok) {
+          setJoinError(
+            (payload as { error?: { message?: string } }).error?.message ??
+              copy.joinRequiredDescription
+          );
           return;
         }
 

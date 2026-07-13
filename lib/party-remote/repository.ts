@@ -166,6 +166,7 @@ export async function ensureActivePartySession() {
     .from("party_sessions")
     .select("*")
     .eq("public_join_code", publicJoinCode)
+    .eq("is_test", isTest)
     .maybeSingle<PartySessionRow>();
 
   if (existing.error) {

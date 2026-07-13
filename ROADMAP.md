@@ -162,7 +162,7 @@ Completion record:
 
 ## Milestone 5: Shared Session And Realtime Synchronization
 
-Status: Implemented; awaiting Ian human approval gate and live Supabase/device rehearsal.
+Status: Implemented; hosted Supabase validation and Vercel preview deployment passed; awaiting Ian human approval gate, physical device rehearsal, and final production setup.
 
 Goals:
 
@@ -179,7 +179,8 @@ Exit criteria:
 - Participant resume and Host PIN session cookies exist.
 - Party Screen QR is generated from the runtime join URL.
 - QA/test data is tagged through `is_test`.
-- Remaining approval evidence requires live Supabase credentials, deployed/preview URL, and multi-device rehearsal.
+- Hosted Supabase migrations, live anon RLS validation, Vercel preview deployment, and browser-context realtime rehearsal have passed.
+- Remaining approval evidence requires real Host PIN entry rehearsal, final production environment setup, production QR origin verification, and physical multi-device rehearsal.
 
 ## Milestone 6: Messages, Timeline Placeholder, Gallery Placeholder
 

@@ -16,21 +16,22 @@ Implemented:
 - Host PIN flow using server verification and signed HttpOnly cookie.
 - Realtime wake-up plus snapshot resync model.
 - QA/test tagging through `is_test`.
-- Static migration checks, host auth/resume tests, and Milestone 5 visual script.
+- Static migration checks, hosted RLS validation, hosted multi-client realtime validation, host auth/resume tests, and Milestone 5 visual script.
 
 Explicitly not implemented:
 
 - Real Han quiz content.
 - Messages, gallery, timeline, media uploads, or advanced admin.
 - Final production deployment.
-- Live Supabase RLS/realtime proof, because credentials were not available in this environment.
+- Physical laptop and two-phone rehearsal on the final event network.
 - Final leaderboard tie-break decision beyond the existing deterministic created-order rule.
 
 ## Supabase Schema
 
-Migration:
+Migrations:
 
 - `supabase/migrations/202607120001_milestone5_party_sessions.sql`
+- `supabase/migrations/202607130001_milestone5_security_hardening.sql`
 
 Tables:
 
@@ -180,7 +181,10 @@ Commands added:
 - `npm run test:party-runtime`
 - `npm run test:supabase`
 - `npm run test:rls`
+- `npm run test:rls:live`
 - `npm run test:realtime`
+- `npm run test:realtime:live`
+- `npm run vercel:push-env`
 - `npm run check:visual:milestone5`
 
 Validated in this environment:
@@ -189,6 +193,145 @@ Validated in this environment:
 - Signed host session cookie expiration/tamper rejection.
 - Participant resume cookie parsing and token hashing.
 - Migration contains required tables, constraints, indexes, RLS policies, and response revision function.
+- Hosted Supabase migrations applied through `npx supabase db push`; both Milestone 5 migrations appear in the remote migration list.
+- Hosted schema introspected through `npx supabase gen types typescript --linked`.
+- Hosted RLS and direct REST tampering matrix passed with anon/publishable credentials for guest-equivalent evidence.
+- Hosted app-backed multi-client realtime rehearsal passed with desktop display, host, English guest, Vietnamese guest, refresh recovery, late join, duplicate response control, and stale locked-response rejection.
+- Vercel project `ianalysed/hanfirstbirthday` linked, preview env values pushed without printing secrets, SSO deployment protection disabled for QR access, and preview deployment validated.
+- Vercel validation preview passed the multi-client realtime rehearsal against the deployed preview URL with validation-owned cleanup.
+
+## Real Supabase Setup Runbook
+
+Required local variables:
+
+- `NEXT_PUBLIC_SUPABASE_URL`: hosted project API URL for browser-safe Supabase use.
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: hosted project anon/publishable key for browser realtime.
+- `SUPABASE_SERVICE_ROLE_KEY`: server-only key used only by Next.js route handlers and validation setup/cleanup scripts.
+- `NEXT_PUBLIC_APP_URL`: local or deployed app origin used for QR join URLs.
+- `PARTY_JOIN_CODE`: public join code, defaulting to `han-turns-one`.
+- `PARTY_SESSION_IS_TEST`: must be `true` for local and preview rehearsal data.
+- `HOST_PIN_HASH` or `HOST_PIN`: host unlock credential. Prefer `HOST_PIN_HASH`.
+- `HOST_SESSION_SECRET`: signing secret for the HttpOnly host session cookie.
+
+Local preflight:
+
+```bash
+npm run prepare:milestone5-env
+```
+
+This creates an ignored `.env.local` skeleton if needed, preserves existing values, fills local defaults for `NEXT_PUBLIC_APP_URL`, `PARTY_JOIN_CODE`, and `PARTY_SESSION_IS_TEST`, generates a missing `HOST_SESSION_SECRET`, and reports only `present` or `missing`.
+
+Hosted migration process:
+
+```bash
+npx supabase login
+npx supabase link --project-ref <project-ref>
+npx supabase db push --dry-run
+npx supabase db push
+npx supabase migration list
+```
+
+Do not run hosted `supabase db reset`. Local-only resets are acceptable only against the Supabase local development stack.
+
+After applying migrations, verify:
+
+- `party_sessions`, `participants`, `question_responses`, and `host_command_log` exist.
+- RLS is enabled on every party runtime table.
+- Anonymous writes are denied for all runtime tables.
+- Anonymous raw response and host command reads are denied.
+- `participants.resume_token_hash` is not selectable through anon credentials.
+- `party_sessions` and `participants` are members of the `supabase_realtime` publication.
+- Test and production party sessions can use the same join code without sharing rows because uniqueness is scoped by `(public_join_code, is_test)`.
+
+## Live Real-Environment Validation
+
+Use `npm run test:rls:live` after `.env.local` is configured. The script creates rows with a `codex-m5-validation-*` prefix, proves anon-policy behavior with the browser-safe credential, prints cleanup candidate counts, and deletes only its own created sessions. Service role usage in that script is limited to credential preflight, setup, constraint checks, and cleanup; it is not accepted as RLS evidence.
+
+The live RLS harness records a matrix with identity, credential type, operation, expected result, actual result, pass/fail status, and enforcement layer. It covers hosted URL/key preflight, test/prod join-code isolation, inactive and unknown session access, anonymous session/participant/response/host-log tampering, protected-column exposure, duplicate response constraints, replayed submission constraints, and cleanup ownership checks.
+
+Server-route and realtime behavior are validated with:
+
+```bash
+LIVE_REALTIME_BASE_URL=http://localhost:3001 LIVE_REALTIME_JOIN_CODE=codex-m5-... npm run test:realtime:live
+```
+
+Start a local app against hosted Supabase first:
+
+```bash
+PARTY_JOIN_CODE=codex-m5-... NEXT_PUBLIC_APP_URL=http://localhost:3001 PARTY_SESSION_IS_TEST=true npm run dev -- -p 3001
+```
+
+The realtime harness uses independent Playwright browser contexts for the shared display, host controller, English guest, and Vietnamese guest. It validates participant propagation, unauthorized and forged host-command denial, host phase changes, answer submission, ignored client-supplied score/correctness/host fields through the server route, idempotent duplicate response, conflicting duplicate rejection, locked-response rejection, leaderboard propagation, guest/host refresh recovery, late join, and validation-owned cleanup.
+
+When `LIVE_REALTIME_HOST_PIN` is provided, the realtime harness unlocks the host through `POST /api/party/host/login` before running host commands. Without that variable, it uses a signed host cookie generated in the trusted validation context so the run can still validate host command authorization without storing or printing the raw PIN.
+
+For manual local browser rehearsal against hosted Supabase:
+
+```bash
+npm run dev
+```
+
+Then open:
+
+- Laptop/shared display: `/display/party`.
+- Host controller: `/en/host` or `/vi/host`.
+- Guest A phone/context: `/en/play`.
+- Guest B phone/context: `/vi/play`.
+
+Confirm participant joins, host phase changes, question transitions, answer submissions, locked duplicate behavior, leaderboard updates, refresh recovery, and late join behavior without manual database edits.
+
+## Vercel Prerequisites
+
+Set the same environment variable names in Vercel before preview or production deployment. Preview deployments should keep `PARTY_SESSION_IS_TEST=true`; the final event production environment should explicitly set `PARTY_SESSION_IS_TEST=false`. `SUPABASE_SERVICE_ROLE_KEY`, `HOST_PIN_HASH`, `HOST_PIN`, and `HOST_SESSION_SECRET` must remain server-only environment variables and must never be exposed with a `NEXT_PUBLIC_` prefix.
+
+After Vercel CLI login and project linking, use:
+
+```bash
+npm run vercel:push-env -- --target=preview --dry-run
+npm run vercel:push-env -- --target=preview
+```
+
+The helper reads `.env.local`, reports only present/missing status, refuses to run if the CLI is unauthenticated or the project is not linked, and feeds values to `vercel env add` through stdin. It skips a localhost `NEXT_PUBLIC_APP_URL` for preview so QR links can use Vercel's `VERCEL_URL` fallback. Production env pushes require explicit `ALLOW_PRODUCTION_ENV_PUSH=true` and a deployed-origin `VERCEL_NEXT_PUBLIC_APP_URL`.
+
+Preview deployment:
+
+```bash
+npx vercel deploy --yes
+```
+
+The default CLI deployment is preview. Do not pass `--target=preview`; that produced a production-target deployment in this validation run. The accidental production aliases were removed, production env remained empty, and the final validated preview is the active branch preview. `.vercelignore` excludes `.env.local`, `.vercel`, `.next`, `node_modules`, `supabase/.temp`, and TypeScript build info from deployment uploads.
+
+Validated Vercel preview evidence:
+
+- Normal preview deployed at `https://hanfirstbirthday-41l0f6mo8-ianalysed.vercel.app`.
+- Preview branch alias points to the normal preview: `https://hanfirstbirthday-ianvu17-ianalysed.vercel.app`.
+- `/en`, `/vi`, and `/display/party` returned HTTP 200.
+- `/api/party/session` returned configured remote mode, lobby phase, `isTest=true`, join code `han-turns-one`, and a preview-host QR join URL.
+- Validation preview deployed with `PARTY_JOIN_CODE=codex-m5-vercel-1783905600`, passed `npm run test:realtime:live`, and cleaned `2` `question_responses`, `3` `participants`, and `1` `party_sessions` row.
+
+## Security Notes
+
+- Browser clients do not insert or update authoritative rows.
+- Correctness, score, phase, deadline, and host state are computed by trusted server code.
+- The service-role key is centralized behind server route handlers.
+- Host authentication uses a signed HttpOnly cookie; the PIN is not bundled into browser code.
+- Realtime table access is used as a wake-up mechanism. Server snapshots remain authoritative.
+- The hardening migration narrows anon column privileges so participant resume-token hashes are not exposed.
+
+## Validation Cleanup
+
+All automated live validation rows must use the `codex-m5-validation-*` prefix. Before cleanup, count affected rows by table and confirm they belong to the created validation session. Delete by the validation session id and rely on foreign-key cascades only for rows created by that same validation run. If row ownership is unclear, leave the data and report the exact prefix/session id for manual review.
+
+## Remaining Physical Rehearsal
+
+Before event approval, run one laptop and two phones on the target network:
+
+- Laptop displays `/display/party` at the intended TV/projector size.
+- Host unlocks `/en/host` on a trusted phone or laptop.
+- Guest A joins from Wi-Fi.
+- Guest B joins from mobile data or an independent browser context.
+- Scan the QR code from the Party Screen.
+- Start the game, submit answers from both phones, attempt duplicate submission, advance through all phases, refresh one guest, refresh host, late-join another context, and confirm final leaderboard behavior.
 
 ## Screenshots
 
@@ -204,7 +347,7 @@ Matrix:
 - Host PIN route.
 - QA harness.
 
-Live remote connected screenshots require Supabase env.
+Remote connected screenshots require Supabase env.
 
 ## Performance
 
@@ -214,23 +357,25 @@ Target remains about 10 guests with 20 simulated participants as rehearsal headr
 
 - Host PIN is event-specific access protection, not a user account system.
 - No advanced rate limiter was added for repeated PIN attempts.
-- Static migration checks do not prove live Supabase RLS behavior; run live RLS tests against the configured project before event approval.
+- Static migration checks do not prove live Supabase RLS behavior; keep `npm run test:rls:live` in the pre-deployment checklist.
 - The current runtime still uses development fixture questions, so correct answers are not production content.
+- `npm audit --audit-level=moderate` currently reports a moderate Next/PostCSS advisory where the offered npm fix is a breaking forced change.
+- The latest browser-context realtime validation used the trusted signed-cookie path because the raw Host PIN is intentionally not stored. Use `LIVE_REALTIME_HOST_PIN` during a final rehearsal to prove the live PIN-entry route end to end.
+- Vercel preview has SSO deployment protection disabled so QR-scanned guest phones can reach it without Vercel login.
 
 ## Known Risks
 
-- Live Supabase credentials were unavailable, so remote RLS/realtime and multi-device browser flows were not rehearsed here.
-- Exact duplicate response races are constrained by the database, but live concurrent retry behavior should be tested against Supabase.
+- Browser-context realtime validation passed locally and against Vercel preview, but actual physical laptop and two-phone rehearsal has not been completed.
 - Final leaderboard tie-break remains deterministic by join order/display name and is not a final product decision.
-- Preview/production QR must be validated from real phones after `NEXT_PUBLIC_APP_URL` is final.
+- Production QR must be validated from real phones after the production origin and `NEXT_PUBLIC_APP_URL` are final.
+- `supabase db dump` was not available in this environment because Docker was not running; remote schema was validated through migration list, linked type generation, live RLS behavior, and hosted app rehearsal.
 
 ## Deferred Work
 
 - Real Han quiz content and production secrecy review.
 - Messages, gallery, timeline, and message admin.
 - Final deployment and event-day runbook.
-- Full live RLS integration tests with anon/service contexts.
-- Multi-device rehearsal and screenshot evidence.
+- Physical multi-device rehearsal and screenshot evidence.
 
 ## Human Approval Gate
 
