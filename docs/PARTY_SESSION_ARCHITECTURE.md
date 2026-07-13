@@ -45,9 +45,9 @@ This keeps one reusable QR for the event while still rejecting malformed or stal
 ```text
 create
 -> lobby
--> question_ready
--> question_active
--> question_locked
+-> question_ready (question preview)
+-> question_active (answer choices revealed; 20-second deadline running)
+-> question_locked (deadline closed automatically)
 -> answer_reveal
 -> leaderboard
 -> waiting_for_host
@@ -94,6 +94,9 @@ Host Controller:
 
 - `Create new session`: creates a fresh lobby session.
 - `Start game`: prepares the first question for the current session.
+- `Reveal answers`: reveals answer choices and starts the 20-second deadline.
+- active answering: no required host action; the deadline closes answering automatically.
+- `Reveal correct answer`: available only after answering has closed.
 - phase button: advances the current valid host transition.
 - `Finish party`: ends the current session and clears it from current selection.
 - `Archive session`: archives a selected session while preserving rows.
@@ -107,6 +110,6 @@ Host Controller:
 4. Confirm the Host Controller shows lobby, revision `0`, and zero participants/responses.
 5. Display `/display/party` on the laptop/TV.
 6. Guests scan the displayed QR and join.
-7. Click `Start game`, then advance through the quiz.
+7. Click `Start game`, then for each question click `Reveal answers`, wait for the 20-second window to close, reveal the correct answer, show the leaderboard, and continue.
 8. Click `Finish party` at the end.
 9. For another run, click `Create new session`; old rows remain in recent history.

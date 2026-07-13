@@ -181,11 +181,12 @@ export function processPartyCommand(
         command.type
       );
 
+    case "REVEAL_CHOICES":
     case "OPEN_QUESTION": {
       if (state.phase !== "question_ready") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "Question can only be opened from ready state.")
+          domainError("invalid_phase_transition", "Answer choices can only be revealed from preview.")
         );
       }
 
@@ -214,6 +215,16 @@ export function processPartyCommand(
         return reject(
           state,
           domainError("invalid_phase_transition", "Only an active question can be locked.")
+        );
+      }
+
+      if (command.reason === "host") {
+        return reject(
+          state,
+          domainError(
+            "command_not_allowed",
+            "Answers close automatically when the question deadline expires."
+          )
         );
       }
 

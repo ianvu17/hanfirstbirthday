@@ -154,15 +154,17 @@ export function GuestController({ locale, guestId, displayName }: GuestControlle
   const canChangeSelection = projection.canAnswer && !locked && !isSubmitting;
   const selectedOptionId = draft.questionId === question?.id ? draft.selectedOptionId : null;
   const error = draft.questionId === question?.id ? draft.error : "";
+  const showAnswerOptions =
+    Boolean(question) && projection.phase !== "question_ready" && projection.phase !== "lobby";
 
   return (
     <section
-      className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl items-center py-4"
+      className="mx-auto flex min-h-[calc(100dvh-2rem)] max-w-xl items-center py-0 sm:max-w-3xl sm:py-4"
       data-testid="guest-controller"
     >
-      <PaperPanel tone="paper" className="w-full">
-        <div className="space-y-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+      <PaperPanel tone="paper" className="w-full p-3 sm:p-7">
+        <div className="space-y-3 sm:space-y-5">
+          <div className="flex min-h-10 flex-wrap items-center justify-between gap-2">
             <BirthdayBadge tone="blue">{displayName}</BirthdayBadge>
             <BirthdayBadge tone={projection.remainingMs <= 5000 ? "coral" : "yellow"}>
               <Timer className="h-4 w-4" aria-hidden="true" />
@@ -178,13 +180,19 @@ export function GuestController({ locale, guestId, displayName }: GuestControlle
                 ? `${projection.questionNumber}/${projection.totalQuestions}`
                 : copy.developmentLabel}
             </p>
-            <h1 className="font-display text-4xl font-extrabold leading-tight text-foreground sm:text-5xl">
+            <h1 className="font-display text-2xl font-extrabold leading-tight text-foreground sm:text-5xl">
               {question ? question.prompt[locale] : phaseLabel(projection.phase, copy)}
             </h1>
           </div>
 
-          {question ? (
-            <div className="grid gap-3" role="radiogroup" aria-label={copy.selectAnswer}>
+          {question && !showAnswerOptions ? (
+            <div className="min-h-24 rounded-[1rem] border border-party-blue/25 bg-surface-sky/55 p-4 text-sm font-extrabold leading-6 text-foreground">
+              {copy.waitingChoices}
+            </div>
+          ) : null}
+
+          {question && showAnswerOptions ? (
+            <div className="grid gap-2 sm:gap-3" role="radiogroup" aria-label={copy.selectAnswer}>
               {question.options.map((option) => {
                 const selected = selectedOptionId === option.id;
                 const wasLocked = locked?.selectedOptionId === option.id;
@@ -207,7 +215,7 @@ export function GuestController({ locale, guestId, displayName }: GuestControlle
                         error: ""
                       })
                     }
-                    className={`min-h-14 rounded-[1rem] border px-4 py-3 text-left text-base font-extrabold shadow-lift transition ${
+                    className={`min-h-11 rounded-[1rem] border px-4 py-2 text-left text-sm font-extrabold leading-5 shadow-lift transition sm:min-h-14 sm:py-3 sm:text-base ${
                       isCorrect
                         ? "border-party-green/50 bg-party-green/18"
                         : isWrongReveal
@@ -228,17 +236,21 @@ export function GuestController({ locale, guestId, displayName }: GuestControlle
             </div>
           ) : null}
 
+          <div className="min-h-12" aria-live="polite">
           {revealMessage ? (
-            <div className="rounded-[1rem] border border-party-orange/30 bg-surface-highlight/70 p-4 font-bold leading-7">
+            <div className="rounded-[1rem] border border-party-orange/30 bg-surface-highlight/70 p-3 text-sm font-bold leading-6 sm:p-4 sm:text-base sm:leading-7">
               {revealMessage}
             </div>
-          ) : null}
-
-          {locked && !projection.reveal ? (
-            <div className="rounded-[1rem] border border-party-blue/25 bg-surface-sky/60 p-4 font-bold">
+          ) : locked && !projection.reveal ? (
+            <div className="rounded-[1rem] border border-party-blue/25 bg-surface-sky/60 p-3 text-sm font-bold sm:p-4 sm:text-base">
               {locked.status === "locked_timeout" ? copy.timeout : copy.locked}
             </div>
+          ) : projection.phase === "question_locked" ? (
+            <div className="rounded-[1rem] border border-party-orange/30 bg-surface-highlight/70 p-3 text-sm font-bold sm:p-4 sm:text-base">
+              {copy.waitingReveal}
+            </div>
           ) : null}
+          </div>
 
           {error ? (
             <p className="rounded-[0.9rem] border border-party-red/30 bg-party-red/10 p-3 text-sm font-bold text-foreground" role="alert">
@@ -246,7 +258,7 @@ export function GuestController({ locale, guestId, displayName }: GuestControlle
             </p>
           ) : null}
 
-          <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
+          <div className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
             <p className="text-sm font-bold text-muted-foreground">
               {copy.personalScore}: {projection.score}/{projection.totalQuestions}
             </p>

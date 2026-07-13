@@ -123,7 +123,7 @@ Model the experience as two simultaneous surfaces:
 - Phone: personal guest controller for QR entry, language choice, display name, answering questions, submitting answers, and viewing personal progress.
 - Desktop/laptop/TV: shared Party Screen for the room, including lobby/join, question, countdown, answer progress, answer reveal, Han fun fact, leaderboard, finished, celebration, and thank-you moments.
 
-The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic.
+The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic. ADR-019 later supersedes the production host wording here by replacing Open Question with Reveal Answers and removing required manual lock behavior.
 
 **Status**
 
@@ -374,3 +374,33 @@ The project needs repeatable CI, visible commit status, Vercel preview URLs tied
 **Consequence**
 
 `origin/main` becomes the production branch once production environment setup is approved. Local Vercel CLI deployments are reserved for diagnostics or explicitly approved emergency/manual work. Live hosted validation remains manually triggered and test-mode only.
+
+## ADR-019: Reveal Choices Opens Answering
+
+**Context**
+
+Pre-rehearsal UX review found that the host flow exposed too many technical steps: a question preview, a separate Open Question control, a manual Lock Answers control, and then reveal. Guests also saw answer options before the host had intentionally revealed choices, and transient realtime lifecycle events made the connection badge flicker.
+
+**Decision**
+
+Keep the persisted Milestone 5 phase strings for compatibility, but reinterpret them with clearer product semantics:
+
+- `question_ready` is the question preview state.
+- `REVEAL_CHOICES` moves from preview to `question_active`, reveals choices, and starts the authoritative 20-second deadline.
+- `question_active` has no required host action; the runtime/server closes it automatically at the deadline.
+- `LOCK_QUESTION` is retained only for deadline-driven runtime closure and is rejected when requested as a host action.
+- `question_locked` means answers are closed and the host may reveal the correct answer.
+
+Realtime UI exposes stabilized user-facing states: connecting, Live, reconnecting/resyncing, offline, and needs attention. Short subscription transitions use a grace period before becoming visible.
+
+**Status**
+
+Accepted as a July 13, 2026 pre-approval refinement. This does not mark Milestone 5 or Milestone 6 complete.
+
+**Reason**
+
+Ian should have one obvious action at each stage during the party, guests should not see answer controls until choices are revealed, and connection feedback should be calm and truthful rather than reflecting low-level transport noise.
+
+**Consequence**
+
+Production host controls must not show Open Question or required Lock Answers controls. Documentation and tests should describe `REVEAL_CHOICES` as the host-facing command while allowing existing `question_ready`, `question_active`, and `question_locked` rows to remain database-compatible.

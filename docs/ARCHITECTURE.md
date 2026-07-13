@@ -32,7 +32,7 @@ Milestone 3.6 aligns the architecture around two simultaneous surfaces:
 
 The phone must not become a second presentation screen. It should only display information useful to the current guest.
 
-The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic.
+The birthday game is host-driven. Ian controls phase transitions such as Start Game, Reveal Answers, Reveal Correct Answer, Show Leaderboard, and Next Question. The question preview does not start the timer; revealing choices starts the automatic 20-second countdown, and deadline expiry closes answering without a required host lock.
 
 Milestone 3.6 originally documented this surface model before runtime work. Milestone 4 implemented the local Party Engine and Milestone 5 implemented the Supabase-backed remote runtime, realtime wake-up model, server route boundaries, and production Host Controller.
 
@@ -41,8 +41,9 @@ Milestone 3.6 originally documented this surface model before runtime work. Mile
 Future runtime work should use explicit phase semantics:
 
 - `LOBBY`: Party Screen shows hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
-- `QUESTION_ACTIVE`: Party Screen shows the large question, automatic countdown, progress, and submitted-answer count while phones collect guest answers.
-- `QUESTION_LOCKED`: Answering is closed; phones show personal locked or timed-out state while the Party Screen waits for host reveal.
+- `QUESTION_PREVIEW`: Party Screen and phones show the large question while answer choices remain hidden and the timer has not started.
+- `QUESTION_ACTIVE`: Party Screen shows the large question, revealed answer choices, automatic countdown, progress, and submitted-answer count while phones collect guest answers.
+- `QUESTION_LOCKED`: Answering is closed automatically at the deadline; phones show personal locked or timed-out state while the Party Screen waits for host reveal.
 - `ANSWER_REVEAL`: Party Screen reveals the correct answer, celebration, and approved Han fun fact.
 - `LEADERBOARD`: Party Screen shows animated rankings and current positions.
 - `NEXT_QUESTION`: Host advances the room toward the next question.
@@ -246,7 +247,7 @@ This state is stored in browser `sessionStorage` only. It does not create partic
 Milestone 4 local party state:
 
 - `PartyState.phase` is the single authoritative lifecycle phase.
-- Allowed phases are `lobby`, `question_ready`, `question_active`, `question_locked`, `answer_reveal`, `leaderboard`, `waiting_for_host`, and `finished`.
+- Allowed phases are `lobby`, `question_ready`, `question_active`, `question_locked`, `answer_reveal`, `leaderboard`, `waiting_for_host`, and `finished`. Current product semantics treat `question_ready` as the preview state and `question_locked` as the deadline-closed state.
 - Static question text remains in development fixtures; runtime state stores question ids and responses.
 - Guest draft answer selection remains local UI state until the Submit Answer command is accepted.
 - Locked responses are immutable. Exact duplicate retry returns the existing state; conflicting retry is rejected.
@@ -268,8 +269,8 @@ flowchart TD
 stateDiagram-v2
   [*] --> lobby
   lobby --> question_ready: PREPARE_FIRST_QUESTION
-  question_ready --> question_active: OPEN_QUESTION
-  question_active --> question_locked: LOCK_QUESTION / deadline
+  question_ready --> question_active: REVEAL_CHOICES
+  question_active --> question_locked: deadline
   question_locked --> answer_reveal: REVEAL_ANSWER
   answer_reveal --> leaderboard: SHOW_LEADERBOARD
   leaderboard --> waiting_for_host: COMPLETE_PRESENTATION

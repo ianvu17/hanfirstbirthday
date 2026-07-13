@@ -213,7 +213,7 @@ Production Host Controller:
 - Use restrained party styling rather than dashboard chrome.
 - Keep one large bottom-reachable primary action.
 - Show connection, phase, participant, response, revision, and current-question status in compact readable blocks.
-- PIN, pending, stale, offline, accepted, rejected, and finish-confirmation states must be legible at phone width.
+- PIN, pending, live, reconnecting, offline, accepted, rejected, and finish-confirmation states must be legible at phone width.
 - Do not expose QA fixture controls or developer diagnostics on the production Host Controller.
 
 ## Component Guidance

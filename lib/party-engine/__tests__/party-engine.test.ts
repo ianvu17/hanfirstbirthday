@@ -29,8 +29,10 @@ test("valid host lifecycle reaches waiting state and next question", () => {
 
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
   assert.equal(state.phase, "question_ready");
+  assert.equal(state.questionOpenedAt, null);
+  assert.equal(state.questionDeadlineAt, null);
 
-  state = mustAccept(state, { type: "OPEN_QUESTION", now: 100 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 100 });
   assert.equal(state.phase, "question_active");
   assert.equal(state.questionDeadlineAt, 20100);
 
@@ -62,10 +64,31 @@ test("invalid transitions are rejected with structured errors", () => {
   assert.equal(leaderboard.ok === false && leaderboard.error.code, "invalid_phase_transition");
 });
 
+test("guests cannot submit before answer choices are revealed", () => {
+  let state = createInitialPartyState(config);
+  state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
+
+  const result = processPartyCommand(
+    state,
+    {
+      type: "SUBMIT_RESPONSE",
+      guestId: "test-guest-01",
+      questionId: config.questions[0].id,
+      selectedOptionId: "option-b",
+      submissionId: "too-soon",
+      receivedAt: 500
+    },
+    config
+  );
+
+  assert.equal(result.ok, false);
+  assert.equal(result.ok === false && result.error.code, "answer_window_closed");
+});
+
 test("submission locks once, exact retry is idempotent, conflicting retry is rejected", () => {
   let state = createInitialPartyState(config);
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
-  state = mustAccept(state, { type: "OPEN_QUESTION", now: 1000 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 1000 });
 
   const questionId = config.questions[0].id;
   const accepted = processPartyCommand(
@@ -149,7 +172,7 @@ test("idempotent retries clear stale local errors without changing revision", ()
   assert.equal(duplicateRegister.state.lastError, null);
 
   state = mustAccept(duplicateRegister.state, { type: "PREPARE_FIRST_QUESTION", now: 2 });
-  state = mustAccept(state, { type: "OPEN_QUESTION", now: 3 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 3 });
   state = mustAccept(state, {
     type: "SUBMIT_RESPONSE",
     guestId: "session-guest",
@@ -186,7 +209,7 @@ test("idempotent retries clear stale local errors without changing revision", ()
 test("deadline boundary accepts before deadline and rejects at deadline", () => {
   let state = createInitialPartyState(config);
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
-  state = mustAccept(state, { type: "OPEN_QUESTION", now: 1000 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 1000 });
 
   const questionId = config.questions[0].id;
   const before = processPartyCommand(
@@ -222,7 +245,7 @@ test("deadline boundary accepts before deadline and rejects at deadline", () => 
 test("timeout materializes unanswered guest responses and scoring stays simple", () => {
   let state = createInitialPartyState(config);
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
-  state = mustAccept(state, { type: "OPEN_QUESTION", now: 100 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 100 });
   state = mustAccept(state, {
     type: "SUBMIT_RESPONSE",
     guestId: "test-guest-01",
@@ -245,7 +268,7 @@ test("timeout materializes unanswered guest responses and scoring stays simple",
 test("projections hide correct answer until reveal", () => {
   let state = createInitialPartyState(config);
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
-  state = mustAccept(state, { type: "OPEN_QUESTION", now: 100 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 100 });
 
   const activeProjection = buildSharedPartyProjection(state, config, 500);
   assert.equal(activeProjection.correctOption, null);
@@ -262,10 +285,45 @@ test("host capabilities are derived from phase", () => {
   assert.equal(selectHostCapabilities(state).canPrepareFirstQuestion, true);
 
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
-  assert.equal(selectHostCapabilities(state).canOpenQuestion, true);
+  assert.equal(selectHostCapabilities(state).canRevealChoices, true);
+  assert.equal(selectHostCapabilities(state).canOpenQuestion, false);
 
-  state = mustAccept(state, { type: "OPEN_QUESTION", now: 100 });
-  assert.equal(selectHostCapabilities(state).canLockQuestion, true);
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 100 });
+  assert.equal(selectHostCapabilities(state).canLockQuestion, false);
+});
+
+test("manual host lock is not part of the production flow", () => {
+  let state = createInitialPartyState(config);
+  state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 100 });
+
+  const manualLock = processPartyCommand(
+    state,
+    { type: "LOCK_QUESTION", now: 500, reason: "host" },
+    config
+  );
+
+  assert.equal(manualLock.ok, false);
+  assert.equal(manualLock.ok === false && manualLock.error.code, "command_not_allowed");
+});
+
+test("correct answer cannot be revealed until the deadline closes answering", () => {
+  let state = createInitialPartyState(config);
+  state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 100 });
+
+  const earlyReveal = processPartyCommand(
+    state,
+    { type: "REVEAL_ANSWER", now: 500 },
+    config
+  );
+
+  assert.equal(earlyReveal.ok, false);
+  assert.equal(earlyReveal.ok === false && earlyReveal.error.code, "invalid_phase_transition");
+
+  state = mustAccept(state, { type: "LOCK_QUESTION", now: 20100, reason: "deadline" });
+  state = mustAccept(state, { type: "REVEAL_ANSWER", now: 20200 });
+  assert.equal(state.phase, "answer_reveal");
 });
 
 test("local runtime schedules one deadline lock with manual clock", () => {
@@ -277,7 +335,7 @@ test("local runtime schedules one deadline lock with manual clock", () => {
   });
 
   runtime.dispatch({ type: "PREPARE_FIRST_QUESTION" });
-  runtime.dispatch({ type: "OPEN_QUESTION" });
+  runtime.dispatch({ type: "REVEAL_CHOICES" });
 
   clock.advance(config.questionDurationMs - 1);
   assert.equal(runtime.getSnapshot().state.phase, "question_active");

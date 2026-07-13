@@ -178,6 +178,18 @@ async function extendActiveQuestionDeadline(sessionId: string) {
   }
 }
 
+async function expireActiveQuestionDeadline(sessionId: string) {
+  const deadline = new Date(Date.now() - 1000).toISOString();
+  const updated = await service
+    .from("party_sessions")
+    .update({ question_deadline_at: deadline })
+    .eq("id", sessionId);
+
+  if (updated.error) {
+    throw updated.error;
+  }
+}
+
 async function responsePost(page: Page, payload: Record<string, unknown>) {
   return page.evaluate(async (payload) => {
     const response = await fetch("/api/party/response", {
@@ -312,7 +324,7 @@ async function main() {
 
     await hostCommand(host, "PREPARE_FIRST_QUESTION");
     await expect(display.getByText(/Question ready/)).toBeVisible({ timeout: 15000 });
-    const openedSnapshot = await hostCommand(host, "OPEN_QUESTION");
+    const openedSnapshot = await hostCommand(host, "REVEAL_CHOICES");
     await extendActiveQuestionDeadline(openedSnapshot.session.id);
     await expect(display.getByText(/Development question 1/)).toBeVisible({ timeout: 15000 });
     await expect(guestA.page.getByText(/Development question 1/)).toBeVisible({ timeout: 15000 });
@@ -368,7 +380,8 @@ async function main() {
     await expect(display.getByText(/Submitted:\s*2/)).toBeVisible({ timeout: 15000 });
     await expect(host.getByText(/Submitted/)).toBeVisible({ timeout: 15000 });
 
-    await hostCommand(host, "LOCK_QUESTION");
+    await expireActiveQuestionDeadline(openedSnapshot.session.id);
+    await snapshot(host);
     await expect(display.getByText(/Answers locked/)).toBeVisible({ timeout: 15000 });
     const staleAfterLock = await responsePost(guestB.page, {
       selectedOptionId: "option-b",

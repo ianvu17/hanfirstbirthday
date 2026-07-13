@@ -143,7 +143,7 @@ Status: Completed; awaiting Ian human approval gate.
 Goals:
 
 - Implement a React-independent local Party Engine.
-- Add explicit host-driven phases for lobby, question ready, question active, question locked, answer reveal, leaderboard, waiting for host, and finished.
+- Add explicit host-driven phases for lobby, question ready/preview, question active, deadline-closed question, answer reveal, leaderboard, waiting for host, and finished.
 - Add a timestamp-based 20-second question deadline through a clock abstraction.
 - Enforce per-question immutable locked responses, timeout responses, idempotent retry, and conflicting retry rejection.
 - Add local runtime, React provider/hooks, and distinct Party Screen, Guest Controller, and Host QA projections.
@@ -176,6 +176,7 @@ Exit criteria:
 - Version-controlled Supabase migration defines sessions, participants, responses, host command log, constraints, indexes, RLS, and a response-touch function.
 - `/{locale}/play`, `/display/party`, and `/{locale}/host` use the remote runtime when Supabase env is configured, with local fallback for env-less development.
 - Host commands and guest responses are server-authoritative.
+- Host flow uses Start Game, Reveal Answers, automatic deadline closure, Reveal Correct Answer, Show Leaderboard, and Continue/Next/Finish.
 - Participant resume and Host PIN session cookies exist.
 - Party Screen QR is generated from the runtime join URL.
 - QA/test data is tagged through `is_test`.

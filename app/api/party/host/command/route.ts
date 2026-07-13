@@ -9,8 +9,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 const commandSchema = z.object({
   type: z.enum([
     "PREPARE_FIRST_QUESTION",
-    "OPEN_QUESTION",
-    "LOCK_QUESTION",
+    "REVEAL_CHOICES",
     "REVEAL_ANSWER",
     "SHOW_LEADERBOARD",
     "COMPLETE_PRESENTATION",

@@ -68,7 +68,7 @@ Architecture should separate:
 - UI components from content strings.
 - Guest routes from admin, QA, and display routes.
 
-The birthday game is host-driven, not autonomous. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Each opened question still has an automatic 20-second countdown.
+The birthday game is host-driven, not autonomous. Ian controls phase transitions such as Start Game, Reveal Answers, Reveal Correct Answer, Show Leaderboard, and Next Question. Showing a question is a preview step; revealing answer choices opens answering and starts the automatic 20-second countdown. Answering closes automatically at the deadline without a required manual host lock.
 
 Admin and future host controls must stay small: scores, messages, Party Screen view/link, QA/test separation, necessary test resets, optional simple readiness summary, and lightweight game controls such as Start Game, Next, Reveal, and Pause when that milestone is approved.
 

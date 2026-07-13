@@ -70,6 +70,7 @@ Use cases:
 - Simulate empty leaderboard.
 - Simulate Party Screen lobby, active question, locked question, reveal, leaderboard, and finished phases once runtime exists.
 - Simulate host-driven phase advancement once host controls exist.
+- Simulate question preview, reveal-answer-choices, automatic deadline closure, and correct-answer reveal without a required manual lock step.
 - Simulate missing optional assets.
 
 Test mode must not invent real Han content. Use neutral placeholder content only.
@@ -203,6 +204,7 @@ Milestone 5 checks:
 - Use `npm run test:supabase` or `npm run test:rls` for static migration assertions covering tables, constraints, indexes, RLS policies, and the response revision touch function.
 - Use `npm run test:rls:live` only after hosted Supabase env values are configured. It creates `codex-m5-validation-*` test rows, validates anon RLS behavior with browser-equivalent credentials, verifies direct REST tampering is denied, reports cleanup counts, and deletes only its own validation sessions.
 - Use `npm run test:realtime:live` against an isolated local server and `LIVE_REALTIME_JOIN_CODE=codex-m5-*` to rehearse hosted Supabase realtime with independent display, host, English guest, and Vietnamese guest browser contexts.
+- Current realtime rehearsal expects `REVEAL_CHOICES` as the host action that opens answering. It should not rely on a production host `LOCK_QUESTION` command.
 - Set `LIVE_REALTIME_HOST_PIN` through a silent shell prompt for final rehearsal when the real Host PIN route must be validated end to end.
 - Use `npm run vercel:push-env -- --target=preview --dry-run` after Vercel linking to verify required preview env values without printing secrets, then rerun without `--dry-run` to push them.
 - Use native Vercel Git integration for normal preview deployments from GitHub commits. `npx vercel deploy --yes` is now a legacy/manual preview fallback only; do not pass `--target=preview`.
@@ -216,8 +218,10 @@ Milestone 5 checks:
 - Guest can choose English or Vietnamese.
 - Guest can enter display name.
 - Guest can answer quiz questions with 20-second timer.
+- Host reveals answer choices to start the 20-second timer.
 - Accepted answers lock and cannot be edited.
 - Timed-out questions lock and cannot be edited.
+- Answering closes automatically when the deadline expires.
 - Safe retries do not create duplicate question responses.
 - Guest sees a result screen.
 - Party Screen and leaderboard update after submission or host-driven phase changes once runtime exists.

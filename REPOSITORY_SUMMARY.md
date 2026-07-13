@@ -21,7 +21,7 @@ Current capability flags:
 | Scoring | Implemented as one point per correct locked response in `selectLeaderboardRows`. |
 | Leaderboards | Implemented in shared projections and Party Screen display; mobile standalone leaderboard route is not implemented. |
 | Host controls | Implemented at `/{locale}/host` with PIN auth and one dominant next action. |
-| Recovery and reconnection | Implemented through participant resume cookies, host session cookies, snapshot polling, revision checks, stale/offline UI, and refresh recovery tests. |
+| Recovery and reconnection | Implemented through participant resume cookies, host session cookies, snapshot polling, revision checks, stabilized reconnecting/offline UI, and refresh recovery tests. |
 | Production-ready CI/CD | CI and GitHub/Vercel release docs exist; production activation still needs final readiness and physical rehearsal. |
 
 ## Capability Matrix
@@ -40,7 +40,7 @@ Current capability flags:
 | Realtime propagation | Implemented and integrated | Supabase subscriptions to `party_sessions` and `participants`; polling refresh | Raw response rows are not subscribed directly; response accepted touches session revision | Static migration checks; live realtime harness documented |
 | Scoring engine | Implemented and integrated | `selectLeaderboardRows`; `is_correct` stored in `question_responses` | Tie-break is deterministic by join order/name, not final product-approved | Engine tests |
 | Leaderboard | Implemented and integrated | `SharedPartyProjection.leaderboard`; `PartyScreenView` | No separate `/{locale}/leaderboard` phone route | Engine tests; display visual checks |
-| Reconnection and refresh recovery | Implemented and integrated | Participant resume token cookie; snapshot refresh; revision filtering | Cross-device physical rehearsal still pending | `host-auth.test.ts`; live realtime harness |
+| Reconnection and refresh recovery | Implemented and integrated | Participant resume token cookie; snapshot refresh; revision filtering; stabilized connection badge | Cross-device physical rehearsal still pending | `host-auth.test.ts`; live realtime harness |
 | Duplicate-answer prevention | Implemented and integrated | Reducer immutable response logic; DB unique `(party_session_id, participant_id, question_id)` | No direct database immutability trigger beyond insert-only server route and no anon writes | Engine tests; static migration/live validation |
 | Session isolation | Implemented and integrated | `party_key + deployment_environment + is_current`; `PARTY_SESSION_IS_TEST` metadata | Preview and production can share Supabase only with disciplined env setup | `session-architecture.test.ts`; `PARTY_SESSION_ARCHITECTURE.md` |
 | Host authorization | Implemented and integrated | Host PIN hash/session secret; HttpOnly host cookie; command route auth | Event-level PIN, not full account system | `host-auth.test.ts`; live realtime harness |
@@ -59,12 +59,12 @@ Current capability flags:
 4. Desktop opens `/display/party`; with Supabase env configured it renders `RemotePartyScreenClient`, fetches `/api/party/session`, and shows a QR generated from `joinUrl`.
 5. Guest completes `/{locale}` onboarding; `GuestPlayClient` reads `sessionStorage` and renders `RemoteGuestController` on `/{locale}/play`.
 6. Guest joins through `POST /api/party/join`; server creates `participants` row, stores hashed resume token, and sets `han_participant_session`.
-7. Host advances phases through `POST /api/party/host/command`; server verifies host cookie, compares expected revision, runs `processPartyCommand`, persists session timestamps/phase, and records `host_command_log`.
+7. Host advances phases through `POST /api/party/host/command`; server verifies host cookie, compares expected revision, runs `processPartyCommand`, persists session timestamps/phase, and records `host_command_log`. `REVEAL_CHOICES` is the production command that reveals answer choices and starts the deadline.
 8. When a question is active, guest submits to `POST /api/party/response`; server validates participant cookie, active question, deadline, option id, and immutable response rules before inserting `question_responses`.
 9. Accepted responses call `touch_party_session_response`, bumping `party_sessions.revision`.
 10. Desktop, host, and phones receive realtime wake-ups from `party_sessions`/`participants` or periodic polling, then refetch `/api/party/session`.
 11. Server builds safe projections using `buildSharedPartyProjection` and `buildGuestProjection`; clients ignore older revisions.
-12. Host locks, reveals, shows leaderboard, completes presentation, prepares next question, and eventually finishes the party. Finished sessions are no longer current.
+12. Deadline expiry closes answering automatically, then the host reveals the correct answer, shows leaderboard, completes presentation, prepares the next question, and eventually finishes the party. Finished sessions are no longer current.
 
 Browser clients do not write authoritative Supabase rows directly. The only client-side authority left is draft UI selection before Submit Answer.
 

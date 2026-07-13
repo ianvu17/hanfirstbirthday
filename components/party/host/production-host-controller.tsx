@@ -1,11 +1,12 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, LockKeyhole, PartyPopper, WifiOff } from "lucide-react";
+import { AlertCircle, CheckCircle2, Clock, LockKeyhole, PartyPopper } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
 import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { LoadingTreatment } from "@/components/design/loading-treatment";
 import { PaperPanel } from "@/components/design/paper-panel";
+import { ConnectionStatusBadge } from "@/components/party/connection-status-badge";
 import { Button } from "@/components/ui/button";
 import {
   selectHostCapabilities,
@@ -37,12 +38,8 @@ function nextAction(
     return { label: copy.prepareFirst, command: "PREPARE_FIRST_QUESTION" };
   }
 
-  if (capabilities.canOpenQuestion) {
-    return { label: copy.openQuestion, command: "OPEN_QUESTION" };
-  }
-
-  if (capabilities.canLockQuestion) {
-    return { label: copy.lockQuestion, command: "LOCK_QUESTION" };
+  if (capabilities.canRevealChoices) {
+    return { label: copy.revealChoices, command: "REVEAL_CHOICES" };
   }
 
   if (capabilities.canRevealAnswer) {
@@ -155,6 +152,10 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
     snapshot?.session && capabilities
       ? nextAction(snapshot.projection.phase, capabilities, copy)
       : null;
+
+  const remainingSeconds = snapshot?.session
+    ? Math.ceil(snapshot.projection.remainingMs / 1000)
+    : 0;
 
   async function login(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -369,10 +370,7 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
                 {copy.hostTitle}
               </h1>
             </div>
-            <BirthdayBadge tone={connection === "connected" ? "blue" : "coral"}>
-              <WifiOff className="h-4 w-4" aria-hidden="true" />
-              {copy[connection]}
-            </BirthdayBadge>
+            <ConnectionStatusBadge connection={connection} copy={copy} />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -395,9 +393,18 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
               </p>
             </div>
             <div className="rounded-[1rem] border border-border bg-surface-paper p-4 shadow-lift">
-              <p className="text-xs font-extrabold uppercase text-muted-foreground">{copy.submitted}</p>
-              <p className="mt-1 text-lg font-extrabold text-foreground">
-                {snapshot.projection.submittedCount}
+              <p className="text-xs font-extrabold uppercase text-muted-foreground">
+                {snapshot.projection.phase === "question_active" ? copy.time : copy.submitted}
+              </p>
+              <p className="mt-1 flex items-center gap-2 text-lg font-extrabold text-foreground">
+                {snapshot.projection.phase === "question_active" ? (
+                  <>
+                    <Clock className="h-4 w-4 text-party-orange" aria-hidden="true" />
+                    {remainingSeconds}s
+                  </>
+                ) : (
+                  snapshot.projection.submittedCount
+                )}
               </p>
             </div>
           </div>
@@ -456,10 +463,15 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
                 {copy.cancel}
               </Button>
             </div>
+          ) : snapshot.projection.phase === "question_active" ? (
+            <div className="rounded-[1rem] border border-party-orange/30 bg-surface-highlight/70 p-4 text-sm font-bold leading-6" role="status">
+              {copy.answeringInProgress} {copy.submitted}:{" "}
+              {snapshot.projection.submittedCount}/{snapshot.projection.participantCount}
+            </div>
           ) : (
             <Button
               type="button"
-              disabled={!action || pending || connection === "offline" || connection === "stale"}
+              disabled={!action || pending || connection === "offline" || connection === "reconnecting"}
               onClick={() => {
                 if (!action) {
                   return;

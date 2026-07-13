@@ -43,7 +43,7 @@ A family member or friend at the party. They scan the QR code on a personal phon
 
 ### Host
 
-Ian or another trusted person pacing the birthday game for the room. The host decides when to start the game, open a question, reveal the answer, show a fun fact, show the leaderboard, and move to the next question. Host controls should be lightweight and event-focused, not a SaaS admin dashboard.
+Ian or another trusted person pacing the birthday game for the room. The host decides when to start the game, reveal answer choices, reveal the correct answer, show the leaderboard, and move to the next question. Host controls should be lightweight and event-focused, not a SaaS admin dashboard.
 
 ### Host/Admin
 
@@ -102,12 +102,13 @@ Qualitative:
 - Questions must support one correct answer unless a future ADR adds other question types.
 - The quiz must include a 20-second timer per question.
 - Each question must follow this lifecycle:
-  - Question loads.
-  - Question becomes ready.
-  - 20-second timer starts.
+  - Question preview appears without answer choices.
+  - Host reveals answer choices.
+  - 20-second timer starts as choices are revealed.
   - Guest selects an answer.
   - Answer is submitted.
   - Server accepts and locks the response.
+  - Answering closes automatically at the deadline.
   - Correct, incorrect, or timeout reveal appears.
   - Han fun fact appears when provided in approved content.
   - App proceeds to the next question.
@@ -124,6 +125,7 @@ Qualitative:
 The shared game should be planned around explicit phases before quiz implementation:
 
 - `LOBBY`: Party Screen shows hero artwork, QR code, join instructions, guest count, and future countdown-until-start support. Phones handle personal join, language, and display name.
+- `QUESTION_PREVIEW`: Party Screen and phones show the question text while answer choices remain hidden and the timer has not started.
 - `QUESTION_ACTIVE`: Party Screen shows the large question, automatic 20-second countdown, progress, and number of answers submitted. Phones show answer controls only for the current guest.
 - `QUESTION_LOCKED`: Party Screen communicates that answering is closed and waits for the host-driven reveal. Phones show the guest's locked or timed-out state.
 - `ANSWER_REVEAL`: Party Screen reveals the correct answer and celebration. Phones show only personal feedback needed by the guest.
@@ -186,7 +188,7 @@ These lifecycle terms are planning requirements only in Milestone 3.6. They do n
 
 - Milestone 5 implements production host controls at `/{locale}/host`.
 - The host is Ian, so controls stay minimal and direct.
-- Host controls include the next valid phase action such as prepare/open/lock/reveal/show leaderboard/continue/next/finish.
+- Host controls include the next valid phase action such as start game, reveal answers, reveal correct answer, show leaderboard, continue, next question, or finish.
 - Host access uses a PIN verified on the server and a signed HttpOnly host session cookie.
 - Host controls must not turn into a complex admin dashboard.
 

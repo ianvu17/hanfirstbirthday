@@ -64,20 +64,11 @@ export function HostControlPanel({ locale }: { locale: Locale }) {
           </Button>
           <Button
             type="button"
-            disabled={!capabilities.canOpenQuestion}
-            onClick={actions.openQuestion}
-            data-testid="host-open-question"
+            disabled={!capabilities.canRevealChoices}
+            onClick={actions.revealChoices}
+            data-testid="host-reveal-choices"
           >
-            {copy.openQuestion}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            disabled={!capabilities.canLockQuestion}
-            onClick={actions.lockQuestion}
-            data-testid="host-lock-question"
-          >
-            {copy.lockQuestion}
+            {copy.revealChoices}
           </Button>
           <Button
             type="button"

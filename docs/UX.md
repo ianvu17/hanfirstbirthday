@@ -15,11 +15,11 @@ The phone should not duplicate the desktop presentation. It should show only inf
 
 ## Host Model
 
-The birthday game is host-driven, not autonomous. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, the 20-second countdown is automatic.
+The birthday game is host-driven, not autonomous. Ian controls phase transitions such as Start Game, Reveal Answers, Reveal Correct Answer, Show Leaderboard, and Next Question. A question first appears as a preview without answer choices; revealing answer choices starts the automatic 20-second countdown.
 
 Future host controls should be intentionally lightweight. Expected controls include Start Game, Next, Reveal, and Pause, but Milestone 3.6 does not implement host controls.
 
-Milestone 5 implements the production Host Controller at `/{locale}/host`. It starts with a PIN screen, then shows party status, phase, question progress, participant count, submitted count, connection state, and one dominant valid next action. Finish Party requires confirmation. Developer diagnostics and fixture actions remain in `/{locale}/qa/party`.
+Milestone 5 implements the production Host Controller at `/{locale}/host`. It starts with a PIN screen, then shows party status, phase, question progress, participant count, submitted count, connection state, and one dominant valid next action. During active answering there is no required host action; the host waits for the deadline to close answering, then reveals the correct answer. Finish Party requires confirmation. Developer diagnostics and fixture actions remain in `/{locale}/qa/party`.
 
 ## Primary Guest Flow
 
@@ -40,13 +40,14 @@ Milestone 5 implements the production Host Controller at `/{locale}/host`. It st
 The shared Party Screen should eventually support:
 
 1. Lobby with hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
-2. Large active question with automatic countdown, progress, and number of answers submitted.
-3. Locked-question state after the timer ends or the host closes answering.
-4. Correct-answer reveal.
-5. Han fun fact reveal when approved content exists.
-6. Leaderboard with animated ranking and current positions.
-7. Next-question preparation.
-8. Finished state with final leaderboard, celebration, and thank-you.
+2. Question preview with no visible answer choices and no running timer.
+3. Revealed answer choices with automatic countdown, progress, and number of answers submitted.
+4. Closed-answer state after the timer ends automatically.
+5. Correct-answer reveal.
+6. Han fun fact reveal when approved content exists.
+7. Leaderboard with animated ranking and current positions.
+8. Next-question preparation.
+9. Finished state with final leaderboard, celebration, and thank-you.
 
 Milestone 5 implements this flow for the quiz runtime, Supabase-backed shared state, realtime wake-up, server snapshots, and host controls. Messages, timeline, gallery, and standalone mobile leaderboard remain future work.
 
@@ -55,8 +56,9 @@ Milestone 5 implements this flow for the quiz runtime, Supabase-backed shared st
 Use these shared lifecycle terms for future planning:
 
 - `LOBBY`: Guests join by phone while the Party Screen provides QR and room context.
-- `QUESTION_ACTIVE`: Phones collect answers; the Party Screen shows the question, countdown, progress, and submitted-answer count.
-- `QUESTION_LOCKED`: Phones show locked or timed-out personal state; the Party Screen holds the room before reveal.
+- `QUESTION_PREVIEW`: Phones and Party Screen show the question text while the answer choices remain hidden.
+- `QUESTION_ACTIVE`: Phones collect answers; the Party Screen shows the question, answer choices, countdown, progress, and submitted-answer count.
+- `QUESTION_LOCKED`: Phones show locked or timed-out personal state; the Party Screen holds the room before reveal. In implementation this is reached by deadline-driven closure, not a required host lock.
 - `ANSWER_REVEAL`: The Party Screen reveals the correct answer and celebration; phones show concise personal feedback.
 - `LEADERBOARD`: The Party Screen shows current rankings; phones may show a smaller personal leaderboard view.
 - `NEXT_QUESTION`: The host advances the room to the next question.

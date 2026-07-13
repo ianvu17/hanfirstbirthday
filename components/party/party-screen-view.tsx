@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, MonitorUp, QrCode, Trophy, Wifi, WifiOff } from "lucide-react";
+import { Clock, MonitorUp, QrCode, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 
@@ -8,6 +8,7 @@ import { AssetPlaceholder } from "@/components/design/asset-placeholder";
 import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { PaperPanel } from "@/components/design/paper-panel";
 import { TitleLockup } from "@/components/design/title-lockup";
+import { ConnectionStatusBadge } from "@/components/party/connection-status-badge";
 import type { SharedPartyProjection } from "@/lib/party-engine";
 import type { Locale } from "@/lib/i18n/routing";
 import type { PartyUiCopy } from "@/lib/party-runtime/copy";
@@ -15,10 +16,6 @@ import type { RemoteConnectionState } from "@/lib/party-remote/types";
 
 function seconds(remainingMs: number) {
   return Math.ceil(remainingMs / 1000);
-}
-
-function connectionTone(connection: RemoteConnectionState) {
-  return connection === "connected" ? "blue" : connection === "offline" ? "coral" : "yellow";
 }
 
 export function PartyScreenView({
@@ -43,6 +40,10 @@ export function PartyScreenView({
     projection.phase === "leaderboard" ||
     projection.phase === "waiting_for_host" ||
     projection.phase === "finished";
+  const showChoices =
+    Boolean(question) &&
+    projection.phase !== "question_ready" &&
+    projection.phase !== "lobby";
 
   useEffect(() => {
     let cancelled = false;
@@ -80,14 +81,7 @@ export function PartyScreenView({
           <BirthdayBadge tone="yellow">
             {copy.participants}: {projection.participantCount}
           </BirthdayBadge>
-          <BirthdayBadge tone={connectionTone(connection)}>
-            {connection === "connected" ? (
-              <Wifi className="h-4 w-4" aria-hidden="true" />
-            ) : (
-              <WifiOff className="h-4 w-4" aria-hidden="true" />
-            )}
-            {copy.connection}: {copy[connection]}
-          </BirthdayBadge>
+          <ConnectionStatusBadge connection={connection} copy={copy} prefix />
         </div>
       </div>
 
@@ -129,7 +123,9 @@ export function PartyScreenView({
         </PaperPanel>
       ) : null}
 
-      {projection.phase !== "lobby" && projection.phase !== "finished" ? (
+      {projection.phase !== "lobby" &&
+      projection.phase !== "leaderboard" &&
+      projection.phase !== "finished" ? (
         <PaperPanel tone={showReveal ? "yellow" : "display"} className="p-6 lg:p-9">
           <div className="grid gap-6 lg:grid-cols-[1fr_18rem] lg:items-start">
             <div className="space-y-5">
@@ -143,9 +139,7 @@ export function PartyScreenView({
                         ? copy.answersLocked
                         : projection.phase === "answer_reveal"
                           ? copy.answerReveal
-                          : projection.phase === "leaderboard"
-                            ? copy.leaderboard
-                            : copy.waitingHost}
+                          : copy.waitingHost}
                 </BirthdayBadge>
                 {projection.questionNumber ? (
                   <BirthdayBadge tone="yellow">
@@ -162,7 +156,13 @@ export function PartyScreenView({
                     : copy.getReady}
               </h1>
 
-              {question ? (
+              {question && projection.phase === "question_ready" ? (
+                <div className="rounded-[1.2rem] border border-party-blue/25 bg-surface-sky/60 p-5 text-2xl font-extrabold text-foreground">
+                  {copy.waitingChoices}
+                </div>
+              ) : null}
+
+              {question && showChoices ? (
                 <div className="grid gap-3 sm:grid-cols-3">
                   {question.options.map((option) => {
                     const isCorrect = showReveal && option.id === question.correctOptionId;
@@ -198,8 +198,10 @@ export function PartyScreenView({
                 <BirthdayBadge tone="blue">
                   {copy.submitted}: {projection.submittedCount}
                 </BirthdayBadge>
-                <BirthdayBadge tone="coral">
-                  {copy.timedOut}: {projection.timedOutCount}
+                <BirthdayBadge tone={projection.phase === "question_locked" ? "yellow" : "coral"}>
+                  {projection.phase === "question_locked"
+                    ? copy.waitingReveal
+                    : `${copy.timedOut}: ${projection.timedOutCount}`}
                 </BirthdayBadge>
               </div>
               <AssetPlaceholder

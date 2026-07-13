@@ -77,6 +77,7 @@ export type PartyConfig = {
 export type PartyCommand =
   | { type: "REGISTER_GUEST"; guestId: string; displayName: string; locale: Locale; now: number }
   | { type: "PREPARE_FIRST_QUESTION"; now: number }
+  | { type: "REVEAL_CHOICES"; now: number }
   | { type: "OPEN_QUESTION"; now: number }
   | { type: "LOCK_QUESTION"; now: number; reason?: "deadline" | "host" }
   | { type: "REVEAL_ANSWER"; now: number }
@@ -125,6 +126,7 @@ export type PartyCommandResult =
 
 export type HostCapabilities = {
   canPrepareFirstQuestion: boolean;
+  canRevealChoices: boolean;
   canOpenQuestion: boolean;
   canLockQuestion: boolean;
   canRevealAnswer: boolean;

@@ -96,8 +96,9 @@ export function selectTimedOutCount(state: PartyState): number {
 export function selectHostCapabilities(state: PartyState): HostCapabilities {
   return {
     canPrepareFirstQuestion: state.phase === "lobby",
-    canOpenQuestion: state.phase === "question_ready",
-    canLockQuestion: state.phase === "question_active",
+    canRevealChoices: state.phase === "question_ready",
+    canOpenQuestion: false,
+    canLockQuestion: false,
     canRevealAnswer: state.phase === "question_locked",
     canShowLeaderboard: state.phase === "answer_reveal",
     canCompletePresentation: state.phase === "leaderboard",

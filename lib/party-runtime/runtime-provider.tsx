@@ -69,8 +69,7 @@ export function usePartyActions() {
       registerGuest: (guestId: string, displayName: string, locale: "en" | "vi") =>
         runtime.dispatch({ type: "REGISTER_GUEST", guestId, displayName, locale }),
       prepareFirstQuestion: () => runtime.dispatch({ type: "PREPARE_FIRST_QUESTION" }),
-      openQuestion: () => runtime.dispatch({ type: "OPEN_QUESTION" }),
-      lockQuestion: () => runtime.dispatch({ type: "LOCK_QUESTION", reason: "host" }),
+      revealChoices: () => runtime.dispatch({ type: "REVEAL_CHOICES" }),
       revealAnswer: () => runtime.dispatch({ type: "REVEAL_ANSWER" }),
       showLeaderboard: () => runtime.dispatch({ type: "SHOW_LEADERBOARD" }),
       completePresentation: () => runtime.dispatch({ type: "COMPLETE_PRESENTATION" }),

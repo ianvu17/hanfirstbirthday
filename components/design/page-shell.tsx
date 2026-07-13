@@ -27,7 +27,7 @@ export function PageShell({
   return (
     <main
       className={cn(
-        "paper-grid relative min-h-screen overflow-hidden px-[var(--safe-page-x)] py-[var(--safe-page-y)] text-foreground",
+        "paper-grid relative min-h-screen min-h-dvh overflow-hidden px-[var(--safe-page-x)] py-[var(--safe-page-y)] pb-[max(var(--safe-page-y),env(safe-area-inset-bottom))] text-foreground",
         variant === "admin" && "bg-background",
         variant === "display" && "flex items-center justify-center px-6 py-8",
         variant === "qa" && "bg-surface-deep",

@@ -45,11 +45,11 @@ async function captureQaFlow(page: Page) {
   await page.getByTestId("host-prepare-first").click();
   await capture(page, "qa-question-ready", path.join(outputDir, "qa", "02-question-ready.png"));
 
-  await page.getByTestId("host-open-question").click();
+  await page.getByTestId("host-reveal-choices").click();
   await capture(page, "qa-question-active", path.join(outputDir, "qa", "03-question-active.png"));
 
   await page.getByTestId("host-simulate-correct").click();
-  await page.getByTestId("host-lock-question").click();
+  await page.getByText(/Answers locked/).first().waitFor({ timeout: 25000 });
   await capture(page, "qa-question-locked", path.join(outputDir, "qa", "04-question-locked.png"));
 
   await page.getByTestId("host-reveal-answer").click();
@@ -62,8 +62,8 @@ async function captureQaFlow(page: Page) {
   await capture(page, "qa-waiting", path.join(outputDir, "qa", "07-waiting.png"));
 
   await page.getByTestId("host-prepare-next").click();
-  await page.getByTestId("host-open-question").click();
-  await page.getByTestId("host-lock-question").click();
+  await page.getByTestId("host-reveal-choices").click();
+  await page.getByText(/Answers locked/).first().waitFor({ timeout: 25000 });
   await page.getByTestId("host-reveal-answer").click();
   await page.getByTestId("host-show-leaderboard").click();
   await page.getByTestId("host-complete-presentation").click();
@@ -74,7 +74,7 @@ async function captureQaFlow(page: Page) {
 async function captureVietnameseHarness(page: Page) {
   await page.goto(`${baseUrl}/vi/qa/party`, { waitUntil: "networkidle" });
   await page.getByTestId("host-prepare-first").click();
-  await page.getByTestId("host-open-question").click();
+  await page.getByTestId("host-reveal-choices").click();
   await capture(page, "vi-question-active", path.join(outputDir, "guest-phone", "vi-active.png"));
 }
 
@@ -82,14 +82,14 @@ async function captureMobileHarness(page: Page) {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`${baseUrl}/en/qa/party`, { waitUntil: "networkidle" });
   await page.getByTestId("host-prepare-first").click();
-  await page.getByTestId("host-open-question").click();
+  await page.getByTestId("host-reveal-choices").click();
   await capture(page, "mobile-harness-active", path.join(outputDir, "responsive", "mobile-active.png"));
 }
 
 async function captureReducedMotion(page: Page) {
   await page.goto(`${baseUrl}/vi/qa/party`, { waitUntil: "networkidle" });
   await page.getByTestId("host-prepare-first").click();
-  await page.getByTestId("host-open-question").click();
+  await page.getByTestId("host-reveal-choices").click();
   await capture(
     page,
     "reduced-motion-vi-active",

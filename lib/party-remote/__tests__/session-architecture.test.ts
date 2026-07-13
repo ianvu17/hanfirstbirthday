@@ -121,7 +121,19 @@ test("remote realtime subscriptions are keyed by session id and cleaned up on sw
   assert.equal(hook.includes("filter: `id=eq.${sessionId}`"), true);
   assert.equal(hook.includes("filter: `party_session_id=eq.${sessionId}`"), true);
   assert.equal(hook.includes("void client.removeChannel(channel);"), true);
-  assert.equal(hook.includes("}, [refresh, snapshot?.session?.id]);"), true);
+  assert.equal(
+    hook.includes("}, [markReconnectingSoon, refresh, settleLive, snapshot?.session?.id]);"),
+    true
+  );
+});
+
+test("transient realtime status changes are stabilized before becoming visible", () => {
+  const hook = readFileSync("lib/party-remote/use-remote-party.ts", "utf8");
+
+  assert.equal(hook.includes("markReconnectingSoon"), true);
+  assert.equal(hook.includes("window.setTimeout(() => {\n      reconnectGraceTimerRef.current = null;"), true);
+  assert.equal(hook.includes("setConnection(\"stale\")"), false);
+  assert.equal(hook.includes("setConnection(window.navigator.onLine ? \"stale\" : \"offline\")"), false);
 });
 
 test("old realtime events are wake-up signals only and refresh the current session", () => {
