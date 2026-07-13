@@ -8,6 +8,7 @@ import type {
   RemoteApiError,
   RemoteConnectionState,
   RemoteGuestSnapshot,
+  RemoteNoSessionSnapshot,
   RemotePartySnapshot
 } from "./types";
 
@@ -25,7 +26,9 @@ function isRemoteGuestSnapshot(
   return "guest" in snapshot;
 }
 
-export function useRemotePartySnapshot<TSnapshot extends RemotePartySnapshot | RemoteGuestSnapshot>(
+export function useRemotePartySnapshot<
+  TSnapshot extends RemotePartySnapshot | RemoteGuestSnapshot | RemoteNoSessionSnapshot
+>(
   includeGuest: boolean
 ): RemoteSnapshotState<TSnapshot> {
   const [snapshot, setSnapshot] = useState<TSnapshot | null>(null);
@@ -35,9 +38,9 @@ export function useRemotePartySnapshot<TSnapshot extends RemotePartySnapshot | R
   const refreshInFlightRef = useRef<Promise<void> | null>(null);
 
   const applySnapshot = useCallback((nextSnapshot: TSnapshot) => {
-    const nextRevision = nextSnapshot.session.revision;
+    const nextRevision = nextSnapshot.session?.revision ?? -1;
 
-    if (nextRevision < revisionRef.current) {
+    if (nextSnapshot.session && nextRevision < revisionRef.current) {
       return;
     }
 
@@ -76,7 +79,7 @@ export function useRemotePartySnapshot<TSnapshot extends RemotePartySnapshot | R
           return;
         }
 
-        if (includeGuest && !isRemoteGuestSnapshot(payload)) {
+        if (includeGuest && payload.session && !isRemoteGuestSnapshot(payload)) {
           setConnection("stale");
         }
 
@@ -132,7 +135,7 @@ export function useRemotePartySnapshot<TSnapshot extends RemotePartySnapshot | R
 
   useEffect(() => {
     const client = getSupabaseBrowserClient();
-    const sessionId = snapshot?.session.id;
+    const sessionId = snapshot?.session?.id;
 
     if (!client || !sessionId) {
       return;
@@ -177,7 +180,7 @@ export function useRemotePartySnapshot<TSnapshot extends RemotePartySnapshot | R
     return () => {
       void client.removeChannel(channel);
     };
-  }, [refresh, snapshot?.session.id]);
+  }, [refresh, snapshot?.session?.id]);
 
   return {
     snapshot,

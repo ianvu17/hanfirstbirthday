@@ -36,6 +36,25 @@ export function getDefaultPartyJoinCode() {
   return process.env.PARTY_JOIN_CODE?.trim() || "han-turns-one";
 }
 
+export function getPartyKey() {
+  return process.env.PARTY_KEY?.trim() || "han-first-birthday";
+}
+
+export type PartyDeploymentEnvironment = "development" | "preview" | "production";
+
+export function getPartyDeploymentEnvironment(): PartyDeploymentEnvironment {
+  const value =
+    process.env.PARTY_DEPLOYMENT_ENVIRONMENT?.trim() ||
+    process.env.VERCEL_ENV?.trim() ||
+    (process.env.NODE_ENV === "production" ? "production" : "development");
+
+  if (value === "production" || value === "preview" || value === "development") {
+    return value;
+  }
+
+  return "development";
+}
+
 export function isDefaultPartyTestMode() {
   if (process.env.PARTY_SESSION_IS_TEST) {
     return process.env.PARTY_SESSION_IS_TEST === "true";

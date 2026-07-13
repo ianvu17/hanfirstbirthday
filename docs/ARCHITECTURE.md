@@ -187,6 +187,8 @@ Milestone 5 adds the remote runtime path:
 - `/display/party` and `/{locale}/play` choose the remote runtime when Supabase server env is configured and preserve the local Milestone 4 runtime when env is absent.
 - Browser clients use remote snapshots plus Supabase realtime wake-up subscriptions and periodic resync. They do not directly update authoritative tables.
 
+The current party-session selector, lifecycle semantics, environment isolation, idempotency model, and host runbook are defined in [PARTY_SESSION_ARCHITECTURE.md](PARTY_SESSION_ARCHITECTURE.md). That document supersedes earlier Milestone 5 wording that treated `PARTY_SESSION_IS_TEST` as a default session selector.
+
 Domain components:
 
 - Language selector.
