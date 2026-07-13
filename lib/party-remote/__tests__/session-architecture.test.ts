@@ -5,6 +5,7 @@ import test from "node:test";
 import { getPartyDeploymentEnvironment } from "@/lib/supabase/env";
 import {
   resolveRemoteSnapshotTracking,
+  resolveVisibleRemoteConnection,
   type RemoteSnapshotTrackingState
 } from "@/lib/party-remote/use-remote-party";
 
@@ -127,11 +128,51 @@ test("remote realtime subscriptions are keyed by session id and cleaned up on sw
   );
 });
 
+test("normal polling refresh does not downgrade a live visible connection", () => {
+  const hook = readFileSync("lib/party-remote/use-remote-party.ts", "utf8");
+  const refreshStart = hook.indexOf("const refresh = useCallback(async () => {");
+  const firstFetch = hook.indexOf('const response = await fetch("/api/party/session"', refreshStart);
+  const refreshPrelude = hook.slice(refreshStart, firstFetch);
+
+  assert.equal(refreshPrelude.includes("markReconnectingSoon();"), false);
+  assert.equal(refreshPrelude.includes('setConnection("reconnecting")'), false);
+});
+
+test("visible connection state separates browser reachability from refresh activity", () => {
+  assert.equal(
+    resolveVisibleRemoteConnection({
+      browserOnline: true,
+      hasAcceptedSnapshot: true,
+      hasConfirmedTransportIssue: false,
+      hasHardError: false
+    }),
+    "connected"
+  );
+  assert.equal(
+    resolveVisibleRemoteConnection({
+      browserOnline: true,
+      hasAcceptedSnapshot: true,
+      hasConfirmedTransportIssue: true,
+      hasHardError: false
+    }),
+    "reconnecting"
+  );
+  assert.equal(
+    resolveVisibleRemoteConnection({
+      browserOnline: false,
+      hasAcceptedSnapshot: true,
+      hasConfirmedTransportIssue: false,
+      hasHardError: false
+    }),
+    "offline"
+  );
+});
+
 test("transient realtime status changes are stabilized before becoming visible", () => {
   const hook = readFileSync("lib/party-remote/use-remote-party.ts", "utf8");
 
   assert.equal(hook.includes("markReconnectingSoon"), true);
-  assert.equal(hook.includes("window.setTimeout(() => {\n      reconnectGraceTimerRef.current = null;"), true);
+  assert.equal(hook.includes("hasConfirmedTransportIssue: true"), true);
   assert.equal(hook.includes("setConnection(\"stale\")"), false);
   assert.equal(hook.includes("setConnection(window.navigator.onLine ? \"stale\" : \"offline\")"), false);
 });

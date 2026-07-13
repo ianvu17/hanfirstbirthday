@@ -25,12 +25,40 @@ export type RemoteSnapshotTrackingState = {
   revision: number;
 };
 
+export type RemoteConnectionSignals = {
+  browserOnline: boolean;
+  hasAcceptedSnapshot: boolean;
+  hasConfirmedTransportIssue: boolean;
+  hasHardError: boolean;
+};
+
 type TrackableRemoteSnapshot = {
   session: {
     id: string;
     revision: number;
   } | null;
 };
+
+export function resolveVisibleRemoteConnection({
+  browserOnline,
+  hasAcceptedSnapshot,
+  hasConfirmedTransportIssue,
+  hasHardError
+}: RemoteConnectionSignals): RemoteConnectionState {
+  if (!browserOnline) {
+    return "offline";
+  }
+
+  if (hasHardError) {
+    return "error";
+  }
+
+  if (!hasAcceptedSnapshot) {
+    return hasConfirmedTransportIssue ? "reconnecting" : "connecting";
+  }
+
+  return hasConfirmedTransportIssue ? "reconnecting" : "connected";
+}
 
 export function resolveRemoteSnapshotTracking(
   current: RemoteSnapshotTrackingState,
@@ -94,6 +122,8 @@ export function useRemotePartySnapshot<
   const refreshInFlightRef = useRef<Promise<void> | null>(null);
   const reconnectGraceTimerRef = useRef<number | null>(null);
   const offlineGraceTimerRef = useRef<number | null>(null);
+  const acceptedSnapshotRef = useRef(false);
+  const browserOnlineRef = useRef(true);
 
   const clearReconnectGrace = useCallback(() => {
     if (reconnectGraceTimerRef.current !== null) {
@@ -112,7 +142,14 @@ export function useRemotePartySnapshot<
   const settleLive = useCallback(() => {
     clearReconnectGrace();
     clearOfflineGrace();
-    setConnection("connected");
+    setConnection(
+      resolveVisibleRemoteConnection({
+        browserOnline: browserOnlineRef.current,
+        hasAcceptedSnapshot: acceptedSnapshotRef.current,
+        hasConfirmedTransportIssue: false,
+        hasHardError: false
+      })
+    );
   }, [clearOfflineGrace, clearReconnectGrace]);
 
   const markReconnectingSoon = useCallback(() => {
@@ -123,9 +160,14 @@ export function useRemotePartySnapshot<
     reconnectGraceTimerRef.current = window.setTimeout(() => {
       reconnectGraceTimerRef.current = null;
       setConnection((current) =>
-        current === "connected" || current === "reconnecting" ? "reconnecting" : current
+        resolveVisibleRemoteConnection({
+          browserOnline: browserOnlineRef.current,
+          hasAcceptedSnapshot: acceptedSnapshotRef.current || current === "connected",
+          hasConfirmedTransportIssue: true,
+          hasHardError: current === "error"
+        })
       );
-    }, 700);
+    }, 2500);
   }, []);
 
   const markOfflineSoon = useCallback(() => {
@@ -137,7 +179,15 @@ export function useRemotePartySnapshot<
 
     offlineGraceTimerRef.current = window.setTimeout(() => {
       offlineGraceTimerRef.current = null;
-      setConnection(window.navigator.onLine ? "reconnecting" : "offline");
+      browserOnlineRef.current = window.navigator.onLine;
+      setConnection(
+        resolveVisibleRemoteConnection({
+          browserOnline: browserOnlineRef.current,
+          hasAcceptedSnapshot: acceptedSnapshotRef.current,
+          hasConfirmedTransportIssue: !browserOnlineRef.current,
+          hasHardError: false
+        })
+      );
     }, 900);
   }, [clearReconnectGrace]);
 
@@ -156,6 +206,7 @@ export function useRemotePartySnapshot<
 
     currentSessionIdRef.current = tracking.next.sessionId;
     revisionRef.current = tracking.next.revision;
+    acceptedSnapshotRef.current = true;
     setSnapshot({
       ...nextSnapshot,
       connection: "connected"
@@ -170,15 +221,6 @@ export function useRemotePartySnapshot<
     }
 
     const refreshPromise = (async () => {
-      setConnection((current) => {
-        if (current === "connecting" || current === "offline" || current === "error") {
-          return current;
-        }
-
-        return current;
-      });
-      markReconnectingSoon();
-
       try {
         const response = await fetch("/api/party/session", {
           headers: {
@@ -240,8 +282,16 @@ export function useRemotePartySnapshot<
   }, [connection, refresh]);
 
   useEffect(() => {
-    const online = () => void refresh();
-    const offline = () => markOfflineSoon();
+    browserOnlineRef.current = window.navigator.onLine;
+
+    const online = () => {
+      browserOnlineRef.current = true;
+      void refresh();
+    };
+    const offline = () => {
+      browserOnlineRef.current = false;
+      markOfflineSoon();
+    };
 
     window.addEventListener("online", online);
     window.addEventListener("offline", offline);
