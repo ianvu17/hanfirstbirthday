@@ -26,7 +26,7 @@ export default async function GuestPlayPage({
   const joinCode = Array.isArray(join) ? join[0] : join;
 
   return (
-    <PageShell variant="guest">
+    <PageShell variant="guest" className="guest-controller-page">
       <GuestPlayClient
         locale={locale}
         remoteEnabled={isSupabaseConfigured()}

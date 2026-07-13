@@ -319,46 +319,84 @@ export function RemoteGuestController({
   const localError = activeDraft.questionId === question?.id ? activeDraft.error : "";
   const showAnswerOptions =
     Boolean(question) && projection.phase !== "question_ready" && projection.phase !== "lobby";
+  const showSubmitAction =
+    Boolean(question) &&
+    showAnswerOptions &&
+    projection.phase === "question_active" &&
+    !locked &&
+    !projection.reveal;
+  const connectionMessage =
+    connection === "connected" ? "" : `${copy.connection}: ${copy[connection]}`;
+  const statusMessages = [
+    localError,
+    connectionMessage,
+    revealMessage,
+    locked && !projection.reveal
+      ? locked.status === "locked_timeout"
+        ? copy.timeout
+        : copy.locked
+      : "",
+    projection.phase === "question_locked" ? copy.waitingReveal : ""
+  ].filter((message): message is string => Boolean(message));
+  const statusTone =
+    localError || connection === "offline" || connection === "error"
+      ? "border-party-red/30 bg-party-red/10"
+      : revealMessage || projection.phase === "question_locked"
+        ? "border-party-orange/30 bg-surface-highlight/70"
+        : "border-party-blue/25 bg-surface-sky/60";
 
   return (
     <section
-      className="mx-auto flex min-h-[calc(100dvh-2rem)] max-w-xl items-center py-0 sm:max-w-3xl sm:py-4"
+      className="mx-auto flex min-h-0 min-h-[calc(100dvh-var(--safe-page-y)-var(--safe-page-y))] max-w-xl items-center py-0 sm:max-w-3xl sm:py-4"
       data-testid="guest-controller"
     >
-      <PaperPanel tone="paper" className="w-full p-3 sm:p-7">
-        <div className="space-y-3 sm:space-y-5">
-          <div className="flex min-h-10 flex-wrap items-center justify-between gap-2">
-            <BirthdayBadge tone="blue">{participant.displayName}</BirthdayBadge>
-            <div className="flex flex-wrap gap-2">
+      <PaperPanel
+        tone="paper"
+        className="w-full p-3 [@media(max-height:700px)]:p-2.5 [@media(max-height:620px)]:p-2 sm:p-7"
+      >
+        <div className="space-y-3 [@media(max-height:700px)]:space-y-2 [@media(max-height:620px)]:space-y-1.5 sm:space-y-5">
+          <div className="flex min-h-9 flex-wrap items-center justify-between gap-2">
+            <BirthdayBadge className="min-h-7 px-2.5 py-0.5" tone="blue">
+              {participant.displayName}
+            </BirthdayBadge>
+            <div className="flex flex-wrap justify-end gap-2">
               <BirthdayBadge tone={projection.remainingMs <= 5000 ? "coral" : "yellow"}>
                 <Timer className="h-4 w-4" aria-hidden="true" />
                 {projection.phase === "question_active"
                   ? `${seconds(projection.remainingMs)}s`
                   : phaseLabel(projection.phase, copy)}
               </BirthdayBadge>
-              <ConnectionStatusBadge connection={connection} copy={copy} />
+              {connection === "connected" ? (
+                <span className="sr-only">{`${copy.connection}: ${copy.connected}`}</span>
+              ) : (
+                <ConnectionStatusBadge connection={connection} copy={copy} />
+              )}
             </div>
           </div>
 
-          <div className="space-y-2">
-            <p className="text-sm font-extrabold uppercase text-muted-foreground">
+          <div className="space-y-2 [@media(max-height:700px)]:space-y-1">
+            <p className="text-sm font-extrabold uppercase text-muted-foreground [@media(max-height:620px)]:text-xs">
               {projection.questionNumber
                 ? `${projection.questionNumber}/${projection.totalQuestions}`
                 : copy.lobbyTitle}
             </p>
-            <h1 className="font-display text-2xl font-extrabold leading-tight text-foreground sm:text-5xl">
+            <h1 className="font-display text-[1.55rem] font-extrabold leading-[1.05] text-foreground [@media(max-height:620px)]:text-[1.35rem] [@media(max-height:700px)]:text-[1.45rem] sm:text-5xl">
               {question ? question.prompt[locale] : phaseLabel(projection.phase, copy)}
             </h1>
           </div>
 
           {question && !showAnswerOptions ? (
-            <div className="min-h-24 rounded-[1rem] border border-party-blue/25 bg-surface-sky/55 p-4 text-sm font-extrabold leading-6 text-foreground">
+            <div className="rounded-[1rem] border border-party-blue/25 bg-surface-sky/55 p-3 text-sm font-extrabold leading-6 text-foreground [@media(max-height:620px)]:p-2.5 [@media(max-height:700px)]:leading-5">
               {copy.waitingChoices}
             </div>
           ) : null}
 
           {question && showAnswerOptions ? (
-            <div className="grid gap-2 sm:gap-3" role="radiogroup" aria-label={copy.selectAnswer}>
+            <div
+              className="grid gap-2 [@media(max-height:620px)]:gap-1.5 sm:gap-3"
+              role="radiogroup"
+              aria-label={copy.selectAnswer}
+            >
               {question.options.map((option) => {
                 const selected = selectedOptionId === option.id;
                 const wasLocked = locked?.selectedOptionId === option.id;
@@ -382,7 +420,7 @@ export function RemoteGuestController({
                         error: ""
                       })
                     }
-                    className={`min-h-11 rounded-[1rem] border px-4 py-2 text-left text-sm font-extrabold leading-5 shadow-lift transition sm:min-h-14 sm:py-3 sm:text-base ${
+                    className={`min-h-11 rounded-[1rem] border px-3 py-2 text-left text-sm font-extrabold leading-5 shadow-lift transition [@media(max-height:620px)]:leading-[1.15] sm:min-h-14 sm:px-4 sm:py-3 sm:text-base ${
                       isCorrect
                         ? "border-party-green/50 bg-party-green/18"
                         : isWrongReveal
@@ -403,40 +441,34 @@ export function RemoteGuestController({
             </div>
           ) : null}
 
-          <div className="min-h-12" aria-live="polite">
-          {revealMessage ? (
-            <div className="rounded-[1rem] border border-party-orange/30 bg-surface-highlight/70 p-3 text-sm font-bold leading-6 sm:p-4 sm:text-base sm:leading-7">
-              {revealMessage}
-            </div>
-          ) : locked && !projection.reveal ? (
-            <div className="rounded-[1rem] border border-party-blue/25 bg-surface-sky/60 p-3 text-sm font-bold sm:p-4 sm:text-base">
-              {locked.status === "locked_timeout" ? copy.timeout : copy.locked}
-            </div>
-          ) : projection.phase === "question_locked" ? (
-            <div className="rounded-[1rem] border border-party-orange/30 bg-surface-highlight/70 p-3 text-sm font-bold sm:p-4 sm:text-base">
-              {copy.waitingReveal}
-            </div>
-          ) : null}
+          <div className="min-h-11 [@media(max-height:620px)]:min-h-9" aria-live="polite">
+            {statusMessages.length > 0 ? (
+              <div
+                className={`rounded-[1rem] border p-2.5 text-sm font-bold leading-5 sm:p-4 sm:text-base sm:leading-7 ${statusTone}`}
+                role={localError ? "alert" : "status"}
+              >
+                {statusMessages.map((message) => (
+                  <p key={message}>{message}</p>
+                ))}
+              </div>
+            ) : null}
           </div>
 
-          {localError ? (
-            <p className="rounded-[0.9rem] border border-party-red/30 bg-party-red/10 p-3 text-sm font-bold text-foreground" role="alert">
-              {localError}
-            </p>
-          ) : null}
-
-          <div className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
-            <p className="text-sm font-bold text-muted-foreground">
+          <div className="grid min-h-11 gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
+            <p className="text-sm font-bold text-muted-foreground [@media(max-height:620px)]:text-xs">
               {copy.personalScore}: {projection.score}/{projection.totalQuestions}
             </p>
-            <Button
-              type="button"
-              disabled={!projection.canAnswer || !selectedOptionId || isSubmitting || connection === "offline"}
-              onClick={submit}
-              data-testid="guest-submit-answer"
-            >
-              {isSubmitting ? copy.submitting : copy.submit}
-            </Button>
+            {showSubmitAction ? (
+              <Button
+                type="button"
+                disabled={!projection.canAnswer || !selectedOptionId || isSubmitting || connection === "offline"}
+                onClick={submit}
+                data-testid="guest-submit-answer"
+                className="w-full sm:w-auto"
+              >
+                {isSubmitting ? copy.submitting : copy.submit}
+              </Button>
+            ) : null}
           </div>
         </div>
       </PaperPanel>
