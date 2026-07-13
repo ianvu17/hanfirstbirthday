@@ -41,7 +41,7 @@ Required or recommended `preview-validation` Environment variables:
 - `PARTY_JOIN_CODE`
 - `LIVE_REALTIME_JOIN_CODE`
 
-The workflow forces `PARTY_SESSION_IS_TEST=true`. Do not point it at event production data.
+The workflow forces `PARTY_SESSION_IS_TEST=true`. Use validation-owned join codes so cleanup cannot affect event rows.
 
 ## Vercel Git Integration
 
@@ -91,7 +91,21 @@ After Git integration is connected, verify:
 - Production deployment is still guarded or intentionally configured.
 - `/api/party/session` on Preview reports remote mode, `isTest=true`, and a non-localhost join URL.
 
+Current verified state on July 13, 2026:
+
+- Vercel project `ianalysed/hanfirstbirthday` is connected to GitHub repository `ianvu17/hanfirstbirthday`.
+- Production Branch is `main`.
+- Smoke branch `ci/vercel-git-smoke` created a Git-triggered Preview Deployment at `https://hanfirstbirthday-f5wol7z9g-ianalysed.vercel.app`.
+- Preview deployment metadata references Git SHA `f53120ddb141226f43a2ff84eb8822c65a984e3e` and PR `#1`.
+- Preview routes `/en` and `/display/party` returned HTTP 200.
+- Preview `/api/party/session` returned remote mode with `isTest=true`.
+- GitHub PR `#1` is open, clean, and intentionally unmerged until Production environment variables are reviewed.
+- Vercel Production environment variables are configured. `HOST_SESSION_SECRET` is separated between Production and Preview. `HOST_PIN_HASH` may remain shared for this project. `PARTY_SESSION_IS_TEST=true` in Production is supported because it only selects the default test-tagged session row.
+- GitHub ruleset `feature_branch_protection` is active for the default branch, blocks direct deletion/force-pushes, requires pull requests, and requires the `Validate` status check before merge.
+
 ## Environment Separation
+
+### Preview
 
 Preview should keep:
 
@@ -100,18 +114,49 @@ Preview should keep:
 - preview/test join code
 - preview-safe Host PIN hash and host session secret
 
-Production must be reviewed before activation:
+### Production
 
-- `NEXT_PUBLIC_SUPABASE_URL`: may point to the same Supabase project only if test and production data separation is understood
+Production means the app can be deployed from `main` to the stable Vercel Production target. Production with `PARTY_SESSION_IS_TEST=true` is normal and supported; that variable is only the default session selector.
+
+- Production deploys are enabled.
+- `NEXT_PUBLIC_APP_URL`: stable production origin.
+- `PARTY_SESSION_IS_TEST=true`: production-origin data uses the test-tagged default session.
+- `HOST_SESSION_SECRET`: independent Production signing secret.
+- `HOST_PIN_HASH`: may remain shared with Preview for this project.
+- `PARTY_JOIN_CODE`: production join code.
+
+Production environment variables must be reviewed before Production Deployment:
+
+- `NEXT_PUBLIC_SUPABASE_URL`: may point to the same Supabase project only if data separation is understood
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: browser-safe public key
 - `SUPABASE_SERVICE_ROLE_KEY`: server-only
-- `NEXT_PUBLIC_APP_URL`: final production origin
-- `PARTY_JOIN_CODE`: final event join code
-- `PARTY_SESSION_IS_TEST=false`: only after Ian approves the real event session
+- `NEXT_PUBLIC_APP_URL`: stable production origin
+- `PARTY_JOIN_CODE`: production join code
+- `PARTY_SESSION_IS_TEST=true`: supported production default session selector
 - `HOST_PIN_HASH`: reviewed event Host PIN hash
 - `HOST_SESSION_SECRET`: independent production signing secret
 
 Never copy preview-only join codes, preview origins, local URLs, raw Host PINs, or temporary validation values into Production by default.
+
+### Physical Rehearsal
+
+Physical rehearsal is the human/device approval step for the party setup:
+
+- Stable production origin and QR code have been verified.
+- Laptop or TV display, host device, and guest phones have been tested together.
+- Event Host PIN and host session behavior have been tested end to end.
+- English and Vietnamese guest flows have been checked on real phones.
+
+## Release Readiness Preflight
+
+Run this before merging a PR to `main`:
+
+```bash
+npm run check:release-readiness -- --pr=1
+npm run check:release-readiness -- --pr=1 --preview-url=https://hanfirstbirthday-f5wol7z9g-ianalysed.vercel.app
+```
+
+The checker is read-only. It verifies PR `Validate` and Vercel signals, checks whether `main` has visible branch protection or rulesets, confirms that required Vercel Production environment variable names exist, treats shared `HOST_PIN_HASH` as informational, accepts Production `PARTY_SESSION_IS_TEST=true`, and can optionally recheck Preview routes plus `/api/party/session` with `--preview-url`. It does not print encrypted secret values.
 
 ## Safe Release Flow
 
@@ -123,7 +168,8 @@ Never copy preview-only join codes, preview origins, local URLs, raw Host PINs, 
 6. Run manual hosted live validation only when preview secrets and test isolation are ready.
 7. Open a pull request into `main`.
 8. Merge only after CI and the intended Vercel preview status pass.
-9. Allow `main` Production deployment only after production environment review is complete.
+9. Allow `main` Production deployment only after Production readiness passes.
+10. Complete Physical Rehearsal before relying on the setup at the party.
 
 ## Branch Protection
 

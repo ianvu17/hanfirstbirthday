@@ -18,6 +18,7 @@
     "test:realtime:live": "tsx scripts/validate-live-realtime.ts",
     "prepare:milestone5-env": "tsx scripts/prepare-milestone-5-env.ts",
     "vercel:push-env": "tsx scripts/push-vercel-env.ts",
+    "check:release-readiness": "tsx scripts/check-release-readiness.ts",
     "validate:content": "tsx scripts/validate-content.ts",
     "check:visual:milestone2": "tsx scripts/check-milestone-2-visual.ts",
     "check:visual:milestone3": "tsx scripts/check-milestone-3-visual.ts",
