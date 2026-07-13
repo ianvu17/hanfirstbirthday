@@ -172,7 +172,7 @@ The Party Screen lobby generates a QR data URL from the active join URL at runti
 
 ## QA And Test Isolation
 
-`PARTY_SESSION_IS_TEST` controls whether the auto-created session is test data. Runtime rows carry `is_test`. The local QA harness remains at `/{locale}/qa/party`; production Host Controller does not expose reset or fixture actions.
+`PARTY_SESSION_IS_TEST` selects the default session row used by the remote runtime. Newly created runtime rows carry that session's `is_test` value. The local QA harness remains at `/{locale}/qa/party`; production Host Controller does not expose reset or fixture actions.
 
 ## Tests
 
@@ -209,7 +209,7 @@ Required local variables:
 - `SUPABASE_SERVICE_ROLE_KEY`: server-only key used only by Next.js route handlers and validation setup/cleanup scripts.
 - `NEXT_PUBLIC_APP_URL`: local or deployed app origin used for QR join URLs.
 - `PARTY_JOIN_CODE`: public join code, defaulting to `han-turns-one`.
-- `PARTY_SESSION_IS_TEST`: must be `true` for local and preview rehearsal data.
+- `PARTY_SESSION_IS_TEST`: default session selector. Use `true` for local, Preview, and the supported Production deployment unless intentionally selecting a separate false-tagged session row.
 - `HOST_PIN_HASH` or `HOST_PIN`: host unlock credential. Prefer `HOST_PIN_HASH`.
 - `HOST_SESSION_SECRET`: signing secret for the HttpOnly host session cookie.
 
@@ -282,7 +282,7 @@ Confirm participant joins, host phase changes, question transitions, answer subm
 
 ## Vercel Prerequisites
 
-Set the same environment variable names in Vercel before preview or production deployment. Preview deployments should keep `PARTY_SESSION_IS_TEST=true`; the final event production environment should explicitly set `PARTY_SESSION_IS_TEST=false`. `SUPABASE_SERVICE_ROLE_KEY`, `HOST_PIN_HASH`, `HOST_PIN`, and `HOST_SESSION_SECRET` must remain server-only environment variables and must never be exposed with a `NEXT_PUBLIC_` prefix.
+Set the same environment variable names in Vercel before preview or production deployment. Preview and Production deployments may both use `PARTY_SESSION_IS_TEST=true`; this is the supported default because the value only selects the default session row. `SUPABASE_SERVICE_ROLE_KEY`, `HOST_PIN_HASH`, `HOST_PIN`, and `HOST_SESSION_SECRET` must remain server-only environment variables and must never be exposed with a `NEXT_PUBLIC_` prefix.
 
 For current release workflow guidance, see [DEPLOYMENT.md](DEPLOYMENT.md). GitHub plus native Vercel Git integration is the normal deployment path. Local Vercel CLI deployments are now reserved for diagnostics, preview troubleshooting, or an explicitly approved emergency/manual fallback.
 
@@ -305,11 +305,14 @@ The default CLI deployment is preview. Do not pass `--target=preview`; that prod
 
 Validated Vercel preview evidence:
 
-- Normal preview deployed at `https://hanfirstbirthday-41l0f6mo8-ianalysed.vercel.app`.
-- Preview branch alias points to the normal preview: `https://hanfirstbirthday-ianvu17-ianalysed.vercel.app`.
-- `/en`, `/vi`, and `/display/party` returned HTTP 200.
-- `/api/party/session` returned configured remote mode, lobby phase, `isTest=true`, join code `han-turns-one`, and a preview-host QR join URL.
+- Legacy local-CLI preview deployed at `https://hanfirstbirthday-41l0f6mo8-ianalysed.vercel.app`.
+- Git-triggered preview deployed from smoke branch `ci/vercel-git-smoke` at `https://hanfirstbirthday-f5wol7z9g-ianalysed.vercel.app`.
+- Git-triggered preview metadata references SHA `f53120ddb141226f43a2ff84eb8822c65a984e3e`, repository `ianvu17/hanfirstbirthday`, and PR `#1`.
+- `/en`, `/vi`, and `/display/party` returned HTTP 200 during preview validation; the Git-triggered preview was rechecked on `/en` and `/display/party`.
+- `/api/party/session` returned configured remote mode, `isTest=true`, join code `han-turns-one`, and a preview-host QR join URL. Earlier validation observed lobby phase; the Git-triggered preview later returned finished phase after test play-through activity.
 - Validation preview deployed with `PARTY_JOIN_CODE=codex-m5-vercel-1783905600`, passed `npm run test:realtime:live`, and cleaned `2` `question_responses`, `3` `participants`, and `1` `party_sessions` row.
+- GitHub PR `#1` shows passing `Validate` and Vercel preview statuses and is clean.
+- Vercel Production env was checked after Git connection. The operational stages are Preview, Production, and Physical Rehearsal. Production intentionally supports `PARTY_SESSION_IS_TEST=true`, `HOST_PIN_HASH` may remain shared with Preview for this project, and `HOST_SESSION_SECRET` is separated between Production and Preview. Physical Rehearsal still requires final QR/origin verification and real-device testing.
 
 ## Security Notes
 

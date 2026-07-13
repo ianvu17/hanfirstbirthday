@@ -99,7 +99,7 @@ Milestone 5 adds version-controlled Supabase schema, RLS policy intent, server-a
 
 ## Supabase Setup
 
-Create `.env.local` from `.env.example`, set the public Supabase URL/anon key, server-only service role key, host PIN hash/session secret, and public app URL. Keep preview/local validation on `PARTY_SESSION_IS_TEST=true`; set it to `false` only for the final event environment.
+Create `.env.local` from `.env.example`, set the public Supabase URL/anon key, server-only service role key, host PIN hash/session secret, and public app URL. Keep preview/local validation on `PARTY_SESSION_IS_TEST=true`. Production with `PARTY_SESSION_IS_TEST=true` is supported; the value only selects the default session row.
 
 To create a safe local skeleton and generate a missing `HOST_SESSION_SECRET` without printing it:
 
