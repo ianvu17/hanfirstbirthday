@@ -100,10 +100,12 @@ function getGuestSessionSnapshot() {
 
 export function GuestPlayClient({
   locale,
-  remoteEnabled = false
+  remoteEnabled = false,
+  joinCode
 }: {
   locale: Locale;
   remoteEnabled?: boolean;
+  joinCode?: string;
 }) {
   const guest = useSyncExternalStore(
     subscribeToGuestSession,
@@ -122,7 +124,13 @@ export function GuestPlayClient({
   }
 
   if (remoteEnabled) {
-    return <RemoteGuestController locale={locale} displayName={guest.displayName} />;
+    return (
+      <RemoteGuestController
+        locale={locale}
+        displayName={guest.displayName}
+        joinCode={joinCode}
+      />
+    );
   }
 
   return (

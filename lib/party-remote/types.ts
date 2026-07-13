@@ -155,6 +155,7 @@ export type RemoteApiErrorCode =
   | "join_closed"
   | "invalid_name"
   | "invalid_locale"
+  | "invalid_join_code"
   | "invalid_participant_session"
   | "host_unauthorized"
   | "host_session_expired"

@@ -16,16 +16,17 @@ import type { RemoteGuestSnapshot, RemoteNoSessionSnapshot } from "@/lib/party-r
 type RemoteGuestControllerProps = {
   locale: Locale;
   displayName: string | null;
+  joinCode?: string;
 };
 
 const pendingJoins = new Map<string, Promise<{ ok: boolean; payload: unknown }>>();
 
-function joinKey(displayName: string, locale: Locale) {
-  return `${locale}:${displayName}`;
+function joinKey(displayName: string, locale: Locale, joinCode?: string) {
+  return `${locale}:${displayName}:${joinCode ?? ""}`;
 }
 
-function joinOnce(displayName: string, locale: Locale) {
-  const key = joinKey(displayName, locale);
+function joinOnce(displayName: string, locale: Locale, joinCode?: string) {
+  const key = joinKey(displayName, locale, joinCode);
   const pending = pendingJoins.get(key);
 
   if (pending) {
@@ -38,7 +39,7 @@ function joinOnce(displayName: string, locale: Locale) {
       "content-type": "application/json",
       accept: "application/json"
     },
-    body: JSON.stringify({ displayName, locale })
+    body: JSON.stringify({ displayName, locale, joinCode })
   })
     .then(async (response) => ({
       ok: response.ok,
@@ -79,24 +80,42 @@ function phaseLabel(phase: string, copy: ReturnType<typeof getPartyUiCopy>) {
   }
 }
 
-export function RemoteGuestController({ locale, displayName }: RemoteGuestControllerProps) {
+export function RemoteGuestController({
+  locale,
+  displayName,
+  joinCode
+}: RemoteGuestControllerProps) {
   const copy = getPartyUiCopy(locale);
   const { snapshot, connection, error, refresh, applySnapshot } =
     useRemotePartySnapshot<RemoteGuestSnapshot | RemoteNoSessionSnapshot>(true);
-  const [joinError, setJoinError] = useState("");
+  const [joinError, setJoinError] = useState<{
+    sessionId: string | null;
+    message: string;
+  }>({ sessionId: null, message: "" });
   const [isJoining, setIsJoining] = useState(false);
   const [draft, setDraft] = useState<{
+    sessionId: string | null;
     questionId: string | null;
     selectedOptionId: string | null;
     error: string;
-  }>({ questionId: null, selectedOptionId: null, error: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  }>({ sessionId: null, questionId: null, selectedOptionId: null, error: "" });
+  const [submittingState, setSubmittingState] = useState<{
+    sessionId: string | null;
+    value: boolean;
+  }>({ sessionId: null, value: false });
   const projection = snapshot?.session && "guest" in snapshot ? snapshot.guest : null;
   const participant = snapshot?.session && "participant" in snapshot ? snapshot.participant : null;
   const question = projection?.currentQuestion ?? null;
+  const sessionId = snapshot?.session?.id ?? null;
+  const isSubmitting = submittingState.sessionId === sessionId && submittingState.value;
+  const activeJoinError = joinError.sessionId === sessionId ? joinError.message : "";
+  const activeDraft =
+    draft.sessionId === sessionId
+      ? draft
+      : { sessionId, questionId: null, selectedOptionId: null, error: "" };
 
   useEffect(() => {
-    if (!displayName || participant || isJoining) {
+    if (!displayName || participant || isJoining || activeJoinError) {
       return;
     }
 
@@ -105,27 +124,29 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
 
     async function join() {
       setIsJoining(true);
-      setJoinError("");
+      setJoinError({ sessionId, message: "" });
 
       try {
-        const { ok, payload } = await joinOnce(joiningDisplayName, locale);
+        const { ok, payload } = await joinOnce(joiningDisplayName, locale, joinCode);
 
         if (cancelled) {
           return;
         }
 
         if (!ok) {
-          setJoinError(
-            (payload as { error?: { message?: string } }).error?.message ??
+          setJoinError({
+            sessionId,
+            message:
+              (payload as { error?: { message?: string } }).error?.message ??
               copy.joinRequiredDescription
-          );
+          });
           return;
         }
 
         applySnapshot(payload as RemoteGuestSnapshot);
       } catch {
         if (!cancelled) {
-          setJoinError(copy.stale);
+          setJoinError({ sessionId, message: copy.stale });
         }
       } finally {
         if (!cancelled) {
@@ -139,7 +160,18 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
     return () => {
       cancelled = true;
     };
-  }, [applySnapshot, copy.joinRequiredDescription, copy.stale, displayName, isJoining, locale, participant]);
+  }, [
+    activeJoinError,
+    applySnapshot,
+    copy.joinRequiredDescription,
+    copy.stale,
+    displayName,
+    isJoining,
+    joinCode,
+    locale,
+    participant,
+    sessionId
+  ]);
 
   const revealMessage = useMemo(() => {
     if (!projection?.reveal) {
@@ -159,14 +191,14 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
 
   async function submit() {
     const selectedOptionId =
-      draft.questionId === question?.id ? draft.selectedOptionId : null;
+      activeDraft.questionId === question?.id ? activeDraft.selectedOptionId : null;
 
     if (!question || !selectedOptionId || !participant) {
       return;
     }
 
-    setIsSubmitting(true);
-    setDraft((current) => ({ ...current, error: "" }));
+    setSubmittingState({ sessionId, value: true });
+    setDraft((current) => ({ ...current, sessionId, error: "" }));
 
     try {
       const response = await fetch("/api/party/response", {
@@ -185,6 +217,7 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
       if (!response.ok) {
         setDraft((current) => ({
           ...current,
+          sessionId,
           error: payload.error?.message ?? copy.timeout
         }));
         void refresh();
@@ -193,7 +226,7 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
 
       applySnapshot(payload as RemoteGuestSnapshot);
     } finally {
-      setIsSubmitting(false);
+      setSubmittingState({ sessionId, value: false });
     }
   }
 
@@ -242,14 +275,14 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
   if (!projection || !participant) {
     return (
       <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-xl items-center">
-        <PaperPanel tone={joinError || error ? "warm" : "paper"} className="w-full text-center">
+          <PaperPanel tone={activeJoinError || error ? "warm" : "paper"} className="w-full text-center">
           <div className="space-y-4">
             <LoadingTreatment />
             <h1 className="font-display text-4xl font-extrabold text-foreground">
               {isJoining ? copy.connecting : copy.lobbyTitle}
             </h1>
             <p className="font-bold text-muted-foreground">
-              {joinError || error?.message || copy.lobbyDescription}
+              {activeJoinError || error?.message || copy.lobbyDescription}
             </p>
           </div>
         </PaperPanel>
@@ -280,8 +313,9 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
 
   const locked = projection.lockedResponse;
   const canChangeSelection = projection.canAnswer && !locked && !isSubmitting;
-  const selectedOptionId = draft.questionId === question?.id ? draft.selectedOptionId : null;
-  const localError = draft.questionId === question?.id ? draft.error : "";
+  const selectedOptionId =
+    activeDraft.questionId === question?.id ? activeDraft.selectedOptionId : null;
+  const localError = activeDraft.questionId === question?.id ? activeDraft.error : "";
 
   return (
     <section
@@ -336,6 +370,7 @@ export function RemoteGuestController({ locale, displayName }: RemoteGuestContro
                     disabled={!canChangeSelection}
                     onClick={() =>
                       setDraft({
+                        sessionId,
                         questionId: question.id,
                         selectedOptionId: option.id,
                         error: ""
