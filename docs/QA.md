@@ -143,6 +143,8 @@ Checklist:
 - Real content has been provided and approved.
 - English and Vietnamese content match in meaning.
 - Quiz correct answers are verified.
+- Question ids and answer-option ids are stable before rehearsal approval.
+- Final content is validated through `getApprovedPartyConfig()` and tested in a fresh session after deployment.
 - Timeline and gallery do not contain fake entries.
 - Asset alt text is present for meaningful images.
 

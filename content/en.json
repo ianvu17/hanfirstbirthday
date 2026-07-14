@@ -139,12 +139,57 @@
     },
     "quiz": {
         "settings": {
-            "defaultQuestionDurationSeconds": 20,
+            "questionDurationSeconds": 20,
             "responseLocking": "per-question-immutable",
             "questionOrder": "content-order",
             "scoringMode": "correct-count"
         },
-        "questions": []
+        "questions": [
+            {
+                "id": "approved-sample-question-1",
+                "enabled": true,
+                "sortOrder": 1,
+                "prompt": "Temporary approved-content sample 1: which answer is marked as the sample correct answer?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Sample answer A"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Sample answer B"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Sample answer C"
+                    }
+                ],
+                "correctAnswerId": "option-b",
+                "funFact": "Temporary approved-content sample only. Replace with an Ian-approved Han fact before the event."
+            },
+            {
+                "id": "approved-sample-question-2",
+                "enabled": true,
+                "sortOrder": 2,
+                "prompt": "Temporary approved-content sample 2: choose the third sample answer.",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "First sample answer"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Second sample answer"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Third sample answer"
+                    }
+                ],
+                "correctAnswerId": "option-c",
+                "funFact": "Temporary approved-content sample for validation. Replace with approved real content."
+            }
+        ]
     },
     "timeline": {
         "entries": []

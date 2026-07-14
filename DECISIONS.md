@@ -404,3 +404,31 @@ Ian should have one obvious action at each stage during the party, guests should
 **Consequence**
 
 Production host controls must not show Open Question or required Lock Answers controls. Documentation and tests should describe `REVEAL_CHOICES` as the host-facing command while allowing existing `question_ready`, `question_active`, and `question_locked` rows to remain database-compatible.
+
+## ADR-020: Approved Static Bilingual Quiz Content Loader
+
+**Context**
+
+Milestone 4 and the first Milestone 5 implementation used development-only fixture questions for both local and remote runtime validation. The app now needs a production-safe content boundary for Ian-approved birthday questions without moving question definitions into Supabase.
+
+**Decision**
+
+Normal local application runtime, Vercel Preview, and Production load quiz questions from the approved bilingual locale content files, `content/en.json` and `content/vi.json`, through `getApprovedPartyConfig()`. The adapter validates both locale files, pairs questions by stable id, maps authoring `answers` to runtime `options`, maps `correctAnswerId` to `correctOptionId`, preserves optional `assetId`, and returns the existing `PartyConfig` shape.
+
+Development fixtures remain available only through explicit fixture use: the QA party harness and fixture-specific automated tests. Fixture selection must not be based only on `NODE_ENV`.
+
+Question definitions remain static content. Supabase remains responsible only for runtime state: party sessions, participants, immutable question responses, and host command logs.
+
+The canonical authoring schema uses quiz-level `questionDurationSeconds`; per-question durations are not supported. A question participates through one field, `enabled`.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+This preserves the tested Party Engine, reducer, projections, scoring, server-authoritative API routes, and Supabase runtime model while removing normal runtime dependency on development fixture questions.
+
+**Consequence**
+
+Question ids and option ids are content contracts. After rehearsal approval, they must not change for an active session because existing `question_responses` rows store those ids. A new content deployment should be tested with a new party session.

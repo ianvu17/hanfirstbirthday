@@ -13,7 +13,8 @@ import {
 import {
   buildGuestProjection,
   buildSharedPartyProjection,
-  selectHostCapabilities
+  selectHostCapabilities,
+  type PartyConfig
 } from "@/lib/party-engine";
 
 import { getLocalPartyRuntime } from "./local-runtime";
@@ -21,8 +22,14 @@ import type { PartyRuntime } from "./runtime-contract";
 
 const PartyRuntimeContext = createContext<PartyRuntime | null>(null);
 
-export function PartyRuntimeProvider({ children }: { children: ReactNode }) {
-  const [runtime] = useState(() => getLocalPartyRuntime());
+export function PartyRuntimeProvider({
+  children,
+  config
+}: {
+  children: ReactNode;
+  config?: PartyConfig;
+}) {
+  const [runtime] = useState(() => getLocalPartyRuntime(config));
 
   useEffect(() => {
     const tick = window.setInterval(() => {

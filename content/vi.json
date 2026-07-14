@@ -139,12 +139,57 @@
     },
     "quiz": {
         "settings": {
-            "defaultQuestionDurationSeconds": 20,
+            "questionDurationSeconds": 20,
             "responseLocking": "per-question-immutable",
             "questionOrder": "content-order",
             "scoringMode": "correct-count"
         },
-        "questions": []
+        "questions": [
+            {
+                "id": "approved-sample-question-1",
+                "enabled": true,
+                "sortOrder": 1,
+                "prompt": "Câu hỏi mẫu nội dung đã duyệt 1: đáp án nào được đánh dấu là đáp án mẫu đúng?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Đáp án mẫu A"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Đáp án mẫu B"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Đáp án mẫu C"
+                    }
+                ],
+                "correctAnswerId": "option-b",
+                "funFact": "Đây chỉ là nội dung mẫu tạm thời. Hãy thay bằng thông tin về Han đã được Ian duyệt trước buổi tiệc."
+            },
+            {
+                "id": "approved-sample-question-2",
+                "enabled": true,
+                "sortOrder": 2,
+                "prompt": "Câu hỏi mẫu nội dung đã duyệt 2: hãy chọn đáp án mẫu thứ ba.",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Đáp án mẫu thứ nhất"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Đáp án mẫu thứ hai"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Đáp án mẫu thứ ba"
+                    }
+                ],
+                "correctAnswerId": "option-c",
+                "funFact": "Nội dung mẫu tạm thời để kiểm tra hệ thống. Hãy thay bằng nội dung thật đã được duyệt."
+            }
+        ]
     },
     "timeline": {
         "entries": []

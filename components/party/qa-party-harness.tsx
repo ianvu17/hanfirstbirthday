@@ -5,10 +5,11 @@ import { PartyRuntimeShell } from "@/components/party/party-runtime-shell";
 import { PartyScreen } from "@/components/party/party-screen";
 import { GuestController } from "@/components/party/guest-controller";
 import type { Locale } from "@/lib/i18n/routing";
+import { getDevelopmentPartyConfig } from "@/lib/party-engine";
 
 export function QaPartyHarness({ locale }: { locale: Locale }) {
   return (
-    <PartyRuntimeShell>
+    <PartyRuntimeShell config={getDevelopmentPartyConfig()}>
       <section className="grid gap-5 xl:grid-cols-[22rem_1fr]">
         <HostControlPanel locale={locale} />
         <div className="grid gap-5">

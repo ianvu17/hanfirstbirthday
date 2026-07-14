@@ -13,7 +13,7 @@ The initial locale files are:
 
 Milestone 1 also includes [../content/scaffold.json](../content/scaffold.json) for temporary diagnostic route-placeholder copy. It must not contain Han facts, memories, quiz answers, timeline entries, captions, or photo descriptions.
 
-The Milestone 4 fixture files are not approved production Han content. They are visibly marked development-only, use placeholder questions and placeholder fun facts, and exist only to validate the Party Engine until Ian provides real quiz content.
+The Milestone 4 fixture files are not approved production Han content. They are visibly marked development-only, use placeholder questions and placeholder fun facts, and now exist only for the explicit QA party harness and fixture-specific automated tests.
 
 ## Localization Model
 
@@ -37,21 +37,25 @@ Top-level fields:
 
 Quiz questions must be structured, localizable, and externally managed.
 
-Question fields:
+Normal local application runtime, Vercel Preview, and Production load approved static questions from `content/en.json` and `content/vi.json` through `getApprovedPartyConfig()`. Supabase does not store question definitions.
+
+Canonical authoring question fields:
 
 - `id`: stable unique identifier.
-- `status`: `draft`, `ready`, or `archived`.
+- `enabled`: whether the question participates in the active quiz.
+- `sortOrder`: display order.
 - `prompt`: localized question text.
-- `helpText`: optional localized supporting text.
-- `type`: initially `singleChoice`.
-- `durationSeconds`: default 20 unless overridden by approved content.
 - `answers`: localized answer options.
 - `correctAnswerId`: stable answer id.
-- `funFact`: optional localized Han fun fact shown after a response is locked, only when provided by Ian or another approved source.
+- `funFact`: localized Han fun fact shown on the Party Screen after answer reveal. It is required by the current runtime and must be provided by Ian or another approved source before event release.
 - `assetId`: optional linked asset id.
-- `audioAssetId`: optional linked audio asset id.
-- `enabled`: whether the question can appear in the active quiz.
-- `sortOrder`: display order.
+
+Canonical quiz settings:
+
+- `questionDurationSeconds`: global question duration. The current runtime maps this to `PartyConfig.questionDurationMs`. Per-question durations are not supported.
+- `responseLocking`: must be `per-question-immutable`.
+- `questionOrder`: must be `content-order`.
+- `scoringMode`: must be `correct-count`.
 
 Answer fields:
 
@@ -61,16 +65,37 @@ Answer fields:
 
 Validation rules:
 
-- Every ready question must have at least two answers.
-- Every ready single-choice question must have exactly one correct answer.
-- Ready questions must exist in both locales.
+- Enabled question sets must match between English and Vietnamese.
+- Enabled questions must have matching ids, enabled states, sort orders, answer ids, and correct answer ids across locales.
+- Every enabled question must have at least two answers.
+- Every enabled question must have exactly one correct answer through `correctAnswerId`.
+- Every correct answer id must match an answer id.
+- Enabled `sortOrder` values must be unique.
 - No prompt, answer, or fun fact may be fabricated.
+
+The authoring schema and runtime schema intentionally differ:
+
+```text
+Authoring: answers           -> Runtime: options
+Authoring: correctAnswerId   -> Runtime: correctOptionId
+Authoring: questionDurationSeconds -> Runtime: questionDurationMs
+```
+
+The implementation is text-based single-choice only. `assetId` may be preserved for later work, but this implementation does not render production photo, audio, or video question media.
+
+Content immutability safeguards:
+
+- Question ids are stable and must not change after rehearsal approval.
+- Option ids are stable and must not change after rehearsal approval.
+- Correct-answer ids must not change during an active session.
+- A new content deployment should be tested with a new session.
+- Existing session response rows must never be reinterpreted using different option ids.
 
 ## Runtime Guest Response
 
 Question responses are runtime data and must be stored in Supabase or an approved runtime data store after implementation. They do not belong in `content/en.json` or `content/vi.json`.
 
-Milestone 5 stores runtime responses in Supabase `question_responses` rows. The active Party Session and participants are also runtime data. Development fixture questions remain placeholder-only until Ian provides real quiz content; they are suitable for validating synchronization but are not approved Han facts.
+Milestone 5 stores runtime responses in Supabase `question_responses` rows. The active Party Session and participants are also runtime data. Normal runtime question content comes from the approved bilingual locale files; development fixture questions remain placeholder-only and are isolated to QA/test code.
 
 Potential fields:
 

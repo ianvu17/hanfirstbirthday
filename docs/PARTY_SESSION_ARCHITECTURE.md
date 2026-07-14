@@ -14,6 +14,8 @@ The guest display name entered during onboarding is intentionally kept in browse
 
 `question_responses` stores immutable locked answers or timeouts. The database enforces one response per `party_session_id`, `participant_id`, and `question_id`.
 
+Question definitions are approved static bilingual content loaded from `content/en.json` and `content/vi.json`. Supabase does not store question definitions.
+
 `host_command_log` stores compact command audit rows. `command_id` is unique within a session so retries of the same host command can be recognized.
 
 ## Current Session Selection
@@ -83,6 +85,8 @@ Session creation uses `POST /api/party/sessions` with a client idempotency key. 
 Host commands send deterministic command ids scoped to `session id + command + revision`. The database keeps a unique `(party_session_id, command_id)` index, and state updates use expected revision compare-and-swap.
 
 Guest responses remain protected by unique response constraints. Exact duplicate submissions can return the existing accepted state; conflicting duplicates are rejected.
+
+Question ids and option ids are immutable content contracts for a rehearsed session. Changing ids or correct-answer ids while a session is active can make existing response rows misleading, so content deployments should be validated with a new session.
 
 ## Environment Isolation
 

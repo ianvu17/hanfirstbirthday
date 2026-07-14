@@ -248,7 +248,7 @@ Milestone 4 local party state:
 
 - `PartyState.phase` is the single authoritative lifecycle phase.
 - Allowed phases are `lobby`, `question_ready`, `question_active`, `question_locked`, `answer_reveal`, `leaderboard`, `waiting_for_host`, and `finished`. Current product semantics treat `question_ready` as the preview state and `question_locked` as the deadline-closed state.
-- Static question text remains in development fixtures; runtime state stores question ids and responses.
+- Static question text is loaded into `PartyConfig`; runtime state stores question ids and responses.
 - Guest draft answer selection remains local UI state until the Submit Answer command is accepted.
 - Locked responses are immutable. Exact duplicate retry returns the existing state; conflicting retry is rejected.
 - Submissions are accepted only when `receivedAt < deadlineAt`.
@@ -257,7 +257,8 @@ Milestone 4 local party state:
 
 ```mermaid
 flowchart TD
-  Content[Development fixture content] --> Engine[React-independent Party Engine]
+  Content[Approved bilingual locale content] --> Adapter[getApprovedPartyConfig]
+  Adapter --> Engine[React-independent Party Engine]
   Engine --> Runtime[Local runtime contract]
   Runtime --> React[Runtime provider and hooks]
   React --> Display[Party Screen projection]
@@ -402,6 +403,25 @@ Immutable accepted response rows. A unique constraint enforces one response per 
 Compact command audit for accepted/rejected host commands. It is bounded by party size and is not full event sourcing.
 
 The response endpoint calls `touch_party_session_response` after a new accepted response so realtime listeners can refetch counts and projections from the authoritative snapshot without exposing raw response rows to guests.
+
+## Approved Question Loading
+
+Normal local application runtime, Vercel Preview, and Production load text-based single-choice questions from `content/en.json` and `content/vi.json` through `lib/party-engine/content-config.ts`.
+
+The approved loader:
+
+- validates both locale files through `ContentSchema`;
+- pairs questions by stable id;
+- requires matching enabled states, sort order, answer ids, and correct answer ids;
+- filters disabled questions;
+- sorts enabled questions by `sortOrder`;
+- maps authoring `answers` to runtime `options`;
+- maps authoring `correctAnswerId` to runtime `correctOptionId`;
+- maps quiz-level `questionDurationSeconds` to `PartyConfig.questionDurationMs`.
+
+Development fixtures in `content/party-fixtures.json` are explicit-only. They are used by the QA party harness and fixture-specific tests, not selected by `NODE_ENV`.
+
+Supabase does not store question definitions. It stores only runtime session state, participants, immutable responses, and host command logs.
 
 ## Party Screen And Leaderboard Strategy
 

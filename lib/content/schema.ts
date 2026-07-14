@@ -121,11 +121,9 @@ const ScreensSchema = z.object({
 
 const QuizQuestionSchema = z.object({
   id: z.string(),
-  status: z.enum(["draft", "ready", "archived"]),
+  enabled: z.boolean(),
+  sortOrder: z.number().int(),
   prompt: z.string(),
-  helpText: z.string().optional(),
-  type: z.literal("singleChoice"),
-  durationSeconds: z.number().int().positive(),
   answers: z.array(
     z.object({
       id: z.string(),
@@ -134,11 +132,8 @@ const QuizQuestionSchema = z.object({
     })
   ),
   correctAnswerId: z.string(),
-  funFact: z.string().optional(),
-  assetId: z.string().optional(),
-  audioAssetId: z.string().optional(),
-  enabled: z.boolean(),
-  sortOrder: z.number().int()
+  funFact: z.string(),
+  assetId: z.string().optional()
 });
 
 const AssetSchema = z.object({
@@ -168,7 +163,7 @@ export const ContentSchema = z.object({
   screens: ScreensSchema,
   quiz: z.object({
     settings: z.object({
-      defaultQuestionDurationSeconds: z.number().int().positive(),
+      questionDurationSeconds: z.number().int().positive(),
       responseLocking: z.literal("per-question-immutable"),
       questionOrder: z.literal("content-order"),
       scoringMode: z.literal("correct-count")

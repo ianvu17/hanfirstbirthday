@@ -1,4 +1,10 @@
 export { ManualPartyClock, SystemPartyClock } from "./clock";
+export {
+  buildPartyConfigFromContent,
+  getApprovedPartyConfig,
+  mapContentQuestionToPartyQuestion,
+  validateApprovedQuestionSet
+} from "./content-config";
 export { getDevelopmentPartyConfig } from "./fixtures";
 export { processPartyCommand } from "./reducer";
 export {

@@ -326,9 +326,9 @@ async function main() {
     await expect(display.getByText(/Question ready/)).toBeVisible({ timeout: 15000 });
     const openedSnapshot = await hostCommand(host, "REVEAL_CHOICES");
     await extendActiveQuestionDeadline(openedSnapshot.session.id);
-    await expect(display.getByText(/Development question 1/)).toBeVisible({ timeout: 15000 });
-    await expect(guestA.page.getByText(/Development question 1/)).toBeVisible({ timeout: 15000 });
-    await expect(guestB.page.getByText(/Câu hỏi thử nghiệm 1/)).toBeVisible({ timeout: 15000 });
+    await expect(display.getByText(/Temporary approved-content sample 1/)).toBeVisible({ timeout: 15000 });
+    await expect(guestA.page.getByText(/Temporary approved-content sample 1/)).toBeVisible({ timeout: 15000 });
+    await expect(guestB.page.getByText(/Câu hỏi mẫu nội dung đã duyệt 1/)).toBeVisible({ timeout: 15000 });
 
     const snapA = await snapshot(guestA.page);
     const participantA = snapA.participant.id;

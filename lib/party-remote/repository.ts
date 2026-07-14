@@ -4,7 +4,7 @@ import {
   buildGuestProjection,
   buildSharedPartyProjection,
   createInitialPartyState,
-  getDevelopmentPartyConfig,
+  getApprovedPartyConfig,
   processPartyCommand,
   responseKey,
   type PartyCommand,
@@ -348,7 +348,7 @@ export async function loadPartyBundle(sessionId?: string): Promise<PartyBundle> 
     session: session.data,
     participants: participants.data,
     responses: responses.data,
-    config: getDevelopmentPartyConfig()
+    config: getApprovedPartyConfig()
   };
 }
 
