@@ -146,48 +146,224 @@
         },
         "questions": [
             {
-                "id": "approved-sample-question-1",
+                "id": "han-test-question-01",
                 "enabled": true,
                 "sortOrder": 1,
-                "prompt": "Temporary approved-content sample 1: which answer is marked as the sample correct answer?",
+                "prompt": "What is today's special celebration?",
                 "answers": [
                     {
                         "id": "option-a",
-                        "label": "Sample answer A"
+                        "label": "Han's first day at school"
                     },
                     {
                         "id": "option-b",
-                        "label": "Sample answer B"
+                        "label": "Han's first birthday"
                     },
                     {
                         "id": "option-c",
-                        "label": "Sample answer C"
+                        "label": "Han's first cooking class"
                     }
                 ],
                 "correctAnswerId": "option-b",
-                "funFact": "Temporary approved-content sample only. Replace with an Ian-approved Han fact before the event."
+                "funFact": "This is temporary test content for Han's first-birthday quiz app."
             },
             {
-                "id": "approved-sample-question-2",
+                "id": "han-test-question-02",
                 "enabled": true,
                 "sortOrder": 2,
-                "prompt": "Temporary approved-content sample 2: choose the third sample answer.",
+                "prompt": "How many candles would normally go on a first-birthday cake?",
                 "answers": [
                     {
                         "id": "option-a",
-                        "label": "First sample answer"
+                        "label": "One candle"
                     },
                     {
                         "id": "option-b",
-                        "label": "Second sample answer"
+                        "label": "Five candles"
                     },
                     {
                         "id": "option-c",
-                        "label": "Third sample answer"
+                        "label": "Ten candles"
+                    }
+                ],
+                "correctAnswerId": "option-a",
+                "funFact": "One candle represents one completed year and gives the birthday baby one very important wish."
+            },
+            {
+                "id": "han-test-question-03",
+                "enabled": true,
+                "sortOrder": 3,
+                "prompt": "Which item is most useful when a baby decides that lunch belongs on the floor?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "A party hat"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "A television remote"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "A bib"
                     }
                 ],
                 "correctAnswerId": "option-c",
-                "funFact": "Temporary approved-content sample for validation. Replace with approved real content."
+                "funFact": "A bib cannot stop every food adventure, but it can make the clean-up slightly less dramatic."
+            },
+            {
+                "id": "han-test-question-04",
+                "enabled": true,
+                "sortOrder": 4,
+                "prompt": "What should guests do after selecting an answer on their phone?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Refresh the page immediately"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Confirm and wait for the reveal"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Scan the QR code again"
+                    }
+                ],
+                "correctAnswerId": "option-b",
+                "funFact": "Each guest can submit only once per question, so the confirmation step should be intentional."
+            },
+            {
+                "id": "han-test-question-05",
+                "enabled": true,
+                "sortOrder": 5,
+                "prompt": "How long does each test question stay open?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "20 seconds"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "2 minutes"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Until tomorrow morning"
+                    }
+                ],
+                "correctAnswerId": "option-a",
+                "funFact": "The quiz currently uses one global 20-second timer for every question."
+            },
+            {
+                "id": "han-test-question-06",
+                "enabled": true,
+                "sortOrder": 6,
+                "prompt": "Which answer would probably make a one-year-old happiest at a party?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "A detailed spreadsheet"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "A three-hour business meeting"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Music, colourful decorations, and familiar faces"
+                    }
+                ],
+                "correctAnswerId": "option-c",
+                "funFact": "This deliberately longer answer helps test wrapping and spacing on smaller phone screens."
+            },
+            {
+                "id": "han-test-question-07",
+                "enabled": true,
+                "sortOrder": 7,
+                "prompt": "What happens when the answer timer reaches zero?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Everyone automatically receives one point"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "The question locks and late answers are rejected"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "The quiz returns to the welcome screen"
+                    }
+                ],
+                "correctAnswerId": "option-b",
+                "funFact": "The server-authoritative deadline prevents answers submitted at or after the deadline from being accepted."
+            },
+            {
+                "id": "han-test-question-08",
+                "enabled": true,
+                "sortOrder": 8,
+                "prompt": "How many points does a correct answer currently receive?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "1 point"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "10 points plus a speed bonus"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "A random number of points"
+                    }
+                ],
+                "correctAnswerId": "option-a",
+                "funFact": "The current scoring mode is correct-count: one point for a correct answer and zero for an incorrect answer."
+            },
+            {
+                "id": "han-test-question-09",
+                "enabled": true,
+                "sortOrder": 9,
+                "prompt": "If two guests finish with the same score, what does the current leaderboard use next?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Who answered the final question fastest"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "A random coin toss"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Participant join order, then display name"
+                    }
+                ],
+                "correctAnswerId": "option-c",
+                "funFact": "The current leaderboard does not use a speed bonus. Ties are resolved deterministically."
+            },
+            {
+                "id": "han-test-question-10",
+                "enabled": true,
+                "sortOrder": 10,
+                "prompt": "What is the most important goal of this temporary 10-question rehearsal?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "To permanently record fictional facts about Han"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "To verify the complete guest, host, display, scoring, reveal, and leaderboard flow"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "To replace the final birthday celebration"
+                    }
+                ],
+                "correctAnswerId": "option-b",
+                "funFact": "After the full rehearsal passes, these temporary questions will be replaced with Ian's approved real birthday questions."
             }
         ]
     },

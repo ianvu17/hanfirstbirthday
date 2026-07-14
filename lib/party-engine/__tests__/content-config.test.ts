@@ -44,15 +44,15 @@ test("approved content maps authoring questions to runtime PartyQuestion shape",
 
   assert.equal(config.sessionId, "approved-static-party-content");
   assert.equal(config.questionDurationMs, 20_000);
-  assert.equal(first.id, "approved-sample-question-1");
+  assert.equal(first.id, "han-test-question-01");
   assert.equal(first.prompt.en, enContent.quiz.questions[0].prompt);
   assert.equal(first.prompt.vi, viContent.quiz.questions[0].prompt);
   assert.deepEqual(
     first.options.map((option) => option.id),
     enContent.quiz.questions[0].answers.map((answer) => answer.id)
   );
-  assert.equal(first.options[1].label.en, "Sample answer B");
-  assert.equal(first.options[1].label.vi, "Đáp án mẫu B");
+  assert.equal(first.options[1].label.en, "Han's first birthday");
+  assert.equal(first.options[1].label.vi, "Sinh nhật đầu tiên của Han");
   assert.equal(first.correctOptionId, enContent.quiz.questions[0].correctAnswerId);
   assert.equal(first.funFact.en, enContent.quiz.questions[0].funFact);
   assert.equal(first.funFact.vi, viContent.quiz.questions[0].funFact);
@@ -63,6 +63,12 @@ test("approved content filters disabled questions and sorts deterministically", 
   const vi = cloneContent(viContent) as MutableContent;
   en.quiz.questions[0].enabled = false;
   vi.quiz.questions[0].enabled = false;
+  for (const question of en.quiz.questions.slice(2)) {
+    question.enabled = false;
+  }
+  for (const question of vi.quiz.questions.slice(2)) {
+    question.enabled = false;
+  }
   en.quiz.questions[1].sortOrder = 10;
   vi.quiz.questions[1].sortOrder = 10;
 
@@ -70,7 +76,7 @@ test("approved content filters disabled questions and sorts deterministically", 
 
   assert.deepEqual(
     config.questions.map((question) => question.id),
-    ["approved-sample-question-2"]
+    ["han-test-question-02"]
   );
 });
 
@@ -176,7 +182,7 @@ test("normal local runtime uses approved content while QA and fixture tests rema
   const qaHarness = readFileSync("components/party/qa-party-harness.tsx", "utf8");
   const fixtureTest = readFileSync("lib/party-engine/__tests__/party-engine.test.ts", "utf8");
 
-  assert.equal(runtime.getConfig().questions[0].id, "approved-sample-question-1");
+  assert.equal(runtime.getConfig().questions[0].id, "han-test-question-01");
   assert.equal(qaHarness.includes("getDevelopmentPartyConfig()"), true);
   assert.equal(fixtureTest.includes("getDevelopmentPartyConfig"), true);
 });

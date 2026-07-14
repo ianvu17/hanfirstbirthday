@@ -146,48 +146,224 @@
         },
         "questions": [
             {
-                "id": "approved-sample-question-1",
+                "id": "han-test-question-01",
                 "enabled": true,
                 "sortOrder": 1,
-                "prompt": "Câu hỏi mẫu nội dung đã duyệt 1: đáp án nào được đánh dấu là đáp án mẫu đúng?",
+                "prompt": "Hôm nay là dịp đặc biệt gì?",
                 "answers": [
                     {
                         "id": "option-a",
-                        "label": "Đáp án mẫu A"
+                        "label": "Ngày đầu tiên Han đi học"
                     },
                     {
                         "id": "option-b",
-                        "label": "Đáp án mẫu B"
+                        "label": "Sinh nhật đầu tiên của Han"
                     },
                     {
                         "id": "option-c",
-                        "label": "Đáp án mẫu C"
+                        "label": "Lớp học nấu ăn đầu tiên của Han"
                     }
                 ],
                 "correctAnswerId": "option-b",
-                "funFact": "Đây chỉ là nội dung mẫu tạm thời. Hãy thay bằng thông tin về Han đã được Ian duyệt trước buổi tiệc."
+                "funFact": "Đây là nội dung tạm thời để thử ứng dụng đố vui sinh nhật một tuổi của Han."
             },
             {
-                "id": "approved-sample-question-2",
+                "id": "han-test-question-02",
                 "enabled": true,
                 "sortOrder": 2,
-                "prompt": "Câu hỏi mẫu nội dung đã duyệt 2: hãy chọn đáp án mẫu thứ ba.",
+                "prompt": "Bánh sinh nhật một tuổi thường có bao nhiêu cây nến?",
                 "answers": [
                     {
                         "id": "option-a",
-                        "label": "Đáp án mẫu thứ nhất"
+                        "label": "Một cây nến"
                     },
                     {
                         "id": "option-b",
-                        "label": "Đáp án mẫu thứ hai"
+                        "label": "Năm cây nến"
                     },
                     {
                         "id": "option-c",
-                        "label": "Đáp án mẫu thứ ba"
+                        "label": "Mười cây nến"
+                    }
+                ],
+                "correctAnswerId": "option-a",
+                "funFact": "Một cây nến tượng trưng cho một năm đầu đời và mang đến cho em bé một điều ước thật quan trọng."
+            },
+            {
+                "id": "han-test-question-03",
+                "enabled": true,
+                "sortOrder": 3,
+                "prompt": "Vật nào hữu ích nhất khi em bé quyết định rằng bữa trưa nên nằm dưới sàn?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Một chiếc nón sinh nhật"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Một chiếc điều khiển tivi"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Một chiếc yếm ăn"
                     }
                 ],
                 "correctAnswerId": "option-c",
-                "funFact": "Nội dung mẫu tạm thời để kiểm tra hệ thống. Hãy thay bằng nội dung thật đã được duyệt."
+                "funFact": "Chiếc yếm không thể ngăn mọi cuộc phiêu lưu của thức ăn, nhưng có thể giúp việc dọn dẹp bớt kịch tính hơn một chút."
+            },
+            {
+                "id": "han-test-question-04",
+                "enabled": true,
+                "sortOrder": 4,
+                "prompt": "Khách nên làm gì sau khi chọn đáp án trên điện thoại?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Tải lại trang ngay lập tức"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Xác nhận và chờ công bố đáp án"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Quét lại mã QR"
+                    }
+                ],
+                "correctAnswerId": "option-b",
+                "funFact": "Mỗi khách chỉ được gửi một đáp án cho mỗi câu hỏi, vì vậy bước xác nhận cần được thực hiện cẩn thận."
+            },
+            {
+                "id": "han-test-question-05",
+                "enabled": true,
+                "sortOrder": 5,
+                "prompt": "Mỗi câu hỏi thử nghiệm được mở trong bao lâu?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "20 giây"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "2 phút"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Đến sáng ngày mai"
+                    }
+                ],
+                "correctAnswerId": "option-a",
+                "funFact": "Hiện tại toàn bộ câu hỏi trong trò chơi đều sử dụng chung thời gian trả lời là 20 giây."
+            },
+            {
+                "id": "han-test-question-06",
+                "enabled": true,
+                "sortOrder": 6,
+                "prompt": "Điều nào có lẽ sẽ làm một em bé một tuổi vui nhất trong buổi tiệc?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Một bảng tính có thật nhiều chi tiết"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Một cuộc họp công việc kéo dài ba tiếng"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Âm nhạc, đồ trang trí nhiều màu sắc và những gương mặt quen thuộc"
+                    }
+                ],
+                "correctAnswerId": "option-c",
+                "funFact": "Đáp án dài này được sử dụng có chủ ý để kiểm tra việc xuống dòng và khoảng cách trên màn hình điện thoại nhỏ."
+            },
+            {
+                "id": "han-test-question-07",
+                "enabled": true,
+                "sortOrder": 7,
+                "prompt": "Điều gì xảy ra khi thời gian trả lời về số 0?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Mọi người tự động nhận được một điểm"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Câu hỏi bị khóa và đáp án gửi trễ sẽ bị từ chối"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Trò chơi quay lại màn hình chào mừng"
+                    }
+                ],
+                "correctAnswerId": "option-b",
+                "funFact": "Thời hạn do máy chủ kiểm soát sẽ ngăn các đáp án được gửi đúng tại hoặc sau thời điểm hết giờ."
+            },
+            {
+                "id": "han-test-question-08",
+                "enabled": true,
+                "sortOrder": 8,
+                "prompt": "Hiện tại một đáp án đúng nhận được bao nhiêu điểm?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "1 điểm"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "10 điểm cộng thêm điểm tốc độ"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Một số điểm ngẫu nhiên"
+                    }
+                ],
+                "correctAnswerId": "option-a",
+                "funFact": "Cách tính điểm hiện tại là đếm số câu đúng: một điểm cho đáp án đúng và không điểm cho đáp án sai."
+            },
+            {
+                "id": "han-test-question-09",
+                "enabled": true,
+                "sortOrder": 9,
+                "prompt": "Nếu hai khách có cùng số điểm, bảng xếp hạng hiện tại sẽ xét yếu tố nào tiếp theo?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Ai trả lời câu cuối nhanh nhất"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Tung đồng xu ngẫu nhiên"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Thứ tự tham gia, sau đó là tên hiển thị"
+                    }
+                ],
+                "correctAnswerId": "option-c",
+                "funFact": "Bảng xếp hạng hiện tại không sử dụng điểm tốc độ và xử lý trường hợp hòa theo một thứ tự cố định."
+            },
+            {
+                "id": "han-test-question-10",
+                "enabled": true,
+                "sortOrder": 10,
+                "prompt": "Mục tiêu quan trọng nhất của buổi chạy thử với 10 câu hỏi tạm thời này là gì?",
+                "answers": [
+                    {
+                        "id": "option-a",
+                        "label": "Lưu vĩnh viễn những thông tin hư cấu về Han"
+                    },
+                    {
+                        "id": "option-b",
+                        "label": "Kiểm tra toàn bộ luồng của khách, host, màn hình chung, tính điểm, công bố đáp án và bảng xếp hạng"
+                    },
+                    {
+                        "id": "option-c",
+                        "label": "Thay thế cho buổi tiệc sinh nhật thật"
+                    }
+                ],
+                "correctAnswerId": "option-b",
+                "funFact": "Sau khi toàn bộ buổi chạy thử thành công, các câu hỏi tạm thời này sẽ được thay bằng bộ câu hỏi sinh nhật thật đã được Ian duyệt."
             }
         ]
     },
