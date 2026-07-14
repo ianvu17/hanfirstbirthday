@@ -8,6 +8,11 @@ import {
   resolveVisibleRemoteConnection,
   type RemoteSnapshotTrackingState
 } from "@/lib/party-remote/use-remote-party";
+import {
+  buildGuestPlayPath,
+  buildGuestWelcomePath,
+  normalizeJoinCode
+} from "@/lib/party-remote/join-routing";
 
 function restoreEnv(name: string, value: string | undefined) {
   if (value === undefined) {
@@ -36,6 +41,14 @@ test("deployment environment resolves to explicit Vercel contexts", () => {
   restoreEnv("PARTY_DEPLOYMENT_ENVIRONMENT", previousExplicit);
   restoreEnv("VERCEL_ENV", previousVercel);
   restoreEnv("NODE_ENV", previousNode);
+});
+
+test("guest join routing opens welcome first and preserves public join context", () => {
+  assert.equal(buildGuestWelcomePath("en", "han-turns-one"), "/en?join=han-turns-one");
+  assert.equal(buildGuestWelcomePath("vi"), "/vi");
+  assert.equal(buildGuestPlayPath("vi", "han-turns-one"), "/vi/play?join=han-turns-one");
+  assert.equal(normalizeJoinCode([" han-turns-one "]), "han-turns-one");
+  assert.equal(normalizeJoinCode(" "), undefined);
 });
 
 test("current session reads are not implemented through ensure-and-insert semantics", () => {
@@ -219,15 +232,23 @@ test("polling can move an open tab to a different current session without reload
 test("QR join codes are validated without adding session-specific QR routing", () => {
   const joinRoute = readFileSync("app/api/party/join/route.ts", "utf8");
   const playRoute = readFileSync("app/[locale]/play/page.tsx", "utf8");
+  const homeRoute = readFileSync("app/[locale]/(guest)/page.tsx", "utf8");
+  const onboarding = readFileSync("components/guest/onboarding-flow.tsx", "utf8");
   const repository = readFileSync("lib/party-remote/repository.ts", "utf8");
   const buildJoinStart = repository.indexOf("function buildJoinUrl");
   const contextStart = repository.indexOf("function getPartyContext");
   const buildJoinSource = repository.slice(buildJoinStart, contextStart);
 
-  assert.equal(buildJoinSource.includes('url.searchParams.set("join", publicJoinCode)'), true);
+  assert.equal(buildJoinSource.includes("buildGuestWelcomePath(locale, publicJoinCode)"), true);
+  assert.equal(buildJoinSource.includes('"/play"'), false);
   assert.equal(buildJoinSource.includes("party_session_id"), false);
+  assert.equal(homeRoute.includes("searchParams"), true);
+  assert.equal(homeRoute.includes("initialJoinCode={joinCode}"), true);
+  assert.equal(onboarding.includes("buildGuestWelcomePath(nextLocale"), true);
+  assert.equal(onboarding.includes("buildGuestPlayPath(locale, joinCode)"), true);
   assert.equal(playRoute.includes("searchParams"), true);
   assert.equal(playRoute.includes("joinCode={joinCode}"), true);
+  assert.equal(playRoute.includes("redirect(buildGuestWelcomePath(locale, joinCode))"), true);
   assert.equal(joinRoute.includes("joinCode"), true);
   assert.equal(joinRoute.includes("parsed.data.joinCode !== partySession.public_join_code"), true);
 });

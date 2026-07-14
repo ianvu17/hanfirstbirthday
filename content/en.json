@@ -74,7 +74,7 @@
         "ready": {
             "title": "Ready?",
             "subtitle": "Let's see how well you know Han!",
-            "primaryAction": "Start Quiz"
+            "primaryAction": "I'm ready"
         },
         "quizPlaceholder": {
             "title": "Quiz coming soon",

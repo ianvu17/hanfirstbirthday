@@ -33,12 +33,14 @@ The public join code is no longer a current-session pointer. It remains a public
 The Party Screen QR uses one stable URL across game runs:
 
 ```text
-/{locale}/play?join=<public join code>
+/{locale}?join=<public join code>
 ```
 
-The QR must not include `party_session_id`. When a guest opens the URL, the server validates the optional `join` query value against the current session's public join code, then resolves the session through `party_key + deployment_environment + is_current = true`.
+The QR must not include `party_session_id`. When a new guest opens the URL, the welcome route keeps the optional `join` query value through language selection, name entry, instructions, ready state, and the handoff to `/{locale}/play`. The server validates that join code when the participant is created or resumed. A valid existing participant cookie may skip onboarding and resume directly on `/{locale}/play`.
 
 This keeps one reusable QR for the event while still rejecting malformed or stale join codes.
+
+Direct `/{locale}` entry without a `join` query is allowed for this single-event app. If a current session exists, name confirmation resolves the default public party context on the server; if no current session exists, the guest remains in the welcome flow and receives the no-session message when they try to join. Reads still do not create sessions or anonymous participants.
 
 ## Lifecycle
 
@@ -66,7 +68,7 @@ Creating a new session inserts a new `party_sessions` row in `lobby` with revisi
 Read operations must not create sessions:
 
 - opening `/{locale}`
-- opening `/{locale}/play`
+- opening `/{locale}/play`; unjoined remote visitors are redirected to `/{locale}` with any public join code preserved
 - opening `/{locale}/host`
 - opening `/display/party`
 - calling `GET /api/party/session`

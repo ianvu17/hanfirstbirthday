@@ -275,19 +275,54 @@ async function waitForGuestPhase(page: Page, pattern: RegExp, timeout = 15000) {
 
 async function setGuestSession(page: Page, locale: Locale, displayName: string) {
   console.log(`join-start ${locale} ${displayName}`);
+  await page.goto(`${baseUrl}/${locale}?join=${joinCode}`, { waitUntil: "domcontentloaded" });
   await page.addInitScript(
-    ({ key, name, language }) => {
+    ({ key, name, language, publicJoinCode }) => {
       window.sessionStorage.setItem(
         key,
         JSON.stringify({
           step: "ready",
           selectedLanguage: language,
           playerName: name,
-          guestSessionId: `codex-${crypto.randomUUID()}`
+          guestSessionId: `codex-${crypto.randomUUID()}`,
+          joinCode: publicJoinCode
         })
       );
     },
-    { key: sessionStorageKey, name: displayName, language: locale }
+    { key: sessionStorageKey, name: displayName, language: locale, publicJoinCode: joinCode }
+  );
+  await page.evaluate(
+    async ({ key, name, language, publicJoinCode }) => {
+      window.sessionStorage.setItem(
+        key,
+        JSON.stringify({
+          step: "ready",
+          selectedLanguage: language,
+          playerName: name,
+          guestSessionId: `codex-${crypto.randomUUID()}`,
+          joinCode: publicJoinCode
+        })
+      );
+
+      const response = await fetch("/api/party/join", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json"
+        },
+        body: JSON.stringify({
+          displayName: name,
+          locale: language,
+          joinCode: publicJoinCode
+        })
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        throw new Error(payload?.error?.message ?? "Could not join preview party.");
+      }
+    },
+    { key: sessionStorageKey, name: displayName, language: locale, publicJoinCode: joinCode }
   );
   await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, { waitUntil: "domcontentloaded" });
   try {

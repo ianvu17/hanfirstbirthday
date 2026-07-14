@@ -1,9 +1,18 @@
+import { cookies } from "next/headers";
 import { setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { PageShell } from "@/components/design/page-shell";
 import { GuestPlayClient } from "@/components/party/guest-play-client";
 import { isLocale, type Locale } from "@/lib/i18n/routing";
+import {
+  buildGuestWelcomePath,
+  normalizeJoinCode
+} from "@/lib/party-remote/join-routing";
+import {
+  buildRemotePartySnapshot,
+  parseParticipantCookieValue
+} from "@/lib/party-remote/repository";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 export default async function GuestPlayPage({
@@ -22,14 +31,31 @@ export default async function GuestPlayPage({
 
   const locale: Locale = localeParam;
   setRequestLocale(locale);
+  const remoteEnabled = isSupabaseConfigured();
+  const joinCode = normalizeJoinCode(join);
 
-  const joinCode = Array.isArray(join) ? join[0] : join;
+  if (remoteEnabled) {
+    const cookieStore = await cookies();
+    const participantSession = parseParticipantCookieValue(
+      cookieStore.get("han_participant_session")?.value
+    );
+    const snapshot = participantSession
+      ? await buildRemotePartySnapshot(participantSession)
+      : null;
+    const hasParticipant =
+      Boolean(snapshot?.session) &&
+      Boolean(snapshot && "participant" in snapshot && snapshot.participant);
+
+    if (!hasParticipant) {
+      redirect(buildGuestWelcomePath(locale, joinCode));
+    }
+  }
 
   return (
     <PageShell variant="guest" className="guest-controller-page">
       <GuestPlayClient
         locale={locale}
-        remoteEnabled={isSupabaseConfigured()}
+        remoteEnabled={remoteEnabled}
         joinCode={joinCode}
       />
     </PageShell>

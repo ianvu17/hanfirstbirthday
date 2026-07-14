@@ -106,6 +106,7 @@ export function RemoteGuestController({
   }>({ sessionId: null, value: false });
   const projection = snapshot?.session && "guest" in snapshot ? snapshot.guest : null;
   const participant = snapshot?.session && "participant" in snapshot ? snapshot.participant : null;
+  const effectiveDisplayName = participant?.displayName ?? displayName;
   const question = projection?.currentQuestion ?? null;
   const sessionId = snapshot?.session?.id ?? null;
   const isSubmitting = submittingState.sessionId === sessionId && submittingState.value;
@@ -231,7 +232,7 @@ export function RemoteGuestController({
     }
   }
 
-  if (!displayName) {
+  if (!effectiveDisplayName && snapshot?.session) {
     return (
       <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-xl items-center">
         <PaperPanel tone="blue" className="w-full text-center">
@@ -283,7 +284,7 @@ export function RemoteGuestController({
               {isJoining ? copy.connecting : copy.lobbyTitle}
             </h1>
             <p className="font-bold text-muted-foreground">
-              {activeJoinError || error?.message || copy.lobbyDescription}
+              {activeJoinError || error?.message || copy.guestLobbyDescription}
             </p>
           </div>
         </PaperPanel>

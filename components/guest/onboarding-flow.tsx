@@ -16,6 +16,10 @@ import { MotionReveal } from "@/components/motion/motion-patterns";
 import { Button } from "@/components/ui/button";
 import type { BirthdayContent } from "@/lib/content/schema";
 import { locales, type Locale } from "@/lib/i18n/routing";
+import {
+  buildGuestPlayPath,
+  buildGuestWelcomePath
+} from "@/lib/party-remote/join-routing";
 
 type OnboardingStep =
   | "welcome"
@@ -30,11 +34,14 @@ type StoredOnboardingState = {
   selectedLanguage: Locale;
   playerName: string;
   guestSessionId: string | null;
+  joinCode: string | null;
 };
 
 type OnboardingFlowProps = {
   locale: Locale;
   content: BirthdayContent;
+  remoteEnabled?: boolean;
+  initialJoinCode?: string;
 };
 
 const SESSION_KEY = "han-first-birthday:onboarding:v1";
@@ -68,11 +75,12 @@ function getDefaultState(locale: Locale): StoredOnboardingState {
     step: "welcome",
     selectedLanguage: locale,
     playerName: "",
-    guestSessionId: null
+    guestSessionId: null,
+    joinCode: null
   };
 }
 
-function readStoredState(locale: Locale): StoredOnboardingState | null {
+function readStoredState(locale: Locale, initialJoinCode?: string): StoredOnboardingState | null {
   try {
     const raw = window.sessionStorage.getItem(SESSION_KEY);
 
@@ -86,29 +94,47 @@ function readStoredState(locale: Locale): StoredOnboardingState | null {
       typeof parsed.playerName === "string" ? parsed.playerName : "";
     const guestSessionId =
       typeof parsed.guestSessionId === "string" ? parsed.guestSessionId : null;
+    const joinCode =
+      initialJoinCode ??
+      (typeof parsed.joinCode === "string" && parsed.joinCode
+        ? parsed.joinCode
+        : null);
 
     return {
       step,
       selectedLanguage: locale,
       playerName,
-      guestSessionId
+      guestSessionId,
+      joinCode
     };
   } catch {
     return null;
   }
 }
 
-export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
+export function OnboardingFlow({
+  locale,
+  content,
+  remoteEnabled = false,
+  initialJoinCode
+}: OnboardingFlowProps) {
   const router = useRouter();
   const [state, setState] = useState<StoredOnboardingState>(() => {
     if (typeof window === "undefined") {
       return getDefaultState(locale);
     }
 
-    return readStoredState(locale) ?? getDefaultState(locale);
+    const stored = readStoredState(locale, initialJoinCode) ?? getDefaultState(locale);
+
+    return {
+      ...stored,
+      joinCode: initialJoinCode ?? stored.joinCode
+    };
   });
   const [nameError, setNameError] = useState("");
+  const [isJoining, setIsJoining] = useState(false);
   const { step, playerName } = state;
+  const joinCode = state.joinCode ?? initialJoinCode;
 
   const progressSteps = useMemo(
     () =>
@@ -124,11 +150,12 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
       step: state.step,
       selectedLanguage: locale,
       playerName: state.playerName,
-      guestSessionId: state.guestSessionId
+      guestSessionId: state.guestSessionId,
+      joinCode: state.joinCode ?? initialJoinCode ?? null
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
-  }, [locale, state]);
+  }, [initialJoinCode, locale, state]);
 
   function goToStep(nextStep: OnboardingStep) {
     setNameError("");
@@ -140,7 +167,8 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
       step: "name",
       selectedLanguage: nextLocale,
       playerName,
-      guestSessionId: state.guestSessionId
+      guestSessionId: state.guestSessionId,
+      joinCode: state.joinCode ?? initialJoinCode ?? null
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
@@ -148,7 +176,7 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
     setState(nextState);
 
     if (nextLocale !== locale) {
-      router.push(`/${nextLocale}`);
+      router.push(buildGuestWelcomePath(nextLocale, nextState.joinCode ?? undefined));
     }
   }
 
@@ -157,18 +185,45 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
       step,
       selectedLanguage: nextLocale,
       playerName,
-      guestSessionId: state.guestSessionId
+      guestSessionId: state.guestSessionId,
+      joinCode: state.joinCode ?? initialJoinCode ?? null
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
     setState(nextState);
 
     if (nextLocale !== locale) {
-      router.push(`/${nextLocale}`);
+      router.push(buildGuestWelcomePath(nextLocale, nextState.joinCode ?? undefined));
     }
   }
 
-  function submitName() {
+  async function joinRemoteParty(displayName: string) {
+    const response = await fetch("/api/party/join", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json"
+      },
+      body: JSON.stringify({
+        displayName,
+        locale,
+        joinCode
+      })
+    });
+    const payload = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(
+        payload?.error?.message ?? content.screens.errors.network
+      );
+    }
+  }
+
+  async function submitName() {
+    if (isJoining) {
+      return;
+    }
+
     const trimmed = normalizeName(playerName);
 
     if (!trimmed) {
@@ -181,11 +236,28 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
       return;
     }
 
+    if (remoteEnabled) {
+      setIsJoining(true);
+
+      try {
+        await joinRemoteParty(trimmed);
+      } catch (error) {
+        setNameError(
+          error instanceof Error ? error.message : content.screens.errors.network
+        );
+        setIsJoining(false);
+        return;
+      }
+
+      setIsJoining(false);
+    }
+
     setState((current) => ({
       ...current,
       step: "howToPlay",
       selectedLanguage: locale,
-      playerName: trimmed
+      playerName: trimmed,
+      joinCode: current.joinCode ?? initialJoinCode ?? null
     }));
     setNameError("");
   }
@@ -256,6 +328,7 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
             primaryAction={content.screens.guestEntry.primaryAction}
             value={playerName}
             error={nameError}
+            disabled={isJoining}
             onValueChange={(value) => {
               setState((current) => ({ ...current, playerName: value }));
               setNameError("");
@@ -280,7 +353,7 @@ export function OnboardingFlow({ locale, content }: OnboardingFlowProps) {
             subtitle={content.screens.ready.subtitle}
             primaryAction={content.screens.ready.primaryAction}
             guestName={playerName}
-            onStartQuiz={() => router.push(`/${locale}/play`)}
+            onStartQuiz={() => router.push(buildGuestPlayPath(locale, joinCode))}
           />
         ) : null}
 

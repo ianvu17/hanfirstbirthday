@@ -12,6 +12,7 @@ import {
   type PartyState
 } from "@/lib/party-engine";
 import type { Locale } from "@/lib/i18n/routing";
+import { buildGuestWelcomePath } from "@/lib/party-remote/join-routing";
 import type { RuntimePartyCommand } from "@/lib/party-runtime/runtime-contract";
 import {
   getDefaultPartyJoinCode,
@@ -85,8 +86,7 @@ export function parseParticipantCookieValue(value: string | undefined): Particip
 }
 
 function buildJoinUrl(publicJoinCode: string, locale: Locale = "en") {
-  const url = new URL(`/${locale}/play`, getPublicAppUrl());
-  url.searchParams.set("join", publicJoinCode);
+  const url = new URL(buildGuestWelcomePath(locale, publicJoinCode), getPublicAppUrl());
   return url.toString();
 }
 

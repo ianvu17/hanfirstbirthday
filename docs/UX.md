@@ -255,7 +255,7 @@ Milestone 4 implementation:
 Milestone 5 implementation:
 
 - `/display/party` uses the Supabase-backed remote runtime when configured.
-- Lobby QR is generated from the active party join URL.
+- Lobby QR is generated from the active party join URL and opens the localized Welcome Screen with the public join code preserved.
 - Participant count, response count, reveal, and leaderboard projections come from server snapshots.
 - If Supabase env is absent, the route falls back to the local Milestone 4 runtime for development rather than running divergent device state.
 

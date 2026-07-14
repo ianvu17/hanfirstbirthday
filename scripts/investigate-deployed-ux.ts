@@ -479,12 +479,12 @@ async function compareEnvironment(baseUrl: string, label: string) {
   try {
     await page.goto(`${baseUrl}/api/party/session`);
     result.sessionText = await page.locator("body").innerText();
-    await page.goto(`${baseUrl}/en/play?join=han-turns-one`, { waitUntil: "networkidle" });
+    await page.goto(`${baseUrl}/en?join=han-turns-one`, { waitUntil: "networkidle" });
     await page.waitForTimeout(4000);
-    result.metrics = await collectMetrics(page, `${label}-direct-play`);
+    result.metrics = await collectMetrics(page, `${label}-qr-welcome`);
     result.trace = await getTrace(page);
     await page.screenshot({
-      path: join(evidenceDir, "screenshots", `${label}-direct-play.png`),
+      path: join(evidenceDir, "screenshots", `${label}-qr-welcome.png`),
       fullPage: true
     });
   } catch (error) {
