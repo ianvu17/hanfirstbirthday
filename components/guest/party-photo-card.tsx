@@ -24,6 +24,11 @@ import {
 import { Button } from "@/components/ui/button";
 import type { BirthdayContent } from "@/lib/content/schema";
 import type { AvatarPresetId, ParticipantAvatarProjection } from "@/lib/party-avatar";
+import {
+  getPreparedAvatarFileName,
+  isPreparedAvatarMimeType,
+  type PreparedAvatarMimeType
+} from "@/lib/party-avatar-upload";
 import { cn } from "@/lib/utils";
 
 type PartyPhotoCopy = BirthdayContent["screens"]["partyPhoto"];
@@ -56,7 +61,7 @@ type PartyPhotoCardProps = {
   copy: PartyPhotoCopy;
   displayName: string;
   currentAvatar?: ParticipantAvatarProjection | null;
-  onSavePhoto: (blob: Blob) => Promise<ParticipantAvatarProjection | null>;
+  onSavePhoto: (file: File) => Promise<ParticipantAvatarProjection | null>;
   onSavePreset: (presetId: AvatarPresetId) => Promise<ParticipantAvatarProjection | null>;
   onContinue: () => void;
 };
@@ -205,7 +210,7 @@ function StickerArtwork({ kind, className }: { kind: StickerKind; className?: st
   );
 }
 
-function drawSticker(ctx: CanvasRenderingContext2D, sticker: Sticker, canvasSize: number) {
+function drawStickerArtwork(ctx: CanvasRenderingContext2D, sticker: Sticker, canvasSize: number) {
   const x = sticker.x * canvasSize;
   const y = sticker.y * canvasSize;
   const size = sticker.size;
@@ -429,24 +434,67 @@ function drawSticker(ctx: CanvasRenderingContext2D, sticker: Sticker, canvasSize
   ctx.restore();
 }
 
-async function canvasToAvatarBlob(canvas: HTMLCanvasElement) {
+function renderFinalAvatar({
+  ctx,
+  image,
+  canvasSize,
+  zoom,
+  offsetX,
+  offsetY,
+  stickers
+}: {
+  ctx: CanvasRenderingContext2D;
+  image: HTMLImageElement;
+  canvasSize: number;
+  zoom: number;
+  offsetX: number;
+  offsetY: number;
+  stickers: Sticker[];
+}) {
+  ctx.fillStyle = "#fffaf0";
+  ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+  const coverScale =
+    Math.max(canvasSize / image.naturalWidth, canvasSize / image.naturalHeight) * zoom;
+  const drawWidth = image.naturalWidth * coverScale;
+  const drawHeight = image.naturalHeight * coverScale;
+  const drawX = (canvasSize - drawWidth) / 2 + offsetX * 2;
+  const drawY = (canvasSize - drawHeight) / 2 + offsetY * 2;
+  ctx.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+
+  for (const sticker of stickers) {
+    drawStickerArtwork(ctx, sticker, canvasSize);
+  }
+}
+
+async function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  mimeType: PreparedAvatarMimeType,
+  quality: number
+) {
+  return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, mimeType, quality));
+}
+
+async function canvasToAvatarFile(canvas: HTMLCanvasElement) {
   const preferred = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, "image/webp", 0.86)
   );
 
-  if (preferred) {
-    return preferred;
+  if (preferred && preferred.size > 0 && preferred.type === "image/webp") {
+    return new File([preferred], getPreparedAvatarFileName(preferred.type), {
+      type: preferred.type
+    });
   }
 
-  const fallback = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, "image/jpeg", 0.84)
-  );
+  const fallback = await canvasToBlob(canvas, "image/jpeg", 0.84);
 
-  if (!fallback) {
+  if (!fallback || fallback.size === 0 || fallback.type !== "image/jpeg") {
     throw new Error("image_export_failed");
   }
 
-  return fallback;
+  return new File([fallback], getPreparedAvatarFileName(fallback.type), {
+    type: fallback.type
+  });
 }
 
 export function PartyPhotoCard({
@@ -593,8 +641,8 @@ export function PartyPhotoCard({
     ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     stopCamera();
-    const blob = await canvasToAvatarBlob(canvas);
-    resetEditor(createObjectUrl(blob));
+    const file = await canvasToAvatarFile(canvas);
+    resetEditor(createObjectUrl(file));
   }
 
   async function handleFile(file: File | undefined) {
@@ -678,6 +726,7 @@ export function PartyPhotoCard({
       return;
     }
 
+    setSelectedStickerId(null);
     dragRef.current = {
       mode: "photo",
       pointerId: event.pointerId,
@@ -767,6 +816,7 @@ export function PartyPhotoCard({
 
     setSaving(true);
     setError("");
+    setSelectedStickerId(null);
 
     try {
       const image = await loadImage(sourceUrl);
@@ -780,30 +830,31 @@ export function PartyPhotoCard({
         throw new Error("canvas_unavailable");
       }
 
-      ctx.fillStyle = "#fffaf0";
-      ctx.fillRect(0, 0, size, size);
+      renderFinalAvatar({
+        ctx,
+        image,
+        canvasSize: size,
+        zoom,
+        offsetX,
+        offsetY,
+        stickers
+      });
 
-      const coverScale = Math.max(size / image.naturalWidth, size / image.naturalHeight) * zoom;
-      const drawWidth = image.naturalWidth * coverScale;
-      const drawHeight = image.naturalHeight * coverScale;
-      const drawX = (size - drawWidth) / 2 + offsetX * 2;
-      const drawY = (size - drawHeight) / 2 + offsetY * 2;
-      ctx.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+      const file = await canvasToAvatarFile(canvas);
 
-      for (const sticker of stickers) {
-        drawSticker(ctx, sticker, size);
+      if (!isPreparedAvatarMimeType(file.type) || file.size === 0) {
+        throw new Error(copy.validation.imageInvalid);
       }
 
-      const blob = await canvasToAvatarBlob(canvas);
-      const previewUrl = createObjectUrl(blob);
-      const updated = await onSavePhoto(blob);
+      const previewUrl = createObjectUrl(file);
+      const updated = await onSavePhoto(file);
 
       if (preparedPhoto?.previewUrl) {
         URL.revokeObjectURL(preparedPhoto.previewUrl);
       }
 
       setPreparedPhoto({
-        blob,
+        blob: file,
         previewUrl: updated?.type === "photo" ? updated.url : previewUrl
       });
       setSelectedPresetId(null);

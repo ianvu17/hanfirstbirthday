@@ -11,6 +11,7 @@
     "test": "npm run test:party-engine && npm run test:party-runtime",
     "test:party-engine": "node --import tsx --test lib/party-engine/__tests__/*.test.ts",
     "test:party-runtime": "node --import tsx --test lib/party-remote/__tests__/*.test.ts",
+    "test:avatar": "node --import tsx --test lib/party-remote/__tests__/avatar-upload-contract.test.ts",
     "test:supabase": "tsx scripts/check-supabase-migrations.ts",
     "test:rls": "npm run test:supabase",
     "test:rls:live": "tsx scripts/validate-live-rls.ts",

@@ -8,131 +8,42 @@ import {
   updateParticipantPresetAvatar
 } from "@/lib/party-remote/repository";
 import { isAvatarPresetId } from "@/lib/party-avatar";
+import {
+  inspectPreparedImage,
+  isPreparedAvatarMimeType,
+  maxPreparedAvatarBytes,
+  preparedAvatarFieldName
+} from "@/lib/party-avatar-upload";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
-const maxPreparedAvatarBytes = 524288;
+export const runtime = "nodejs";
+
 const presetSchema = z.object({
   type: z.literal("preset"),
   presetId: z.string()
 });
 
-function readUint32Be(bytes: Uint8Array, offset: number) {
-  return (
-    (bytes[offset] << 24) |
-    (bytes[offset + 1] << 16) |
-    (bytes[offset + 2] << 8) |
-    bytes[offset + 3]
-  ) >>> 0;
-}
-
-function readUint16Be(bytes: Uint8Array, offset: number) {
-  return (bytes[offset] << 8) | bytes[offset + 1];
-}
-
-function parsePngDimensions(bytes: Uint8Array) {
-  const pngMagic = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
-
-  if (!pngMagic.every((value, index) => bytes[index] === value)) {
-    return null;
-  }
-
-  return {
-    mimeType: "image/png" as const,
-    width: readUint32Be(bytes, 16),
-    height: readUint32Be(bytes, 20)
-  };
-}
-
-function parseWebpDimensions(bytes: Uint8Array) {
-  const riff = String.fromCharCode(...bytes.slice(0, 4));
-  const webp = String.fromCharCode(...bytes.slice(8, 12));
-
-  if (riff !== "RIFF" || webp !== "WEBP") {
-    return null;
-  }
-
-  const chunk = String.fromCharCode(...bytes.slice(12, 16));
-
-  if (chunk === "VP8X" && bytes.length >= 30) {
-    const width = 1 + bytes[24] + (bytes[25] << 8) + (bytes[26] << 16);
-    const height = 1 + bytes[27] + (bytes[28] << 8) + (bytes[29] << 16);
-    return { mimeType: "image/webp" as const, width, height };
-  }
-
-  if (chunk === "VP8 " && bytes.length >= 30) {
-    const width = bytes[26] | ((bytes[27] & 0x3f) << 8);
-    const height = bytes[28] | ((bytes[29] & 0x3f) << 8);
-    return { mimeType: "image/webp" as const, width, height };
-  }
-
-  if (chunk === "VP8L" && bytes.length >= 25) {
-    const bits =
-      bytes[21] | (bytes[22] << 8) | (bytes[23] << 16) | (bytes[24] << 24);
-    const width = (bits & 0x3fff) + 1;
-    const height = ((bits >> 14) & 0x3fff) + 1;
-    return { mimeType: "image/webp" as const, width, height };
-  }
-
-  return null;
-}
-
-function parseJpegDimensions(bytes: Uint8Array) {
-  if (bytes[0] !== 0xff || bytes[1] !== 0xd8) {
-    return null;
-  }
-
-  let offset = 2;
-
-  while (offset + 9 < bytes.length) {
-    if (bytes[offset] !== 0xff) {
-      return null;
-    }
-
-    const marker = bytes[offset + 1];
-    const length = readUint16Be(bytes, offset + 2);
-
-    if (length < 2) {
-      return null;
-    }
-
-    if (
-      marker === 0xc0 ||
-      marker === 0xc1 ||
-      marker === 0xc2 ||
-      marker === 0xc3 ||
-      marker === 0xc5 ||
-      marker === 0xc6 ||
-      marker === 0xc7 ||
-      marker === 0xc9 ||
-      marker === 0xca ||
-      marker === 0xcb ||
-      marker === 0xcd ||
-      marker === 0xce ||
-      marker === 0xcf
-    ) {
-      return {
-        mimeType: "image/jpeg" as const,
-        height: readUint16Be(bytes, offset + 5),
-        width: readUint16Be(bytes, offset + 7)
-      };
-    }
-
-    offset += 2 + length;
-  }
-
-  return null;
-}
-
-function inspectPreparedImage(bytes: Uint8Array) {
-  return (
-    parseWebpDimensions(bytes) ??
-    parseJpegDimensions(bytes) ??
-    parsePngDimensions(bytes)
-  );
-}
-
 function errorResponse(code: string, message: string, status: number) {
   return NextResponse.json({ error: { code, message } }, { status });
+}
+
+function avatarError(code: string, status = 400) {
+  switch (code) {
+    case "avatar_blob_empty":
+      return errorResponse(code, "We could not prepare the photo correctly. Please try again.", status);
+    case "avatar_mime_missing":
+      return errorResponse(code, "We could not identify the prepared photo format. Please try again.", status);
+    case "avatar_mime_unsupported":
+      return errorResponse(code, "This prepared photo format is not supported. Please retake it or choose another photo.", status);
+    case "avatar_signature_mismatch":
+      return errorResponse(code, "The prepared photo format did not match its file data. Please try again.", status);
+    case "avatar_decode_failed":
+      return errorResponse(code, "We could not read the prepared photo. Please try again.", status);
+    case "avatar_upload_failed":
+      return errorResponse(code, "We could not save the avatar yet. Please try again.", status);
+    default:
+      return errorResponse("invalid_avatar", "Please send a prepared avatar image.", status);
+  }
 }
 
 export async function POST(request: Request) {
@@ -179,30 +90,45 @@ export async function POST(request: Request) {
     }
 
     const formData = await request.formData();
-    const type = formData.get("type");
-    const file = formData.get("file");
+    const file = formData.get(preparedAvatarFieldName);
 
-    if (type !== "photo" || !(file instanceof File)) {
+    if (!(file instanceof File)) {
       return errorResponse("invalid_avatar", "Please send a prepared avatar image.", 400);
     }
 
-    if (file.size <= 0 || file.size > maxPreparedAvatarBytes) {
-      return errorResponse("invalid_avatar", "Avatar image is too large.", 400);
+    if (file.size <= 0) {
+      return avatarError("avatar_blob_empty");
+    }
+
+    if (file.size > maxPreparedAvatarBytes) {
+      return avatarError("avatar_upload_failed", 413);
+    }
+
+    if (!file.type) {
+      return avatarError("avatar_mime_missing");
+    }
+
+    if (!isPreparedAvatarMimeType(file.type)) {
+      return avatarError("avatar_mime_unsupported");
     }
 
     const bytes = new Uint8Array(await file.arrayBuffer());
     const image = inspectPreparedImage(bytes);
 
-    if (!image) {
-      return errorResponse("invalid_avatar", "Avatar image could not be validated.", 400);
+    if (!image.ok) {
+      return avatarError(image.reason);
     }
 
-    if (image.mimeType === "image/png") {
-      return errorResponse("invalid_avatar", "Please upload the prepared WebP or JPEG avatar.", 400);
+    if (image.mimeType !== file.type) {
+      return avatarError(
+        image.mimeType === "image/png"
+          ? "avatar_mime_unsupported"
+          : "avatar_signature_mismatch"
+      );
     }
 
     if (image.width !== 512 || image.height !== 512) {
-      return errorResponse("invalid_avatar", "Avatar image must be 512 by 512 pixels.", 400);
+      return avatarError("avatar_decode_failed");
     }
 
     const result = await updateParticipantPhotoAvatar(

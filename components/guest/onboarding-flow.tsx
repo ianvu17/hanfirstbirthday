@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import type { BirthdayContent } from "@/lib/content/schema";
 import { locales, type Locale } from "@/lib/i18n/routing";
 import type { AvatarPresetId, ParticipantAvatarProjection } from "@/lib/party-avatar";
+import { preparedAvatarFieldName } from "@/lib/party-avatar-upload";
 import {
   buildGuestPlayPath,
   buildGuestWelcomePath
@@ -312,23 +313,23 @@ export function OnboardingFlow({
     });
   }
 
-  async function savePhotoAvatar(blob: Blob): Promise<ParticipantAvatarProjection | null> {
+  async function savePhotoAvatar(file: File): Promise<ParticipantAvatarProjection | null> {
     if (!remoteEnabled) {
       const localFallback: ParticipantAvatarProjection = {
         type: "photo",
-        url: await blobToDataUrl(blob)
+        url: await blobToDataUrl(file)
       };
       setAvatar(localFallback);
       return localFallback;
     }
 
     const formData = new FormData();
-    formData.set("type", "photo");
-    formData.set("file", blob, blob.type === "image/jpeg" ? "avatar.jpg" : "avatar.webp");
+    formData.append(preparedAvatarFieldName, file);
 
     const response = await fetch("/api/party/participant/avatar", {
       method: "POST",
       body: formData,
+      credentials: "include",
       headers: {
         accept: "application/json"
       }

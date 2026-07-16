@@ -754,7 +754,13 @@ export async function updateParticipantPhotoAvatar(
     });
 
   if (uploaded.error) {
-    throw uploaded.error;
+    return {
+      ok: false as const,
+      error: {
+        code: "avatar_upload_failed" as const,
+        message: "We could not save the avatar yet. Please try again."
+      }
+    };
   }
 
   const updated = await supabase
@@ -771,7 +777,13 @@ export async function updateParticipantPhotoAvatar(
     .single<ParticipantRow>();
 
   if (updated.error) {
-    throw updated.error;
+    return {
+      ok: false as const,
+      error: {
+        code: "avatar_upload_failed" as const,
+        message: "We could not save the avatar yet. Please try again."
+      }
+    };
   }
 
   await supabase.rpc("touch_party_session_response", {
