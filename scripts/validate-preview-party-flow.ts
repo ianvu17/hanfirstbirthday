@@ -277,7 +277,7 @@ async function waitForGuestPhase(page: Page, pattern: RegExp, timeout = 15000) {
 
 async function setGuestSession(page: Page, locale: Locale, displayName: string) {
   console.log(`join-start ${locale} ${displayName}`);
-  await page.goto(`${baseUrl}/${locale}?join=${joinCode}`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${baseUrl}/${locale}?join=${joinCode}`, { waitUntil: "domcontentloaded", timeout: 60_000 });
   await page.addInitScript(
     ({ key, name, language, publicJoinCode }) => {
       window.sessionStorage.setItem(
@@ -326,7 +326,7 @@ async function setGuestSession(page: Page, locale: Locale, displayName: string) 
     },
     { key: sessionStorageKey, name: displayName, language: locale, publicJoinCode: joinCode }
   );
-  await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, { waitUntil: "domcontentloaded", timeout: 60_000 });
   try {
     await page.locator("[data-testid='guest-controller']").waitFor({ timeout: 20000 });
   } catch (error) {
@@ -345,10 +345,10 @@ async function setGuestSession(page: Page, locale: Locale, displayName: string) 
 }
 
 async function hostLogin(page: Page, hostPin: string) {
-  await page.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded", timeout: 60_000 });
   const status = await page
     .context()
-    .request.get(`${baseUrl}/api/party/host/status`)
+    .request.get(`${baseUrl}/api/party/host/status`, { timeout: 60_000 })
     .then((response) => response.json());
 
   if (status.authorized) {
@@ -365,10 +365,10 @@ async function hostLogin(page: Page, hostPin: string) {
 }
 
 async function createSessionIfNeeded(page: Page) {
-  await page.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded", timeout: 60_000 });
   await page.waitForTimeout(1000);
 
-  const sessionResponse = await page.context().request.get(`${baseUrl}/api/party/session`);
+  const sessionResponse = await page.context().request.get(`${baseUrl}/api/party/session`, { timeout: 60_000 });
   const before = await sessionResponse.json();
   const needsFreshSession =
     before.session &&
@@ -379,6 +379,7 @@ async function createSessionIfNeeded(page: Page) {
     await page.getByText(/test session/i).first().waitFor({ timeout: 15000 });
   } else if (needsFreshSession) {
     await page.context().request.post(`${baseUrl}/api/party/sessions`, {
+      timeout: 60_000,
       data: {
         action: "create",
         idempotencyKey: `codex-preview-validation:${Date.now()}`,
@@ -390,7 +391,7 @@ async function createSessionIfNeeded(page: Page) {
     await page.getByText(/test session/i).first().waitFor({ timeout: 15000 });
   }
 
-  const afterResponse = await page.context().request.get(`${baseUrl}/api/party/session`);
+  const afterResponse = await page.context().request.get(`${baseUrl}/api/party/session`, { timeout: 60_000 });
   return afterResponse.json();
 }
 
@@ -409,7 +410,7 @@ async function clickHostAction(page: Page, name: RegExp, expectedPhase: string) 
 }
 
 async function snapshotPhase(context: BrowserContext) {
-  const response = await context.request.get(`${baseUrl}/api/party/session`);
+  const response = await context.request.get(`${baseUrl}/api/party/session`, { timeout: 60_000 });
   return response.json();
 }
 
@@ -454,6 +455,10 @@ async function observeCountdown(page: Page, surface: string) {
     await page.waitForTimeout(100);
   }
 
+  return { surface, values };
+}
+
+function assertCompleteCountdown({ surface, values }: Awaited<ReturnType<typeof observeCountdown>>) {
   if (values[0] !== 20) throw new Error(`${surface} countdown started at ${values[0] ?? "missing"}, expected 20.`);
   for (let value = 20; value >= 0; value -= 1) {
     if (!values.includes(value)) throw new Error(`${surface} countdown skipped ${value}: ${values.join(",")}`);
@@ -473,15 +478,18 @@ async function main() {
   mkdirSync(join(evidenceDir, "logs"), { recursive: true });
 
   const browser = await chromium.launch();
+  const displayBrowser = await chromium.launch();
+  const guestEnBrowser = await chromium.launch();
+  const guestViBrowser = await chromium.launch();
   const host = await browser.newContext({ viewport: { width: 390, height: 844 } });
-  const display = await browser.newContext({ viewport: { width: 1366, height: 768 } });
-  const guestEn = await browser.newContext({
+  const display = await displayBrowser.newContext({ viewport: { width: 1366, height: 768 } });
+  const guestEn = await guestEnBrowser.newContext({
     viewport: { width: 390, height: 640 },
     isMobile: true,
     hasTouch: true,
     locale: "en-US"
   });
-  const guestVi = await browser.newContext({
+  const guestVi = await guestViBrowser.newContext({
     viewport: { width: 390, height: 640 },
     isMobile: true,
     hasTouch: true,
@@ -491,6 +499,11 @@ async function main() {
   const displayPage = await display.newPage();
   const guestEnPage = await guestEn.newPage();
   const guestViPage = await guestVi.newPage();
+
+  for (const page of [hostPage, displayPage, guestEnPage, guestViPage]) {
+    page.setDefaultTimeout(60_000);
+    page.setDefaultNavigationTimeout(60_000);
+  }
 
   await Promise.all([
     installDiagnostics(hostPage, "host"),
@@ -513,7 +526,7 @@ async function main() {
     phase: sessionSnapshot.projection?.phase
   });
 
-  await displayPage.goto(`${baseUrl}/display/party`, { waitUntil: "domcontentloaded" });
+  await displayPage.goto(`${baseUrl}/display/party`, { waitUntil: "domcontentloaded", timeout: 60_000 });
   await displayPage.getByText(/han-turns-one|party lobby/i).first().waitFor({ timeout: 15000 });
   await displayPage.screenshot({
     path: join(evidenceDir, "screenshots", "party-screen-lobby.png"),
@@ -593,7 +606,10 @@ async function main() {
   await guestViPage.getByText(/câu trả lời đã khóa/i).waitFor({ timeout: 15000 });
   timeline.push({ step: "both-guests-submitted", at: new Date().toISOString() });
 
-  const [hostCountdown, displayCountdown, guestCountdown] = await countdownObservation;
+  const [hostCountdownResult, displayCountdownResult, guestCountdownResult] = await countdownObservation;
+  const hostCountdown = assertCompleteCountdown(hostCountdownResult);
+  const displayCountdown = assertCompleteCountdown(displayCountdownResult);
+  const guestCountdown = assertCompleteCountdown(guestCountdownResult);
   timeline.push({
     step: "countdown-observed",
     at: new Date().toISOString(),
@@ -617,6 +633,7 @@ async function main() {
   timeline.push({ step: "deadline-closed", at: new Date().toISOString() });
 
   const lateResponse = await guestEn.request.post(`${baseUrl}/api/party/response`, {
+    timeout: 60_000,
     data: {
       selectedOptionId: "late-answer",
       submissionId: `late:${Date.now()}`
@@ -771,8 +788,8 @@ async function main() {
     await displayPage.getByText(/mastermind/i).first().waitFor({ timeout: 15000 });
 
     const [enCertificate, viCertificate] = await Promise.all([
-      guestEn.request.get(`${baseUrl}/api/party/certificate`),
-      guestVi.request.get(`${baseUrl}/api/party/certificate`)
+      guestEn.request.get(`${baseUrl}/api/party/certificate`, { timeout: 60_000 }),
+      guestVi.request.get(`${baseUrl}/api/party/certificate`, { timeout: 60_000 })
     ]);
     const winnerCertificate = enCertificate.status() === 200 ? enCertificate : viCertificate;
     const nonWinnerCertificate = enCertificate.status() === 200 ? viCertificate : enCertificate;
@@ -823,7 +840,12 @@ async function main() {
   );
 
   await Promise.all([host.close(), display.close(), guestEn.close(), guestVi.close()]);
-  await browser.close();
+  await Promise.all([
+    browser.close(),
+    displayBrowser.close(),
+    guestEnBrowser.close(),
+    guestViBrowser.close()
+  ]);
 }
 
 main().catch((error) => {

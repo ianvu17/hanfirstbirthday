@@ -608,7 +608,7 @@ export async function buildRemotePartySnapshot(
     projection: sharedProjection,
     joinUrl: buildJoinUrl(bundle.session.public_join_code, bundle.session.display_locale),
     connection: "connected",
-    serverNow: now
+    serverNow: Date.now()
   };
 
   if (!participantSession) {
@@ -622,6 +622,7 @@ export async function buildRemotePartySnapshot(
 
   return {
     ...base,
+    serverNow: Date.now(),
     guest: participant
       ? buildGuestProjection(state, bundle.config, participant.id, now)
       : null,
