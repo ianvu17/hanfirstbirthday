@@ -53,15 +53,21 @@ export function useAuthoritativeCountdown({
 
   useEffect(() => {
     const clientNow = Date.now();
-    offsetRef.current = serverNow === null ? 0 : serverNow - clientNow;
+    const snapshotOffsetMs = serverNow === null ? 0 : serverNow - clientNow;
 
     if (!active || deadlineAt === null) {
+      offsetRef.current = snapshotOffsetMs;
       deadlineRef.current = deadlineAt;
       lastSecondRef.current = 0;
       return;
     }
 
     const isNewDeadline = deadlineRef.current !== deadlineAt;
+    if (isNewDeadline) {
+      // Freeze one server-derived offset for this deadline. Later snapshots
+      // reconcile phase and data but cannot make a running clock skip ahead.
+      offsetRef.current = snapshotOffsetMs;
+    }
     deadlineRef.current = deadlineAt;
     let firstRun = true;
 

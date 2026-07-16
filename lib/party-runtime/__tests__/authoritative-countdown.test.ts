@@ -46,4 +46,6 @@ test("countdown clamps zero and hook owns interval and visibility cleanup", () =
   assert.equal(source.includes('document.addEventListener("visibilitychange"'), true);
   assert.equal(source.includes('document.removeEventListener("visibilitychange"'), true);
   assert.equal(source.includes("Math.min(lastSecondRef.current, nextSecond)"), true);
+  assert.equal(source.includes("if (isNewDeadline)"), true);
+  assert.equal(source.includes("offsetRef.current = snapshotOffsetMs"), true);
 });
