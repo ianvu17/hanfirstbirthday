@@ -20,6 +20,7 @@ export type SharedPartyProjection = {
   submittedCount: number;
   timedOutCount: number;
   questionDeadlineAt: number | null;
+  questionDurationMs: number;
   remainingMs: number;
   correctOption: PartyOption | null;
   answerDistribution: Array<{
@@ -39,6 +40,7 @@ export type GuestProjection = {
   questionNumber: number | null;
   totalQuestions: number;
   questionDeadlineAt: number | null;
+  questionDurationMs: number;
   remainingMs: number;
   canAnswer: boolean;
   lockedResponse: LockedResponse | null;
@@ -235,6 +237,7 @@ export function buildSharedPartyProjection(
     submittedCount: selectSubmittedCount(state),
     timedOutCount: selectTimedOutCount(state),
     questionDeadlineAt: state.phase === "question_active" ? state.questionDeadlineAt : null,
+    questionDurationMs: config.questionDurationMs,
     remainingMs: selectRemainingMs(state, now),
     correctOption,
     answerDistribution:
@@ -272,6 +275,7 @@ export function buildGuestProjection(
       state.currentQuestionIndex === null ? null : state.currentQuestionIndex + 1,
     totalQuestions: state.totalQuestions,
     questionDeadlineAt: state.phase === "question_active" ? state.questionDeadlineAt : null,
+    questionDurationMs: config.questionDurationMs,
     remainingMs: selectRemainingMs(state, now),
     canAnswer: selectCanGuestAnswer(state, guestId, now),
     lockedResponse: response,

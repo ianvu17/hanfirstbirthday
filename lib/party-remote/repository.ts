@@ -1220,7 +1220,15 @@ export async function runHostCommand(
     };
   }
 
-  const updated = await persistSessionState(bundle, result.state, expectedRevision);
+  // Leave a short delivery allowance so all room surfaces can receive the
+  // authoritative phase before the visible 20-second countdown decreases.
+  // Clients cap the allowance at the configured question duration; the
+  // persisted deadline remains the only response-acceptance boundary.
+  const persistedState =
+    command.type === "REVEAL_CHOICES" && result.state.questionDeadlineAt !== null
+      ? { ...result.state, questionDeadlineAt: result.state.questionDeadlineAt + 3_000 }
+      : result.state;
+  const updated = await persistSessionState(bundle, persistedState, expectedRevision);
 
   if (!updated) {
     return {
@@ -1234,13 +1242,13 @@ export async function runHostCommand(
     };
   }
 
-  await persistTimeoutResponses(bundle, result.state);
+  await persistTimeoutResponses(bundle, persistedState);
   await recordHostCommand(
     bundle,
     commandId,
     command.type,
     expectedRevision,
-    result.state.revision,
+    persistedState.revision,
     "accepted",
     null
   );

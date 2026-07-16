@@ -7,6 +7,7 @@ export type AuthoritativeCountdownInput = {
   serverNow: number | null;
   active: boolean;
   tickRateMs?: number;
+  maxVisibleMs?: number;
 };
 
 export function calculateAuthoritativeRemainingMs({
@@ -34,7 +35,8 @@ export function useAuthoritativeCountdown({
   deadlineAt,
   serverNow,
   active,
-  tickRateMs = 200
+  tickRateMs = 200,
+  maxVisibleMs = Number.POSITIVE_INFINITY
 }: AuthoritativeCountdownInput) {
   const offsetRef = useRef(0);
   const lastSecondRef = useRef(0);
@@ -42,7 +44,10 @@ export function useAuthoritativeCountdown({
   const [countdownState, setCountdownState] = useState(() => ({
     deadlineAt,
     remainingMs: active
-      ? calculateAuthoritativeRemainingMs({ deadlineAt, serverNow, clientNow: Date.now() })
+      ? Math.min(
+          maxVisibleMs,
+          calculateAuthoritativeRemainingMs({ deadlineAt, serverNow, clientNow: Date.now() })
+        )
       : 0
   }));
 
@@ -61,9 +66,9 @@ export function useAuthoritativeCountdown({
     let firstRun = true;
 
     const recompute = () => {
-      const nextRemainingMs = Math.max(
-        0,
-        deadlineAt - (Date.now() + offsetRef.current)
+      const nextRemainingMs = Math.min(
+        maxVisibleMs,
+        Math.max(0, deadlineAt - (Date.now() + offsetRef.current))
       );
       const nextSecond = remainingSecondsFromMs(nextRemainingMs);
 
@@ -95,13 +100,13 @@ export function useAuthoritativeCountdown({
       document.removeEventListener("visibilitychange", refreshImmediately);
       window.removeEventListener("focus", refreshImmediately);
     };
-  }, [active, deadlineAt, serverNow, tickRateMs]);
+  }, [active, deadlineAt, maxVisibleMs, serverNow, tickRateMs]);
 
   const displayedRemainingMs =
     active && deadlineAt !== null
       ? countdownState.deadlineAt === deadlineAt
         ? countdownState.remainingMs
-        : Math.max(0, deadlineAt - (serverNow ?? deadlineAt))
+        : Math.min(maxVisibleMs, Math.max(0, deadlineAt - (serverNow ?? deadlineAt)))
       : 0;
 
   return {

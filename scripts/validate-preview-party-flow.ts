@@ -542,14 +542,14 @@ async function main() {
   await waitForGuestPhase(guestViPage, /các đáp án sẽ xuất hiện/i);
   timeline.push({ step: "question-preview", at: new Date().toISOString() });
 
-  await clickHostAction(hostPage, /reveal answers/i, "question_active");
-  await guestEnPage.getByRole("radio").first().waitFor({ timeout: 15000 });
-  await guestViPage.getByRole("radio").first().waitFor({ timeout: 15000 });
   const countdownObservation = Promise.all([
     observeCountdown(hostPage, "host"),
     observeCountdown(displayPage, "party-screen"),
     observeCountdown(guestEnPage, "guest-en")
   ]);
+  await clickHostAction(hostPage, /reveal answers/i, "question_active");
+  await guestEnPage.getByRole("radio").first().waitFor({ timeout: 15000 });
+  await guestViPage.getByRole("radio").first().waitFor({ timeout: 15000 });
   matrix.push({
     ...(await measureState(guestEnPage, "answers-active", "en", [390, 640])),
     language: "en",
@@ -828,5 +828,5 @@ async function main() {
 
 main().catch((error) => {
   console.error(error instanceof Error ? error.message : String(error));
-  process.exitCode = 1;
+  process.exit(1);
 });

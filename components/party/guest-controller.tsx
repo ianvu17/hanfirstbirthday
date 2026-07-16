@@ -65,7 +65,8 @@ export function GuestController({ locale, guestId, displayName, avatar }: GuestC
   const countdown = useAuthoritativeCountdown({
     deadlineAt: projection.questionDeadlineAt,
     serverNow: partySnapshot.now,
-    active: projection.phase === "question_active"
+    active: projection.phase === "question_active",
+    maxVisibleMs: projection.questionDurationMs
   });
 
   useEffect(() => {

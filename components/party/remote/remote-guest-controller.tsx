@@ -121,7 +121,8 @@ export function RemoteGuestController({
   const countdown = useAuthoritativeCountdown({
     deadlineAt: projection?.questionDeadlineAt ?? null,
     serverNow: snapshot?.serverNow ?? null,
-    active: projection?.phase === "question_active"
+    active: projection?.phase === "question_active",
+    maxVisibleMs: projection?.questionDurationMs
   });
 
   useEffect(() => {

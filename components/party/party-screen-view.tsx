@@ -45,7 +45,8 @@ export function PartyScreenView({
   const countdown = useAuthoritativeCountdown({
     deadlineAt: projection.questionDeadlineAt,
     serverNow,
-    active: projection.phase === "question_active"
+    active: projection.phase === "question_active",
+    maxVisibleMs: projection.questionDurationMs
   });
 
   useEffect(() => {

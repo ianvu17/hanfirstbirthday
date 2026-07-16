@@ -437,7 +437,7 @@ Question ids and option ids are content contracts. After rehearsal approval, the
 
 **Decision**
 
-All host, guest, and Party Screen countdowns derive their visible time from the persisted question deadline plus the server-snapshot clock offset. Clients may animate locally at a short interval, but they must not write timer ticks or allow a clock correction to increase the displayed countdown.
+All host, guest, and Party Screen countdowns derive their visible time from the persisted question deadline plus the server-snapshot clock offset. Clients may animate locally at a short interval, but they must not write timer ticks or allow a clock correction to increase the displayed countdown. The remote deadline includes a small delivery allowance that clients cap at the configured 20 seconds, allowing each room surface to receive and visibly render 20 before decreasing.
 
 The production leaderboard has one action: advance directly to the next question preview, or finish and show the winner after the final question. The older `waiting_for_host` phase and split `COMPLETE_PRESENTATION` path remain readable for recovery compatibility but are not part of the normal production flow.
 

@@ -166,7 +166,8 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
   const countdown = useAuthoritativeCountdown({
     deadlineAt: snapshot?.session ? snapshot.projection.questionDeadlineAt : null,
     serverNow: snapshot?.serverNow ?? null,
-    active: snapshot?.session ? snapshot.projection.phase === "question_active" : false
+    active: snapshot?.session ? snapshot.projection.phase === "question_active" : false,
+    maxVisibleMs: snapshot?.session ? snapshot.projection.questionDurationMs : undefined
   });
 
   async function login(event: FormEvent<HTMLFormElement>) {

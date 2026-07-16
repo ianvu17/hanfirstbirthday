@@ -253,7 +253,7 @@ Milestone 4 local party state:
 - Guest draft answer selection remains local UI state until the Submit Answer command is accepted.
 - Locked responses are immutable. Exact duplicate retry returns the existing state; conflicting retry is rejected.
 - Submissions are accepted only when `receivedAt < deadlineAt`.
-- Host, guest, and Party Screen countdowns render from `questionDeadlineAt - (clientNow + serverClockOffset)`. A shared client hook updates at 200 ms, clamps at zero, recomputes on focus/visibility changes, and never persists per-second ticks.
+- Host, guest, and Party Screen countdowns render from `questionDeadlineAt - (clientNow + serverClockOffset)`. A shared client hook updates at 200 ms, caps the delivery allowance at the configured 20-second visible duration, clamps at zero, recomputes on focus/visibility changes, and never persists per-second ticks. Remote question opening adds a three-second deadline delivery allowance so the authoritative phase can reach all room surfaces before their visible clock decreases; this is transport tolerance, not a per-second write loop.
 - Timeout responses are materialized when the question locks.
 - Scores are derived from locked responses only: correct equals 1, incorrect/timeout equals 0.
 
