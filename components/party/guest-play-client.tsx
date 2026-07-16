@@ -8,11 +8,16 @@ import { GuestController } from "@/components/party/guest-controller";
 import { PartyRuntimeShell } from "@/components/party/party-runtime-shell";
 import { RemoteGuestController } from "@/components/party/remote/remote-guest-controller";
 import type { Locale } from "@/lib/i18n/routing";
+import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 
 const SESSION_KEY = "han-first-birthday:onboarding:v1";
-type GuestSessionSnapshot = { guestId: string | null; displayName: string | null };
+type GuestSessionSnapshot = {
+  guestId: string | null;
+  displayName: string | null;
+  avatar: ParticipantAvatarProjection | null;
+};
 
-const emptyGuest: GuestSessionSnapshot = { guestId: null, displayName: null };
+const emptyGuest: GuestSessionSnapshot = { guestId: null, displayName: null, avatar: null };
 let cachedGuestRaw: string | null | undefined;
 let cachedGuest: GuestSessionSnapshot = emptyGuest;
 
@@ -40,6 +45,7 @@ function readGuestSession() {
     const parsed = JSON.parse(raw) as {
       playerName?: unknown;
       guestSessionId?: unknown;
+      avatar?: unknown;
     };
     const displayName =
       typeof parsed.playerName === "string" ? parsed.playerName.trim() : "";
@@ -65,7 +71,13 @@ function readGuestSession() {
 
     return {
       guestId: guestSessionId,
-      displayName
+      displayName,
+      avatar:
+        parsed.avatar &&
+        typeof parsed.avatar === "object" &&
+        "type" in parsed.avatar
+          ? (parsed.avatar as ParticipantAvatarProjection)
+          : null
     };
   } catch {
     return emptyGuest;
@@ -129,6 +141,7 @@ export function GuestPlayClient({
         locale={locale}
         displayName={guest.displayName}
         joinCode={joinCode}
+        avatar={guest.avatar}
       />
     );
   }
@@ -139,6 +152,7 @@ export function GuestPlayClient({
         locale={locale}
         guestId={guest.guestId}
         displayName={guest.displayName}
+        avatar={guest.avatar}
       />
     </PartyRuntimeShell>
   );

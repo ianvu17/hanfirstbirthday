@@ -3,6 +3,7 @@ import type {
   SharedPartyProjection
 } from "@/lib/party-engine";
 import type { Locale } from "@/lib/i18n/routing";
+import type { AvatarPresetId, ParticipantAvatarProjection } from "@/lib/party-avatar";
 
 export type RemoteConnectionState =
   | "connecting"
@@ -56,6 +57,10 @@ export type ParticipantRow = {
   joined_at: string;
   last_seen_at: string;
   is_test: boolean;
+  avatar_type: "photo" | "preset" | null;
+  avatar_path: string | null;
+  avatar_preset_id: AvatarPresetId | null;
+  avatar_updated_at: string | null;
 };
 
 export type QuestionResponseRow = {
@@ -145,6 +150,7 @@ export type RemoteGuestSnapshot = RemotePartySnapshot & {
     id: string;
     displayName: string;
     locale: Locale;
+    avatar: ParticipantAvatarProjection;
   } | null;
 };
 
@@ -156,6 +162,7 @@ export type RemoteApiErrorCode =
   | "invalid_name"
   | "invalid_locale"
   | "invalid_join_code"
+  | "invalid_avatar"
   | "invalid_participant_session"
   | "host_unauthorized"
   | "host_session_expired"

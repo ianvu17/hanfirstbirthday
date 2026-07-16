@@ -40,6 +40,36 @@ const ScreensSchema = z.object({
       alreadySubmitted: LocalizedStringSchema
     })
   }),
+  partyPhoto: z.object({
+    title: LocalizedStringSchema,
+    description: LocalizedStringSchema,
+    takeSelfie: LocalizedStringSchema,
+    choosePhoto: LocalizedStringSchema,
+    chooseAvatar: LocalizedStringSchema,
+    capture: LocalizedStringSchema,
+    cancel: LocalizedStringSchema,
+    retake: LocalizedStringSchema,
+    usePhoto: LocalizedStringSchema,
+    continue: LocalizedStringSchema,
+    skip: LocalizedStringSchema,
+    photoReady: LocalizedStringSchema,
+    presetReady: LocalizedStringSchema,
+    uploadHelp: LocalizedStringSchema,
+    cropHelp: LocalizedStringSchema,
+    stickerLabel: LocalizedStringSchema,
+    zoomLabel: LocalizedStringSchema,
+    sizeLabel: LocalizedStringSchema,
+    removeSticker: LocalizedStringSchema,
+    validation: z.object({
+      cameraUnavailable: LocalizedStringSchema,
+      cameraDenied: LocalizedStringSchema,
+      unsupportedFile: LocalizedStringSchema,
+      fileTooLarge: LocalizedStringSchema,
+      imageInvalid: LocalizedStringSchema,
+      uploadFailed: LocalizedStringSchema,
+      saved: LocalizedStringSchema
+    })
+  }),
   howToPlay: z.object({
     title: LocalizedStringSchema,
     subtitle: LocalizedStringSchema,
@@ -66,6 +96,7 @@ const ScreensSchema = z.object({
     welcome: LocalizedStringSchema,
     language: LocalizedStringSchema,
     name: LocalizedStringSchema,
+    partyPhoto: LocalizedStringSchema,
     howToPlay: LocalizedStringSchema,
     ready: LocalizedStringSchema
   }),

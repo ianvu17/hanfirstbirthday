@@ -6,8 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 
 import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { PaperPanel } from "@/components/design/paper-panel";
+import { ParticipantAvatar } from "@/components/party/participant-avatar";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/lib/i18n/routing";
+import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import {
   useGuestProjection,
@@ -18,6 +20,7 @@ type GuestControllerProps = {
   locale: Locale;
   guestId: string | null;
   displayName: string | null;
+  avatar?: ParticipantAvatarProjection | null;
 };
 
 function seconds(remainingMs: number) {
@@ -47,7 +50,7 @@ function phaseLabel(phase: string, copy: ReturnType<typeof getPartyUiCopy>) {
   }
 }
 
-export function GuestController({ locale, guestId, displayName }: GuestControllerProps) {
+export function GuestController({ locale, guestId, displayName, avatar }: GuestControllerProps) {
   const copy = getPartyUiCopy(locale);
   const actions = usePartyActions();
   const effectiveGuestId = guestId ?? "missing-guest";
@@ -62,9 +65,9 @@ export function GuestController({ locale, guestId, displayName }: GuestControlle
 
   useEffect(() => {
     if (guestId && displayName) {
-      actions.registerGuest(guestId, displayName, locale);
+      actions.registerGuest(guestId, displayName, locale, avatar);
     }
-  }, [actions, displayName, guestId, locale]);
+  }, [actions, avatar, displayName, guestId, locale]);
 
   const revealMessage = useMemo(() => {
     if (!projection.reveal) {
@@ -114,6 +117,9 @@ export function GuestController({ locale, guestId, displayName }: GuestControlle
       >
         <PaperPanel tone="celebration" className="w-full text-center">
           <div className="space-y-5">
+            <div className="flex justify-center">
+              <ParticipantAvatar avatar={avatar} displayName={displayName} size="xl" />
+            </div>
             <BirthdayBadge tone="blue">{displayName}</BirthdayBadge>
             <h1 className="font-display text-5xl font-extrabold leading-tight text-foreground">
               {copy.finished}
@@ -190,9 +196,12 @@ export function GuestController({ locale, guestId, displayName }: GuestControlle
       >
         <div className="space-y-3 [@media(max-height:700px)]:space-y-2 [@media(max-height:620px)]:space-y-1.5 sm:space-y-5">
           <div className="flex min-h-9 flex-wrap items-center justify-between gap-2">
-            <BirthdayBadge className="min-h-7 px-2.5 py-0.5" tone="blue">
-              {displayName}
-            </BirthdayBadge>
+            <div className="flex min-w-0 items-center gap-2">
+              <ParticipantAvatar avatar={avatar} displayName={displayName} size="sm" />
+              <BirthdayBadge className="min-h-7 min-w-0 px-2.5 py-0.5" tone="blue">
+                <span className="truncate">{displayName}</span>
+              </BirthdayBadge>
+            </div>
             <BirthdayBadge tone={projection.remainingMs <= 5000 ? "coral" : "yellow"}>
               <Timer className="h-4 w-4" aria-hidden="true" />
               {projection.phase === "question_active"

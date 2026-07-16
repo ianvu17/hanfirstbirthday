@@ -167,7 +167,8 @@ export function selectLeaderboardRows(
         displayName: guest.displayName,
         score: score.score,
         answeredCount: score.answeredCount,
-        isFixture: guest.isFixture
+        isFixture: guest.isFixture,
+        avatar: guest.avatar ?? null
       };
     })
     .sort((a, b) => {

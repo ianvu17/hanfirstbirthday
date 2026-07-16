@@ -1,4 +1,5 @@
 import type { Locale } from "@/lib/i18n/routing";
+import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 
 export type PartyPhase =
   | "lobby"
@@ -34,6 +35,7 @@ export type GuestSession = {
   locale: Locale;
   createdOrder: number;
   isFixture: boolean;
+  avatar?: ParticipantAvatarProjection | null;
 };
 
 export type QuestionResponseStatus = "locked_answer" | "locked_timeout";
@@ -75,7 +77,14 @@ export type PartyConfig = {
 };
 
 export type PartyCommand =
-  | { type: "REGISTER_GUEST"; guestId: string; displayName: string; locale: Locale; now: number }
+  | {
+      type: "REGISTER_GUEST";
+      guestId: string;
+      displayName: string;
+      locale: Locale;
+      avatar?: ParticipantAvatarProjection | null;
+      now: number;
+    }
   | { type: "PREPARE_FIRST_QUESTION"; now: number }
   | { type: "REVEAL_CHOICES"; now: number }
   | { type: "OPEN_QUESTION"; now: number }
@@ -144,6 +153,7 @@ export type LeaderboardRow = {
   score: number;
   answeredCount: number;
   isFixture: boolean;
+  avatar?: ParticipantAvatarProjection | null;
 };
 
 export type PartySnapshot = {

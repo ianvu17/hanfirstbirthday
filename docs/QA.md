@@ -220,6 +220,9 @@ Milestone 5 checks:
 - Guest can enter through QR code.
 - Guest can choose English or Vietnamese.
 - Guest can enter display name.
+- Guest can create or skip a party avatar after name entry using selfie, photo upload, or built-in preset.
+- Camera permission is requested only after tapping selfie, and the camera stops after capture, cancel, step navigation, or unmount.
+- Uploaded avatar images reject unsupported MIME types, oversized files, invalid images, and non-512 prepared server payloads.
 - Guest can answer quiz questions with 20-second timer.
 - Host reveals answer choices to start the 20-second timer.
 - Accepted answers lock and cannot be edited.
@@ -228,6 +231,7 @@ Milestone 5 checks:
 - Safe retries do not create duplicate question responses.
 - Guest sees a result screen.
 - Party Screen and leaderboard update after submission or host-driven phase changes once runtime exists.
+- Guest, Party Screen leaderboard, reveal leaderboard, and final result identity surfaces show photo, preset, or initials fallback avatars.
 - Guest can leave a message.
 - Admin can see final quiz scores, messages, Party Screen or leaderboard state, and QA/test separation through a lightweight utility area.
 - QA/test data is separate from production data.

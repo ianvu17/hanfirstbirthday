@@ -24,6 +24,8 @@ content/
 
 If Supabase Storage is used later for gallery media, keep local placeholder references and production storage keys clearly separated in content metadata.
 
+Enhancement 1A adds participant avatar media. Built-in avatar presets and birthday stickers are original local UI/SVG/canvas artwork and are not remote or third-party assets. Guest photo avatars are prepared in the browser as square 512x512 WebP/JPEG images before upload, then stored in the private Supabase Storage bucket `party-avatars`. Participant rows store only stable Storage paths or preset ids; snapshots use short-lived signed URLs for photo display.
+
 ## Asset Categories
 
 ### Brand And Event Assets
@@ -150,6 +152,7 @@ These examples describe asset types only and are not real Han content.
 - Replacing an asset should not require component edits.
 - Real assets should move from `placeholder` to `provided` or `approved` status in content metadata.
 - Production release should verify that required guest-facing assets are approved.
+- Supabase deployments must apply the avatar migration so the private `party-avatars` bucket exists before remote photo avatar uploads are validated.
 
 ## Fallback Behavior
 

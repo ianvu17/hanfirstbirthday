@@ -49,6 +49,36 @@
                 "alreadySubmitted": "This name is saved for this session."
             }
         },
+        "partyPhoto": {
+            "title": "Create your party avatar",
+            "description": "Your avatar will appear during the private party game and may be used on your final Han Master Certificate.",
+            "takeSelfie": "Take a selfie",
+            "choosePhoto": "Choose a photo",
+            "chooseAvatar": "Choose an avatar",
+            "capture": "Capture",
+            "cancel": "Cancel",
+            "retake": "Retake",
+            "usePhoto": "Use this photo",
+            "continue": "Continue",
+            "skip": "Continue without changing",
+            "photoReady": "Photo avatar ready",
+            "presetReady": "Birthday avatar selected",
+            "uploadHelp": "JPEG, PNG, or WebP. Maximum 5 MB.",
+            "cropHelp": "Move and zoom the photo so your face fits inside the circle.",
+            "stickerLabel": "Birthday stickers",
+            "zoomLabel": "Zoom",
+            "sizeLabel": "Sticker size",
+            "removeSticker": "Remove sticker",
+            "validation": {
+                "cameraUnavailable": "Camera is not available here. You can choose a photo or avatar instead.",
+                "cameraDenied": "Camera permission was not granted. You can choose a photo or avatar instead.",
+                "unsupportedFile": "Please choose a JPEG, PNG, or WebP image.",
+                "fileTooLarge": "Please choose an image smaller than 5 MB.",
+                "imageInvalid": "That image could not be opened. Please try another photo.",
+                "uploadFailed": "We could not save that avatar yet. You can continue or try again.",
+                "saved": "Avatar saved."
+            }
+        },
         "howToPlay": {
             "title": "How to play",
             "subtitle": "Quick, playful, and done in about 3 to 5 minutes.",
@@ -85,6 +115,7 @@
             "welcome": "Welcome",
             "language": "Language",
             "name": "Name",
+            "partyPhoto": "Photo",
             "howToPlay": "How to play",
             "ready": "Ready"
         },

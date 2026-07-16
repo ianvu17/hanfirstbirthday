@@ -49,6 +49,36 @@
                 "alreadySubmitted": "Tên này đã được lưu cho phiên này."
             }
         },
+        "partyPhoto": {
+            "title": "Tạo ảnh đại diện dự tiệc",
+            "description": "Ảnh đại diện sẽ xuất hiện trong trò chơi riêng của buổi tiệc và có thể được dùng trên Han Master Certificate của bạn.",
+            "takeSelfie": "Chụp ảnh selfie",
+            "choosePhoto": "Chọn ảnh có sẵn",
+            "chooseAvatar": "Chọn avatar",
+            "capture": "Chụp",
+            "cancel": "Hủy",
+            "retake": "Chụp lại",
+            "usePhoto": "Dùng ảnh này",
+            "continue": "Tiếp tục",
+            "skip": "Tiếp tục mà không đổi",
+            "photoReady": "Ảnh đại diện đã sẵn sàng",
+            "presetReady": "Đã chọn avatar sinh nhật",
+            "uploadHelp": "JPEG, PNG, hoặc WebP. Tối đa 5 MB.",
+            "cropHelp": "Di chuyển và phóng to ảnh để khuôn mặt nằm gọn trong vòng tròn.",
+            "stickerLabel": "Nhãn dán sinh nhật",
+            "zoomLabel": "Phóng to",
+            "sizeLabel": "Cỡ nhãn dán",
+            "removeSticker": "Xóa nhãn dán",
+            "validation": {
+                "cameraUnavailable": "Không thể dùng camera ở đây. Bạn có thể chọn ảnh hoặc avatar.",
+                "cameraDenied": "Bạn chưa cho phép dùng camera. Bạn có thể chọn ảnh hoặc avatar.",
+                "unsupportedFile": "Vui lòng chọn ảnh JPEG, PNG, hoặc WebP.",
+                "fileTooLarge": "Vui lòng chọn ảnh nhỏ hơn 5 MB.",
+                "imageInvalid": "Không thể mở ảnh này. Vui lòng thử ảnh khác.",
+                "uploadFailed": "Chưa thể lưu avatar này. Bạn có thể tiếp tục hoặc thử lại.",
+                "saved": "Đã lưu avatar."
+            }
+        },
         "howToPlay": {
             "title": "Cách chơi",
             "subtitle": "Nhanh, vui, và chỉ mất khoảng 3 đến 5 phút.",
@@ -85,6 +115,7 @@
             "welcome": "Chào mừng",
             "language": "Ngôn ngữ",
             "name": "Tên",
+            "partyPhoto": "Ảnh",
             "howToPlay": "Cách chơi",
             "ready": "Sẵn sàng"
         },

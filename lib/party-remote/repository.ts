@@ -12,6 +12,12 @@ import {
   type PartyState
 } from "@/lib/party-engine";
 import type { Locale } from "@/lib/i18n/routing";
+import {
+  fallbackAvatar,
+  isAvatarPresetId,
+  type AvatarPresetId,
+  type ParticipantAvatarProjection
+} from "@/lib/party-avatar";
 import { buildGuestWelcomePath } from "@/lib/party-remote/join-routing";
 import type { RuntimePartyCommand } from "@/lib/party-runtime/runtime-contract";
 import {
@@ -39,6 +45,8 @@ type PartyBundle = {
   responses: QuestionResponseRow[];
   config: PartyConfig;
 };
+
+const avatarBucket = "party-avatars";
 
 export type ParticipantSession = {
   participantId: string;
@@ -96,6 +104,58 @@ function getPartyContext() {
     deploymentEnvironment: getPartyDeploymentEnvironment(),
     publicJoinCode: getDefaultPartyJoinCode(),
     isTest: isDefaultPartyTestMode()
+  };
+}
+
+async function buildParticipantAvatarProjection(
+  participant: ParticipantRow
+): Promise<ParticipantAvatarProjection> {
+  if (participant.avatar_type === "preset" && isAvatarPresetId(participant.avatar_preset_id)) {
+    return {
+      type: "preset",
+      presetId: participant.avatar_preset_id
+    };
+  }
+
+  if (participant.avatar_type === "photo" && participant.avatar_path) {
+    const supabase = createSupabaseServiceClient();
+    const signed = await supabase.storage
+      .from(avatarBucket)
+      .createSignedUrl(participant.avatar_path, 60 * 10);
+
+    if (!signed.error && signed.data?.signedUrl) {
+      return {
+        type: "photo",
+        url: signed.data.signedUrl
+      };
+    }
+  }
+
+  return fallbackAvatar(participant.display_name);
+}
+
+async function applyParticipantAvatarsToLeaderboard(
+  projection: ReturnType<typeof buildSharedPartyProjection>,
+  participants: ParticipantRow[]
+) {
+  const participantMap = new Map(participants.map((participant) => [participant.id, participant]));
+  const avatarEntries = await Promise.all(
+    projection.leaderboard.map(async (row) => {
+      const participant = participantMap.get(row.guestId);
+      return [
+        row.guestId,
+        participant ? await buildParticipantAvatarProjection(participant) : fallbackAvatar(row.displayName)
+      ] as const;
+    })
+  );
+  const avatarMap = new Map(avatarEntries);
+
+  return {
+    ...projection,
+    leaderboard: projection.leaderboard.map((row) => ({
+      ...row,
+      avatar: avatarMap.get(row.guestId) ?? fallbackAvatar(row.displayName)
+    }))
   };
 }
 
@@ -450,6 +510,10 @@ export async function buildRemotePartySnapshot(
   const bundle = await autoLockExpiredQuestion(await loadPartyBundle(session.id));
   const state = rowToPartyState(bundle);
   const now = Date.now();
+  const sharedProjection = await applyParticipantAvatarsToLeaderboard(
+    buildSharedPartyProjection(state, bundle.config, now),
+    bundle.participants
+  );
   const base: RemotePartySnapshot = {
     mode: "remote",
     configured: true,
@@ -469,7 +533,7 @@ export async function buildRemotePartySnapshot(
       finishedAt: bundle.session.finished_at,
       archivedAt: bundle.session.archived_at
     },
-    projection: buildSharedPartyProjection(state, bundle.config, now),
+    projection: sharedProjection,
     joinUrl: buildJoinUrl(bundle.session.public_join_code, bundle.session.display_locale),
     connection: "connected",
     serverNow: now
@@ -493,9 +557,169 @@ export async function buildRemotePartySnapshot(
       ? {
           id: participant.id,
           displayName: participant.display_name,
-          locale: participant.locale
+          locale: participant.locale,
+          avatar: await buildParticipantAvatarProjection(participant)
         }
       : null
+  };
+}
+
+function avatarObjectPath(
+  participant: ParticipantRow,
+  extension: "webp" | "jpg"
+) {
+  const context = getPartyContext();
+  return `${context.deploymentEnvironment}/${participant.party_session_id}/${participant.id}/avatar.${extension}`;
+}
+
+export async function updateParticipantPresetAvatar(
+  participantSession: ParticipantSession | null,
+  presetId: AvatarPresetId
+) {
+  const currentSession = await loadCurrentPartySession();
+
+  if (!currentSession) {
+    return {
+      ok: false as const,
+      error: {
+        code: "party_not_found" as const,
+        message: "No active party session is open."
+      }
+    };
+  }
+
+  const participant = await validateParticipantSession(currentSession.id, participantSession);
+
+  if (!participant) {
+    return {
+      ok: false as const,
+      error: {
+        code: "invalid_participant_session" as const,
+        message: "Please rejoin the party on this phone."
+      }
+    };
+  }
+
+  if (!currentSession.is_current || currentSession.status === "finished") {
+    return {
+      ok: false as const,
+      error: {
+        code: "join_closed" as const,
+        message: "Avatar changes are closed for this party session."
+      }
+    };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const updated = await supabase
+    .from("participants")
+    .update({
+      avatar_type: "preset",
+      avatar_path: null,
+      avatar_preset_id: presetId,
+      avatar_updated_at: new Date().toISOString()
+    })
+    .eq("id", participant.id)
+    .eq("party_session_id", currentSession.id)
+    .select("*")
+    .single<ParticipantRow>();
+
+  if (updated.error) {
+    throw updated.error;
+  }
+
+  await supabase.rpc("touch_party_session_response", {
+    p_session_id: currentSession.id
+  });
+
+  return {
+    ok: true as const,
+    participant: updated.data,
+    avatar: await buildParticipantAvatarProjection(updated.data),
+    snapshot: await buildRemotePartySnapshot(participantSession)
+  };
+}
+
+export async function updateParticipantPhotoAvatar(
+  participantSession: ParticipantSession | null,
+  bytes: ArrayBuffer,
+  mimeType: "image/webp" | "image/jpeg"
+) {
+  const currentSession = await loadCurrentPartySession();
+
+  if (!currentSession) {
+    return {
+      ok: false as const,
+      error: {
+        code: "party_not_found" as const,
+        message: "No active party session is open."
+      }
+    };
+  }
+
+  const participant = await validateParticipantSession(currentSession.id, participantSession);
+
+  if (!participant) {
+    return {
+      ok: false as const,
+      error: {
+        code: "invalid_participant_session" as const,
+        message: "Please rejoin the party on this phone."
+      }
+    };
+  }
+
+  if (!currentSession.is_current || currentSession.status === "finished") {
+    return {
+      ok: false as const,
+      error: {
+        code: "join_closed" as const,
+        message: "Avatar changes are closed for this party session."
+      }
+    };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const extension = mimeType === "image/webp" ? "webp" : "jpg";
+  const objectPath = avatarObjectPath(participant, extension);
+  const uploaded = await supabase.storage
+    .from(avatarBucket)
+    .upload(objectPath, bytes, {
+      contentType: mimeType,
+      cacheControl: "3600",
+      upsert: true
+    });
+
+  if (uploaded.error) {
+    throw uploaded.error;
+  }
+
+  const updated = await supabase
+    .from("participants")
+    .update({
+      avatar_type: "photo",
+      avatar_path: objectPath,
+      avatar_preset_id: null,
+      avatar_updated_at: new Date().toISOString()
+    })
+    .eq("id", participant.id)
+    .eq("party_session_id", currentSession.id)
+    .select("*")
+    .single<ParticipantRow>();
+
+  if (updated.error) {
+    throw updated.error;
+  }
+
+  await supabase.rpc("touch_party_session_response", {
+    p_session_id: currentSession.id
+  });
+
+  return {
+    ok: true as const,
+    participant: updated.data,
+    avatar: await buildParticipantAvatarProjection(updated.data),
+    snapshot: await buildRemotePartySnapshot(participantSession)
   };
 }
 

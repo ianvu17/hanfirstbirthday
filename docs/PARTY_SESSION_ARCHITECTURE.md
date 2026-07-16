@@ -8,9 +8,9 @@
 
 `party_sessions` stores one game run. A row starts in lobby, moves through host-driven quiz phases, and ends as finished or archived. A new game creates a new row.
 
-`participants` stores one guest identity for one session. Display names are not permanent identity; the browser receives an opaque resume cookie and Supabase stores only its hash.
+`participants` stores one guest identity for one session. Display names are not permanent identity; the browser receives an opaque resume cookie and Supabase stores only its hash. Optional avatar metadata also lives on the participant row: either a private Supabase Storage path for a prepared photo avatar, a stable built-in preset avatar id, or null for initials fallback.
 
-The guest display name entered during onboarding is intentionally kept in browser `sessionStorage` so a guest does not have to type it again across reconnects or a new game run. That stored display name is not participant identity. A new current session creates or validates a new `participants` row through the server-issued resume cookie, scoped to the current session id.
+The guest display name and local avatar preview entered during onboarding are intentionally kept in browser `sessionStorage` so a guest does not have to type them again across reconnects or a new game run. That stored display name is not participant identity. A new current session creates or validates a new `participants` row through the server-issued resume cookie, scoped to the current session id.
 
 `question_responses` stores immutable locked answers or timeouts. The database enforces one response per `party_session_id`, `participant_id`, and `question_id`.
 
@@ -87,6 +87,8 @@ Host commands send deterministic command ids scoped to `session id + command + r
 Guest responses remain protected by unique response constraints. Exact duplicate submissions can return the existing accepted state; conflicting duplicates are rejected.
 
 Question ids and option ids are immutable content contracts for a rehearsed session. Changing ids or correct-answer ids while a session is active can make existing response rows misleading, so content deployments should be validated with a new session.
+
+Avatar updates go through `POST /api/party/participant/avatar`. The route validates the participant resume cookie, active session, preset id or prepared 512x512 WebP/JPEG image, then updates the participant row through the service-role repository. Guest browsers never receive Supabase service-role credentials or direct write access. Photo avatars are stored in the private `party-avatars` bucket at `{deployment_environment}/{party_session_id}/{participant_id}/avatar.webp` or `.jpg`; snapshots contain only short-lived signed URLs or preset IDs.
 
 ## Environment Isolation
 

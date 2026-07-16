@@ -236,13 +236,14 @@ Shared game state, once implemented:
 - Reveal/fun-fact visibility state controlled by the host.
 - Leaderboard visibility state.
 
-Milestone 3 client/session state:
+Milestone 3 client/session state plus Enhancement 1A onboarding avatar bridge:
 
 - Selected language.
 - Guest display name.
+- Optional local avatar preview or built-in preset selection.
 - Current onboarding step.
 
-This state is stored in browser `sessionStorage` only. It does not create participant IDs, Supabase records, quiz attempts, question responses, leaderboard entries, messages, admin records, or QA/test data.
+This state is stored in browser `sessionStorage` only. The remote participant row and resume cookie remain the server-authoritative identity. In local runtime, the prepared avatar preview may remain a session-scoped data URL for browser testing. In remote runtime, photo avatars are uploaded through the server route to private Supabase Storage, and snapshots expose only signed URLs, preset IDs, or initials fallback.
 
 Milestone 4 local party state:
 
@@ -322,6 +323,10 @@ Fields:
 - `joined_at`.
 - `last_seen_at`.
 - `is_test`.
+- `avatar_type`: `photo`, `preset`, or null.
+- `avatar_path`: private Storage object path for photo avatars.
+- `avatar_preset_id`: stable local preset id for built-in avatars.
+- `avatar_updated_at`.
 
 #### `question_responses`
 
@@ -392,7 +397,7 @@ Authoritative shared party snapshot: join code, lifecycle status, phase, current
 
 ### `participants`
 
-One guest in one party session: display name, locale, hashed resume token, joined/last-seen timestamps, and `is_test`. Display names are not identity; opaque participant ids and server-issued resume tokens are.
+One guest in one party session: display name, locale, hashed resume token, joined/last-seen timestamps, optional avatar metadata, and `is_test`. Display names are not identity; opaque participant ids and server-issued resume tokens are.
 
 ### `question_responses`
 
@@ -444,6 +449,7 @@ Implemented Milestone 5 route handlers:
 - `GET /api/party/sessions`: host-authorized current plus recent session history.
 - `POST /api/party/sessions`: host-authorized create/archive session actions.
 - `POST /api/party/join`: validates display name/locale, creates participant, sets `han_participant_session`.
+- `POST /api/party/participant/avatar`: validates participant cookie plus preset or prepared avatar image, uploads photo avatars to private Storage when needed, and updates participant avatar metadata.
 - `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
 - `POST /api/party/host/login`: verifies host PIN and sets `han_host_session`.
 - `GET /api/party/host/status`: reports host auth configuration/session status.

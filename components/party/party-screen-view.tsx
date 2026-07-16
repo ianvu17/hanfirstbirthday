@@ -9,6 +9,7 @@ import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { PaperPanel } from "@/components/design/paper-panel";
 import { TitleLockup } from "@/components/design/title-lockup";
 import { ConnectionStatusBadge } from "@/components/party/connection-status-badge";
+import { ParticipantAvatar } from "@/components/party/participant-avatar";
 import type { SharedPartyProjection } from "@/lib/party-engine";
 import type { Locale } from "@/lib/i18n/routing";
 import type { PartyUiCopy } from "@/lib/party-runtime/copy";
@@ -253,9 +254,10 @@ export function PartyScreenView({
             {projection.leaderboard.map((row) => (
               <div
                 key={row.guestId}
-                className="grid grid-cols-[4rem_1fr_5rem] items-center gap-4 rounded-[1.1rem] border border-border bg-surface-paper px-5 py-4 text-3xl font-extrabold shadow-lift"
+                className="grid grid-cols-[4rem_auto_1fr_5rem] items-center gap-4 rounded-[1.1rem] border border-border bg-surface-paper px-5 py-4 text-3xl font-extrabold shadow-lift"
               >
                 <span className="font-display text-party-orange">#{row.rank}</span>
+                <ParticipantAvatar avatar={row.avatar} displayName={row.displayName} size="lg" />
                 <span className="truncate">{row.displayName}</span>
                 <span className="text-right font-display text-party-blue-deep">{row.score}</span>
               </div>

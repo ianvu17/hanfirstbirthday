@@ -131,14 +131,16 @@ export function processPartyCommand(
         displayName,
         locale: command.locale,
         createdOrder: existing?.createdOrder ?? Object.keys(state.guests).length,
-        isFixture: existing?.isFixture ?? false
+        isFixture: existing?.isFixture ?? false,
+        avatar: command.avatar ?? existing?.avatar ?? null
       };
 
       if (
         existing &&
         existing.displayName === nextGuest.displayName &&
         existing.locale === nextGuest.locale &&
-        existing.isFixture === nextGuest.isFixture
+        existing.isFixture === nextGuest.isFixture &&
+        JSON.stringify(existing.avatar ?? null) === JSON.stringify(nextGuest.avatar ?? null)
       ) {
         return acceptIdempotent(state, command.type);
       }

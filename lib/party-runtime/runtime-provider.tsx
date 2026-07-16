@@ -16,6 +16,7 @@ import {
   selectHostCapabilities,
   type PartyConfig
 } from "@/lib/party-engine";
+import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 
 import { getLocalPartyRuntime } from "./local-runtime";
 import type { PartyRuntime } from "./runtime-contract";
@@ -73,8 +74,12 @@ export function usePartyActions() {
 
   return useMemo(
     () => ({
-      registerGuest: (guestId: string, displayName: string, locale: "en" | "vi") =>
-        runtime.dispatch({ type: "REGISTER_GUEST", guestId, displayName, locale }),
+      registerGuest: (
+        guestId: string,
+        displayName: string,
+        locale: "en" | "vi",
+        avatar?: ParticipantAvatarProjection | null
+      ) => runtime.dispatch({ type: "REGISTER_GUEST", guestId, displayName, locale, avatar }),
       prepareFirstQuestion: () => runtime.dispatch({ type: "PREPARE_FIRST_QUESTION" }),
       revealChoices: () => runtime.dispatch({ type: "REVEAL_CHOICES" }),
       revealAnswer: () => runtime.dispatch({ type: "REVEAL_ANSWER" }),

@@ -11,11 +11,13 @@ import { GuestNameCard } from "@/components/guest/guest-name-card";
 import { InstructionCard } from "@/components/guest/instruction-card";
 import { LanguageSelector } from "@/components/guest/language-selector";
 import { OnboardingHero } from "@/components/guest/onboarding-hero";
+import { PartyPhotoCard } from "@/components/guest/party-photo-card";
 import { ProgressIndicator } from "@/components/guest/progress-indicator";
 import { MotionReveal } from "@/components/motion/motion-patterns";
 import { Button } from "@/components/ui/button";
 import type { BirthdayContent } from "@/lib/content/schema";
 import { locales, type Locale } from "@/lib/i18n/routing";
+import type { AvatarPresetId, ParticipantAvatarProjection } from "@/lib/party-avatar";
 import {
   buildGuestPlayPath,
   buildGuestWelcomePath
@@ -25,6 +27,7 @@ type OnboardingStep =
   | "welcome"
   | "language"
   | "name"
+  | "partyPhoto"
   | "howToPlay"
   | "ready"
   | "quizPlaceholder";
@@ -35,6 +38,7 @@ type StoredOnboardingState = {
   playerName: string;
   guestSessionId: string | null;
   joinCode: string | null;
+  avatar: ParticipantAvatarProjection | null;
 };
 
 type OnboardingFlowProps = {
@@ -51,6 +55,7 @@ const progressStepIds = [
   "welcome",
   "language",
   "name",
+  "partyPhoto",
   "howToPlay",
   "ready"
 ] as const;
@@ -60,6 +65,7 @@ function isOnboardingStep(value: unknown): value is OnboardingStep {
     value === "welcome" ||
     value === "language" ||
     value === "name" ||
+    value === "partyPhoto" ||
     value === "howToPlay" ||
     value === "ready" ||
     value === "quizPlaceholder"
@@ -76,8 +82,23 @@ function getDefaultState(locale: Locale): StoredOnboardingState {
     selectedLanguage: locale,
     playerName: "",
     guestSessionId: null,
-    joinCode: null
+    joinCode: null,
+    avatar: null
   };
+}
+
+function isStoredAvatar(value: unknown): value is ParticipantAvatarProjection {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const avatar = value as Partial<ParticipantAvatarProjection>;
+
+  return (
+    (avatar.type === "photo" && typeof avatar.url === "string") ||
+    (avatar.type === "preset" && typeof avatar.presetId === "string") ||
+    (avatar.type === "fallback" && typeof avatar.initials === "string")
+  );
 }
 
 function readStoredState(locale: Locale, initialJoinCode?: string): StoredOnboardingState | null {
@@ -99,13 +120,15 @@ function readStoredState(locale: Locale, initialJoinCode?: string): StoredOnboar
       (typeof parsed.joinCode === "string" && parsed.joinCode
         ? parsed.joinCode
         : null);
+    const avatar = isStoredAvatar(parsed.avatar) ? parsed.avatar : null;
 
     return {
       step,
       selectedLanguage: locale,
       playerName,
       guestSessionId,
-      joinCode
+      joinCode,
+      avatar
     };
   } catch {
     return null;
@@ -119,20 +142,14 @@ export function OnboardingFlow({
   initialJoinCode
 }: OnboardingFlowProps) {
   const router = useRouter();
-  const [state, setState] = useState<StoredOnboardingState>(() => {
-    if (typeof window === "undefined") {
-      return getDefaultState(locale);
-    }
-
-    const stored = readStoredState(locale, initialJoinCode) ?? getDefaultState(locale);
-
-    return {
-      ...stored,
-      joinCode: initialJoinCode ?? stored.joinCode
-    };
-  });
+  const [state, setState] = useState<StoredOnboardingState>(() => ({
+    ...getDefaultState(locale),
+    joinCode: initialJoinCode ?? null
+  }));
+  const [hasHydratedStoredState, setHasHydratedStoredState] = useState(false);
   const [nameError, setNameError] = useState("");
   const [isJoining, setIsJoining] = useState(false);
+  const [avatar, setAvatar] = useState<ParticipantAvatarProjection | null>(null);
   const { step, playerName } = state;
   const joinCode = state.joinCode ?? initialJoinCode;
 
@@ -146,16 +163,38 @@ export function OnboardingFlow({
   );
 
   useEffect(() => {
+    const handle = window.setTimeout(() => {
+      const stored = readStoredState(locale, initialJoinCode) ?? getDefaultState(locale);
+      const nextState = {
+        ...stored,
+        selectedLanguage: locale,
+        joinCode: initialJoinCode ?? stored.joinCode
+      };
+
+      setState(nextState);
+      setAvatar(nextState.avatar);
+      setHasHydratedStoredState(true);
+    }, 0);
+
+    return () => window.clearTimeout(handle);
+  }, [initialJoinCode, locale]);
+
+  useEffect(() => {
+    if (!hasHydratedStoredState) {
+      return;
+    }
+
     const nextState: StoredOnboardingState = {
       step: state.step,
       selectedLanguage: locale,
       playerName: state.playerName,
       guestSessionId: state.guestSessionId,
-      joinCode: state.joinCode ?? initialJoinCode ?? null
+      joinCode: state.joinCode ?? initialJoinCode ?? null,
+      avatar
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
-  }, [initialJoinCode, locale, state]);
+  }, [avatar, hasHydratedStoredState, initialJoinCode, locale, state]);
 
   function goToStep(nextStep: OnboardingStep) {
     setNameError("");
@@ -168,7 +207,8 @@ export function OnboardingFlow({
       selectedLanguage: nextLocale,
       playerName,
       guestSessionId: state.guestSessionId,
-      joinCode: state.joinCode ?? initialJoinCode ?? null
+      joinCode: state.joinCode ?? initialJoinCode ?? null,
+      avatar
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
@@ -186,7 +226,8 @@ export function OnboardingFlow({
       selectedLanguage: nextLocale,
       playerName,
       guestSessionId: state.guestSessionId,
-      joinCode: state.joinCode ?? initialJoinCode ?? null
+      joinCode: state.joinCode ?? initialJoinCode ?? null,
+      avatar
     };
 
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
@@ -254,12 +295,91 @@ export function OnboardingFlow({
 
     setState((current) => ({
       ...current,
-      step: "howToPlay",
+      step: "partyPhoto",
       selectedLanguage: locale,
       playerName: trimmed,
       joinCode: current.joinCode ?? initialJoinCode ?? null
     }));
     setNameError("");
+  }
+
+  function blobToDataUrl(blob: Blob) {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(reader.error ?? new Error("Could not read avatar."));
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  async function savePhotoAvatar(blob: Blob): Promise<ParticipantAvatarProjection | null> {
+    const localFallback: ParticipantAvatarProjection = {
+      type: "photo",
+      url: await blobToDataUrl(blob)
+    };
+
+    if (!remoteEnabled) {
+      setAvatar(localFallback);
+      return localFallback;
+    }
+
+    setAvatar(localFallback);
+
+    const formData = new FormData();
+    formData.set("type", "photo");
+    formData.set("file", blob, blob.type === "image/jpeg" ? "avatar.jpg" : "avatar.webp");
+
+    const response = await fetch("/api/party/participant/avatar", {
+      method: "POST",
+      body: formData,
+      headers: {
+        accept: "application/json"
+      }
+    });
+    const payload = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(payload?.error?.message ?? content.screens.partyPhoto.validation.uploadFailed);
+    }
+
+    setAvatar(payload.participant.avatar);
+    return payload.participant.avatar;
+  }
+
+  async function savePresetAvatar(
+    presetId: AvatarPresetId
+  ): Promise<ParticipantAvatarProjection | null> {
+    const localFallback: ParticipantAvatarProjection = {
+      type: "preset",
+      presetId
+    };
+
+    if (!remoteEnabled) {
+      setAvatar(localFallback);
+      return localFallback;
+    }
+
+    setAvatar(localFallback);
+
+    const response = await fetch("/api/party/participant/avatar", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json"
+      },
+      body: JSON.stringify({
+        type: "preset",
+        presetId
+      })
+    });
+    const payload = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(payload?.error?.message ?? content.screens.partyPhoto.validation.uploadFailed);
+    }
+
+    setAvatar(payload.participant.avatar);
+    return payload.participant.avatar;
   }
 
   const visibleProgressStep = step === "quizPlaceholder" ? "ready" : step;
@@ -334,6 +454,17 @@ export function OnboardingFlow({
               setNameError("");
             }}
             onSubmit={submitName}
+          />
+        ) : null}
+
+        {step === "partyPhoto" ? (
+          <PartyPhotoCard
+            copy={content.screens.partyPhoto}
+            displayName={playerName}
+            currentAvatar={avatar}
+            onSavePhoto={savePhotoAvatar}
+            onSavePreset={savePresetAvatar}
+            onContinue={() => goToStep("howToPlay")}
           />
         ) : null}
 

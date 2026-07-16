@@ -8,8 +8,10 @@ import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { LoadingTreatment } from "@/components/design/loading-treatment";
 import { PaperPanel } from "@/components/design/paper-panel";
 import { ConnectionStatusBadge } from "@/components/party/connection-status-badge";
+import { ParticipantAvatar } from "@/components/party/participant-avatar";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/lib/i18n/routing";
+import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import { useRemotePartySnapshot } from "@/lib/party-remote/use-remote-party";
 import type { RemoteGuestSnapshot, RemoteNoSessionSnapshot } from "@/lib/party-remote/types";
@@ -18,6 +20,7 @@ type RemoteGuestControllerProps = {
   locale: Locale;
   displayName: string | null;
   joinCode?: string;
+  avatar?: ParticipantAvatarProjection | null;
 };
 
 const pendingJoins = new Map<string, Promise<{ ok: boolean; payload: unknown }>>();
@@ -84,7 +87,8 @@ function phaseLabel(phase: string, copy: ReturnType<typeof getPartyUiCopy>) {
 export function RemoteGuestController({
   locale,
   displayName,
-  joinCode
+  joinCode,
+  avatar
 }: RemoteGuestControllerProps) {
   const copy = getPartyUiCopy(locale);
   const { snapshot, connection, error, refresh, applySnapshot } =
@@ -107,6 +111,7 @@ export function RemoteGuestController({
   const projection = snapshot?.session && "guest" in snapshot ? snapshot.guest : null;
   const participant = snapshot?.session && "participant" in snapshot ? snapshot.participant : null;
   const effectiveDisplayName = participant?.displayName ?? displayName;
+  const effectiveAvatar = participant?.avatar ?? avatar ?? null;
   const question = projection?.currentQuestion ?? null;
   const sessionId = snapshot?.session?.id ?? null;
   const isSubmitting = submittingState.sessionId === sessionId && submittingState.value;
@@ -300,6 +305,9 @@ export function RemoteGuestController({
       >
         <PaperPanel tone="celebration" className="w-full text-center">
           <div className="space-y-5">
+            <div className="flex justify-center">
+              <ParticipantAvatar avatar={effectiveAvatar} displayName={participant.displayName} size="xl" />
+            </div>
             <BirthdayBadge tone="blue">{participant.displayName}</BirthdayBadge>
             <h1 className="font-display text-5xl font-extrabold leading-tight text-foreground">
               {copy.finished}
@@ -357,9 +365,12 @@ export function RemoteGuestController({
       >
         <div className="space-y-3 [@media(max-height:700px)]:space-y-2 [@media(max-height:620px)]:space-y-1.5 sm:space-y-5">
           <div className="flex min-h-9 flex-wrap items-center justify-between gap-2">
-            <BirthdayBadge className="min-h-7 px-2.5 py-0.5" tone="blue">
-              {participant.displayName}
-            </BirthdayBadge>
+            <div className="flex min-w-0 items-center gap-2">
+              <ParticipantAvatar avatar={effectiveAvatar} displayName={participant.displayName} size="sm" />
+              <BirthdayBadge className="min-h-7 min-w-0 px-2.5 py-0.5" tone="blue">
+                <span className="truncate">{participant.displayName}</span>
+              </BirthdayBadge>
+            </div>
             <div className="flex flex-wrap justify-end gap-2">
               <BirthdayBadge tone={projection.remainingMs <= 5000 ? "coral" : "yellow"}>
                 <Timer className="h-4 w-4" aria-hidden="true" />
