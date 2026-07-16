@@ -210,6 +210,47 @@ function StickerArtwork({ kind, className }: { kind: StickerKind; className?: st
   );
 }
 
+function StickerEditorControl({
+  sticker,
+  selected,
+  label,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp
+}: {
+  sticker: Sticker;
+  selected: boolean;
+  label: string;
+  onPointerDown: (event: PointerEvent<HTMLButtonElement>) => void;
+  onPointerMove: (event: PointerEvent<HTMLButtonElement>) => void;
+  onPointerUp: (event: PointerEvent<HTMLButtonElement>) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      className={cn(
+        "absolute grid touch-none -translate-x-1/2 -translate-y-1/2 place-items-center border-0 bg-transparent p-0 transition",
+        selected
+          ? "rounded-[0.65rem] outline outline-2 outline-dashed outline-party-blue-deep outline-offset-4"
+          : "outline-none"
+      )}
+      style={{
+        left: `${sticker.x * 100}%`,
+        top: `${sticker.y * 100}%`,
+        width: sticker.size,
+        height: sticker.size
+      }}
+      aria-label={label}
+    >
+      <StickerArtwork kind={sticker.kind} className="h-full w-full drop-shadow-sm" />
+    </button>
+  );
+}
+
 function drawStickerArtwork(ctx: CanvasRenderingContext2D, sticker: Sticker, canvasSize: number) {
   const x = sticker.x * canvasSize;
   const y = sticker.y * canvasSize;
@@ -976,29 +1017,15 @@ export function PartyPhotoCard({
                     />
                     <div className="pointer-events-none absolute inset-0 rounded-full border-[999px] border-foreground/20 shadow-[inset_0_0_0_4px_hsl(var(--surface-paper)/0.9)]" />
                     {stickers.map((sticker) => (
-                      <button
+                      <StickerEditorControl
                         key={sticker.id}
-                        type="button"
+                        sticker={sticker}
+                        selected={selectedStickerId === sticker.id}
                         onPointerDown={(event) => handleStickerPointerDown(sticker.id, event)}
                         onPointerMove={handleStickerPointerMove}
                         onPointerUp={handlePointerUp}
-                        onPointerCancel={handlePointerUp}
-                        className={cn(
-                          "absolute grid touch-none -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border bg-transparent p-0.5 shadow-sticker transition",
-                          selectedStickerId === sticker.id
-                            ? "border-party-blue-deep ring-4 ring-party-blue/25"
-                            : "border-transparent"
-                        )}
-                        style={{
-                          left: `${sticker.x * 100}%`,
-                          top: `${sticker.y * 100}%`,
-                          width: sticker.size,
-                          height: sticker.size
-                        }}
-                        aria-label={`${copy.stickerLabel}: ${stickerLabel(copy, sticker.kind)}`}
-                      >
-                        <StickerArtwork kind={sticker.kind} className="h-full w-full drop-shadow-sm" />
-                      </button>
+                        label={`${copy.stickerLabel}: ${stickerLabel(copy, sticker.kind)}`}
+                      />
                     ))}
                   </div>
                   <p className="text-sm font-bold leading-6 text-muted-foreground">{copy.cropHelp}</p>

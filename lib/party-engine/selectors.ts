@@ -13,19 +13,20 @@ import type {
 export type SharedPartyProjection = {
   phase: PartyPhase;
   revision: number;
-  currentQuestion: PartyQuestion | null;
+  currentQuestion: PublicPartyQuestion | null;
   questionNumber: number | null;
   totalQuestions: number;
   participantCount: number;
   submittedCount: number;
   timedOutCount: number;
+  questionDeadlineAt: number | null;
   remainingMs: number;
   correctOption: PartyOption | null;
   answerDistribution: Array<{
     optionId: string;
     label: PartyOption["label"];
     count: number;
-    isCorrect: boolean;
+    isCorrect: boolean | null;
   }>;
   leaderboard: LeaderboardRow[];
 };
@@ -34,9 +35,10 @@ export type GuestProjection = {
   phase: PartyPhase;
   guestId: string;
   displayName: string | null;
-  currentQuestion: PartyQuestion | null;
+  currentQuestion: PublicPartyQuestion | null;
   questionNumber: number | null;
   totalQuestions: number;
+  questionDeadlineAt: number | null;
   remainingMs: number;
   canAnswer: boolean;
   lockedResponse: LockedResponse | null;
@@ -48,7 +50,18 @@ export type GuestProjection = {
       }
     | null;
   score: number;
+  finalRank: number | null;
+  winner: Pick<LeaderboardRow, "guestId" | "displayName" | "score"> | null;
 };
+
+export type PublicPartyQuestion = Omit<PartyQuestion, "correctOptionId">;
+
+function projectQuestion(question: PartyQuestion | null): PublicPartyQuestion | null {
+  if (!question) return null;
+  const { correctOptionId, ...publicQuestion } = question;
+  void correctOptionId;
+  return publicQuestion;
+}
 
 export function selectCurrentQuestion(
   state: PartyState,
@@ -101,7 +114,8 @@ export function selectHostCapabilities(state: PartyState): HostCapabilities {
     canLockQuestion: false,
     canRevealAnswer: state.phase === "question_locked",
     canShowLeaderboard: state.phase === "answer_reveal",
-    canCompletePresentation: state.phase === "leaderboard",
+    canAdvanceFromLeaderboard: state.phase === "leaderboard",
+    canCompletePresentation: false,
     canPrepareNextQuestion:
       state.phase === "waiting_for_host" &&
       state.currentQuestionIndex !== null &&
@@ -197,11 +211,13 @@ export function buildSharedPartyProjection(
   now: number
 ): SharedPartyProjection {
   const question = selectCurrentQuestion(state, config);
-  const correctOption =
+  const shouldReveal =
     state.phase === "answer_reveal" ||
     state.phase === "leaderboard" ||
     state.phase === "waiting_for_host" ||
-    state.phase === "finished"
+    state.phase === "finished";
+  const correctOption =
+    shouldReveal
       ? question?.options.find((option) => option.id === question.correctOptionId) ?? null
       : null;
   const responses = Object.values(state.responses).filter(
@@ -211,13 +227,14 @@ export function buildSharedPartyProjection(
   return {
     phase: state.phase,
     revision: state.revision,
-    currentQuestion: question,
+    currentQuestion: projectQuestion(question),
     questionNumber:
       state.currentQuestionIndex === null ? null : state.currentQuestionIndex + 1,
     totalQuestions: state.totalQuestions,
     participantCount: Object.keys(state.guests).length,
     submittedCount: selectSubmittedCount(state),
     timedOutCount: selectTimedOutCount(state),
+    questionDeadlineAt: state.phase === "question_active" ? state.questionDeadlineAt : null,
     remainingMs: selectRemainingMs(state, now),
     correctOption,
     answerDistribution:
@@ -225,7 +242,7 @@ export function buildSharedPartyProjection(
         optionId: option.id,
         label: option.label,
         count: responses.filter((response) => response.selectedOptionId === option.id).length,
-        isCorrect: option.id === question.correctOptionId
+        isCorrect: shouldReveal ? option.id === question.correctOptionId : null
       })) ?? [],
     leaderboard: selectLeaderboardRows(state)
   };
@@ -239,6 +256,7 @@ export function buildGuestProjection(
 ): GuestProjection {
   const question = selectCurrentQuestion(state, config);
   const response = selectGuestResponse(state, guestId);
+  const leaderboard = selectLeaderboardRows(state);
   const shouldReveal =
     state.phase === "answer_reveal" ||
     state.phase === "leaderboard" ||
@@ -249,10 +267,11 @@ export function buildGuestProjection(
     phase: state.phase,
     guestId,
     displayName: state.guests[guestId]?.displayName ?? null,
-    currentQuestion: question,
+    currentQuestion: projectQuestion(question),
     questionNumber:
       state.currentQuestionIndex === null ? null : state.currentQuestionIndex + 1,
     totalQuestions: state.totalQuestions,
+    questionDeadlineAt: state.phase === "question_active" ? state.questionDeadlineAt : null,
     remainingMs: selectRemainingMs(state, now),
     canAnswer: selectCanGuestAnswer(state, guestId, now),
     lockedResponse: response,
@@ -269,6 +288,18 @@ export function buildGuestProjection(
             selectedOptionId: response.selectedOptionId
           }
         : null,
-    score: selectLeaderboardRows(state).find((row) => row.guestId === guestId)?.score ?? 0
+    score: leaderboard.find((row) => row.guestId === guestId)?.score ?? 0,
+    finalRank:
+      state.phase === "finished"
+        ? leaderboard.find((row) => row.guestId === guestId)?.rank ?? null
+        : null,
+    winner:
+      state.phase === "finished" && leaderboard[0]
+        ? {
+            guestId: leaderboard[0].guestId,
+            displayName: leaderboard[0].displayName,
+            score: leaderboard[0].score
+          }
+        : null
   };
 }

@@ -610,8 +610,7 @@ async function main() {
   });
   timeline.push({ step: "leaderboard", at: new Date().toISOString() });
 
-  await clickHostAction(hostPage, /complete presentation/i, "waiting_for_host");
-  await clickHostAction(hostPage, /prepare next question/i, "question_ready");
+  await clickHostAction(hostPage, /next question/i, "question_ready");
   await waitForGuestPhase(guestEnPage, /answer choices are coming next/i);
   timeline.push({ step: "next-question-preview", at: new Date().toISOString() });
 

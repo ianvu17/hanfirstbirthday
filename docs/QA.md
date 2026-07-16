@@ -192,7 +192,7 @@ Milestone 4 visual checks:
 - Use `npm run check:visual:milestone4` against a running server. Set `MILESTONE4_BASE_URL` when the server is not on `http://localhost:3000`.
 - The script captures `/display/party`, `/{locale}/play`, and `/{locale}/qa/party` states.
 - Screenshots are stored in `.next/milestone-4-screenshots/`.
-- Captured states include lobby, question ready, active, locked, reveal, leaderboard, waiting, finished, guest join-required, Vietnamese active question, mobile active harness, and reduced-motion Vietnamese active harness.
+- Captured states include lobby, question ready, active, locked, reveal, leaderboard, direct next-question transition, finished, guest join-required, Vietnamese active question, mobile active harness, and reduced-motion Vietnamese active harness.
 - The script checks horizontal overflow, but screenshots must still be visually inspected before Milestone 4 approval.
 
 Milestone 4 logic checks:
@@ -211,6 +211,8 @@ Milestone 5 checks:
 - Use `npm run vercel:push-env -- --target=preview --dry-run` after Vercel linking to verify required preview env values without printing secrets, then rerun without `--dry-run` to push them.
 - Use native Vercel Git integration for normal preview deployments from GitHub commits. `npx vercel deploy --yes` is now a legacy/manual preview fallback only; do not pass `--target=preview`.
 - Use `PREVIEW_PARTY_BASE_URL=<preview-url> PREVIEW_PARTY_EVIDENCE_DIR=<evidence-dir> npx tsx scripts/validate-preview-party-flow.ts` for deployed Preview host/guest/Party Screen validation when checking mobile no-scroll, connection status stability, and host-driven question flow. The script creates only Preview test sessions and writes screenshots plus `results.json`.
+- Use `npm run test:countdown` for deadline math, device-clock offset, 20-through-0 sequencing, clamp, and cleanup coverage. Remote browser rehearsal must confirm all surfaces advance locally between snapshot refreshes.
+- Use `npm run test:certificate` and `npm run render:certificate-samples` for English/Vietnamese, long-name, preset, initials, single-page A4, and route-security coverage. Render the PDFs through Poppler plus a platform viewer, and test the deployed endpoint as winner and non-winner before release.
 - Use `npm run check:visual:milestone5` against a running server to capture `/display/party`, English/Vietnamese guest controller, production Host PIN screen, and QA harness screenshots.
 - Hosted Supabase RLS, Vercel preview deployment, and browser-context realtime validation have passed; physical multi-device rehearsal remains required before event approval.
 - Physical rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.
@@ -228,10 +230,14 @@ Milestone 5 checks:
 - Accepted answers lock and cannot be edited.
 - Timed-out questions lock and cannot be edited.
 - Answering closes automatically when the deadline expires.
+- Guest reveal explicitly identifies the correct answer, the guest's different selected answer, or timeout without exposing correctness before reveal.
+- Leaderboard advances directly to the next question or final winner without returning to reveal.
 - Safe retries do not create duplicate question responses.
 - Guest sees a result screen.
 - Party Screen and leaderboard update after submission or host-driven phase changes once runtime exists.
 - Guest, Party Screen leaderboard, reveal leaderboard, and final result identity surfaces show photo, preset, or initials fallback avatars.
+- Stored photo avatars contain sticker artwork but no selection ring or editor control.
+- Only deterministic rank 1 can download a localized, one-page A4 certificate; non-winners are denied.
 - Guest can leave a message.
 - Admin can see final quiz scores, messages, Party Screen or leaderboard state, and QA/test separation through a lightweight utility area.
 - QA/test data is separate from production data.

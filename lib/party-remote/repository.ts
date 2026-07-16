@@ -7,6 +7,7 @@ import {
   getApprovedPartyConfig,
   processPartyCommand,
   responseKey,
+  selectLeaderboardRows,
   type PartyCommand,
   type PartyConfig,
   type PartyState
@@ -14,6 +15,7 @@ import {
 import type { Locale } from "@/lib/i18n/routing";
 import {
   fallbackAvatar,
+  getAvatarInitials,
   isAvatarPresetId,
   type AvatarPresetId,
   type ParticipantAvatarProjection
@@ -56,6 +58,23 @@ export type ParticipantSession = {
 };
 
 const participantCookiePrefix = "participant:";
+
+export type CertificateAvatar =
+  | { type: "photo"; bytes: Uint8Array; mimeType: string }
+  | { type: "preset"; presetId: AvatarPresetId }
+  | { type: "fallback"; initials: string };
+
+export type WinnerCertificateContext = {
+  sessionId: string;
+  participantId: string;
+  displayName: string;
+  locale: Locale;
+  score: number;
+  rank: 1;
+  totalQuestions: number;
+  eventDate: string | null;
+  avatar: CertificateAvatar;
+};
 
 function msFromIso(value: string | null) {
   return value ? new Date(value).getTime() : null;
@@ -277,7 +296,9 @@ function partyStateToSessionPatch(state: PartyState, status: PartySessionRow["st
     question_deadline_at: isoFromMs(state.questionDeadlineAt),
     question_locked_at: isoFromMs(state.questionLockedAt),
     answer_revealed_at: isoFromMs(state.answerRevealedAt),
-    is_current: nextStatus === "finished" ? false : true,
+    // Keep a finished session current so display and guest surfaces can retain the
+    // authoritative winner celebration and certificate access until it is archived.
+    is_current: true,
     started_at: undefined as string | undefined,
     finished_at: nextStatus === "finished" ? new Date().toISOString() : undefined,
     revision: state.revision,
@@ -830,6 +851,102 @@ export async function validateParticipantSession(
     .eq("id", participant.data.id);
 
   return participant.data;
+}
+
+export async function loadWinnerCertificateContext(
+  participantSession: ParticipantSession | null
+): Promise<
+  | { ok: true; context: WinnerCertificateContext }
+  | {
+      ok: false;
+      status: 401 | 403 | 409;
+      error: "unauthenticated" | "quiz_not_finished" | "not_winner";
+    }
+> {
+  if (!participantSession) {
+    return { ok: false, status: 401, error: "unauthenticated" };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const participantResult = await supabase
+    .from("participants")
+    .select("*")
+    .eq("id", participantSession.participantId)
+    .eq("resume_token_hash", hashResumeToken(participantSession.token))
+    .maybeSingle<ParticipantRow>();
+
+  if (participantResult.error) {
+    throw participantResult.error;
+  }
+
+  const participant = participantResult.data;
+
+  if (!participant) {
+    return { ok: false, status: 401, error: "unauthenticated" };
+  }
+
+  const sessionResult = await supabase
+    .from("party_sessions")
+    .select("*")
+    .eq("id", participant.party_session_id)
+    .eq("party_key", getPartyKey())
+    .eq("deployment_environment", getPartyDeploymentEnvironment())
+    .maybeSingle<PartySessionRow>();
+
+  if (sessionResult.error) {
+    throw sessionResult.error;
+  }
+
+  if (!sessionResult.data || sessionResult.data.phase !== "finished") {
+    return { ok: false, status: 409, error: "quiz_not_finished" };
+  }
+
+  const bundle = await loadPartyBundle(sessionResult.data.id);
+  const state = rowToPartyState(bundle);
+  const winner = selectLeaderboardRows(state)[0];
+
+  if (!winner || winner.guestId !== participant.id) {
+    return { ok: false, status: 403, error: "not_winner" };
+  }
+
+  let avatar: CertificateAvatar = {
+    type: "fallback",
+    initials: getAvatarInitials(participant.display_name)
+  };
+
+  if (participant.avatar_type === "preset" && isAvatarPresetId(participant.avatar_preset_id)) {
+    avatar = { type: "preset", presetId: participant.avatar_preset_id };
+  } else if (participant.avatar_type === "photo" && participant.avatar_path) {
+    const downloaded = await supabase.storage.from(avatarBucket).download(participant.avatar_path);
+
+    if (!downloaded.error && downloaded.data) {
+      avatar = {
+        type: "photo",
+        bytes: new Uint8Array(await downloaded.data.arrayBuffer()),
+        mimeType: downloaded.data.type || "application/octet-stream"
+      };
+    } else {
+      console.warn("certificate_avatar_fallback", {
+        participantId: participant.id,
+        reason: "private_avatar_download_failed"
+      });
+    }
+  }
+
+  return {
+    ok: true,
+    context: {
+      sessionId: bundle.session.id,
+      participantId: participant.id,
+      displayName: participant.display_name,
+      locale: participant.locale,
+      score: winner.score,
+      rank: 1,
+      totalQuestions: bundle.config.questions.length,
+      eventDate: process.env.CERTIFICATE_EVENT_DATE?.trim() || null,
+      avatar
+    }
+  };
 }
 
 export async function joinActiveParty(displayNameInput: string, locale: Locale) {

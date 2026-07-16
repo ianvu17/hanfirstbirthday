@@ -54,12 +54,12 @@ create
 -> question_locked (deadline closed automatically)
 -> answer_reveal
 -> leaderboard
--> waiting_for_host
+-> question_ready (directly, when another question remains)
 -> finished
 -> archived
 ```
 
-Finishing a game sets the session to `finished` and clears `is_current`. Refreshing guest, display, host, or `/api/party/session` after that returns `session: null` with `reason: "no_active_session"` until the host explicitly creates a new session.
+Finishing a game sets the session to `finished` while keeping `is_current=true`. Guest, display, host, and `/api/party/session` refreshes therefore preserve the final celebration. Joining and responses remain closed because the session is not active. The host archives or replaces the finished session before another run.
 
 ## New Game Behavior
 
@@ -90,6 +90,8 @@ Question ids and option ids are immutable content contracts for a rehearsed sess
 
 Avatar updates go through `POST /api/party/participant/avatar`. The route validates the participant resume cookie, active session, preset id or prepared 512x512 WebP/JPEG image, then updates the participant row through the service-role repository. Guest browsers never receive Supabase service-role credentials or direct write access. Photo avatars are stored in the private `party-avatars` bucket at `{deployment_environment}/{party_session_id}/{participant_id}/avatar.webp` or `.jpg`; snapshots contain only short-lived signed URLs or preset IDs.
 
+Sticker selection outlines, resize handles, and editor affordances are DOM-only controls. The exported avatar canvas draws only the photo and sticker artwork, so editor borders cannot be stored in Supabase. Winner certificate photo reads occur only inside the authenticated server route and never expose the private object path.
+
 ## Environment Isolation
 
 Preview and Production may share the same Supabase project, but they do not share current-session selection because `deployment_environment` is part of the selector and unique current-session constraint.
@@ -105,8 +107,8 @@ Host Controller:
 - `Reveal answers`: reveals answer choices and starts the 20-second deadline.
 - active answering: no required host action; the deadline closes answering automatically.
 - `Reveal correct answer`: available only after answering has closed.
-- phase button: advances the current valid host transition.
-- `Finish party`: ends the current session and clears it from current selection.
+- phase button: advances the current valid host transition; the leaderboard action moves directly to the next preview or final winner.
+- `Show winner`: finishes from the final leaderboard and retains the final result until archive/replacement.
 - `Archive session`: archives a selected session while preserving rows.
 - `Recent sessions`: shows session id, lifecycle, test marker, counts, revision, and timestamps.
 
@@ -119,5 +121,5 @@ Host Controller:
 5. Display `/display/party` on the laptop/TV.
 6. Guests scan the displayed QR and join.
 7. Click `Start game`, then for each question click `Reveal answers`, wait for the 20-second window to close, reveal the correct answer, show the leaderboard, and continue.
-8. Click `Finish party` at the end.
+8. Click `Show winner` from the final leaderboard.
 9. For another run, click `Create new session`; old rows remain in recent history.

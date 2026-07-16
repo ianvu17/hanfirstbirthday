@@ -185,7 +185,7 @@ Exit criteria:
 
 ## Milestone 6: Event Readiness And Content Lock
 
-Status: Recommended next milestone from the July 13, 2026 repository audit.
+Status: In progress. Approved bilingual content loading and final gameplay polish are implemented; deployed and physical release-candidate evidence remains to be completed.
 
 Goals:
 
@@ -195,6 +195,7 @@ Goals:
 - Rehearse real Host PIN entry end to end.
 - Run a physical laptop/TV plus two-phone rehearsal on the target network.
 - Capture final readiness evidence in documentation.
+- Rehearse smooth authoritative countdowns, explicit reveal states, direct leaderboard progression, clean stored avatars, and winner-only localized certificate download.
 
 Exit criteria:
 

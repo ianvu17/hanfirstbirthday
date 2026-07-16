@@ -59,10 +59,10 @@ Use these shared lifecycle terms for future planning:
 - `QUESTION_PREVIEW`: Phones and Party Screen show the question text while the answer choices remain hidden.
 - `QUESTION_ACTIVE`: Phones collect answers; the Party Screen shows the question, answer choices, countdown, progress, and submitted-answer count.
 - `QUESTION_LOCKED`: Phones show locked or timed-out personal state; the Party Screen holds the room before reveal. In implementation this is reached by deadline-driven closure, not a required host lock.
-- `ANSWER_REVEAL`: The Party Screen reveals the correct answer and celebration; phones show concise personal feedback.
+- `ANSWER_REVEAL`: The Party Screen gives the correct answer one dominant green treatment followed by the approved Han fun fact and subdued distribution. Phones explicitly label the correct answer and, when different, the guest's selected answer; timeout is its own state. Correctness remains secret before this phase.
 - `LEADERBOARD`: The Party Screen shows current rankings; phones may show a smaller personal leaderboard view.
 - `NEXT_QUESTION`: The host advances the room to the next question.
-- `FINISHED`: The Party Screen closes with final leaderboard, celebration, and thank-you; phones show personal result and next actions.
+- `FINISHED`: The Party Screen closes with a winner-first celebration and top three. The winner's phone receives a Mastermind celebration and certificate download; other guests receive warm thanks and final rank without a certificate action.
 
 Milestone 3 implemented the guest entry portion only:
 
@@ -170,6 +170,7 @@ Micro interactions:
 - Clear selected-answer state.
 - Subtle feedback when an answer is accepted and locked.
 - Timer transition should become more noticeable near the end without feeling alarming.
+- The visible timer should count every integer smoothly from 20 to 0 on all three surfaces, using the server deadline rather than snapshot refresh frequency.
 
 States:
 
@@ -213,6 +214,7 @@ UX notes:
 - Results should be warm regardless of score.
 - Avoid language that makes low scores embarrassing.
 - Offer actions to view leaderboard and leave a message.
+- Only the server-verified rank-1 participant may download the localized winner certificate.
 
 States:
 

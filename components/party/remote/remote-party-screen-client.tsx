@@ -64,6 +64,7 @@ export function RemotePartyScreenClient({ locale = "en" }: { locale?: Locale }) 
       locale={locale}
       copy={copy}
       projection={snapshot.projection}
+      serverNow={snapshot.serverNow}
       joinUrl={snapshot.joinUrl}
       connection={connection}
       label={snapshot.session.isTest ? copy.remoteTestSession : copy.remoteProductionSession}

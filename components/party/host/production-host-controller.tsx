@@ -15,6 +15,7 @@ import {
 } from "@/lib/party-engine";
 import type { Locale } from "@/lib/i18n/routing";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
+import { useAuthoritativeCountdown } from "@/lib/party-runtime/use-authoritative-countdown";
 import type { RuntimePartyCommand } from "@/lib/party-runtime/runtime-contract";
 import { useRemotePartySnapshot } from "@/lib/party-remote/use-remote-party";
 import type {
@@ -32,7 +33,8 @@ type HostStatus = {
 function nextAction(
   phase: PartyPhase,
   capabilities: HostCapabilities,
-  copy: ReturnType<typeof getPartyUiCopy>
+  copy: ReturnType<typeof getPartyUiCopy>,
+  isFinalQuestion: boolean
 ): { label: string; command: RuntimePartyCommand["type"]; confirm?: boolean } | null {
   if (capabilities.canPrepareFirstQuestion) {
     return { label: copy.prepareFirst, command: "PREPARE_FIRST_QUESTION" };
@@ -50,8 +52,11 @@ function nextAction(
     return { label: copy.showLeaderboard, command: "SHOW_LEADERBOARD" };
   }
 
-  if (capabilities.canCompletePresentation) {
-    return { label: copy.completePresentation, command: "COMPLETE_PRESENTATION" };
+  if (capabilities.canAdvanceFromLeaderboard) {
+    return {
+      label: isFinalQuestion ? copy.showWinner : copy.nextQuestion,
+      command: "ADVANCE_FROM_LEADERBOARD"
+    };
   }
 
   if (capabilities.canPrepareNextQuestion) {
@@ -150,12 +155,19 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
   );
   const action =
     snapshot?.session && capabilities
-      ? nextAction(snapshot.projection.phase, capabilities, copy)
+      ? nextAction(
+          snapshot.projection.phase,
+          capabilities,
+          copy,
+          snapshot.projection.questionNumber === snapshot.projection.totalQuestions
+        )
       : null;
 
-  const remainingSeconds = snapshot?.session
-    ? Math.ceil(snapshot.projection.remainingMs / 1000)
-    : 0;
+  const countdown = useAuthoritativeCountdown({
+    deadlineAt: snapshot?.session ? snapshot.projection.questionDeadlineAt : null,
+    serverNow: snapshot?.serverNow ?? null,
+    active: snapshot?.session ? snapshot.projection.phase === "question_active" : false
+  });
 
   async function login(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -400,7 +412,7 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
                 {snapshot.projection.phase === "question_active" ? (
                   <>
                     <Clock className="h-4 w-4 text-party-orange" aria-hidden="true" />
-                    {remainingSeconds}s
+                    {countdown.remainingSeconds}s
                   </>
                 ) : (
                   snapshot.projection.submittedCount

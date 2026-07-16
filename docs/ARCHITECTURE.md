@@ -253,6 +253,7 @@ Milestone 4 local party state:
 - Guest draft answer selection remains local UI state until the Submit Answer command is accepted.
 - Locked responses are immutable. Exact duplicate retry returns the existing state; conflicting retry is rejected.
 - Submissions are accepted only when `receivedAt < deadlineAt`.
+- Host, guest, and Party Screen countdowns render from `questionDeadlineAt - (clientNow + serverClockOffset)`. A shared client hook updates at 200 ms, clamps at zero, recomputes on focus/visibility changes, and never persists per-second ticks.
 - Timeout responses are materialized when the question locks.
 - Scores are derived from locked responses only: correct equals 1, incorrect/timeout equals 0.
 
@@ -275,9 +276,8 @@ stateDiagram-v2
   question_active --> question_locked: deadline
   question_locked --> answer_reveal: REVEAL_ANSWER
   answer_reveal --> leaderboard: SHOW_LEADERBOARD
-  leaderboard --> waiting_for_host: COMPLETE_PRESENTATION
-  waiting_for_host --> question_ready: PREPARE_NEXT_QUESTION
-  waiting_for_host --> finished: FINISH_PARTY
+  leaderboard --> question_ready: ADVANCE_FROM_LEADERBOARD (more questions)
+  leaderboard --> finished: ADVANCE_FROM_LEADERBOARD (final question)
 ```
 
 Server/runtime state:
@@ -308,6 +308,8 @@ Milestone 5 implements the runtime schema in `supabase/migrations/`. The older d
 #### `party_sessions`
 
 Authoritative shared party snapshot: join code, party key, deployment environment, current-session flag, lifecycle status, phase, current question references, question timestamps, display locale, test metadata, monotonic revision, session label, creation idempotency key, and lifecycle timestamps.
+
+Finished sessions remain current until archive or replacement. This keeps final projections and winner downloads refresh-safe while joining remains closed because only active sessions accept participants.
 
 #### `participants`
 
@@ -451,6 +453,7 @@ Implemented Milestone 5 route handlers:
 - `POST /api/party/join`: validates display name/locale, creates participant, sets `han_participant_session`.
 - `POST /api/party/participant/avatar`: validates participant cookie plus preset or prepared avatar image, uploads photo avatars to private Storage when needed, and updates participant avatar metadata.
 - `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
+- `GET /api/party/certificate`: validates the participant resume cookie against the current finished session, derives deterministic rank 1 server-side, privately downloads the stored photo avatar when present, and returns a localized one-page A4 PDF with private/no-store headers. Non-winners and unfinished sessions are rejected.
 - `POST /api/party/host/login`: verifies host PIN and sets `han_host_session`.
 - `GET /api/party/host/status`: reports host auth configuration/session status.
 - `POST /api/party/host/command`: verifies host cookie, expected revision, and Party Engine transition before persisting.

@@ -26,6 +26,8 @@ If Supabase Storage is used later for gallery media, keep local placeholder refe
 
 Enhancement 1A adds participant avatar media. Built-in avatar presets and birthday stickers are original local UI/SVG/canvas artwork and are not remote or third-party assets. Guest photo avatars are prepared in the browser as square 512x512 WebP/JPEG images before upload, then stored in the private Supabase Storage bucket `party-avatars`. Participant rows store only stable Storage paths or preset ids; snapshots use short-lived signed URLs for photo display.
 
+Sticker editor controls are separate from exported artwork. Selection borders and handles must never be painted into the final avatar canvas. Winner certificates may embed a private stored photo only after server-side winner authorization; fallback initials and preset artwork require no remote asset.
+
 ## Asset Categories
 
 ### Brand And Event Assets

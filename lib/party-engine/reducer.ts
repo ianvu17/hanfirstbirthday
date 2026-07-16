@@ -270,15 +270,46 @@ export function processPartyCommand(
 
       return accept({ ...state, phase: "leaderboard" }, command.type);
 
-    case "COMPLETE_PRESENTATION":
+    case "ADVANCE_FROM_LEADERBOARD":
+    case "COMPLETE_PRESENTATION": {
       if (state.phase !== "leaderboard") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "Presentation can only complete from leaderboard.")
+          domainError("invalid_phase_transition", "The quiz can only advance from the leaderboard.")
         );
       }
 
-      return accept({ ...state, phase: "waiting_for_host" }, command.type);
+      const nextIndex = (state.currentQuestionIndex ?? -1) + 1;
+      const question = config.questions[nextIndex];
+
+      if (!question) {
+        return accept(
+          {
+            ...state,
+            phase: "finished",
+            questionOpenedAt: null,
+            questionDeadlineAt: null,
+            questionLockedAt: null,
+            answerRevealedAt: null
+          },
+          command.type
+        );
+      }
+
+      return accept(
+        {
+          ...state,
+          phase: "question_ready",
+          currentQuestionIndex: nextIndex,
+          currentQuestionId: question.id,
+          questionOpenedAt: null,
+          questionDeadlineAt: null,
+          questionLockedAt: null,
+          answerRevealedAt: null
+        },
+        command.type
+      );
+    }
 
     case "PREPARE_NEXT_QUESTION": {
       if (state.phase !== "waiting_for_host") {

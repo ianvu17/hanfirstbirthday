@@ -24,7 +24,7 @@ function mustAccept(state: PartyState, command: PartyCommand) {
   return result.state;
 }
 
-test("valid host lifecycle reaches waiting state and next question", () => {
+test("leaderboard advances directly to the next question without returning to reveal", () => {
   let state = createInitialPartyState(config);
 
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
@@ -41,12 +41,26 @@ test("valid host lifecycle reaches waiting state and next question", () => {
 
   state = mustAccept(state, { type: "REVEAL_ANSWER", now: 20200 });
   state = mustAccept(state, { type: "SHOW_LEADERBOARD", now: 20300 });
-  state = mustAccept(state, { type: "COMPLETE_PRESENTATION", now: 20400 });
-  assert.equal(state.phase, "waiting_for_host");
-
-  state = mustAccept(state, { type: "PREPARE_NEXT_QUESTION", now: 20500 });
+  state = mustAccept(state, { type: "ADVANCE_FROM_LEADERBOARD", now: 20400 });
   assert.equal(state.currentQuestionIndex, 1);
   assert.equal(state.phase, "question_ready");
+  assert.equal(state.questionDeadlineAt, null);
+});
+
+test("final leaderboard advances to finished without overflowing the question index", () => {
+  const finalIndex = config.questions.length - 1;
+  const state: PartyState = {
+    ...createInitialPartyState(config),
+    phase: "leaderboard",
+    currentQuestionIndex: finalIndex,
+    currentQuestionId: config.questions[finalIndex].id
+  };
+
+  const finished = mustAccept(state, { type: "ADVANCE_FROM_LEADERBOARD", now: 5000 });
+  assert.equal(finished.phase, "finished");
+  assert.equal(finished.currentQuestionIndex, finalIndex);
+  assert.equal(finished.currentQuestionId, config.questions[finalIndex].id);
+  assert.equal(selectHostCapabilities(finished).canAdvanceFromLeaderboard, false);
 });
 
 test("invalid transitions are rejected with structured errors", () => {
@@ -271,13 +285,22 @@ test("projections hide correct answer until reveal", () => {
   state = mustAccept(state, { type: "REVEAL_CHOICES", now: 100 });
 
   const activeProjection = buildSharedPartyProjection(state, config, 500);
+  const activeGuest = buildGuestProjection(state, config, "test-guest-01", 500);
   assert.equal(activeProjection.correctOption, null);
+  assert.equal("correctOptionId" in (activeProjection.currentQuestion ?? {}), false);
+  assert.equal("correctOptionId" in (activeGuest.currentQuestion ?? {}), false);
+  assert.equal(activeGuest.reveal, null);
+  assert.ok(activeProjection.answerDistribution.every((row) => row.isCorrect === null));
 
   state = mustAccept(state, { type: "LOCK_QUESTION", now: 20100, reason: "deadline" });
   state = mustAccept(state, { type: "REVEAL_ANSWER", now: 20200 });
 
   const revealProjection = buildSharedPartyProjection(state, config, 20200);
   assert.equal(revealProjection.correctOption?.id, config.questions[0].correctOptionId);
+  assert.equal(
+    revealProjection.answerDistribution.find((row) => row.isCorrect)?.optionId,
+    config.questions[0].correctOptionId
+  );
 });
 
 test("host capabilities are derived from phase", () => {

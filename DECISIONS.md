@@ -432,3 +432,25 @@ This preserves the tested Party Engine, reducer, projections, scoring, server-au
 **Consequence**
 
 Question ids and option ids are content contracts. After rehearsal approval, they must not change for an active session because existing `question_responses` rows store those ids. A new content deployment should be tested with a new party session.
+
+## ADR-021: Authoritative Countdown, Direct Progression, And Winner Certificate
+
+**Decision**
+
+All host, guest, and Party Screen countdowns derive their visible time from the persisted question deadline plus the server-snapshot clock offset. Clients may animate locally at a short interval, but they must not write timer ticks or allow a clock correction to increase the displayed countdown.
+
+The production leaderboard has one action: advance directly to the next question preview, or finish and show the winner after the final question. The older `waiting_for_host` phase and split `COMPLETE_PRESENTATION` path remain readable for recovery compatibility but are not part of the normal production flow.
+
+The just-finished session remains current until the host archives it or replaces it. This preserves a refresh-safe final celebration and permits a server-only certificate endpoint to verify the participant resume cookie, derive the deterministic first-place row, download any photo avatar from private Storage, and generate the localized one-page A4 certificate. The browser supplies no winner name, score, rank, or avatar authority.
+
+**Status**
+
+Accepted as final gameplay polish on July 16, 2026.
+
+**Reason**
+
+The party needs smooth second-by-second feedback without high-frequency database traffic, an unambiguous answer reveal, one obvious host action, a durable winner moment, and a certificate that cannot be claimed or altered by another guest.
+
+**Consequence**
+
+Projections never expose `correctOptionId` before reveal. Winner ties remain deterministic through the existing leaderboard ordering; only rank 1 receives the certificate action. `CERTIFICATE_EVENT_DATE` is optional and must contain an Ian-approved localized date before it is shown; otherwise the certificate uses approved generic event wording.

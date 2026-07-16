@@ -10,6 +10,7 @@ import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import {
   useHostCapabilities,
   usePartyActions,
+  usePartyRuntime,
   usePartySnapshot,
   useSharedPartyProjection
 } from "@/lib/party-runtime/runtime-provider";
@@ -17,10 +18,14 @@ import {
 export function HostControlPanel({ locale }: { locale: Locale }) {
   const copy = getPartyUiCopy(locale);
   const actions = usePartyActions();
+  const runtime = usePartyRuntime();
   const capabilities = useHostCapabilities();
   const snapshot = usePartySnapshot();
   const projection = useSharedPartyProjection();
-  const question = projection.currentQuestion;
+  const question =
+    snapshot.state.currentQuestionIndex === null
+      ? null
+      : runtime.getConfig().questions[snapshot.state.currentQuestionIndex] ?? null;
 
   function simulate(correct: boolean) {
     if (!question) {
@@ -89,11 +94,13 @@ export function HostControlPanel({ locale }: { locale: Locale }) {
           <Button
             type="button"
             variant="outline"
-            disabled={!capabilities.canCompletePresentation}
-            onClick={actions.completePresentation}
-            data-testid="host-complete-presentation"
+            disabled={!capabilities.canAdvanceFromLeaderboard}
+            onClick={actions.advanceFromLeaderboard}
+            data-testid="host-advance-leaderboard"
           >
-            {copy.completePresentation}
+            {projection.questionNumber === projection.totalQuestions
+              ? copy.showWinner
+              : copy.nextQuestion}
           </Button>
           <Button
             type="button"

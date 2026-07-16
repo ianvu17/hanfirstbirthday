@@ -42,7 +42,9 @@ const requiredFragments = [
   "insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)",
   "'party-avatars'",
   "No anonymous avatar object reads",
-  "No anonymous avatar object writes"
+  "No anonymous avatar object writes",
+  "party_sessions_current_status_check",
+  "status in ('draft', 'active', 'finished')"
 ];
 
 const missing = requiredFragments.filter((fragment) => !sql.includes(fragment));
@@ -55,4 +57,4 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-console.log("Supabase migrations include runtime and avatar tables, constraints, indexes, storage, and RLS policies.");
+console.log("Supabase migrations include runtime, finished winner state, avatar storage, constraints, indexes, and RLS policies.");

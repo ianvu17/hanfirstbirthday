@@ -91,6 +91,7 @@ export type PartyCommand =
   | { type: "LOCK_QUESTION"; now: number; reason?: "deadline" | "host" }
   | { type: "REVEAL_ANSWER"; now: number }
   | { type: "SHOW_LEADERBOARD"; now: number }
+  | { type: "ADVANCE_FROM_LEADERBOARD"; now: number }
   | { type: "COMPLETE_PRESENTATION"; now: number }
   | { type: "PREPARE_NEXT_QUESTION"; now: number }
   | { type: "FINISH_PARTY"; now: number }
@@ -140,6 +141,7 @@ export type HostCapabilities = {
   canLockQuestion: boolean;
   canRevealAnswer: boolean;
   canShowLeaderboard: boolean;
+  canAdvanceFromLeaderboard: boolean;
   canCompletePresentation: boolean;
   canPrepareNextQuestion: boolean;
   canFinishParty: boolean;

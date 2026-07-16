@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Check, LockKeyhole, Timer } from "lucide-react";
+import { ArrowLeft, Download, Timer, Trophy } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -8,12 +8,14 @@ import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { LoadingTreatment } from "@/components/design/loading-treatment";
 import { PaperPanel } from "@/components/design/paper-panel";
 import { ConnectionStatusBadge } from "@/components/party/connection-status-badge";
+import { GuestAnswerOptions } from "@/components/party/guest-answer-options";
 import { ParticipantAvatar } from "@/components/party/participant-avatar";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/lib/i18n/routing";
 import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import { useRemotePartySnapshot } from "@/lib/party-remote/use-remote-party";
+import { useAuthoritativeCountdown } from "@/lib/party-runtime/use-authoritative-countdown";
 import type { RemoteGuestSnapshot, RemoteNoSessionSnapshot } from "@/lib/party-remote/types";
 
 type RemoteGuestControllerProps = {
@@ -55,10 +57,6 @@ function joinOnce(displayName: string, locale: Locale, joinCode?: string) {
 
   pendingJoins.set(key, request);
   return request;
-}
-
-function seconds(remainingMs: number) {
-  return Math.ceil(remainingMs / 1000);
 }
 
 function phaseLabel(phase: string, copy: ReturnType<typeof getPartyUiCopy>) {
@@ -120,6 +118,11 @@ export function RemoteGuestController({
     draft.sessionId === sessionId
       ? draft
       : { sessionId, questionId: null, selectedOptionId: null, error: "" };
+  const countdown = useAuthoritativeCountdown({
+    deadlineAt: projection?.questionDeadlineAt ?? null,
+    serverNow: snapshot?.serverNow ?? null,
+    active: projection?.phase === "question_active"
+  });
 
   useEffect(() => {
     if (!displayName || participant || isJoining || activeJoinError) {
@@ -298,6 +301,9 @@ export function RemoteGuestController({
   }
 
   if (projection.phase === "finished") {
+    const winner = projection.winner;
+    const isWinner = projection.finalRank === 1;
+
     return (
       <section
         className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-2xl items-center py-4"
@@ -308,13 +314,29 @@ export function RemoteGuestController({
             <div className="flex justify-center">
               <ParticipantAvatar avatar={effectiveAvatar} displayName={participant.displayName} size="xl" />
             </div>
-            <BirthdayBadge tone="blue">{participant.displayName}</BirthdayBadge>
+            <BirthdayBadge tone={isWinner ? "yellow" : "blue"}>
+              <Trophy className="h-4 w-4" aria-hidden="true" />
+              {isWinner ? copy.mastermindTitle : copy.finalResults}
+            </BirthdayBadge>
             <h1 className="font-display text-5xl font-extrabold leading-tight text-foreground">
-              {copy.finished}
+              {isWinner ? copy.youAreMastermind : copy.thanksForPlaying}
             </h1>
             <p className="text-lg font-extrabold text-muted-foreground">
               {copy.personalScore}: {projection.score}/{projection.totalQuestions}
             </p>
+            {!isWinner && winner ? (
+              <p className="font-bold text-muted-foreground">
+                {copy.winner}: <span className="text-foreground">{winner.displayName}</span>
+              </p>
+            ) : null}
+            {isWinner ? (
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <a href="/api/party/certificate" download>
+                  <Download aria-hidden="true" />
+                  {copy.downloadCertificate}
+                </a>
+              </Button>
+            ) : null}
           </div>
         </PaperPanel>
       </section>
@@ -372,10 +394,10 @@ export function RemoteGuestController({
               </BirthdayBadge>
             </div>
             <div className="flex flex-wrap justify-end gap-2">
-              <BirthdayBadge tone={projection.remainingMs <= 5000 ? "coral" : "yellow"}>
+              <BirthdayBadge tone={countdown.remainingMs <= 5000 ? "coral" : "yellow"}>
                 <Timer className="h-4 w-4" aria-hidden="true" />
                 {projection.phase === "question_active"
-                  ? `${seconds(projection.remainingMs)}s`
+                  ? `${countdown.remainingSeconds}s`
                   : phaseLabel(projection.phase, copy)}
               </BirthdayBadge>
               {connection === "connected" ? null : (
@@ -402,53 +424,22 @@ export function RemoteGuestController({
           ) : null}
 
           {question && showAnswerOptions ? (
-            <div
-              className="grid gap-2 [@media(max-height:620px)]:gap-1.5 sm:gap-3"
-              role="radiogroup"
-              aria-label={copy.selectAnswer}
-            >
-              {question.options.map((option) => {
-                const selected = selectedOptionId === option.id;
-                const wasLocked = locked?.selectedOptionId === option.id;
-                const isCorrect = projection.reveal?.correctOptionId === option.id;
-                const isWrongReveal =
-                  projection.reveal?.status === "incorrect" &&
-                  projection.reveal.selectedOptionId === option.id;
-
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={selected || wasLocked}
-                    disabled={!canChangeSelection}
-                    onClick={() =>
-                      setDraft({
-                        sessionId,
-                        questionId: question.id,
-                        selectedOptionId: option.id,
-                        error: ""
-                      })
-                    }
-                    className={`min-h-11 rounded-[1rem] border px-3 py-2 text-left text-sm font-extrabold leading-5 shadow-lift transition [@media(max-height:620px)]:leading-[1.15] sm:min-h-14 sm:px-4 sm:py-3 sm:text-base ${
-                      isCorrect
-                        ? "border-party-green/50 bg-party-green/18"
-                        : isWrongReveal
-                          ? "border-party-red/45 bg-party-red/10"
-                          : selected || wasLocked
-                            ? "border-party-blue-deep bg-surface-sky"
-                            : "border-border bg-surface-paper"
-                    } disabled:cursor-not-allowed disabled:opacity-90`}
-                  >
-                    <span className="flex items-center justify-between gap-3">
-                      {option.label[locale]}
-                      {wasLocked ? <LockKeyhole className="h-5 w-5" aria-hidden="true" /> : null}
-                      {selected && !wasLocked ? <Check className="h-5 w-5" aria-hidden="true" /> : null}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <GuestAnswerOptions
+              question={question}
+              locale={locale}
+              copy={copy}
+              projection={projection}
+              selectedOptionId={selectedOptionId}
+              canChangeSelection={canChangeSelection}
+              onSelect={(optionId) =>
+                setDraft({
+                  sessionId,
+                  questionId: question.id,
+                  selectedOptionId: optionId,
+                  error: ""
+                })
+              }
+            />
           ) : null}
 
           <div className="min-h-11 [@media(max-height:620px)]:min-h-9" aria-live="polite">

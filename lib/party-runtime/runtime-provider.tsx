@@ -3,7 +3,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useState,
   useSyncExternalStore,
@@ -31,18 +30,6 @@ export function PartyRuntimeProvider({
   config?: PartyConfig;
 }) {
   const [runtime] = useState(() => getLocalPartyRuntime(config));
-
-  useEffect(() => {
-    const tick = window.setInterval(() => {
-      const snapshot = runtime.getSnapshot();
-
-      if (snapshot.state.phase === "question_active") {
-        runtime.notifyClockTick();
-      }
-    }, 1000);
-
-    return () => window.clearInterval(tick);
-  }, [runtime]);
 
   return (
     <PartyRuntimeContext.Provider value={runtime}>{children}</PartyRuntimeContext.Provider>
@@ -84,6 +71,7 @@ export function usePartyActions() {
       revealChoices: () => runtime.dispatch({ type: "REVEAL_CHOICES" }),
       revealAnswer: () => runtime.dispatch({ type: "REVEAL_ANSWER" }),
       showLeaderboard: () => runtime.dispatch({ type: "SHOW_LEADERBOARD" }),
+      advanceFromLeaderboard: () => runtime.dispatch({ type: "ADVANCE_FROM_LEADERBOARD" }),
       completePresentation: () => runtime.dispatch({ type: "COMPLETE_PRESENTATION" }),
       prepareNextQuestion: () => runtime.dispatch({ type: "PREPARE_NEXT_QUESTION" }),
       finishParty: () => runtime.dispatch({ type: "FINISH_PARTY" }),
