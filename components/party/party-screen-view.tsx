@@ -288,7 +288,7 @@ export function PartyScreenView({
               <div className="rounded-[1.25rem] border border-party-orange/30 bg-surface-highlight/80 p-5 text-center shadow-lift">
                 <Clock className="mx-auto mb-1 h-8 w-8 text-party-orange" aria-hidden="true" />
                 <p className="text-sm font-extrabold uppercase text-muted-foreground">{copy.time}</p>
-                <p className="font-display text-7xl font-extrabold leading-none text-foreground" aria-live="off">
+                <p className="font-display text-7xl font-extrabold leading-none text-foreground" aria-live="off" data-testid="party-countdown">
                   {countdown.remainingSeconds}
                 </p>
               </div>

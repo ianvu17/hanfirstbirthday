@@ -1,6 +1,7 @@
 import { chromium, type BrowserContext, type Page } from "@playwright/test";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { PDFDocument } from "pdf-lib";
 
 const baseUrl =
   process.env.PREVIEW_PARTY_BASE_URL ??
@@ -10,6 +11,7 @@ const evidenceDir =
   "docs/evidence/deployed-ux-investigation-20260713-preview-r1";
 const sessionStorageKey = "han-first-birthday:onboarding:v1";
 const joinCode = process.env.PREVIEW_PARTY_JOIN_CODE ?? "han-turns-one";
+const rehearsalQuestionLimit = Number(process.env.PREVIEW_PARTY_QUESTION_LIMIT ?? "2");
 
 type Locale = "en" | "vi";
 type Metrics = Awaited<ReturnType<typeof collectMetrics>>;
@@ -438,6 +440,27 @@ async function selectFirstAvailableAnswer(page: Page) {
   await options.first().click();
 }
 
+async function observeCountdown(page: Page, surface: string) {
+  const timer = page.getByTestId("party-countdown");
+  await timer.waitFor({ timeout: 15000 });
+  const values: number[] = [];
+  const deadline = Date.now() + 25000;
+
+  while (Date.now() < deadline) {
+    const text = await timer.textContent().catch(() => "");
+    const value = Number.parseInt(text ?? "", 10);
+    if (Number.isFinite(value) && values.at(-1) !== value) values.push(value);
+    if (value === 0) break;
+    await page.waitForTimeout(100);
+  }
+
+  if (values[0] !== 20) throw new Error(`${surface} countdown started at ${values[0] ?? "missing"}, expected 20.`);
+  for (let value = 20; value >= 0; value -= 1) {
+    if (!values.includes(value)) throw new Error(`${surface} countdown skipped ${value}: ${values.join(",")}`);
+  }
+  return values;
+}
+
 async function main() {
   const hostPin = getHostPin();
 
@@ -522,6 +545,11 @@ async function main() {
   await clickHostAction(hostPage, /reveal answers/i, "question_active");
   await guestEnPage.getByRole("radio").first().waitFor({ timeout: 15000 });
   await guestViPage.getByRole("radio").first().waitFor({ timeout: 15000 });
+  const countdownObservation = Promise.all([
+    observeCountdown(hostPage, "host"),
+    observeCountdown(displayPage, "party-screen"),
+    observeCountdown(guestEnPage, "guest-en")
+  ]);
   matrix.push({
     ...(await measureState(guestEnPage, "answers-active", "en", [390, 640])),
     language: "en",
@@ -564,6 +592,15 @@ async function main() {
   await guestViPage.getByRole("button", { name: /gửi câu trả lời/i }).click();
   await guestViPage.getByText(/câu trả lời đã khóa/i).waitFor({ timeout: 15000 });
   timeline.push({ step: "both-guests-submitted", at: new Date().toISOString() });
+
+  const [hostCountdown, displayCountdown, guestCountdown] = await countdownObservation;
+  timeline.push({
+    step: "countdown-observed",
+    at: new Date().toISOString(),
+    host: hostCountdown,
+    partyScreen: displayCountdown,
+    guest: guestCountdown
+  });
 
   await hostPage.waitForFunction(async () => {
     const response = await fetch("/api/party/session", { cache: "no-store" });
@@ -675,6 +712,88 @@ async function main() {
   await guestEnPage.waitForTimeout(3500);
   timeline.push({ step: "offline-recovery", at: new Date().toISOString() });
 
+  const totalQuestions = sessionSnapshot.projection?.totalQuestions ?? 0;
+  const lastQuestionToRun = Math.min(rehearsalQuestionLimit, totalQuestions);
+
+  for (let questionNumber = 2; questionNumber <= lastQuestionToRun; questionNumber += 1) {
+    await clickHostAction(hostPage, /reveal answers/i, "question_active");
+    await Promise.all([
+      guestEnPage.getByRole("radio").first().waitFor({ timeout: 15000 }),
+      guestViPage.getByRole("radio").last().waitFor({ timeout: 15000 })
+    ]);
+    await guestEnPage.getByRole("radio").first().click();
+    await guestViPage.getByRole("radio").last().click();
+    await Promise.all([
+      guestEnPage.getByRole("button", { name: /submit answer/i }).click(),
+      guestViPage.getByRole("button", { name: /gửi câu trả lời/i }).click()
+    ]);
+    await hostPage.waitForFunction(async () => {
+      const response = await fetch("/api/party/session", { cache: "no-store" });
+      const payload = await response.json();
+      return payload.projection?.phase === "question_locked";
+    }, null, { timeout: 26000 });
+    await clickHostAction(hostPage, /reveal answer/i, "answer_reveal");
+    await Promise.all([
+      guestEnPage.getByText(/^correct answer$/i).waitFor({ timeout: 15000 }),
+      guestViPage.getByText(/^đáp án đúng$/i).waitFor({ timeout: 15000 })
+    ]);
+
+    const explicitWrongLabels =
+      await guestEnPage.getByText(/^your answer$/i).count() +
+      await guestViPage.getByText(/^đáp án của bạn$/i).count();
+    if (explicitWrongLabels < 1) {
+      throw new Error(`Question ${questionNumber} did not explicitly label a wrong selected answer.`);
+    }
+    if (questionNumber === 2) {
+      await Promise.all([
+        guestEnPage.screenshot({ path: join(evidenceDir, "screenshots", "guest-en-explicit-reveal.png"), fullPage: true }),
+        guestViPage.screenshot({ path: join(evidenceDir, "screenshots", "guest-vi-explicit-reveal.png"), fullPage: true }),
+        displayPage.screenshot({ path: join(evidenceDir, "screenshots", "party-screen-polished-reveal.png"), fullPage: true })
+      ]);
+    }
+
+    await clickHostAction(hostPage, /show leaderboard/i, "leaderboard");
+    if (questionNumber === totalQuestions) {
+      await clickHostAction(hostPage, /show winner/i, "finished");
+    } else {
+      await clickHostAction(hostPage, /next question/i, "question_ready");
+    }
+    timeline.push({ step: `question-${questionNumber}-complete`, at: new Date().toISOString() });
+  }
+
+  let certificateValidation: Record<string, unknown> | null = null;
+  if (lastQuestionToRun === totalQuestions && totalQuestions > 0) {
+    await Promise.all([
+      guestEnPage.reload({ waitUntil: "domcontentloaded" }),
+      guestViPage.reload({ waitUntil: "domcontentloaded" }),
+      displayPage.reload({ waitUntil: "domcontentloaded" })
+    ]);
+    await displayPage.getByText(/mastermind/i).first().waitFor({ timeout: 15000 });
+
+    const [enCertificate, viCertificate] = await Promise.all([
+      guestEn.request.get(`${baseUrl}/api/party/certificate`),
+      guestVi.request.get(`${baseUrl}/api/party/certificate`)
+    ]);
+    const winnerCertificate = enCertificate.status() === 200 ? enCertificate : viCertificate;
+    const nonWinnerCertificate = enCertificate.status() === 200 ? viCertificate : enCertificate;
+    if (winnerCertificate.status() !== 200 || nonWinnerCertificate.status() !== 403) {
+      throw new Error(`Certificate authorization mismatch: en=${enCertificate.status()} vi=${viCertificate.status()}`);
+    }
+    const certificateBytes = await winnerCertificate.body();
+    const certificatePdf = await PDFDocument.load(certificateBytes);
+    if (certificatePdf.getPageCount() !== 1) throw new Error("Winner certificate was not one page.");
+    writeFileSync(join(evidenceDir, "winner-certificate.pdf"), certificateBytes);
+    certificateValidation = {
+      winnerLocale: enCertificate.status() === 200 ? "en" : "vi",
+      winnerStatus: winnerCertificate.status(),
+      nonWinnerStatus: nonWinnerCertificate.status(),
+      contentType: winnerCertificate.headers()["content-type"],
+      pageCount: certificatePdf.getPageCount(),
+      bytes: certificateBytes.byteLength
+    };
+    await displayPage.screenshot({ path: join(evidenceDir, "screenshots", "party-screen-final-winner.png"), fullPage: true });
+  }
+
   const traces = {
     host: await collectTrace(hostPage),
     partyScreen: await collectTrace(displayPage),
@@ -692,6 +811,8 @@ async function main() {
         isTest: sessionSnapshot.session?.isTest,
         createdAt: new Date().toISOString(),
         finalSnapshot,
+        rehearsalQuestionLimit,
+        certificateValidation,
         timeline,
         matrix,
         traces

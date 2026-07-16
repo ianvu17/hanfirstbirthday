@@ -397,7 +397,7 @@ export function RemoteGuestController({
               <BirthdayBadge tone={countdown.remainingMs <= 5000 ? "coral" : "yellow"}>
                 <Timer className="h-4 w-4" aria-hidden="true" />
                 {projection.phase === "question_active"
-                  ? `${countdown.remainingSeconds}s`
+                  ? <span data-testid="party-countdown">{countdown.remainingSeconds}s</span>
                   : phaseLabel(projection.phase, copy)}
               </BirthdayBadge>
               {connection === "connected" ? null : (

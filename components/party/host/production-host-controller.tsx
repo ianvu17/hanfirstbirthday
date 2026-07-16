@@ -412,7 +412,7 @@ export function ProductionHostController({ locale }: { locale: Locale }) {
                 {snapshot.projection.phase === "question_active" ? (
                   <>
                     <Clock className="h-4 w-4 text-party-orange" aria-hidden="true" />
-                    {countdown.remainingSeconds}s
+                    <span data-testid="party-countdown">{countdown.remainingSeconds}s</span>
                   </>
                 ) : (
                   snapshot.projection.submittedCount
