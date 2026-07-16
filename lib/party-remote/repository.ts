@@ -1227,7 +1227,7 @@ export async function runHostCommand(
   // persisted deadline remains the only response-acceptance boundary.
   const persistedState =
     command.type === "REVEAL_CHOICES" && result.state.questionDeadlineAt !== null
-      ? { ...result.state, questionDeadlineAt: result.state.questionDeadlineAt + 3_000 }
+      ? { ...result.state, questionDeadlineAt: result.state.questionDeadlineAt + 5_000 }
       : result.state;
   const updated = await persistSessionState(bundle, persistedState, expectedRevision);
 

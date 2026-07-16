@@ -622,7 +622,7 @@ async function main() {
     const response = await fetch("/api/party/session", { cache: "no-store" });
     const payload = await response.json();
     return payload.projection?.phase === "question_locked";
-  }, null, { timeout: 26000 });
+  }, null, { timeout: 35_000 });
   await guestEnPage.waitForTimeout(1000);
   matrix.push({
     ...(await measureState(guestEnPage, "answers-closed", "en", [390, 640])),
@@ -748,7 +748,7 @@ async function main() {
       const response = await fetch("/api/party/session", { cache: "no-store" });
       const payload = await response.json();
       return payload.projection?.phase === "question_locked";
-    }, null, { timeout: 26000 });
+    }, null, { timeout: 35_000 });
     await clickHostAction(hostPage, /reveal answer/i, "answer_reveal");
     await Promise.all([
       guestEnPage.getByText(/^correct answer$/i).waitFor({ timeout: 15000 }),
