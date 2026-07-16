@@ -36,7 +36,13 @@ const requiredFragments = [
   "grant select (",
   "grant execute on function public.touch_party_session_response(uuid) to service_role",
   "alter publication supabase_realtime add table public.party_sessions",
-  "alter publication supabase_realtime add table public.participants"
+  "alter publication supabase_realtime add table public.participants",
+  "add column if not exists avatar_type text",
+  "participants_avatar_combination_check",
+  "insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)",
+  "'party-avatars'",
+  "No anonymous avatar object reads",
+  "No anonymous avatar object writes"
 ];
 
 const missing = requiredFragments.filter((fragment) => !sql.includes(fragment));
@@ -49,4 +55,4 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-console.log("Supabase migration includes Milestone 5 tables, constraints, indexes, and RLS policies.");
+console.log("Supabase migrations include runtime and avatar tables, constraints, indexes, storage, and RLS policies.");

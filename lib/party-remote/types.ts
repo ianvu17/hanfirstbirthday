@@ -163,6 +163,7 @@ export type RemoteApiErrorCode =
   | "invalid_locale"
   | "invalid_join_code"
   | "invalid_avatar"
+  | "avatar_infrastructure_missing"
   | "invalid_participant_session"
   | "host_unauthorized"
   | "host_session_expired"

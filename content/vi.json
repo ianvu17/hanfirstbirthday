@@ -69,6 +69,17 @@
             "zoomLabel": "Phóng to",
             "sizeLabel": "Cỡ nhãn dán",
             "removeSticker": "Xóa nhãn dán",
+            "stickers": {
+                "partyHat": "nón sinh nhật",
+                "crown": "vương miện sinh nhật",
+                "balloons": "bong bóng",
+                "confetti": "hoa giấy",
+                "cupcake": "cupcake sinh nhật",
+                "star": "ngôi sao",
+                "one": "số 1",
+                "bowTie": "nơ cổ",
+                "glasses": "kính ăn mừng"
+            },
             "validation": {
                 "cameraUnavailable": "Không thể dùng camera ở đây. Bạn có thể chọn ảnh hoặc avatar.",
                 "cameraDenied": "Bạn chưa cho phép dùng camera. Bạn có thể chọn ảnh hoặc avatar.",

@@ -47,6 +47,8 @@ type PartyBundle = {
 };
 
 const avatarBucket = "party-avatars";
+const avatarInfrastructureMigration = "202607160001_guest_avatar_foundation.sql";
+const maxPreparedAvatarBytes = 524288;
 
 export type ParticipantSession = {
   participantId: string;
@@ -132,6 +134,55 @@ async function buildParticipantAvatarProjection(
   }
 
   return fallbackAvatar(participant.display_name);
+}
+
+async function validateAvatarInfrastructure() {
+  const supabase = createSupabaseServiceClient();
+  const columns = await supabase
+    .from("participants")
+    .select("avatar_type, avatar_path, avatar_preset_id, avatar_updated_at")
+    .limit(1);
+
+  if (columns.error) {
+    return {
+      ok: false as const,
+      error: {
+        code: "avatar_infrastructure_missing" as const,
+        message: `Avatar participant columns are missing. Apply Supabase migration ${avatarInfrastructureMigration}.`
+      }
+    };
+  }
+
+  const bucket = await supabase.storage.getBucket(avatarBucket);
+
+  if (bucket.error || !bucket.data) {
+    return {
+      ok: false as const,
+      error: {
+        code: "avatar_infrastructure_missing" as const,
+        message: `Private Supabase Storage bucket "${avatarBucket}" is missing. Apply Supabase migration ${avatarInfrastructureMigration}.`
+      }
+    };
+  }
+
+  const allowedMimeTypes = bucket.data.allowed_mime_types ?? [];
+
+  if (
+    bucket.data.public ||
+    (bucket.data.file_size_limit ?? 0) < maxPreparedAvatarBytes ||
+    !allowedMimeTypes.includes("image/webp") ||
+    !allowedMimeTypes.includes("image/jpeg")
+  ) {
+    return {
+      ok: false as const,
+      error: {
+        code: "avatar_infrastructure_missing" as const,
+        message: `Supabase Storage bucket "${avatarBucket}" is not configured for private WebP/JPEG avatar uploads. Reapply migration ${avatarInfrastructureMigration}.`
+      }
+    };
+  }
+
+  return { ok: true as const };
 }
 
 async function applyParticipantAvatarsToLeaderboard(
@@ -610,6 +661,12 @@ export async function updateParticipantPresetAvatar(
     };
   }
 
+  const avatarInfrastructure = await validateAvatarInfrastructure();
+
+  if (!avatarInfrastructure.ok) {
+    return avatarInfrastructure;
+  }
+
   const supabase = createSupabaseServiceClient();
   const updated = await supabase
     .from("participants")
@@ -677,6 +734,12 @@ export async function updateParticipantPhotoAvatar(
         message: "Avatar changes are closed for this party session."
       }
     };
+  }
+
+  const avatarInfrastructure = await validateAvatarInfrastructure();
+
+  if (!avatarInfrastructure.ok) {
+    return avatarInfrastructure;
   }
 
   const supabase = createSupabaseServiceClient();

@@ -11,7 +11,7 @@ import {
   UserRound,
   X
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 
 import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { PaperPanel } from "@/components/design/paper-panel";
@@ -28,7 +28,16 @@ import { cn } from "@/lib/utils";
 
 type PartyPhotoCopy = BirthdayContent["screens"]["partyPhoto"];
 
-type StickerKind = "hat" | "crown" | "balloons" | "star" | "one" | "bow";
+type StickerKind =
+  | "party-hat"
+  | "crown"
+  | "balloons"
+  | "confetti"
+  | "cupcake"
+  | "star"
+  | "one"
+  | "bow-tie"
+  | "glasses";
 
 type Sticker = {
   id: string;
@@ -53,8 +62,19 @@ type PartyPhotoCardProps = {
 };
 
 const maxSourceFileSize = 5 * 1024 * 1024;
+const maxStickers = 3;
 const supportedMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
-const stickerKinds: StickerKind[] = ["hat", "crown", "balloons", "star", "one", "bow"];
+const stickerKinds: StickerKind[] = [
+  "party-hat",
+  "crown",
+  "balloons",
+  "confetti",
+  "cupcake",
+  "star",
+  "one",
+  "bow-tie",
+  "glasses"
+];
 
 function createObjectUrl(blob: Blob) {
   return URL.createObjectURL(blob);
@@ -69,66 +89,268 @@ function loadImage(src: string) {
   });
 }
 
+function stickerLabel(copy: PartyPhotoCopy, kind: StickerKind) {
+  switch (kind) {
+    case "party-hat":
+      return copy.stickers.partyHat;
+    case "crown":
+      return copy.stickers.crown;
+    case "balloons":
+      return copy.stickers.balloons;
+    case "confetti":
+      return copy.stickers.confetti;
+    case "cupcake":
+      return copy.stickers.cupcake;
+    case "star":
+      return copy.stickers.star;
+    case "one":
+      return copy.stickers.one;
+    case "bow-tie":
+      return copy.stickers.bowTie;
+    case "glasses":
+      return copy.stickers.glasses;
+  }
+}
+
+function StickerArtwork({ kind, className }: { kind: StickerKind; className?: string }) {
+  const stroke = "#fffaf0";
+  const ink = "#5f4a3b";
+  const blue = "#75b9d6";
+  const blueDeep = "#2f6f91";
+  const yellow = "#f6c84f";
+  const orange = "#f58b5f";
+  const pink = "#f4a4b8";
+
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+    >
+      {kind === "party-hat" ? (
+        <>
+          <path d="M50 12 78 80H22Z" fill={blue} stroke={stroke} strokeWidth="8" strokeLinejoin="round" />
+          <path d="M35 49 62 31M42 67 72 49" stroke={yellow} strokeWidth="8" strokeLinecap="round" />
+          <circle cx="50" cy="12" r="11" fill={yellow} stroke={stroke} strokeWidth="6" />
+          <path d="M25 80h50" stroke={ink} strokeWidth="5" strokeLinecap="round" opacity="0.45" />
+        </>
+      ) : null}
+      {kind === "crown" ? (
+        <>
+          <path d="M16 72 24 28 42 54 50 22 58 54 76 28 84 72Z" fill={yellow} stroke={stroke} strokeWidth="8" strokeLinejoin="round" />
+          <circle cx="24" cy="28" r="7" fill={orange} stroke={stroke} strokeWidth="5" />
+          <circle cx="50" cy="22" r="7" fill={blue} stroke={stroke} strokeWidth="5" />
+          <circle cx="76" cy="28" r="7" fill={pink} stroke={stroke} strokeWidth="5" />
+          <path d="M22 72h56" stroke={ink} strokeWidth="6" strokeLinecap="round" opacity="0.45" />
+        </>
+      ) : null}
+      {kind === "balloons" ? (
+        <>
+          <path d="M37 48c-11 15-14 25-14 37M53 46c0 16-3 27-12 39M66 49c10 14 12 24 4 36" stroke={ink} strokeWidth="4" strokeLinecap="round" fill="none" />
+          <ellipse cx="31" cy="31" rx="18" ry="23" fill={blue} stroke={stroke} strokeWidth="7" />
+          <ellipse cx="53" cy="25" rx="17" ry="22" fill={yellow} stroke={stroke} strokeWidth="7" />
+          <ellipse cx="71" cy="36" rx="16" ry="21" fill={orange} stroke={stroke} strokeWidth="7" />
+          <path d="M25 24c4-6 9-8 14-7" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" opacity="0.7" />
+        </>
+      ) : null}
+      {kind === "confetti" ? (
+        <>
+          <path d="M20 68 76 28 86 78Z" fill={blue} stroke={stroke} strokeWidth="7" strokeLinejoin="round" />
+          <path d="M29 62 77 47M45 50l18 25" stroke={yellow} strokeWidth="7" strokeLinecap="round" />
+          <circle cx="20" cy="28" r="7" fill={orange} stroke={stroke} strokeWidth="4" />
+          <rect x="57" y="13" width="12" height="12" rx="3" fill={pink} stroke={stroke} strokeWidth="4" transform="rotate(18 63 19)" />
+          <path d="M77 13c10 6-4 14 7 20" stroke={orange} strokeWidth="6" strokeLinecap="round" fill="none" />
+          <path d="M31 13c-8 10 8 12 0 23" stroke={yellow} strokeWidth="6" strokeLinecap="round" fill="none" />
+        </>
+      ) : null}
+      {kind === "cupcake" ? (
+        <>
+          <path d="M28 47c3-18 40-19 44 0 10 2 13 19-1 22H29c-14-3-11-20-1-22Z" fill={pink} stroke={stroke} strokeWidth="7" strokeLinejoin="round" />
+          <path d="M29 63h42l-7 24H36Z" fill={yellow} stroke={stroke} strokeWidth="7" strokeLinejoin="round" />
+          <path d="M42 65v19M58 65v19" stroke={orange} strokeWidth="5" strokeLinecap="round" />
+          <circle cx="49" cy="33" r="6" fill={orange} stroke={stroke} strokeWidth="4" />
+          <path d="M50 18v9" stroke={ink} strokeWidth="5" strokeLinecap="round" />
+        </>
+      ) : null}
+      {kind === "star" ? (
+        <>
+          <path d="M50 12 60 38 88 39 66 57 74 85 50 69 26 85 34 57 12 39 40 38Z" fill={yellow} stroke={stroke} strokeWidth="8" strokeLinejoin="round" />
+          <path d="M42 45c2-3 5-4 8-4s6 1 8 4M37 34h.1M63 34h.1" stroke={ink} strokeWidth="6" strokeLinecap="round" />
+        </>
+      ) : null}
+      {kind === "one" ? (
+        <>
+          <circle cx="50" cy="50" r="37" fill={blue} stroke={stroke} strokeWidth="8" />
+          <path d="M41 37 53 28v45" stroke={yellow} strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M41 37 53 28v45" stroke={blueDeep} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+        </>
+      ) : null}
+      {kind === "bow-tie" ? (
+        <>
+          <path d="M12 32c19 0 27 9 35 18-8 9-16 18-35 18Z" fill={blue} stroke={stroke} strokeWidth="8" strokeLinejoin="round" />
+          <path d="M88 32c-19 0-27 9-35 18 8 9 16 18 35 18Z" fill={orange} stroke={stroke} strokeWidth="8" strokeLinejoin="round" />
+          <rect x="42" y="39" width="16" height="22" rx="6" fill={yellow} stroke={stroke} strokeWidth="6" />
+        </>
+      ) : null}
+      {kind === "glasses" ? (
+        <>
+          <path d="M15 44c8-8 24-8 32 0M53 44c8-8 24-8 32 0M47 48h6" stroke={ink} strokeWidth="8" strokeLinecap="round" fill="none" />
+          <path d="M18 48c0-14 28-14 28 0 0 16-28 16-28 0Z" fill={blue} fillOpacity="0.75" stroke={stroke} strokeWidth="7" />
+          <path d="M54 48c0-14 28-14 28 0 0 16-28 16-28 0Z" fill={yellow} fillOpacity="0.8" stroke={stroke} strokeWidth="7" />
+          <path d="M26 42h10M62 42h10" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" opacity="0.7" />
+        </>
+      ) : null}
+    </svg>
+  );
+}
+
 function drawSticker(ctx: CanvasRenderingContext2D, sticker: Sticker, canvasSize: number) {
   const x = sticker.x * canvasSize;
   const y = sticker.y * canvasSize;
   const size = sticker.size;
+  const s = size;
 
   ctx.save();
   ctx.translate(x, y);
-  ctx.lineWidth = Math.max(4, size * 0.08);
+  ctx.lineWidth = Math.max(5, s * 0.08);
   ctx.lineJoin = "round";
+  ctx.lineCap = "round";
   ctx.strokeStyle = "#fffaf0";
-  ctx.fillStyle = "#f6b84f";
+  const ink = "#5f4a3b";
+  const blue = "#75b9d6";
+  const yellow = "#f6c84f";
+  const orange = "#f58b5f";
+  const pink = "#f4a4b8";
 
-  if (sticker.kind === "hat") {
+  if (sticker.kind === "party-hat") {
     ctx.beginPath();
-    ctx.moveTo(0, -size * 0.48);
-    ctx.lineTo(size * 0.42, size * 0.34);
-    ctx.lineTo(-size * 0.42, size * 0.34);
+    ctx.moveTo(0, -s * 0.48);
+    ctx.lineTo(s * 0.42, s * 0.34);
+    ctx.lineTo(-s * 0.42, s * 0.34);
     ctx.closePath();
-    ctx.fillStyle = "#75b9d6";
+    ctx.fillStyle = blue;
     ctx.fill();
     ctx.stroke();
+    ctx.strokeStyle = yellow;
+    ctx.lineWidth = Math.max(4, s * 0.07);
     ctx.beginPath();
-    ctx.arc(0, -size * 0.48, size * 0.13, 0, Math.PI * 2);
-    ctx.fillStyle = "#f6c84f";
+    ctx.moveTo(-s * 0.2, -s * 0.05);
+    ctx.lineTo(s * 0.16, -s * 0.28);
+    ctx.moveTo(-s * 0.08, s * 0.18);
+    ctx.lineTo(s * 0.28, -s * 0.05);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(0, -s * 0.48, s * 0.13, 0, Math.PI * 2);
+    ctx.fillStyle = yellow;
     ctx.fill();
+    ctx.strokeStyle = "#fffaf0";
+    ctx.lineWidth = Math.max(4, s * 0.06);
+    ctx.stroke();
   } else if (sticker.kind === "crown") {
     ctx.beginPath();
-    ctx.moveTo(-size * 0.45, size * 0.22);
-    ctx.lineTo(-size * 0.36, -size * 0.3);
-    ctx.lineTo(-size * 0.12, size * 0.02);
-    ctx.lineTo(0, -size * 0.38);
-    ctx.lineTo(size * 0.12, size * 0.02);
-    ctx.lineTo(size * 0.36, -size * 0.3);
-    ctx.lineTo(size * 0.45, size * 0.22);
+    ctx.moveTo(-s * 0.45, s * 0.22);
+    ctx.lineTo(-s * 0.36, -s * 0.3);
+    ctx.lineTo(-s * 0.12, s * 0.02);
+    ctx.lineTo(0, -s * 0.38);
+    ctx.lineTo(s * 0.12, s * 0.02);
+    ctx.lineTo(s * 0.36, -s * 0.3);
+    ctx.lineTo(s * 0.45, s * 0.22);
     ctx.closePath();
-    ctx.fillStyle = "#f6c84f";
+    ctx.fillStyle = yellow;
     ctx.fill();
     ctx.stroke();
-  } else if (sticker.kind === "balloons") {
-    for (const [dx, color] of [
-      [-0.18, "#75b9d6"],
-      [0.16, "#f58b5f"],
-      [0, "#f6c84f"]
+    for (const [cx, cy, color] of [
+      [-0.36, -0.3, orange],
+      [0, -0.38, blue],
+      [0.36, -0.3, pink]
     ] as const) {
       ctx.beginPath();
-      ctx.arc(size * dx, -size * 0.1, size * 0.2, 0, Math.PI * 2);
+      ctx.arc(s * cx, s * cy, s * 0.08, 0, Math.PI * 2);
       ctx.fillStyle = color;
       ctx.fill();
       ctx.stroke();
+    }
+  } else if (sticker.kind === "balloons") {
+    for (const [dx, color] of [
+      [-0.22, blue],
+      [0.2, orange],
+      [0, yellow]
+    ] as const) {
       ctx.beginPath();
-      ctx.moveTo(size * dx, size * 0.12);
-      ctx.lineTo(0, size * 0.42);
-      ctx.strokeStyle = "#6f5a46";
+      ctx.ellipse(s * dx, -s * 0.14, s * 0.2, s * 0.25, 0, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.stroke();
+      ctx.strokeStyle = ink;
+      ctx.lineWidth = Math.max(2, s * 0.035);
+      ctx.beginPath();
+      ctx.moveTo(s * dx, s * 0.12);
+      ctx.quadraticCurveTo(s * dx * 0.6, s * 0.26, 0, s * 0.42);
       ctx.stroke();
       ctx.strokeStyle = "#fffaf0";
+      ctx.lineWidth = Math.max(5, s * 0.08);
     }
+  } else if (sticker.kind === "confetti") {
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.42, s * 0.25);
+    ctx.lineTo(s * 0.32, -s * 0.35);
+    ctx.lineTo(s * 0.45, s * 0.38);
+    ctx.closePath();
+    ctx.fillStyle = blue;
+    ctx.fill();
+    ctx.stroke();
+    ctx.strokeStyle = yellow;
+    ctx.lineWidth = Math.max(4, s * 0.07);
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.28, s * 0.15);
+    ctx.lineTo(s * 0.33, -s * 0.04);
+    ctx.moveTo(-s * 0.06, -s * 0.05);
+    ctx.lineTo(s * 0.18, s * 0.26);
+    ctx.stroke();
+    ctx.strokeStyle = orange;
+    ctx.beginPath();
+    ctx.arc(-s * 0.4, -s * 0.35, s * 0.08, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = orange;
+    ctx.fill();
+    ctx.fillStyle = pink;
+    ctx.fillRect(s * 0.12, -s * 0.48, s * 0.14, s * 0.14);
+  } else if (sticker.kind === "cupcake") {
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.34, s * 0.02);
+    ctx.bezierCurveTo(-s * 0.3, -s * 0.34, s * 0.3, -s * 0.34, s * 0.34, s * 0.02);
+    ctx.bezierCurveTo(s * 0.52, s * 0.04, s * 0.48, s * 0.32, s * 0.24, s * 0.32);
+    ctx.lineTo(-s * 0.24, s * 0.32);
+    ctx.bezierCurveTo(-s * 0.48, s * 0.32, -s * 0.52, s * 0.04, -s * 0.34, s * 0.02);
+    ctx.fillStyle = pink;
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.3, s * 0.24);
+    ctx.lineTo(s * 0.3, s * 0.24);
+    ctx.lineTo(s * 0.2, s * 0.5);
+    ctx.lineTo(-s * 0.2, s * 0.5);
+    ctx.closePath();
+    ctx.fillStyle = yellow;
+    ctx.fill();
+    ctx.stroke();
+    ctx.strokeStyle = orange;
+    ctx.lineWidth = Math.max(3, s * 0.05);
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.1, s * 0.28);
+    ctx.lineTo(-s * 0.05, s * 0.46);
+    ctx.moveTo(s * 0.1, s * 0.28);
+    ctx.lineTo(s * 0.05, s * 0.46);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(0, -s * 0.28, s * 0.08, 0, Math.PI * 2);
+    ctx.fillStyle = orange;
+    ctx.fill();
   } else if (sticker.kind === "star") {
     ctx.beginPath();
     for (let index = 0; index < 10; index += 1) {
-      const radius = index % 2 === 0 ? size * 0.44 : size * 0.19;
+      const radius = index % 2 === 0 ? s * 0.44 : s * 0.19;
       const angle = -Math.PI / 2 + (index * Math.PI) / 5;
       const px = Math.cos(angle) * radius;
       const py = Math.sin(angle) * radius;
@@ -139,27 +361,69 @@ function drawSticker(ctx: CanvasRenderingContext2D, sticker: Sticker, canvasSize
       }
     }
     ctx.closePath();
-    ctx.fillStyle = "#f6c84f";
+    ctx.fillStyle = yellow;
     ctx.fill();
+    ctx.stroke();
+    ctx.strokeStyle = ink;
+    ctx.lineWidth = Math.max(3, s * 0.05);
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.1, -s * 0.04);
+    ctx.quadraticCurveTo(0, s * 0.04, s * 0.1, -s * 0.04);
     ctx.stroke();
   } else if (sticker.kind === "one") {
-    ctx.font = `900 ${size * 0.78}px sans-serif`;
+    ctx.beginPath();
+    ctx.arc(0, 0, s * 0.43, 0, Math.PI * 2);
+    ctx.fillStyle = blue;
+    ctx.fill();
+    ctx.stroke();
+    ctx.font = `900 ${s * 0.72}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+    ctx.lineWidth = Math.max(4, s * 0.07);
     ctx.strokeText("1", 0, 0);
-    ctx.fillStyle = "#f58b5f";
+    ctx.fillStyle = yellow;
     ctx.fillText("1", 0, 0);
-  } else {
+  } else if (sticker.kind === "bow-tie") {
     ctx.beginPath();
-    ctx.ellipse(-size * 0.18, 0, size * 0.24, size * 0.16, -0.35, 0, Math.PI * 2);
-    ctx.ellipse(size * 0.18, 0, size * 0.24, size * 0.16, 0.35, 0, Math.PI * 2);
-    ctx.fillStyle = "#75b9d6";
+    ctx.moveTo(-s * 0.45, -s * 0.22);
+    ctx.bezierCurveTo(-s * 0.18, -s * 0.2, -s * 0.08, -s * 0.1, 0, 0);
+    ctx.bezierCurveTo(-s * 0.08, s * 0.1, -s * 0.18, s * 0.2, -s * 0.45, s * 0.22);
+    ctx.closePath();
+    ctx.fillStyle = blue;
     ctx.fill();
     ctx.stroke();
     ctx.beginPath();
-    ctx.arc(0, 0, size * 0.08, 0, Math.PI * 2);
-    ctx.fillStyle = "#f6c84f";
+    ctx.moveTo(s * 0.45, -s * 0.22);
+    ctx.bezierCurveTo(s * 0.18, -s * 0.2, s * 0.08, -s * 0.1, 0, 0);
+    ctx.bezierCurveTo(s * 0.08, s * 0.1, s * 0.18, s * 0.2, s * 0.45, s * 0.22);
+    ctx.closePath();
+    ctx.fillStyle = orange;
     ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.roundRect(-s * 0.12, -s * 0.16, s * 0.24, s * 0.32, s * 0.07);
+    ctx.fillStyle = yellow;
+    ctx.fill();
+    ctx.stroke();
+  } else if (sticker.kind === "glasses") {
+    ctx.strokeStyle = ink;
+    ctx.lineWidth = Math.max(6, s * 0.08);
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.02, -s * 0.02);
+    ctx.lineTo(s * 0.02, -s * 0.02);
+    ctx.stroke();
+    ctx.strokeStyle = "#fffaf0";
+    ctx.lineWidth = Math.max(5, s * 0.07);
+    ctx.fillStyle = "rgba(117, 185, 214, 0.78)";
+    ctx.beginPath();
+    ctx.roundRect(-s * 0.42, -s * 0.16, s * 0.34, s * 0.32, s * 0.12);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "rgba(246, 200, 79, 0.82)";
+    ctx.beginPath();
+    ctx.roundRect(s * 0.08, -s * 0.16, s * 0.34, s * 0.32, s * 0.12);
+    ctx.fill();
+    ctx.stroke();
   }
 
   ctx.restore();
@@ -195,7 +459,24 @@ export function PartyPhotoCard({
 }: PartyPhotoCardProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const dragRef = useRef<
+    | {
+        mode: "photo";
+        pointerId: number;
+        startClientX: number;
+        startClientY: number;
+        startOffsetX: number;
+        startOffsetY: number;
+      }
+    | {
+        mode: "sticker";
+        pointerId: number;
+        stickerId: string;
+      }
+    | null
+  >(null);
   const [sourceUrl, setSourceUrl] = useState<string | null>(null);
   const [cameraMode, setCameraMode] = useState<"idle" | "starting" | "active">("idle");
   const [error, setError] = useState("");
@@ -351,7 +632,11 @@ export function PartyPhotoCard({
 
   function addSticker(kind: StickerKind) {
     setStickers((current) => {
-      const next = current.slice(0, 2);
+      if (current.length >= maxStickers) {
+        return current;
+      }
+
+      const next = current;
       const id = `${kind}-${Date.now().toString(36)}`;
       const sticker: Sticker = {
         id,
@@ -363,6 +648,87 @@ export function PartyPhotoCard({
       setSelectedStickerId(id);
       return [...next, sticker];
     });
+  }
+
+  function moveStickerToPointer(stickerId: string, event: PointerEvent<HTMLElement>) {
+    const editor = editorRef.current;
+
+    if (!editor) {
+      return;
+    }
+
+    const rect = editor.getBoundingClientRect();
+    const nextX = (event.clientX - rect.left) / rect.width;
+    const nextY = (event.clientY - rect.top) / rect.height;
+    setStickers((current) =>
+      current.map((sticker) =>
+        sticker.id === stickerId
+          ? {
+              ...sticker,
+              x: Math.min(0.88, Math.max(0.12, nextX)),
+              y: Math.min(0.88, Math.max(0.12, nextY))
+            }
+          : sticker
+      )
+    );
+  }
+
+  function handleEditorPointerDown(event: PointerEvent<HTMLDivElement>) {
+    if (!sourceUrl || event.button !== 0) {
+      return;
+    }
+
+    dragRef.current = {
+      mode: "photo",
+      pointerId: event.pointerId,
+      startClientX: event.clientX,
+      startClientY: event.clientY,
+      startOffsetX: offsetX,
+      startOffsetY: offsetY
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function handleEditorPointerMove(event: PointerEvent<HTMLDivElement>) {
+    const drag = dragRef.current;
+
+    if (!drag || drag.mode !== "photo" || drag.pointerId !== event.pointerId) {
+      return;
+    }
+
+    setOffsetX(drag.startOffsetX + event.clientX - drag.startClientX);
+    setOffsetY(drag.startOffsetY + event.clientY - drag.startClientY);
+  }
+
+  function handlePointerUp(event: PointerEvent<HTMLElement>) {
+    if (dragRef.current?.pointerId === event.pointerId) {
+      dragRef.current = null;
+    }
+  }
+
+  function handleStickerPointerDown(stickerId: string, event: PointerEvent<HTMLButtonElement>) {
+    if (event.button !== 0) {
+      return;
+    }
+
+    event.stopPropagation();
+    setSelectedStickerId(stickerId);
+    dragRef.current = {
+      mode: "sticker",
+      pointerId: event.pointerId,
+      stickerId
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function handleStickerPointerMove(event: PointerEvent<HTMLButtonElement>) {
+    const drag = dragRef.current;
+
+    if (!drag || drag.mode !== "sticker" || drag.pointerId !== event.pointerId) {
+      return;
+    }
+
+    moveStickerToPointer(drag.stickerId, event);
   }
 
   function updateActiveSticker(patch: Partial<Sticker>) {
@@ -442,8 +808,8 @@ export function PartyPhotoCard({
       });
       setSelectedPresetId(null);
       setStatus(copy.validation.saved);
-    } catch {
-      setError(copy.validation.uploadFailed);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : copy.validation.uploadFailed);
     } finally {
       setSaving(false);
     }
@@ -462,10 +828,8 @@ export function PartyPhotoCard({
       setSelectedPresetId(updated?.type === "preset" ? updated.presetId : presetId);
       setPreparedPhoto(null);
       setStatus(copy.validation.saved);
-    } catch {
-      setSelectedPresetId(presetId);
-      setStatus(copy.presetReady);
-      setError(copy.validation.uploadFailed);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : copy.validation.uploadFailed);
     } finally {
       setSaving(false);
     }
@@ -544,18 +908,35 @@ export function PartyPhotoCard({
             {sourceUrl ? (
               <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_15rem]">
                 <div className="space-y-3">
-                  <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-[1.2rem] border border-party-blue/25 bg-surface-sky shadow-inner">
+                  <div
+                    ref={editorRef}
+                    className="relative mx-auto aspect-square w-full max-w-sm touch-none overflow-hidden rounded-[1.2rem] border border-party-blue/25 bg-surface-sky shadow-inner"
+                    onPointerDown={handleEditorPointerDown}
+                    onPointerMove={handleEditorPointerMove}
+                    onPointerUp={handlePointerUp}
+                    onPointerCancel={handlePointerUp}
+                  >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={sourceUrl} alt="" className="h-full w-full object-cover" style={transformStyle} />
+                    <img
+                      src={sourceUrl}
+                      alt=""
+                      className="pointer-events-none h-full w-full select-none object-cover"
+                      style={transformStyle}
+                    />
                     <div className="pointer-events-none absolute inset-0 rounded-full border-[999px] border-foreground/20 shadow-[inset_0_0_0_4px_hsl(var(--surface-paper)/0.9)]" />
                     {stickers.map((sticker) => (
                       <button
                         key={sticker.id}
                         type="button"
-                        onClick={() => setSelectedStickerId(sticker.id)}
+                        onPointerDown={(event) => handleStickerPointerDown(sticker.id, event)}
+                        onPointerMove={handleStickerPointerMove}
+                        onPointerUp={handlePointerUp}
+                        onPointerCancel={handlePointerUp}
                         className={cn(
-                          "absolute grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border bg-surface-paper/80 font-display font-extrabold shadow-sticker",
-                          selectedStickerId === sticker.id ? "border-party-blue" : "border-white/60"
+                          "absolute grid touch-none -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border bg-transparent p-0.5 shadow-sticker transition",
+                          selectedStickerId === sticker.id
+                            ? "border-party-blue-deep ring-4 ring-party-blue/25"
+                            : "border-transparent"
                         )}
                         style={{
                           left: `${sticker.x * 100}%`,
@@ -563,9 +944,9 @@ export function PartyPhotoCard({
                           width: sticker.size,
                           height: sticker.size
                         }}
-                        aria-label={`${copy.stickerLabel}: ${sticker.kind}`}
+                        aria-label={`${copy.stickerLabel}: ${stickerLabel(copy, sticker.kind)}`}
                       >
-                        {sticker.kind === "hat" ? "Hat" : sticker.kind === "one" ? "1" : sticker.kind}
+                        <StickerArtwork kind={sticker.kind} className="h-full w-full drop-shadow-sm" />
                       </button>
                     ))}
                   </div>
@@ -607,9 +988,16 @@ export function PartyPhotoCard({
                     <p className="text-sm font-extrabold text-foreground">{copy.stickerLabel}</p>
                     <div className="grid grid-cols-3 gap-2">
                       {stickerKinds.map((kind) => (
-                        <Button key={kind} type="button" variant="outline" size="sm" onClick={() => addSticker(kind)}>
-                          {kind === "one" ? "1" : kind}
-                        </Button>
+                        <button
+                          key={kind}
+                          type="button"
+                          onClick={() => addSticker(kind)}
+                          disabled={stickers.length >= maxStickers}
+                          aria-label={`Add ${stickerLabel(copy, kind)}`}
+                          className="grid aspect-square place-items-center rounded-[0.85rem] border border-border bg-surface-paper p-1.5 shadow-lift transition hover:border-party-blue disabled:cursor-not-allowed disabled:opacity-45"
+                        >
+                          <StickerArtwork kind={kind} className="h-full w-full" />
+                        </button>
                       ))}
                     </div>
                   </div>

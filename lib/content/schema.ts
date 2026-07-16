@@ -60,6 +60,17 @@ const ScreensSchema = z.object({
     zoomLabel: LocalizedStringSchema,
     sizeLabel: LocalizedStringSchema,
     removeSticker: LocalizedStringSchema,
+    stickers: z.object({
+      partyHat: LocalizedStringSchema,
+      crown: LocalizedStringSchema,
+      balloons: LocalizedStringSchema,
+      confetti: LocalizedStringSchema,
+      cupcake: LocalizedStringSchema,
+      star: LocalizedStringSchema,
+      one: LocalizedStringSchema,
+      bowTie: LocalizedStringSchema,
+      glasses: LocalizedStringSchema
+    }),
     validation: z.object({
       cameraUnavailable: LocalizedStringSchema,
       cameraDenied: LocalizedStringSchema,

@@ -313,17 +313,14 @@ export function OnboardingFlow({
   }
 
   async function savePhotoAvatar(blob: Blob): Promise<ParticipantAvatarProjection | null> {
-    const localFallback: ParticipantAvatarProjection = {
-      type: "photo",
-      url: await blobToDataUrl(blob)
-    };
-
     if (!remoteEnabled) {
+      const localFallback: ParticipantAvatarProjection = {
+        type: "photo",
+        url: await blobToDataUrl(blob)
+      };
       setAvatar(localFallback);
       return localFallback;
     }
-
-    setAvatar(localFallback);
 
     const formData = new FormData();
     formData.set("type", "photo");
@@ -349,17 +346,14 @@ export function OnboardingFlow({
   async function savePresetAvatar(
     presetId: AvatarPresetId
   ): Promise<ParticipantAvatarProjection | null> {
-    const localFallback: ParticipantAvatarProjection = {
-      type: "preset",
-      presetId
-    };
-
     if (!remoteEnabled) {
+      const localFallback: ParticipantAvatarProjection = {
+        type: "preset",
+        presetId
+      };
       setAvatar(localFallback);
       return localFallback;
     }
-
-    setAvatar(localFallback);
 
     const response = await fetch("/api/party/participant/avatar", {
       method: "POST",

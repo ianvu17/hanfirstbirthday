@@ -69,6 +69,17 @@
             "zoomLabel": "Zoom",
             "sizeLabel": "Sticker size",
             "removeSticker": "Remove sticker",
+            "stickers": {
+                "partyHat": "party hat",
+                "crown": "birthday crown",
+                "balloons": "balloons",
+                "confetti": "confetti",
+                "cupcake": "birthday cupcake",
+                "star": "star",
+                "one": "number 1",
+                "bowTie": "bow tie",
+                "glasses": "celebration glasses"
+            },
             "validation": {
                 "cameraUnavailable": "Camera is not available here. You can choose a photo or avatar instead.",
                 "cameraDenied": "Camera permission was not granted. You can choose a photo or avatar instead.",
