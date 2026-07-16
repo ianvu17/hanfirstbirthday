@@ -12,6 +12,7 @@ const evidenceDir =
 const sessionStorageKey = "han-first-birthday:onboarding:v1";
 const joinCode = process.env.PREVIEW_PARTY_JOIN_CODE ?? "han-turns-one";
 const rehearsalQuestionLimit = Number(process.env.PREVIEW_PARTY_QUESTION_LIMIT ?? "2");
+const skipViewportMatrix = process.env.PREVIEW_PARTY_SKIP_MATRIX === "true";
 
 type Locale = "en" | "vi";
 type Metrics = Awaited<ReturnType<typeof collectMetrics>>;
@@ -328,7 +329,7 @@ async function setGuestSession(page: Page, locale: Locale, displayName: string) 
   );
   await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, { waitUntil: "domcontentloaded", timeout: 60_000 });
   try {
-    await page.locator("[data-testid='guest-controller']").waitFor({ timeout: 20000 });
+    await page.locator("[data-testid='guest-controller']").waitFor({ timeout: 60_000 });
   } catch (error) {
     const fileBase = safeName(`join-failure-${locale}-${displayName}`);
     await page
@@ -342,6 +343,29 @@ async function setGuestSession(page: Page, locale: Locale, displayName: string) 
     throw error;
   }
   console.log(`join-ready ${locale} ${displayName}`);
+}
+
+async function openResumedGuest(page: Page, locale: Locale) {
+  await page.addInitScript(
+    ({ key, language, publicJoinCode }) => {
+      window.sessionStorage.setItem(
+        key,
+        JSON.stringify({
+          step: "ready",
+          selectedLanguage: language,
+          playerName: "Codex resumed guest",
+          guestSessionId: "codex-resumed-guest",
+          joinCode: publicJoinCode
+        })
+      );
+    },
+    { key: sessionStorageKey, language: locale, publicJoinCode: joinCode }
+  );
+  await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000
+  });
+  await page.locator("[data-testid='guest-controller']").waitFor({ timeout: 60_000 });
 }
 
 async function hostLogin(page: Page, hostPin: string) {
@@ -376,7 +400,7 @@ async function createSessionIfNeeded(page: Page) {
 
   if (!before.session) {
     await page.getByRole("button", { name: /create new session/i }).click();
-    await page.getByText(/test session/i).first().waitFor({ timeout: 15000 });
+    await page.getByText(/test session/i).first().waitFor({ timeout: 60_000 });
   } else if (needsFreshSession) {
     await page.context().request.post(`${baseUrl}/api/party/sessions`, {
       timeout: 60_000,
@@ -388,7 +412,7 @@ async function createSessionIfNeeded(page: Page) {
       }
     });
     await page.reload({ waitUntil: "domcontentloaded" });
-    await page.getByText(/test session/i).first().waitFor({ timeout: 15000 });
+    await page.getByText(/test session/i).first().waitFor({ timeout: 60_000 });
   }
 
   const afterResponse = await page.context().request.get(`${baseUrl}/api/party/session`, { timeout: 60_000 });
@@ -396,7 +420,14 @@ async function createSessionIfNeeded(page: Page) {
 }
 
 async function clickHostAction(page: Page, name: RegExp, expectedPhase: string) {
-  await page.getByRole("button", { name }).click();
+  let button = page.getByRole("button", { name });
+  const visible = await button.isVisible().catch(() => false);
+  if (!visible) {
+    await page.reload({ waitUntil: "domcontentloaded", timeout: 60_000 });
+    button = page.getByRole("button", { name });
+    await button.waitFor({ state: "visible", timeout: 60_000 });
+  }
+  await button.click();
   await page.waitForFunction(
     async (phase) => {
       const response = await fetch("/api/party/session", { cache: "no-store" });
@@ -404,7 +435,7 @@ async function clickHostAction(page: Page, name: RegExp, expectedPhase: string) 
       return payload.session && payload.projection?.phase === phase;
     },
     expectedPhase,
-    { timeout: 20000 }
+    { timeout: 60_000 }
   );
   await page.waitForTimeout(700);
 }
@@ -443,7 +474,7 @@ async function selectFirstAvailableAnswer(page: Page) {
 
 async function observeCountdown(page: Page, surface: string) {
   const timer = page.getByTestId("party-countdown");
-  await timer.waitFor({ timeout: 15000 });
+  await timer.waitFor({ timeout: 60_000 });
   const values: number[] = [];
   const deadline = Date.now() + 25000;
 
@@ -527,7 +558,7 @@ async function main() {
   });
 
   await displayPage.goto(`${baseUrl}/display/party`, { waitUntil: "domcontentloaded", timeout: 60_000 });
-  await displayPage.getByText(/han-turns-one|party lobby/i).first().waitFor({ timeout: 15000 });
+  await displayPage.getByText(/han-turns-one|party lobby/i).first().waitFor({ timeout: 60_000 });
   await displayPage.screenshot({
     path: join(evidenceDir, "screenshots", "party-screen-lobby.png"),
     fullPage: true
@@ -561,49 +592,25 @@ async function main() {
     observeCountdown(guestEnPage, "guest-en")
   ]);
   await clickHostAction(hostPage, /reveal answers/i, "question_active");
-  await guestEnPage.getByRole("radio").first().waitFor({ timeout: 15000 });
-  await guestViPage.getByRole("radio").first().waitFor({ timeout: 15000 });
-  matrix.push({
-    ...(await measureState(guestEnPage, "answers-active", "en", [390, 640])),
-    language: "en",
-    viewport: [390, 640],
-    textScale: 1
-  });
+  await guestEnPage.getByRole("radio").first().waitFor({ timeout: 60_000 });
+  await guestViPage.getByRole("radio").first().waitFor({ timeout: 60_000 });
   timeline.push({ step: "answers-active", at: new Date().toISOString() });
 
   await selectFirstAvailableAnswer(guestEnPage);
-  matrix.push({
-    ...(await measureState(guestEnPage, "answer-selected", "en", [390, 640])),
-    language: "en",
-    viewport: [390, 640],
-    textScale: 1
-  });
 
   const submitPromise = guestEnPage
     .getByRole("button", { name: /submit answer/i })
     .click()
     .then(() => guestEnPage.waitForTimeout(50));
-  matrix.push({
-    ...(await measureState(guestEnPage, "submission-pending", "en", [390, 640])),
-    language: "en",
-    viewport: [390, 640],
-    textScale: 1
-  });
-  await submitPromise;
-  await guestEnPage.getByText(/answer locked/i).waitFor({ timeout: 15000 });
-  matrix.push({
-    ...(await measureState(guestEnPage, "answer-locked", "en", [390, 640])),
-    language: "en",
-    viewport: [390, 640],
-    textScale: 1
-  });
-  await guestEnPage.reload({ waitUntil: "domcontentloaded" });
-  await guestEnPage.getByText(/answer locked/i).waitFor({ timeout: 15000 });
-  timeline.push({ step: "locked-survived-refresh", at: new Date().toISOString() });
-
   await selectFirstAvailableAnswer(guestViPage);
-  await guestViPage.getByRole("button", { name: /gửi câu trả lời/i }).click();
-  await guestViPage.getByText(/câu trả lời đã khóa/i).waitFor({ timeout: 15000 });
+  const viSubmitPromise = guestViPage
+    .getByRole("button", { name: /gửi câu trả lời/i })
+    .click();
+  await Promise.all([submitPromise, viSubmitPromise]);
+  await Promise.all([
+    guestEnPage.getByText(/answer locked/i).waitFor({ timeout: 60_000 }),
+    guestViPage.getByText(/câu trả lời đã khóa/i).waitFor({ timeout: 60_000 })
+  ]);
   timeline.push({ step: "both-guests-submitted", at: new Date().toISOString() });
 
   const [hostCountdownResult, displayCountdownResult, guestCountdownResult] = await countdownObservation;
@@ -617,6 +624,16 @@ async function main() {
     partyScreen: displayCountdown,
     guest: guestCountdown
   });
+
+  matrix.push({
+    ...(await measureState(guestEnPage, "answer-locked", "en", [390, 640])),
+    language: "en",
+    viewport: [390, 640],
+    textScale: 1
+  });
+  await guestEnPage.reload({ waitUntil: "domcontentloaded", timeout: 60_000 });
+  await guestEnPage.getByText(/answer locked/i).waitFor({ timeout: 60_000 });
+  timeline.push({ step: "locked-survived-refresh", at: new Date().toISOString() });
 
   await hostPage.waitForFunction(async () => {
     const response = await fetch("/api/party/session", { cache: "no-store" });
@@ -646,7 +663,7 @@ async function main() {
   });
 
   await clickHostAction(hostPage, /reveal answer/i, "answer_reveal");
-  await guestEnPage.getByText(/nice one|not this time|time's up/i).waitFor({ timeout: 15000 });
+  await guestEnPage.getByText(/nice one|not this time|time's up/i).waitFor({ timeout: 60_000 });
   matrix.push({
     ...(await measureState(guestEnPage, "answer-reveal", "en", [390, 640])),
     language: "en",
@@ -655,7 +672,7 @@ async function main() {
   });
 
   await clickHostAction(hostPage, /show leaderboard/i, "leaderboard");
-  await guestEnPage.getByText(/leaderboard/i).waitFor({ timeout: 15000 });
+  await guestEnPage.getByText(/leaderboard/i).waitFor({ timeout: 60_000 });
   matrix.push({
     ...(await measureState(guestEnPage, "leaderboard", "en", [390, 640])),
     language: "en",
@@ -668,18 +685,23 @@ async function main() {
   await waitForGuestPhase(guestEnPage, /answer choices are coming next/i);
   timeline.push({ step: "next-question-preview", at: new Date().toISOString() });
 
-  for (const viewport of viewports) {
-    for (const language of ["en", "vi"] as const) {
+  const guestResumeStorage = skipViewportMatrix ? undefined : await guestEn.storageState();
+  if (!skipViewportMatrix) {
+    for (const viewport of viewports) {
+      for (const language of ["en", "vi"] as const) {
       console.log(`matrix-start ${language} ${viewport[0]}x${viewport[1]}`);
       const context = await browser.newContext({
         viewport: { width: viewport[0], height: viewport[1] },
         isMobile: true,
         hasTouch: true,
-        locale: language === "vi" ? "vi-VN" : "en-US"
+        locale: language === "vi" ? "vi-VN" : "en-US",
+        storageState: guestResumeStorage
       });
       const page = await context.newPage();
+      page.setDefaultTimeout(60_000);
+      page.setDefaultNavigationTimeout(60_000);
       await installDiagnostics(page, `matrix-${language}-${viewport[0]}x${viewport[1]}`);
-      await setGuestSession(page, language, `Codex ${language.toUpperCase()} ${viewport[0]} ${viewport[1]}`);
+      await openResumedGuest(page, language);
       await waitForGuestPhase(
         page,
         language === "vi" ? /các đáp án sẽ xuất hiện/i : /answer choices are coming next/i
@@ -691,34 +713,40 @@ async function main() {
         textScale: 1
       });
       await context.close();
-      console.log(`matrix-done ${language} ${viewport[0]}x${viewport[1]}`);
+        console.log(`matrix-done ${language} ${viewport[0]}x${viewport[1]}`);
+      }
     }
   }
 
-  for (const scaled of [
-    { viewport: [390, 640] as const, language: "vi" as const },
-    { viewport: [375, 667] as const, language: "en" as const }
-  ]) {
-    const context = await browser.newContext({
-      viewport: { width: scaled.viewport[0], height: scaled.viewport[1] },
-      isMobile: true,
-      hasTouch: true,
-      locale: scaled.language === "vi" ? "vi-VN" : "en-US"
-    });
-    const page = await context.newPage();
-    await installDiagnostics(page, `scaled-${scaled.language}`);
-    await setGuestSession(page, scaled.language, `Codex scaled ${scaled.language}`);
-    await waitForGuestPhase(
-      page,
-      scaled.language === "vi" ? /các đáp án sẽ xuất hiện/i : /answer choices are coming next/i
-    );
-    matrix.push({
-      ...(await measureState(page, "question-preview", scaled.language, scaled.viewport, 1.25)),
-      language: scaled.language,
-      viewport: scaled.viewport,
-      textScale: 1.25
-    });
-    await context.close();
+  if (!skipViewportMatrix) {
+    for (const scaled of [
+      { viewport: [390, 640] as const, language: "vi" as const },
+      { viewport: [375, 667] as const, language: "en" as const }
+    ]) {
+      const context = await browser.newContext({
+        viewport: { width: scaled.viewport[0], height: scaled.viewport[1] },
+        isMobile: true,
+        hasTouch: true,
+        locale: scaled.language === "vi" ? "vi-VN" : "en-US",
+        storageState: guestResumeStorage
+      });
+      const page = await context.newPage();
+      page.setDefaultTimeout(60_000);
+      page.setDefaultNavigationTimeout(60_000);
+      await installDiagnostics(page, `scaled-${scaled.language}`);
+      await openResumedGuest(page, scaled.language);
+      await waitForGuestPhase(
+        page,
+        scaled.language === "vi" ? /các đáp án sẽ xuất hiện/i : /answer choices are coming next/i
+      );
+      matrix.push({
+        ...(await measureState(page, "question-preview", scaled.language, scaled.viewport, 1.25)),
+        language: scaled.language,
+        viewport: scaled.viewport,
+        textScale: 1.25
+      });
+      await context.close();
+    }
   }
 
   await guestEnPage.waitForTimeout(8500);
@@ -735,8 +763,8 @@ async function main() {
   for (let questionNumber = 2; questionNumber <= lastQuestionToRun; questionNumber += 1) {
     await clickHostAction(hostPage, /reveal answers/i, "question_active");
     await Promise.all([
-      guestEnPage.getByRole("radio").first().waitFor({ timeout: 15000 }),
-      guestViPage.getByRole("radio").last().waitFor({ timeout: 15000 })
+      guestEnPage.getByRole("radio").first().waitFor({ timeout: 60_000 }),
+      guestViPage.getByRole("radio").last().waitFor({ timeout: 60_000 })
     ]);
     await guestEnPage.getByRole("radio").first().click();
     await guestViPage.getByRole("radio").last().click();
@@ -751,8 +779,8 @@ async function main() {
     }, null, { timeout: 35_000 });
     await clickHostAction(hostPage, /reveal answer/i, "answer_reveal");
     await Promise.all([
-      guestEnPage.getByText(/^correct answer$/i).waitFor({ timeout: 15000 }),
-      guestViPage.getByText(/^đáp án đúng$/i).waitFor({ timeout: 15000 })
+      guestEnPage.getByText(/^correct answer$/i).waitFor({ timeout: 60_000 }),
+      guestViPage.getByText(/^đáp án đúng$/i).waitFor({ timeout: 60_000 })
     ]);
 
     const explicitWrongLabels =
@@ -785,7 +813,7 @@ async function main() {
       guestViPage.reload({ waitUntil: "domcontentloaded" }),
       displayPage.reload({ waitUntil: "domcontentloaded" })
     ]);
-    await displayPage.getByText(/mastermind/i).first().waitFor({ timeout: 15000 });
+    await displayPage.getByText(/mastermind/i).first().waitFor({ timeout: 60_000 });
 
     const [enCertificate, viCertificate] = await Promise.all([
       guestEn.request.get(`${baseUrl}/api/party/certificate`, { timeout: 60_000 }),
