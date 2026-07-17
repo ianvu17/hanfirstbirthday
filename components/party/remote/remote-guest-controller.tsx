@@ -13,10 +13,14 @@ import { ParticipantAvatar } from "@/components/party/participant-avatar";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/lib/i18n/routing";
 import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
+import { formatPoints } from "@/lib/party-engine";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import { useRemotePartySnapshot } from "@/lib/party-remote/use-remote-party";
 import { useAuthoritativeCountdown } from "@/lib/party-runtime/use-authoritative-countdown";
-import type { RemoteGuestSnapshot, RemoteNoSessionSnapshot } from "@/lib/party-remote/types";
+import type {
+  RemoteGuestSnapshot,
+  RemoteNoSessionSnapshot,
+} from "@/lib/party-remote/types";
 
 type RemoteGuestControllerProps = {
   locale: Locale;
@@ -25,7 +29,10 @@ type RemoteGuestControllerProps = {
   avatar?: ParticipantAvatarProjection | null;
 };
 
-const pendingJoins = new Map<string, Promise<{ ok: boolean; payload: unknown }>>();
+const pendingJoins = new Map<
+  string,
+  Promise<{ ok: boolean; payload: unknown }>
+>();
 
 function joinKey(displayName: string, locale: Locale, joinCode?: string) {
   return `${locale}:${displayName}:${joinCode ?? ""}`;
@@ -43,13 +50,13 @@ function joinOnce(displayName: string, locale: Locale, joinCode?: string) {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      accept: "application/json"
+      accept: "application/json",
     },
-    body: JSON.stringify({ displayName, locale, joinCode })
+    body: JSON.stringify({ displayName, locale, joinCode }),
   })
     .then(async (response) => ({
       ok: response.ok,
-      payload: await response.json()
+      payload: await response.json(),
     }))
     .finally(() => {
       pendingJoins.delete(key);
@@ -86,7 +93,7 @@ export function RemoteGuestController({
   locale,
   displayName,
   joinCode,
-  avatar
+  avatar,
 }: RemoteGuestControllerProps) {
   const copy = getPartyUiCopy(locale);
   const { snapshot, connection, error, refresh, applySnapshot } =
@@ -106,14 +113,20 @@ export function RemoteGuestController({
     sessionId: string | null;
     value: boolean;
   }>({ sessionId: null, value: false });
-  const projection = snapshot?.session && "guest" in snapshot ? snapshot.guest : null;
-  const participant = snapshot?.session && "participant" in snapshot ? snapshot.participant : null;
+  const projection =
+    snapshot?.session && "guest" in snapshot ? snapshot.guest : null;
+  const participant =
+    snapshot?.session && "participant" in snapshot
+      ? snapshot.participant
+      : null;
   const effectiveDisplayName = participant?.displayName ?? displayName;
   const effectiveAvatar = participant?.avatar ?? avatar ?? null;
   const question = projection?.currentQuestion ?? null;
   const sessionId = snapshot?.session?.id ?? null;
-  const isSubmitting = submittingState.sessionId === sessionId && submittingState.value;
-  const activeJoinError = joinError.sessionId === sessionId ? joinError.message : "";
+  const isSubmitting =
+    submittingState.sessionId === sessionId && submittingState.value;
+  const activeJoinError =
+    joinError.sessionId === sessionId ? joinError.message : "";
   const activeDraft =
     draft.sessionId === sessionId
       ? draft
@@ -122,7 +135,7 @@ export function RemoteGuestController({
     deadlineAt: projection?.questionDeadlineAt ?? null,
     serverNow: snapshot?.serverNow ?? null,
     active: projection?.phase === "question_active",
-    maxVisibleMs: projection?.questionDurationMs
+    maxVisibleMs: projection?.questionDurationMs,
   });
 
   useEffect(() => {
@@ -138,7 +151,11 @@ export function RemoteGuestController({
       setJoinError({ sessionId, message: "" });
 
       try {
-        const { ok, payload } = await joinOnce(joiningDisplayName, locale, joinCode);
+        const { ok, payload } = await joinOnce(
+          joiningDisplayName,
+          locale,
+          joinCode,
+        );
 
         if (cancelled) {
           return;
@@ -149,7 +166,7 @@ export function RemoteGuestController({
             sessionId,
             message:
               (payload as { error?: { message?: string } }).error?.message ??
-              copy.joinRequiredDescription
+              copy.joinRequiredDescription,
           });
           return;
         }
@@ -181,7 +198,7 @@ export function RemoteGuestController({
     joinCode,
     locale,
     participant,
-    sessionId
+    sessionId,
   ]);
 
   const revealMessage = useMemo(() => {
@@ -202,7 +219,9 @@ export function RemoteGuestController({
 
   async function submit() {
     const selectedOptionId =
-      activeDraft.questionId === question?.id ? activeDraft.selectedOptionId : null;
+      activeDraft.questionId === question?.id
+        ? activeDraft.selectedOptionId
+        : null;
 
     if (!question || !selectedOptionId || !participant) {
       return;
@@ -216,12 +235,12 @@ export function RemoteGuestController({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          accept: "application/json"
+          accept: "application/json",
         },
         body: JSON.stringify({
           selectedOptionId,
-          submissionId: `${participant.id}:${question.id}:${selectedOptionId}`
-        })
+          submissionId: `${participant.id}:${question.id}:${selectedOptionId}`,
+        }),
       });
       const payload = await response.json();
 
@@ -229,7 +248,7 @@ export function RemoteGuestController({
         setDraft((current) => ({
           ...current,
           sessionId,
-          error: payload.error?.message ?? copy.timeout
+          error: payload.error?.message ?? copy.timeout,
         }));
         void refresh();
         return;
@@ -270,7 +289,9 @@ export function RemoteGuestController({
       <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-xl items-center">
         <PaperPanel tone="paper" className="w-full text-center">
           <div className="space-y-4">
-            <BirthdayBadge tone="yellow">{copy.remoteProductionSession}</BirthdayBadge>
+            <BirthdayBadge tone="yellow">
+              {copy.remoteProductionSession}
+            </BirthdayBadge>
             <h1 className="font-display text-4xl font-extrabold text-foreground">
               {copy.noActiveSession}
             </h1>
@@ -286,7 +307,10 @@ export function RemoteGuestController({
   if (!projection || !participant) {
     return (
       <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-xl items-center">
-          <PaperPanel tone={activeJoinError || error ? "warm" : "paper"} className="w-full text-center">
+        <PaperPanel
+          tone={activeJoinError || error ? "warm" : "paper"}
+          className="w-full text-center"
+        >
           <div className="space-y-4">
             <LoadingTreatment />
             <h1 className="font-display text-4xl font-extrabold text-foreground">
@@ -313,7 +337,11 @@ export function RemoteGuestController({
         <PaperPanel tone="celebration" className="w-full text-center">
           <div className="space-y-5">
             <div className="flex justify-center">
-              <ParticipantAvatar avatar={effectiveAvatar} displayName={participant.displayName} size="xl" />
+              <ParticipantAvatar
+                avatar={effectiveAvatar}
+                displayName={participant.displayName}
+                size="xl"
+              />
             </div>
             <BirthdayBadge tone={isWinner ? "yellow" : "blue"}>
               <Trophy className="h-4 w-4" aria-hidden="true" />
@@ -323,11 +351,17 @@ export function RemoteGuestController({
               {isWinner ? copy.youAreMastermind : copy.thanksForPlaying}
             </h1>
             <p className="text-lg font-extrabold text-muted-foreground">
-              {copy.personalScore}: {projection.score}/{projection.totalQuestions}
+              {copy.personalScore}: {formatPoints(projection.score, locale)}{" "}
+              {copy.points}
+            </p>
+            <p className="font-bold text-muted-foreground">
+              {projection.correctCount} {copy.correctOutOf}{" "}
+              {projection.totalQuestions}
             </p>
             {!isWinner && winner ? (
               <p className="font-bold text-muted-foreground">
-                {copy.winner}: <span className="text-foreground">{winner.displayName}</span>
+                {copy.winner}:{" "}
+                <span className="text-foreground">{winner.displayName}</span>
               </p>
             ) : null}
             {isWinner ? (
@@ -347,10 +381,15 @@ export function RemoteGuestController({
   const locked = projection.lockedResponse;
   const canChangeSelection = projection.canAnswer && !locked && !isSubmitting;
   const selectedOptionId =
-    activeDraft.questionId === question?.id ? activeDraft.selectedOptionId : null;
-  const localError = activeDraft.questionId === question?.id ? activeDraft.error : "";
+    activeDraft.questionId === question?.id
+      ? activeDraft.selectedOptionId
+      : null;
+  const localError =
+    activeDraft.questionId === question?.id ? activeDraft.error : "";
   const showAnswerOptions =
-    Boolean(question) && projection.phase !== "question_ready" && projection.phase !== "lobby";
+    Boolean(question) &&
+    projection.phase !== "question_ready" &&
+    projection.phase !== "lobby";
   const showSubmitAction =
     Boolean(question) &&
     showAnswerOptions &&
@@ -363,12 +402,15 @@ export function RemoteGuestController({
     localError,
     connectionMessage,
     revealMessage,
+    projection.reveal
+      ? `+${formatPoints(projection.reveal.pointsAwarded, locale)} ${copy.points}`
+      : "",
     locked && !projection.reveal
       ? locked.status === "locked_timeout"
         ? copy.timeout
         : copy.locked
       : "",
-    projection.phase === "question_locked" ? copy.waitingReveal : ""
+    projection.phase === "question_locked" ? copy.waitingReveal : "",
   ].filter((message): message is string => Boolean(message));
   const statusTone =
     localError || connection === "offline" || connection === "error"
@@ -389,17 +431,30 @@ export function RemoteGuestController({
         <div className="space-y-3 [@media(max-height:700px)]:space-y-2 [@media(max-height:620px)]:space-y-1.5 sm:space-y-5">
           <div className="flex min-h-9 flex-wrap items-center justify-between gap-2">
             <div className="flex min-w-0 items-center gap-2">
-              <ParticipantAvatar avatar={effectiveAvatar} displayName={participant.displayName} size="sm" />
-              <BirthdayBadge className="min-h-7 min-w-0 px-2.5 py-0.5" tone="blue">
+              <ParticipantAvatar
+                avatar={effectiveAvatar}
+                displayName={participant.displayName}
+                size="sm"
+              />
+              <BirthdayBadge
+                className="min-h-7 min-w-0 px-2.5 py-0.5"
+                tone="blue"
+              >
                 <span className="truncate">{participant.displayName}</span>
               </BirthdayBadge>
             </div>
             <div className="flex flex-wrap justify-end gap-2">
-              <BirthdayBadge tone={countdown.remainingMs <= 5000 ? "coral" : "yellow"}>
+              <BirthdayBadge
+                tone={countdown.remainingMs <= 5000 ? "coral" : "yellow"}
+              >
                 <Timer className="h-4 w-4" aria-hidden="true" />
-                {projection.phase === "question_active"
-                  ? <span data-testid="party-countdown">{countdown.remainingSeconds}s</span>
-                  : phaseLabel(projection.phase, copy)}
+                {projection.phase === "question_active" ? (
+                  <span data-testid="party-countdown">
+                    {countdown.remainingSeconds}s
+                  </span>
+                ) : (
+                  phaseLabel(projection.phase, copy)
+                )}
               </BirthdayBadge>
               {connection === "connected" ? null : (
                 <ConnectionStatusBadge connection={connection} copy={copy} />
@@ -414,7 +469,9 @@ export function RemoteGuestController({
                 : copy.lobbyTitle}
             </p>
             <h1 className="font-display text-[1.55rem] font-extrabold leading-[1.05] text-foreground [@media(max-height:620px)]:text-[1.35rem] [@media(max-height:700px)]:text-[1.45rem] sm:text-5xl">
-              {question ? question.prompt[locale] : phaseLabel(projection.phase, copy)}
+              {question
+                ? question.prompt[locale]
+                : phaseLabel(projection.phase, copy)}
             </h1>
           </div>
 
@@ -437,13 +494,16 @@ export function RemoteGuestController({
                   sessionId,
                   questionId: question.id,
                   selectedOptionId: optionId,
-                  error: ""
+                  error: "",
                 })
               }
             />
           ) : null}
 
-          <div className="min-h-11 [@media(max-height:620px)]:min-h-9" aria-live="polite">
+          <div
+            className="min-h-11 [@media(max-height:620px)]:min-h-9"
+            aria-live="polite"
+          >
             {statusMessages.length > 0 ? (
               <div
                 className={`rounded-[1rem] border p-2.5 text-sm font-bold leading-5 sm:p-4 sm:text-base sm:leading-7 ${statusTone}`}
@@ -458,12 +518,18 @@ export function RemoteGuestController({
 
           <div className="grid min-h-11 gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
             <p className="text-sm font-bold text-muted-foreground [@media(max-height:620px)]:text-xs">
-              {copy.personalScore}: {projection.score}/{projection.totalQuestions}
+              {copy.personalScore}: {formatPoints(projection.score, locale)}{" "}
+              {copy.points}
             </p>
             {showSubmitAction ? (
               <Button
                 type="button"
-                disabled={!projection.canAnswer || !selectedOptionId || isSubmitting || connection === "offline"}
+                disabled={
+                  !projection.canAnswer ||
+                  !selectedOptionId ||
+                  isSubmitting ||
+                  connection === "offline"
+                }
                 onClick={submit}
                 data-testid="guest-submit-answer"
                 className="w-full sm:w-auto"

@@ -8,7 +8,7 @@ const NavigationSchema = z.object({
   leaderboard: LocalizedStringSchema,
   message: LocalizedStringSchema,
   timeline: LocalizedStringSchema,
-  gallery: LocalizedStringSchema
+  gallery: LocalizedStringSchema,
 });
 
 const ScreensSchema = z.object({
@@ -17,7 +17,7 @@ const ScreensSchema = z.object({
     subtitle: LocalizedStringSchema,
     primaryAction: LocalizedStringSchema,
     heroPlaceholderLabel: LocalizedStringSchema,
-    heroPlaceholderAlt: LocalizedStringSchema
+    heroPlaceholderAlt: LocalizedStringSchema,
   }),
   language: z.object({
     title: LocalizedStringSchema,
@@ -26,7 +26,7 @@ const ScreensSchema = z.object({
     englishDescription: LocalizedStringSchema,
     vietnameseLabel: LocalizedStringSchema,
     vietnameseDescription: LocalizedStringSchema,
-    switchLabel: LocalizedStringSchema
+    switchLabel: LocalizedStringSchema,
   }),
   guestEntry: z.object({
     title: LocalizedStringSchema,
@@ -37,8 +37,8 @@ const ScreensSchema = z.object({
     validation: z.object({
       required: LocalizedStringSchema,
       tooLong: LocalizedStringSchema,
-      alreadySubmitted: LocalizedStringSchema
-    })
+      alreadySubmitted: LocalizedStringSchema,
+    }),
   }),
   partyPhoto: z.object({
     title: LocalizedStringSchema,
@@ -69,7 +69,7 @@ const ScreensSchema = z.object({
       star: LocalizedStringSchema,
       one: LocalizedStringSchema,
       bowTie: LocalizedStringSchema,
-      glasses: LocalizedStringSchema
+      glasses: LocalizedStringSchema,
     }),
     validation: z.object({
       cameraUnavailable: LocalizedStringSchema,
@@ -78,8 +78,8 @@ const ScreensSchema = z.object({
       fileTooLarge: LocalizedStringSchema,
       imageInvalid: LocalizedStringSchema,
       uploadFailed: LocalizedStringSchema,
-      saved: LocalizedStringSchema
-    })
+      saved: LocalizedStringSchema,
+    }),
   }),
   howToPlay: z.object({
     title: LocalizedStringSchema,
@@ -89,19 +89,19 @@ const ScreensSchema = z.object({
       z.object({
         id: z.enum(["timer", "locked", "reveal"]),
         title: LocalizedStringSchema,
-        description: LocalizedStringSchema
-      })
-    )
+        description: LocalizedStringSchema,
+      }),
+    ),
   }),
   ready: z.object({
     title: LocalizedStringSchema,
     subtitle: LocalizedStringSchema,
-    primaryAction: LocalizedStringSchema
+    primaryAction: LocalizedStringSchema,
   }),
   quizPlaceholder: z.object({
     title: LocalizedStringSchema,
     description: LocalizedStringSchema,
-    backAction: LocalizedStringSchema
+    backAction: LocalizedStringSchema,
   }),
   onboardingProgress: z.object({
     welcome: LocalizedStringSchema,
@@ -109,31 +109,31 @@ const ScreensSchema = z.object({
     name: LocalizedStringSchema,
     partyPhoto: LocalizedStringSchema,
     howToPlay: LocalizedStringSchema,
-    ready: LocalizedStringSchema
+    ready: LocalizedStringSchema,
   }),
   quizStart: z.object({
     title: LocalizedStringSchema,
     description: LocalizedStringSchema,
     timerNotice: LocalizedStringSchema,
-    primaryAction: LocalizedStringSchema
+    primaryAction: LocalizedStringSchema,
   }),
   quiz: z.object({
     questionCounterLabel: LocalizedStringSchema,
     timerLabel: LocalizedStringSchema,
     timeExpiredLabel: LocalizedStringSchema,
     nextAction: LocalizedStringSchema,
-    submitAction: LocalizedStringSchema
+    submitAction: LocalizedStringSchema,
   }),
   result: z.object({
     title: LocalizedStringSchema,
     scoreLabel: LocalizedStringSchema,
     leaderboardAction: LocalizedStringSchema,
-    messageAction: LocalizedStringSchema
+    messageAction: LocalizedStringSchema,
   }),
   leaderboard: z.object({
     title: LocalizedStringSchema,
     emptyTitle: LocalizedStringSchema,
-    emptyDescription: LocalizedStringSchema
+    emptyDescription: LocalizedStringSchema,
   }),
   message: z.object({
     title: LocalizedStringSchema,
@@ -142,23 +142,23 @@ const ScreensSchema = z.object({
     fieldPlaceholder: LocalizedStringSchema,
     submitAction: LocalizedStringSchema,
     successTitle: LocalizedStringSchema,
-    successDescription: LocalizedStringSchema
+    successDescription: LocalizedStringSchema,
   }),
   timeline: z.object({
     title: LocalizedStringSchema,
     emptyTitle: LocalizedStringSchema,
-    emptyDescription: LocalizedStringSchema
+    emptyDescription: LocalizedStringSchema,
   }),
   gallery: z.object({
     title: LocalizedStringSchema,
     emptyTitle: LocalizedStringSchema,
-    emptyDescription: LocalizedStringSchema
+    emptyDescription: LocalizedStringSchema,
   }),
   errors: z.object({
     generic: LocalizedStringSchema,
     network: LocalizedStringSchema,
-    retryAction: LocalizedStringSchema
-  })
+    retryAction: LocalizedStringSchema,
+  }),
 });
 
 const QuizQuestionSchema = z.object({
@@ -170,12 +170,12 @@ const QuizQuestionSchema = z.object({
     z.object({
       id: z.string(),
       label: z.string(),
-      assetId: z.string().optional()
-    })
+      assetId: z.string().optional(),
+    }),
   ),
   correctAnswerId: z.string(),
   funFact: z.string(),
-  assetId: z.string().optional()
+  assetId: z.string().optional(),
 });
 
 const AssetSchema = z.object({
@@ -184,7 +184,7 @@ const AssetSchema = z.object({
   src: z.string(),
   alt: z.string(),
   description: z.string(),
-  status: z.enum(["placeholder", "provided", "approved"])
+  status: z.enum(["placeholder", "provided", "approved"]),
 });
 
 export const ContentSchema = z.object({
@@ -198,8 +198,8 @@ export const ContentSchema = z.object({
       realContentRequiredFromIan: z.boolean(),
       inventedMemoriesAllowed: z.literal(false),
       fakePhotosAllowed: z.literal(false),
-      hardcodedContentAllowed: z.literal(false)
-    })
+      hardcodedContentAllowed: z.literal(false),
+    }),
   }),
   navigation: NavigationSchema,
   screens: ScreensSchema,
@@ -208,27 +208,27 @@ export const ContentSchema = z.object({
       questionDurationSeconds: z.number().int().positive(),
       responseLocking: z.literal("per-question-immutable"),
       questionOrder: z.literal("content-order"),
-      scoringMode: z.literal("correct-count")
+      scoringMode: z.literal("time-v1"),
     }),
-    questions: z.array(QuizQuestionSchema)
+    questions: z.array(QuizQuestionSchema),
   }),
   timeline: z.object({
-    entries: z.array(z.unknown())
+    entries: z.array(z.unknown()),
   }),
   gallery: z.object({
-    items: z.array(z.unknown())
+    items: z.array(z.unknown()),
   }),
   messages: z.object({
     constraints: z.object({
       minLength: z.number().int().nonnegative(),
-      maxLength: z.number().int().positive()
+      maxLength: z.number().int().positive(),
     }),
     review: z.object({
-      simpleStatusWorkflow: z.array(z.string())
-    })
+      simpleStatusWorkflow: z.array(z.string()),
+    }),
   }),
   assets: z.object({
-    items: z.array(AssetSchema)
+    items: z.array(AssetSchema),
   }),
   admin: z.object({
     labels: z.object({
@@ -236,9 +236,9 @@ export const ContentSchema = z.object({
       submissions: z.string(),
       messages: z.string(),
       qaMode: z.string(),
-      testData: z.string()
-    })
-  })
+      testData: z.string(),
+    }),
+  }),
 });
 
 export type BirthdayContent = z.infer<typeof ContentSchema>;

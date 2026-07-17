@@ -196,6 +196,7 @@ Goals:
 - Run a physical laptop/TV plus two-phone rehearsal on the target network.
 - Capture final readiness evidence in documentation.
 - Rehearse smooth authoritative countdowns, explicit reveal states, direct leaderboard progression, clean stored avatars, and winner-only localized certificate download.
+- Rehearse persisted time-based scoring, host-selected session length, and the 10-row Party Screen leaderboard race.
 
 Exit criteria:
 
@@ -207,6 +208,7 @@ Exit criteria:
 - Party Screen is legible on the target display.
 - No invented Han content is introduced.
 - Rehearsal/test data is tagged and separated from event rows.
+- A fresh deployed three-question run proves different fast/slow correct scores, zero incorrect/timeout points, final transition after question 3, animated ranking movement, and a certificate denominator of 3.
 
 ## Milestone 7: Messages, Timeline Placeholder, Gallery Placeholder
 

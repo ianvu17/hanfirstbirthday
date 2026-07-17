@@ -3,6 +3,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { PDFDocument } from "pdf-lib";
 
+import { getApprovedPartyConfig } from "../lib/party-engine";
+
 const baseUrl =
   process.env.PREVIEW_PARTY_BASE_URL ??
   "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app";
@@ -11,8 +13,14 @@ const evidenceDir =
   "docs/evidence/deployed-ux-investigation-20260713-preview-r1";
 const sessionStorageKey = "han-first-birthday:onboarding:v1";
 const joinCode = process.env.PREVIEW_PARTY_JOIN_CODE ?? "han-turns-one";
-const rehearsalQuestionLimit = Number(process.env.PREVIEW_PARTY_QUESTION_LIMIT ?? "2");
+const rehearsalQuestionLimit = Number(
+  process.env.PREVIEW_PARTY_QUESTION_LIMIT ?? "2",
+);
+const sessionQuestionCount = Number(
+  process.env.PREVIEW_PARTY_SESSION_QUESTION_COUNT ?? "10",
+);
 const skipViewportMatrix = process.env.PREVIEW_PARTY_SKIP_MATRIX === "true";
+const approvedQuestions = getApprovedPartyConfig().questions;
 
 type Locale = "en" | "vi";
 type Metrics = Awaited<ReturnType<typeof collectMetrics>>;
@@ -27,7 +35,7 @@ const viewports = [
   [390, 844],
   [393, 852],
   [412, 732],
-  [412, 915]
+  [412, 915],
 ] as const;
 
 function parseDotEnv(path: string) {
@@ -65,7 +73,10 @@ function getHostPin() {
 }
 
 function safeName(value: string) {
-  return value.replace(/[^a-z0-9-]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
+  return value
+    .replace(/[^a-z0-9-]+/gi, "-")
+    .replace(/^-|-$/g, "")
+    .toLowerCase();
 }
 
 async function installDiagnostics(page: Page, surface: string) {
@@ -87,7 +98,7 @@ async function installDiagnostics(page: Page, surface: string) {
         "Đang kết nối lại",
         "Mất kết nối",
         "Đang đồng bộ lại",
-        "Cần kiểm tra"
+        "Cần kiểm tra",
       ];
       const trace: Array<Record<string, unknown>> = [];
       let lastVisibleLabel = "";
@@ -99,22 +110,28 @@ async function installDiagnostics(page: Page, surface: string) {
           at: new Date().toISOString(),
           performanceMs: Math.round(performance.now()),
           route: location.pathname,
-          detail
+          detail,
         });
       }
 
       Object.defineProperty(window, "__previewPartyTrace", {
         value: trace,
-        configurable: true
+        configurable: true,
       });
 
       const originalFetch = window.fetch.bind(window);
       window.fetch = async (...args) => {
         const input = args[0];
         const url =
-          typeof input === "string" ? input : input instanceof Request ? input.url : String(input);
+          typeof input === "string"
+            ? input
+            : input instanceof Request
+              ? input.url
+              : String(input);
         const started = performance.now();
-        push("fetch:start", { url: url.replace(/apikey=[^&]+/g, "apikey=[redacted]") });
+        push("fetch:start", {
+          url: url.replace(/apikey=[^&]+/g, "apikey=[redacted]"),
+        });
 
         try {
           const response = await originalFetch(...args);
@@ -122,7 +139,7 @@ async function installDiagnostics(page: Page, surface: string) {
             url: url.replace(/apikey=[^&]+/g, "apikey=[redacted]"),
             status: response.status,
             ok: response.ok,
-            durationMs: Math.round(performance.now() - started)
+            durationMs: Math.round(performance.now() - started),
           });
           return response;
         } catch (error) {
@@ -130,7 +147,7 @@ async function installDiagnostics(page: Page, surface: string) {
             url: url.replace(/apikey=[^&]+/g, "apikey=[redacted]"),
             durationMs: Math.round(performance.now() - started),
             online: navigator.onLine,
-            message: error instanceof Error ? error.message : String(error)
+            message: error instanceof Error ? error.message : String(error),
           });
           throw error;
         }
@@ -140,36 +157,53 @@ async function installDiagnostics(page: Page, surface: string) {
       window.WebSocket = class DiagnosticWebSocket extends OriginalWebSocket {
         constructor(url: string | URL, protocols?: string | string[]) {
           super(url, protocols);
-          const scrubbed = String(url).replace(/apikey=[^&]+/g, "apikey=[redacted]");
+          const scrubbed = String(url).replace(
+            /apikey=[^&]+/g,
+            "apikey=[redacted]",
+          );
           push("websocket:create", { url: scrubbed });
-          this.addEventListener("open", () => push("websocket:open", { url: scrubbed }));
+          this.addEventListener("open", () =>
+            push("websocket:open", { url: scrubbed }),
+          );
           this.addEventListener("close", (event) =>
             push("websocket:close", {
               url: scrubbed,
               code: event.code,
               reason: event.reason,
-              wasClean: event.wasClean
-            })
+              wasClean: event.wasClean,
+            }),
           );
-          this.addEventListener("error", () => push("websocket:error", { url: scrubbed }));
+          this.addEventListener("error", () =>
+            push("websocket:error", { url: scrubbed }),
+          );
         }
       };
 
-      window.addEventListener("online", () => push("browser:online", { online: navigator.onLine }));
+      window.addEventListener("online", () =>
+        push("browser:online", { online: navigator.onLine }),
+      );
       window.addEventListener("offline", () =>
-        push("browser:offline", { online: navigator.onLine })
+        push("browser:offline", { online: navigator.onLine }),
       );
       document.addEventListener("visibilitychange", () =>
-        push("document:visibility", { visibilityState: document.visibilityState })
+        push("document:visibility", {
+          visibilityState: document.visibilityState,
+        }),
       );
 
       function currentPhase() {
         const bodyText = document.body?.innerText ?? "";
-        if (/Question live|Câu hỏi đang mở/.test(bodyText)) return "question_active";
-        if (/Answers locked|Câu trả lời đã khóa/.test(bodyText)) return "question_locked";
+        if (/Question live|Câu hỏi đang mở/.test(bodyText))
+          return "question_active";
+        if (/Answers locked|Câu trả lời đã khóa/.test(bodyText))
+          return "question_locked";
         if (/Answer reveal|Mở đáp án/.test(bodyText)) return "answer_reveal";
         if (/Leaderboard|Bảng điểm/.test(bodyText)) return "leaderboard";
-        if (/Get ready|Chuẩn bị nhé|Question ready|Câu hỏi đã sẵn sàng/.test(bodyText)) {
+        if (
+          /Get ready|Chuẩn bị nhé|Question ready|Câu hỏi đã sẵn sàng/.test(
+            bodyText,
+          )
+        ) {
           return "question_ready";
         }
         if (/Party lobby|Sảnh chờ/.test(bodyText)) return "lobby";
@@ -179,12 +213,16 @@ async function installDiagnostics(page: Page, surface: string) {
       function scanStatus() {
         const bodyText = document.body?.innerText ?? "";
         const found = labels.find((label) => bodyText.includes(label));
-        const badge = Array.from(document.querySelectorAll("span[aria-label]")).find((node) =>
-          found ? node.getAttribute("aria-label")?.includes(found) : false
+        const badge = Array.from(
+          document.querySelectorAll("span[aria-label]"),
+        ).find((node) =>
+          found ? node.getAttribute("aria-label")?.includes(found) : false,
         );
         const icon = badge?.parentElement?.querySelector("svg");
         const iconIdentifier =
-          icon?.querySelector("path, circle, line, polyline")?.getAttribute("d") ??
+          icon
+            ?.querySelector("path, circle, line, polyline")
+            ?.getAttribute("d") ??
           icon?.outerHTML.slice(0, 80) ??
           null;
 
@@ -195,7 +233,7 @@ async function installDiagnostics(page: Page, surface: string) {
             iconIdentifier,
             online: navigator.onLine,
             phase: currentPhase(),
-            scrollY: window.scrollY
+            scrollY: window.scrollY,
           });
           lastVisibleLabel = found;
         }
@@ -204,12 +242,12 @@ async function installDiagnostics(page: Page, surface: string) {
       new MutationObserver(scanStatus).observe(document.documentElement, {
         childList: true,
         subtree: true,
-        characterData: true
+        characterData: true,
       });
       window.setInterval(scanStatus, 200);
       window.addEventListener("load", scanStatus);
     },
-    { surfaceName: surface }
+    { surfaceName: surface },
   );
 }
 
@@ -235,7 +273,10 @@ async function collectMetrics(page: Page, state: string) {
         left: Math.round(rect.left),
         width: Math.round(rect.width),
         height: Math.round(rect.height),
-        text: (element.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 180)
+        text: (element.textContent ?? "")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 180),
       };
     };
 
@@ -247,7 +288,9 @@ async function collectMetrics(page: Page, state: string) {
     const submitRect = rectFor("[data-testid='guest-submit-answer']");
     const answerRect = rectFor("[role='radiogroup']");
     const questionRect = rectFor("[data-testid='guest-controller'] h1");
-    const statusRect = rectFor("[data-testid='guest-controller'] span[aria-label]");
+    const statusRect = rectFor(
+      "[data-testid='guest-controller'] span[aria-label]",
+    );
 
     return {
       state: stateName,
@@ -262,11 +305,13 @@ async function collectMetrics(page: Page, state: string) {
       scrollY: Math.round(window.scrollY),
       canScroll,
       horizontalOverflowPixels: Math.max(0, doc.scrollWidth - doc.clientWidth),
-      essentialControlBelowFold: submitRect ? submitRect.bottom > visualHeight : false,
+      essentialControlBelowFold: submitRect
+        ? submitRect.bottom > visualHeight
+        : false,
       submitButtonRect: submitRect,
       answerListRect: answerRect,
       questionRect,
-      statusBadgeRect: statusRect
+      statusBadgeRect: statusRect,
     };
   }, state);
 }
@@ -276,9 +321,16 @@ async function waitForGuestPhase(page: Page, pattern: RegExp, timeout = 15000) {
   await page.getByText(pattern).first().waitFor({ timeout });
 }
 
-async function setGuestSession(page: Page, locale: Locale, displayName: string) {
+async function setGuestSession(
+  page: Page,
+  locale: Locale,
+  displayName: string,
+) {
   console.log(`join-start ${locale} ${displayName}`);
-  await page.goto(`${baseUrl}/${locale}?join=${joinCode}`, { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await page.goto(`${baseUrl}/${locale}?join=${joinCode}`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
+  });
   await page.addInitScript(
     ({ key, name, language, publicJoinCode }) => {
       window.sessionStorage.setItem(
@@ -288,11 +340,16 @@ async function setGuestSession(page: Page, locale: Locale, displayName: string) 
           selectedLanguage: language,
           playerName: name,
           guestSessionId: `codex-${crypto.randomUUID()}`,
-          joinCode: publicJoinCode
-        })
+          joinCode: publicJoinCode,
+        }),
       );
     },
-    { key: sessionStorageKey, name: displayName, language: locale, publicJoinCode: joinCode }
+    {
+      key: sessionStorageKey,
+      name: displayName,
+      language: locale,
+      publicJoinCode: joinCode,
+    },
   );
   await page.evaluate(
     async ({ key, name, language, publicJoinCode }) => {
@@ -303,43 +360,62 @@ async function setGuestSession(page: Page, locale: Locale, displayName: string) 
           selectedLanguage: language,
           playerName: name,
           guestSessionId: `codex-${crypto.randomUUID()}`,
-          joinCode: publicJoinCode
-        })
+          joinCode: publicJoinCode,
+        }),
       );
 
       const response = await fetch("/api/party/join", {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          accept: "application/json"
+          accept: "application/json",
         },
         body: JSON.stringify({
           displayName: name,
           locale: language,
-          joinCode: publicJoinCode
-        })
+          joinCode: publicJoinCode,
+        }),
       });
 
       if (!response.ok) {
         const payload = await response.json().catch(() => null);
-        throw new Error(payload?.error?.message ?? "Could not join preview party.");
+        throw new Error(
+          payload?.error?.message ?? "Could not join preview party.",
+        );
       }
     },
-    { key: sessionStorageKey, name: displayName, language: locale, publicJoinCode: joinCode }
+    {
+      key: sessionStorageKey,
+      name: displayName,
+      language: locale,
+      publicJoinCode: joinCode,
+    },
   );
-  await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
+  });
   try {
-    await page.locator("[data-testid='guest-controller']").waitFor({ timeout: 60_000 });
+    await page
+      .locator("[data-testid='guest-controller']")
+      .waitFor({ timeout: 60_000 });
   } catch (error) {
     const fileBase = safeName(`join-failure-${locale}-${displayName}`);
     await page
       .screenshot({
         path: join(evidenceDir, "screenshots", `${fileBase}.png`),
-        fullPage: true
+        fullPage: true,
       })
       .catch(() => undefined);
     console.log(`join-failure ${locale} ${displayName}`);
-    console.log((await page.locator("body").innerText().catch(() => "")).slice(0, 800));
+    console.log(
+      (
+        await page
+          .locator("body")
+          .innerText()
+          .catch(() => "")
+      ).slice(0, 800),
+    );
     throw error;
   }
   console.log(`join-ready ${locale} ${displayName}`);
@@ -355,21 +431,26 @@ async function openResumedGuest(page: Page, locale: Locale) {
           selectedLanguage: language,
           playerName: "Codex resumed guest",
           guestSessionId: "codex-resumed-guest",
-          joinCode: publicJoinCode
-        })
+          joinCode: publicJoinCode,
+        }),
       );
     },
-    { key: sessionStorageKey, language: locale, publicJoinCode: joinCode }
+    { key: sessionStorageKey, language: locale, publicJoinCode: joinCode },
   );
   await page.goto(`${baseUrl}/${locale}/play?join=${joinCode}`, {
     waitUntil: "domcontentloaded",
-    timeout: 60_000
+    timeout: 60_000,
   });
-  await page.locator("[data-testid='guest-controller']").waitFor({ timeout: 60_000 });
+  await page
+    .locator("[data-testid='guest-controller']")
+    .waitFor({ timeout: 60_000 });
 }
 
 async function hostLogin(page: Page, hostPin: string) {
-  await page.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await page.goto(`${baseUrl}/en/host`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
+  });
   const status = await page
     .context()
     .request.get(`${baseUrl}/api/party/host/status`, { timeout: 60_000 })
@@ -382,44 +463,57 @@ async function hostLogin(page: Page, hostPin: string) {
   await page.getByLabel(/host pin/i).fill(hostPin);
   await page.getByRole("button", { name: /^unlock$/i }).click();
   await page.waitForFunction(async () => {
-    const response = await fetch("/api/party/host/status", { cache: "no-store" });
+    const response = await fetch("/api/party/host/status", {
+      cache: "no-store",
+    });
     const payload = await response.json();
     return payload.authorized === true;
   });
 }
 
 async function createSessionIfNeeded(page: Page) {
-  await page.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await page.goto(`${baseUrl}/en/host`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
+  });
   await page.waitForTimeout(1000);
 
-  const sessionResponse = await page.context().request.get(`${baseUrl}/api/party/session`, { timeout: 60_000 });
-  const before = await sessionResponse.json();
-  const needsFreshSession =
-    before.session &&
-    (before.projection?.phase !== "lobby" || (before.projection?.participantCount ?? 0) > 0);
-
-  if (!before.session) {
-    await page.getByRole("button", { name: /create new session/i }).click();
-    await page.getByText(/test session/i).first().waitFor({ timeout: 60_000 });
-  } else if (needsFreshSession) {
-    await page.context().request.post(`${baseUrl}/api/party/sessions`, {
+  const createResponse = await page
+    .context()
+    .request.post(`${baseUrl}/api/party/sessions`, {
       timeout: 60_000,
       data: {
         action: "create",
         idempotencyKey: `codex-preview-validation:${Date.now()}`,
         label: `Codex Preview validation ${new Date().toISOString()}`,
-        archiveExisting: true
-      }
+        archiveExisting: true,
+        questionCount: sessionQuestionCount,
+      },
     });
-    await page.reload({ waitUntil: "domcontentloaded" });
-    await page.getByText(/test session/i).first().waitFor({ timeout: 60_000 });
+
+  if (!createResponse.ok()) {
+    throw new Error(
+      `Could not create configured preview session: ${createResponse.status()} ${await createResponse.text()}`,
+    );
   }
 
-  const afterResponse = await page.context().request.get(`${baseUrl}/api/party/session`, { timeout: 60_000 });
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page
+    .getByText(/test session/i)
+    .first()
+    .waitFor({ timeout: 60_000 });
+
+  const afterResponse = await page
+    .context()
+    .request.get(`${baseUrl}/api/party/session`, { timeout: 60_000 });
   return afterResponse.json();
 }
 
-async function clickHostAction(page: Page, name: RegExp, expectedPhase: string) {
+async function clickHostAction(
+  page: Page,
+  name: RegExp,
+  expectedPhase: string,
+) {
   let button = page.getByRole("button", { name });
   const visible = await button.isVisible().catch(() => false);
   if (!visible) {
@@ -435,13 +529,15 @@ async function clickHostAction(page: Page, name: RegExp, expectedPhase: string) 
       return payload.session && payload.projection?.phase === phase;
     },
     expectedPhase,
-    { timeout: 60_000 }
+    { timeout: 60_000 },
   );
   await page.waitForTimeout(700);
 }
 
 async function snapshotPhase(context: BrowserContext) {
-  const response = await context.request.get(`${baseUrl}/api/party/session`, { timeout: 60_000 });
+  const response = await context.request.get(`${baseUrl}/api/party/session`, {
+    timeout: 60_000,
+  });
   return response.json();
 }
 
@@ -450,10 +546,12 @@ async function measureState(
   state: string,
   language: Locale,
   viewport: readonly [number, number],
-  textScale = 1
+  textScale = 1,
 ) {
   if (textScale !== 1) {
-    await page.addStyleTag({ content: `html { font-size: ${textScale * 100}% !important; }` });
+    await page.addStyleTag({
+      content: `html { font-size: ${textScale * 100}% !important; }`,
+    });
     await page.waitForTimeout(150);
   }
 
@@ -462,14 +560,46 @@ async function measureState(
   const fileBase = `${viewport[0]}x${viewport[1]}-${language}-${safeName(state)}${suffix}`;
   await page.screenshot({
     path: join(evidenceDir, "screenshots", `${fileBase}.png`),
-    fullPage: true
+    fullPage: true,
   });
   return metrics;
 }
 
-async function selectFirstAvailableAnswer(page: Page) {
-  const options = page.locator("[role='radio']");
-  await options.first().click();
+async function selectConfiguredAnswer(
+  page: Page,
+  locale: Locale,
+  questionNumber: number,
+  correctness: "correct" | "incorrect",
+) {
+  const question = approvedQuestions[questionNumber - 1];
+  if (!question) {
+    throw new Error(`Approved question ${questionNumber} is unavailable.`);
+  }
+
+  const option = question.options.find((candidate) =>
+    correctness === "correct"
+      ? candidate.id === question.correctOptionId
+      : candidate.id !== question.correctOptionId,
+  );
+  if (!option) {
+    throw new Error(
+      `Could not find a ${correctness} option for question ${questionNumber}.`,
+    );
+  }
+
+  await page.getByRole("radio", { name: option.label[locale] }).click();
+}
+
+function getLeaderboardRow(
+  snapshot: Awaited<ReturnType<typeof snapshotPhase>>,
+  displayName: string,
+) {
+  const row = snapshot.projection?.leaderboard?.find(
+    (candidate: { displayName: string }) =>
+      candidate.displayName === displayName,
+  );
+  if (!row) throw new Error(`Leaderboard row for ${displayName} was missing.`);
+  return row;
 }
 
 async function observeCountdown(page: Page, surface: string) {
@@ -489,10 +619,19 @@ async function observeCountdown(page: Page, surface: string) {
   return { surface, values };
 }
 
-function assertCompleteCountdown({ surface, values }: Awaited<ReturnType<typeof observeCountdown>>) {
-  if (values[0] !== 20) throw new Error(`${surface} countdown started at ${values[0] ?? "missing"}, expected 20.`);
+function assertCompleteCountdown({
+  surface,
+  values,
+}: Awaited<ReturnType<typeof observeCountdown>>) {
+  if (values[0] !== 20)
+    throw new Error(
+      `${surface} countdown started at ${values[0] ?? "missing"}, expected 20.`,
+    );
   for (let value = 20; value >= 0; value -= 1) {
-    if (!values.includes(value)) throw new Error(`${surface} countdown skipped ${value}: ${values.join(",")}`);
+    if (!values.includes(value))
+      throw new Error(
+        `${surface} countdown skipped ${value}: ${values.join(",")}`,
+      );
   }
   return values;
 }
@@ -512,26 +651,44 @@ async function main() {
   const displayBrowser = await chromium.launch();
   const guestEnBrowser = await chromium.launch();
   const guestViBrowser = await chromium.launch();
-  const host = await browser.newContext({ viewport: { width: 390, height: 844 } });
-  const display = await displayBrowser.newContext({ viewport: { width: 1366, height: 768 } });
+  const guestSlowBrowser = await chromium.launch();
+  const host = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+  });
+  const display = await displayBrowser.newContext({
+    viewport: { width: 1366, height: 768 },
+  });
   const guestEn = await guestEnBrowser.newContext({
     viewport: { width: 390, height: 640 },
     isMobile: true,
     hasTouch: true,
-    locale: "en-US"
+    locale: "en-US",
   });
   const guestVi = await guestViBrowser.newContext({
     viewport: { width: 390, height: 640 },
     isMobile: true,
     hasTouch: true,
-    locale: "vi-VN"
+    locale: "vi-VN",
+  });
+  const guestSlow = await guestSlowBrowser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+    locale: "en-US",
   });
   const hostPage = await host.newPage();
   const displayPage = await display.newPage();
   const guestEnPage = await guestEn.newPage();
   const guestViPage = await guestVi.newPage();
+  const guestSlowPage = await guestSlow.newPage();
 
-  for (const page of [hostPage, displayPage, guestEnPage, guestViPage]) {
+  for (const page of [
+    hostPage,
+    displayPage,
+    guestEnPage,
+    guestViPage,
+    guestSlowPage,
+  ]) {
     page.setDefaultTimeout(60_000);
     page.setDefaultNavigationTimeout(60_000);
   }
@@ -540,11 +697,18 @@ async function main() {
     installDiagnostics(hostPage, "host"),
     installDiagnostics(displayPage, "party-screen"),
     installDiagnostics(guestEnPage, "guest-en"),
-    installDiagnostics(guestViPage, "guest-vi")
+    installDiagnostics(guestViPage, "guest-vi"),
+    installDiagnostics(guestSlowPage, "guest-slow"),
   ]);
 
   const timeline: Array<Record<string, unknown>> = [];
-  const matrix: Array<Metrics & { language: Locale; viewport: readonly [number, number]; textScale: number }> = [];
+  const matrix: Array<
+    Metrics & {
+      language: Locale;
+      viewport: readonly [number, number];
+      textScale: number;
+    }
+  > = [];
 
   await hostLogin(hostPage, hostPin);
   const sessionSnapshot = await createSessionIfNeeded(hostPage);
@@ -554,66 +718,92 @@ async function main() {
     at: new Date().toISOString(),
     sessionId,
     isTest: sessionSnapshot.session?.isTest,
-    phase: sessionSnapshot.projection?.phase
+    phase: sessionSnapshot.projection?.phase,
   });
 
-  await displayPage.goto(`${baseUrl}/display/party`, { waitUntil: "domcontentloaded", timeout: 60_000 });
-  await displayPage.getByText(/han-turns-one|party lobby/i).first().waitFor({ timeout: 60_000 });
+  await displayPage.goto(`${baseUrl}/display/party`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
+  });
+  await displayPage
+    .getByText(/han-turns-one|party lobby/i)
+    .first()
+    .waitFor({ timeout: 60_000 });
   await displayPage.screenshot({
     path: join(evidenceDir, "screenshots", "party-screen-lobby.png"),
-    fullPage: true
+    fullPage: true,
   });
 
-  await setGuestSession(guestEnPage, "en", `Codex EN ${Date.now()}`);
-  await setGuestSession(guestViPage, "vi", `Codex VI ${Date.now()}`);
+  const guestRunId = Date.now();
+  const guestNames = {
+    fast: `Codex Fast ${guestRunId}`,
+    slow: `Codex Slow ${guestRunId}`,
+    wrong: `Codex Wrong ${guestRunId}`,
+  };
+  await setGuestSession(guestEnPage, "en", guestNames.fast);
+  await setGuestSession(guestViPage, "vi", guestNames.wrong);
+  await setGuestSession(guestSlowPage, "en", guestNames.slow);
   await waitForGuestPhase(guestEnPage, /party lobby/i);
   await waitForGuestPhase(guestViPage, /sảnh chờ/i);
+  await waitForGuestPhase(guestSlowPage, /party lobby/i);
   matrix.push({
     ...(await measureState(guestEnPage, "lobby", "en", [390, 640])),
     language: "en",
     viewport: [390, 640],
-    textScale: 1
+    textScale: 1,
   });
   matrix.push({
     ...(await measureState(guestViPage, "lobby", "vi", [390, 640])),
     language: "vi",
     viewport: [390, 640],
-    textScale: 1
+    textScale: 1,
   });
 
   await clickHostAction(hostPage, /start game/i, "question_ready");
   await waitForGuestPhase(guestEnPage, /answer choices are coming next/i);
   await waitForGuestPhase(guestViPage, /các đáp án sẽ xuất hiện/i);
+  await waitForGuestPhase(guestSlowPage, /answer choices are coming next/i);
   timeline.push({ step: "question-preview", at: new Date().toISOString() });
 
   const countdownObservation = Promise.all([
     observeCountdown(hostPage, "host"),
     observeCountdown(displayPage, "party-screen"),
-    observeCountdown(guestEnPage, "guest-en")
+    observeCountdown(guestEnPage, "guest-en"),
   ]);
   await clickHostAction(hostPage, /reveal answers/i, "question_active");
   await guestEnPage.getByRole("radio").first().waitFor({ timeout: 60_000 });
   await guestViPage.getByRole("radio").first().waitFor({ timeout: 60_000 });
+  await guestSlowPage.getByRole("radio").first().waitFor({ timeout: 60_000 });
   timeline.push({ step: "answers-active", at: new Date().toISOString() });
 
-  await selectFirstAvailableAnswer(guestEnPage);
+  await selectConfiguredAnswer(guestEnPage, "en", 1, "correct");
 
   const submitPromise = guestEnPage
     .getByRole("button", { name: /submit answer/i })
     .click()
     .then(() => guestEnPage.waitForTimeout(50));
-  await selectFirstAvailableAnswer(guestViPage);
+  await selectConfiguredAnswer(guestViPage, "vi", 1, "incorrect");
   const viSubmitPromise = guestViPage
     .getByRole("button", { name: /gửi câu trả lời/i })
     .click();
-  await Promise.all([submitPromise, viSubmitPromise]);
+  await guestSlowPage.waitForTimeout(5000);
+  await selectConfiguredAnswer(guestSlowPage, "en", 1, "correct");
+  const slowSubmitPromise = guestSlowPage
+    .getByRole("button", { name: /submit answer/i })
+    .click();
+  await Promise.all([submitPromise, viSubmitPromise, slowSubmitPromise]);
   await Promise.all([
     guestEnPage.getByText(/answer locked/i).waitFor({ timeout: 60_000 }),
-    guestViPage.getByText(/câu trả lời đã khóa/i).waitFor({ timeout: 60_000 })
+    guestViPage.getByText(/câu trả lời đã khóa/i).waitFor({ timeout: 60_000 }),
+    guestSlowPage.getByText(/answer locked/i).waitFor({ timeout: 60_000 }),
   ]);
-  timeline.push({ step: "both-guests-submitted", at: new Date().toISOString() });
+  timeline.push({
+    step: "three-guests-submitted",
+    at: new Date().toISOString(),
+  });
 
-  const [hostCountdownResult, displayCountdownResult, guestCountdownResult] = await countdownObservation;
+  const [hostCountdownResult, displayCountdownResult, guestCountdownResult] =
+    await countdownObservation;
   const hostCountdown = assertCompleteCountdown(hostCountdownResult);
   const displayCountdown = assertCompleteCountdown(displayCountdownResult);
   const guestCountdown = assertCompleteCountdown(guestCountdownResult);
@@ -622,97 +812,148 @@ async function main() {
     at: new Date().toISOString(),
     host: hostCountdown,
     partyScreen: displayCountdown,
-    guest: guestCountdown
+    guest: guestCountdown,
   });
 
   matrix.push({
     ...(await measureState(guestEnPage, "answer-locked", "en", [390, 640])),
     language: "en",
     viewport: [390, 640],
-    textScale: 1
+    textScale: 1,
   });
   await guestEnPage.reload({ waitUntil: "domcontentloaded", timeout: 60_000 });
   await guestEnPage.getByText(/answer locked/i).waitFor({ timeout: 60_000 });
-  timeline.push({ step: "locked-survived-refresh", at: new Date().toISOString() });
+  timeline.push({
+    step: "locked-survived-refresh",
+    at: new Date().toISOString(),
+  });
 
-  await hostPage.waitForFunction(async () => {
-    const response = await fetch("/api/party/session", { cache: "no-store" });
-    const payload = await response.json();
-    return payload.projection?.phase === "question_locked";
-  }, null, { timeout: 35_000 });
+  await hostPage.waitForFunction(
+    async () => {
+      const response = await fetch("/api/party/session", { cache: "no-store" });
+      const payload = await response.json();
+      return payload.projection?.phase === "question_locked";
+    },
+    null,
+    { timeout: 35_000 },
+  );
   await guestEnPage.waitForTimeout(1000);
   matrix.push({
     ...(await measureState(guestEnPage, "answers-closed", "en", [390, 640])),
     language: "en",
     viewport: [390, 640],
-    textScale: 1
+    textScale: 1,
   });
   timeline.push({ step: "deadline-closed", at: new Date().toISOString() });
 
-  const lateResponse = await guestEn.request.post(`${baseUrl}/api/party/response`, {
-    timeout: 60_000,
-    data: {
-      selectedOptionId: "late-answer",
-      submissionId: `late:${Date.now()}`
-    }
-  });
+  const lateResponse = await guestEn.request.post(
+    `${baseUrl}/api/party/response`,
+    {
+      timeout: 60_000,
+      data: {
+        selectedOptionId: "late-answer",
+        submissionId: `late:${Date.now()}`,
+      },
+    },
+  );
   timeline.push({
     step: "late-answer-attempt",
     at: new Date().toISOString(),
-    status: lateResponse.status()
+    status: lateResponse.status(),
   });
 
   await clickHostAction(hostPage, /reveal answer/i, "answer_reveal");
-  await guestEnPage.getByText(/nice one|not this time|time's up/i).waitFor({ timeout: 60_000 });
+  await guestEnPage
+    .getByText(/nice one|not this time|time's up/i)
+    .waitFor({ timeout: 60_000 });
   matrix.push({
     ...(await measureState(guestEnPage, "answer-reveal", "en", [390, 640])),
     language: "en",
     viewport: [390, 640],
-    textScale: 1
+    textScale: 1,
   });
 
   await clickHostAction(hostPage, /show leaderboard/i, "leaderboard");
   await guestEnPage.getByText(/leaderboard/i).waitFor({ timeout: 60_000 });
+  const firstLeaderboardSnapshot = await snapshotPhase(host);
+  const fastAfterFirst = getLeaderboardRow(
+    firstLeaderboardSnapshot,
+    guestNames.fast,
+  );
+  const slowAfterFirst = getLeaderboardRow(
+    firstLeaderboardSnapshot,
+    guestNames.slow,
+  );
+  const wrongAfterFirst = getLeaderboardRow(
+    firstLeaderboardSnapshot,
+    guestNames.wrong,
+  );
+  if (
+    fastAfterFirst.score <= slowAfterFirst.score ||
+    slowAfterFirst.score <= 0 ||
+    wrongAfterFirst.score !== 0 ||
+    fastAfterFirst.pointsGained !== fastAfterFirst.score ||
+    slowAfterFirst.pointsGained !== slowAfterFirst.score
+  ) {
+    throw new Error(
+      `Question 1 scoring mismatch: ${JSON.stringify({ fastAfterFirst, slowAfterFirst, wrongAfterFirst })}`,
+    );
+  }
   matrix.push({
     ...(await measureState(guestEnPage, "leaderboard", "en", [390, 640])),
     language: "en",
     viewport: [390, 640],
-    textScale: 1
+    textScale: 1,
   });
-  timeline.push({ step: "leaderboard", at: new Date().toISOString() });
+  timeline.push({
+    step: "leaderboard",
+    at: new Date().toISOString(),
+    scoring: { fastAfterFirst, slowAfterFirst, wrongAfterFirst },
+  });
 
   await clickHostAction(hostPage, /next question/i, "question_ready");
   await waitForGuestPhase(guestEnPage, /answer choices are coming next/i);
-  timeline.push({ step: "next-question-preview", at: new Date().toISOString() });
+  await waitForGuestPhase(guestSlowPage, /answer choices are coming next/i);
+  timeline.push({
+    step: "next-question-preview",
+    at: new Date().toISOString(),
+  });
 
-  const guestResumeStorage = skipViewportMatrix ? undefined : await guestEn.storageState();
+  const guestResumeStorage = skipViewportMatrix
+    ? undefined
+    : await guestEn.storageState();
   if (!skipViewportMatrix) {
     for (const viewport of viewports) {
       for (const language of ["en", "vi"] as const) {
-      console.log(`matrix-start ${language} ${viewport[0]}x${viewport[1]}`);
-      const context = await browser.newContext({
-        viewport: { width: viewport[0], height: viewport[1] },
-        isMobile: true,
-        hasTouch: true,
-        locale: language === "vi" ? "vi-VN" : "en-US",
-        storageState: guestResumeStorage
-      });
-      const page = await context.newPage();
-      page.setDefaultTimeout(60_000);
-      page.setDefaultNavigationTimeout(60_000);
-      await installDiagnostics(page, `matrix-${language}-${viewport[0]}x${viewport[1]}`);
-      await openResumedGuest(page, language);
-      await waitForGuestPhase(
-        page,
-        language === "vi" ? /các đáp án sẽ xuất hiện/i : /answer choices are coming next/i
-      );
-      matrix.push({
-        ...(await measureState(page, "question-preview", language, viewport)),
-        language,
-        viewport,
-        textScale: 1
-      });
-      await context.close();
+        console.log(`matrix-start ${language} ${viewport[0]}x${viewport[1]}`);
+        const context = await browser.newContext({
+          viewport: { width: viewport[0], height: viewport[1] },
+          isMobile: true,
+          hasTouch: true,
+          locale: language === "vi" ? "vi-VN" : "en-US",
+          storageState: guestResumeStorage,
+        });
+        const page = await context.newPage();
+        page.setDefaultTimeout(60_000);
+        page.setDefaultNavigationTimeout(60_000);
+        await installDiagnostics(
+          page,
+          `matrix-${language}-${viewport[0]}x${viewport[1]}`,
+        );
+        await openResumedGuest(page, language);
+        await waitForGuestPhase(
+          page,
+          language === "vi"
+            ? /các đáp án sẽ xuất hiện/i
+            : /answer choices are coming next/i,
+        );
+        matrix.push({
+          ...(await measureState(page, "question-preview", language, viewport)),
+          language,
+          viewport,
+          textScale: 1,
+        });
+        await context.close();
         console.log(`matrix-done ${language} ${viewport[0]}x${viewport[1]}`);
       }
     }
@@ -721,14 +962,14 @@ async function main() {
   if (!skipViewportMatrix) {
     for (const scaled of [
       { viewport: [390, 640] as const, language: "vi" as const },
-      { viewport: [375, 667] as const, language: "en" as const }
+      { viewport: [375, 667] as const, language: "en" as const },
     ]) {
       const context = await browser.newContext({
         viewport: { width: scaled.viewport[0], height: scaled.viewport[1] },
         isMobile: true,
         hasTouch: true,
         locale: scaled.language === "vi" ? "vi-VN" : "en-US",
-        storageState: guestResumeStorage
+        storageState: guestResumeStorage,
       });
       const page = await context.newPage();
       page.setDefaultTimeout(60_000);
@@ -737,13 +978,21 @@ async function main() {
       await openResumedGuest(page, scaled.language);
       await waitForGuestPhase(
         page,
-        scaled.language === "vi" ? /các đáp án sẽ xuất hiện/i : /answer choices are coming next/i
+        scaled.language === "vi"
+          ? /các đáp án sẽ xuất hiện/i
+          : /answer choices are coming next/i,
       );
       matrix.push({
-        ...(await measureState(page, "question-preview", scaled.language, scaled.viewport, 1.25)),
+        ...(await measureState(
+          page,
+          "question-preview",
+          scaled.language,
+          scaled.viewport,
+          1.25,
+        )),
         language: scaled.language,
         viewport: scaled.viewport,
-        textScale: 1.25
+        textScale: 1.25,
       });
       await context.close();
     }
@@ -760,50 +1009,153 @@ async function main() {
   const totalQuestions = sessionSnapshot.projection?.totalQuestions ?? 0;
   const lastQuestionToRun = Math.min(rehearsalQuestionLimit, totalQuestions);
 
-  for (let questionNumber = 2; questionNumber <= lastQuestionToRun; questionNumber += 1) {
+  for (
+    let questionNumber = 2;
+    questionNumber <= lastQuestionToRun;
+    questionNumber += 1
+  ) {
     await clickHostAction(hostPage, /reveal answers/i, "question_active");
     await Promise.all([
       guestEnPage.getByRole("radio").first().waitFor({ timeout: 60_000 }),
-      guestViPage.getByRole("radio").last().waitFor({ timeout: 60_000 })
+      guestViPage.getByRole("radio").last().waitFor({ timeout: 60_000 }),
+      guestSlowPage.getByRole("radio").first().waitFor({ timeout: 60_000 }),
     ]);
-    await guestEnPage.getByRole("radio").first().click();
-    await guestViPage.getByRole("radio").last().click();
-    await Promise.all([
-      guestEnPage.getByRole("button", { name: /submit answer/i }).click(),
-      guestViPage.getByRole("button", { name: /gửi câu trả lời/i }).click()
-    ]);
-    await hostPage.waitForFunction(async () => {
-      const response = await fetch("/api/party/session", { cache: "no-store" });
-      const payload = await response.json();
-      return payload.projection?.phase === "question_locked";
-    }, null, { timeout: 35_000 });
+    if (questionNumber === 2) {
+      await selectConfiguredAnswer(
+        guestViPage,
+        "vi",
+        questionNumber,
+        "correct",
+      );
+      await guestViPage
+        .getByRole("button", { name: /gửi câu trả lời/i })
+        .click();
+      await guestEnPage.waitForTimeout(4000);
+      await selectConfiguredAnswer(
+        guestEnPage,
+        "en",
+        questionNumber,
+        "correct",
+      );
+      await selectConfiguredAnswer(
+        guestSlowPage,
+        "en",
+        questionNumber,
+        "incorrect",
+      );
+      await Promise.all([
+        guestEnPage.getByRole("button", { name: /submit answer/i }).click(),
+        guestSlowPage.getByRole("button", { name: /submit answer/i }).click(),
+      ]);
+    } else {
+      await selectConfiguredAnswer(
+        guestEnPage,
+        "en",
+        questionNumber,
+        "correct",
+      );
+      await selectConfiguredAnswer(
+        guestViPage,
+        "vi",
+        questionNumber,
+        "incorrect",
+      );
+      await Promise.all([
+        guestEnPage.getByRole("button", { name: /submit answer/i }).click(),
+        guestViPage.getByRole("button", { name: /gửi câu trả lời/i }).click(),
+      ]);
+    }
+    await hostPage.waitForFunction(
+      async () => {
+        const response = await fetch("/api/party/session", {
+          cache: "no-store",
+        });
+        const payload = await response.json();
+        return payload.projection?.phase === "question_locked";
+      },
+      null,
+      { timeout: 35_000 },
+    );
     await clickHostAction(hostPage, /reveal answer/i, "answer_reveal");
     await Promise.all([
       guestEnPage.getByText(/^correct answer$/i).waitFor({ timeout: 60_000 }),
-      guestViPage.getByText(/^đáp án đúng$/i).waitFor({ timeout: 60_000 })
+      guestViPage.getByText(/^đáp án đúng$/i).waitFor({ timeout: 60_000 }),
+      guestSlowPage.getByText(/^correct answer$/i).waitFor({ timeout: 60_000 }),
     ]);
 
     const explicitWrongLabels =
-      await guestEnPage.getByText(/^your answer$/i).count() +
-      await guestViPage.getByText(/^đáp án của bạn$/i).count();
+      (await guestEnPage.getByText(/^your answer$/i).count()) +
+      (await guestViPage.getByText(/^đáp án của bạn$/i).count());
     if (explicitWrongLabels < 1) {
-      throw new Error(`Question ${questionNumber} did not explicitly label a wrong selected answer.`);
+      throw new Error(
+        `Question ${questionNumber} did not explicitly label a wrong selected answer.`,
+      );
     }
     if (questionNumber === 2) {
       await Promise.all([
-        guestEnPage.screenshot({ path: join(evidenceDir, "screenshots", "guest-en-explicit-reveal.png"), fullPage: true }),
-        guestViPage.screenshot({ path: join(evidenceDir, "screenshots", "guest-vi-explicit-reveal.png"), fullPage: true }),
-        displayPage.screenshot({ path: join(evidenceDir, "screenshots", "party-screen-polished-reveal.png"), fullPage: true })
+        guestEnPage.screenshot({
+          path: join(
+            evidenceDir,
+            "screenshots",
+            "guest-en-explicit-reveal.png",
+          ),
+          fullPage: true,
+        }),
+        guestViPage.screenshot({
+          path: join(
+            evidenceDir,
+            "screenshots",
+            "guest-vi-explicit-reveal.png",
+          ),
+          fullPage: true,
+        }),
+        displayPage.screenshot({
+          path: join(
+            evidenceDir,
+            "screenshots",
+            "party-screen-polished-reveal.png",
+          ),
+          fullPage: true,
+        }),
       ]);
     }
 
     await clickHostAction(hostPage, /show leaderboard/i, "leaderboard");
+    const leaderboardSnapshot = await snapshotPhase(host);
+    const fastRow = getLeaderboardRow(leaderboardSnapshot, guestNames.fast);
+    const slowRow = getLeaderboardRow(leaderboardSnapshot, guestNames.slow);
+    const wrongRow = getLeaderboardRow(leaderboardSnapshot, guestNames.wrong);
+
+    if (questionNumber === 2) {
+      if (
+        wrongRow.pointsGained <= 0 ||
+        wrongRow.rank >= wrongRow.previousRank ||
+        slowRow.pointsGained !== 0
+      ) {
+        throw new Error(
+          `Question 2 rank movement mismatch: ${JSON.stringify({ fastRow, slowRow, wrongRow })}`,
+        );
+      }
+    } else if (
+      fastRow.pointsGained <= 0 ||
+      wrongRow.pointsGained !== 0 ||
+      slowRow.pointsGained !== 0 ||
+      slowRow.answeredCount !== 3
+    ) {
+      throw new Error(
+        `Question ${questionNumber} timeout scoring mismatch: ${JSON.stringify({ fastRow, slowRow, wrongRow })}`,
+      );
+    }
     if (questionNumber === totalQuestions) {
       await clickHostAction(hostPage, /show winner/i, "finished");
     } else {
       await clickHostAction(hostPage, /next question/i, "question_ready");
     }
-    timeline.push({ step: `question-${questionNumber}-complete`, at: new Date().toISOString() });
+    timeline.push({
+      step: `question-${questionNumber}-complete`,
+      at: new Date().toISOString(),
+      scoring: { fastRow, slowRow, wrongRow },
+    });
   }
 
   let certificateValidation: Record<string, unknown> | null = null;
@@ -811,39 +1163,70 @@ async function main() {
     await Promise.all([
       guestEnPage.reload({ waitUntil: "domcontentloaded" }),
       guestViPage.reload({ waitUntil: "domcontentloaded" }),
-      displayPage.reload({ waitUntil: "domcontentloaded" })
+      guestSlowPage.reload({ waitUntil: "domcontentloaded" }),
+      displayPage.reload({ waitUntil: "domcontentloaded" }),
     ]);
-    await displayPage.getByText(/mastermind/i).first().waitFor({ timeout: 60_000 });
+    await displayPage
+      .getByText(/mastermind/i)
+      .first()
+      .waitFor({ timeout: 60_000 });
 
-    const [enCertificate, viCertificate] = await Promise.all([
-      guestEn.request.get(`${baseUrl}/api/party/certificate`, { timeout: 60_000 }),
-      guestVi.request.get(`${baseUrl}/api/party/certificate`, { timeout: 60_000 })
+    const [enCertificate, viCertificate, slowCertificate] = await Promise.all([
+      guestEn.request.get(`${baseUrl}/api/party/certificate`, {
+        timeout: 60_000,
+      }),
+      guestVi.request.get(`${baseUrl}/api/party/certificate`, {
+        timeout: 60_000,
+      }),
+      guestSlow.request.get(`${baseUrl}/api/party/certificate`, {
+        timeout: 60_000,
+      }),
     ]);
-    const winnerCertificate = enCertificate.status() === 200 ? enCertificate : viCertificate;
-    const nonWinnerCertificate = enCertificate.status() === 200 ? viCertificate : enCertificate;
-    if (winnerCertificate.status() !== 200 || nonWinnerCertificate.status() !== 403) {
-      throw new Error(`Certificate authorization mismatch: en=${enCertificate.status()} vi=${viCertificate.status()}`);
+    const certificateResults = [
+      { locale: "en-fast", response: enCertificate },
+      { locale: "vi-wrong", response: viCertificate },
+      { locale: "en-slow", response: slowCertificate },
+    ];
+    const winners = certificateResults.filter(
+      ({ response }) => response.status() === 200,
+    );
+    const nonWinners = certificateResults.filter(
+      ({ response }) => response.status() === 403,
+    );
+    const winnerCertificate = winners[0]?.response;
+    if (winners.length !== 1 || nonWinners.length !== 2 || !winnerCertificate) {
+      throw new Error(
+        `Certificate authorization mismatch: ${certificateResults.map(({ locale, response }) => `${locale}=${response.status()}`).join(" ")}`,
+      );
     }
     const certificateBytes = await winnerCertificate.body();
     const certificatePdf = await PDFDocument.load(certificateBytes);
-    if (certificatePdf.getPageCount() !== 1) throw new Error("Winner certificate was not one page.");
-    writeFileSync(join(evidenceDir, "winner-certificate.pdf"), certificateBytes);
+    if (certificatePdf.getPageCount() !== 1)
+      throw new Error("Winner certificate was not one page.");
+    writeFileSync(
+      join(evidenceDir, "winner-certificate.pdf"),
+      certificateBytes,
+    );
     certificateValidation = {
-      winnerLocale: enCertificate.status() === 200 ? "en" : "vi",
+      winnerLocale: winners[0].locale,
       winnerStatus: winnerCertificate.status(),
-      nonWinnerStatus: nonWinnerCertificate.status(),
+      nonWinnerStatuses: nonWinners.map(({ response }) => response.status()),
       contentType: winnerCertificate.headers()["content-type"],
       pageCount: certificatePdf.getPageCount(),
-      bytes: certificateBytes.byteLength
+      bytes: certificateBytes.byteLength,
     };
-    await displayPage.screenshot({ path: join(evidenceDir, "screenshots", "party-screen-final-winner.png"), fullPage: true });
+    await displayPage.screenshot({
+      path: join(evidenceDir, "screenshots", "party-screen-final-winner.png"),
+      fullPage: true,
+    });
   }
 
   const traces = {
     host: await collectTrace(hostPage),
     partyScreen: await collectTrace(displayPage),
     guestEn: await collectTrace(guestEnPage),
-    guestVi: await collectTrace(guestViPage)
+    guestVi: await collectTrace(guestViPage),
+    guestSlow: await collectTrace(guestSlowPage),
   };
   const finalSnapshot = await snapshotPhase(host);
 
@@ -860,19 +1243,26 @@ async function main() {
         certificateValidation,
         timeline,
         matrix,
-        traces
+        traces,
       },
       null,
-      2
-    )
+      2,
+    ),
   );
 
-  await Promise.all([host.close(), display.close(), guestEn.close(), guestVi.close()]);
+  await Promise.all([
+    host.close(),
+    display.close(),
+    guestEn.close(),
+    guestVi.close(),
+    guestSlow.close(),
+  ]);
   await Promise.all([
     browser.close(),
     displayBrowser.close(),
     guestEnBrowser.close(),
-    guestViBrowser.close()
+    guestViBrowser.close(),
+    guestSlowBrowser.close(),
   ]);
 }
 

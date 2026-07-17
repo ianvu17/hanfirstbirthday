@@ -6,13 +6,13 @@
 
 `deployment_environment` identifies the runtime environment: `development`, `preview`, or `production`. Vercel sets this through `VERCEL_ENV`; `PARTY_DEPLOYMENT_ENVIRONMENT` can override it if needed.
 
-`party_sessions` stores one game run. A row starts in lobby, moves through host-driven quiz phases, and ends as finished or archived. A new game creates a new row.
+`party_sessions` stores one game run. A row starts in lobby, moves through host-driven quiz phases, and ends as finished or archived. A new game creates a new row with an immutable `question_count`.
 
 `participants` stores one guest identity for one session. Display names are not permanent identity; the browser receives an opaque resume cookie and Supabase stores only its hash. Optional avatar metadata also lives on the participant row: either a private Supabase Storage path for a prepared photo avatar, a stable built-in preset avatar id, or null for initials fallback.
 
 The guest display name and local avatar preview entered during onboarding are intentionally kept in browser `sessionStorage` so a guest does not have to type them again across reconnects or a new game run. That stored display name is not participant identity. A new current session creates or validates a new `participants` row through the server-issued resume cookie, scoped to the current session id.
 
-`question_responses` stores immutable locked answers or timeouts. The database enforces one response per `party_session_id`, `participant_id`, and `question_id`.
+`question_responses` stores immutable locked answers or timeouts. The database enforces one response per `party_session_id`, `participant_id`, and `question_id`. Each row preserves authoritative `response_duration_ms`, `points_awarded`, and `scoring_version` evidence.
 
 Question definitions are approved static bilingual content loaded from `content/en.json` and `content/vi.json`. Supabase does not store question definitions.
 
@@ -63,7 +63,7 @@ Finishing a game sets the session to `finished` while keeping `is_current=true`.
 
 ## New Game Behavior
 
-Creating a new session inserts a new `party_sessions` row in `lobby` with revision `0`, no participants, and no responses. Old participants, responses, and host commands stay attached to their original session. Starting the game is a separate host command from creating the session.
+Creating a new session inserts a new `party_sessions` row in `lobby` with revision `0`, the host-selected question count, no participants, and no responses. The default is 10. Runtime content is the first N enabled approved questions in deterministic order. Old participants, responses, and host commands stay attached to their original session. Starting the game is a separate host command from creating the session.
 
 ## Read Side Effects
 
@@ -86,6 +86,8 @@ Host commands send deterministic command ids scoped to `session id + command + r
 
 Guest responses remain protected by unique response constraints. Exact duplicate submissions can return the existing accepted state; conflicting duplicates are rejected.
 
+Session creation validates `question_count` in the API, repository, and database function. The database prevents changing it after creation. Reusing a creation idempotency key with a different count is rejected.
+
 Question ids and option ids are immutable content contracts for a rehearsed session. Changing ids or correct-answer ids while a session is active can make existing response rows misleading, so content deployments should be validated with a new session.
 
 Avatar updates go through `POST /api/party/participant/avatar`. The route validates the participant resume cookie, active session, preset id or prepared 512x512 WebP/JPEG image, then updates the participant row through the service-role repository. Guest browsers never receive Supabase service-role credentials or direct write access. Photo avatars are stored in the private `party-avatars` bucket at `{deployment_environment}/{party_session_id}/{participant_id}/avatar.webp` or `.jpg`; snapshots contain only short-lived signed URLs or preset IDs.
@@ -102,7 +104,7 @@ Preview and Production may share the same Supabase project, but they do not shar
 
 Host Controller:
 
-- `Create new session`: creates a fresh lobby session.
+- `Create new session`: selects 3, 5, 7, or 10 questions where available and creates a fresh lobby session. The selection defaults to 10 and cannot change during the run.
 - `Start game`: prepares the first question for the current session.
 - `Reveal answers`: reveals answer choices and starts the 20-second deadline.
 - active answering: no required host action; the deadline closes answering automatically.
@@ -116,7 +118,7 @@ Host Controller:
 
 1. Open `/{locale}/host`.
 2. Unlock with the Host PIN.
-3. If no session is active, click `Create new session`.
+3. If no session is active, select the question count and click `Create new session`.
 4. Confirm the Host Controller shows lobby, revision `0`, and zero participants/responses.
 5. Display `/display/party` on the laptop/TV.
 6. Guests scan the displayed QR and join.

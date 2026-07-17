@@ -217,6 +217,16 @@ Milestone 5 checks:
 - Hosted Supabase RLS, Vercel preview deployment, and browser-context realtime validation have passed; physical multi-device rehearsal remains required before event approval.
 - Physical rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.
 
+Time-scoring and configurable-session checks:
+
+- Use `npm run test:scoring` for worked 20-second examples, integer bounds, incorrect answers, defensive negative elapsed time, and malformed duration.
+- Use `npm run test:session-config` for default 10, 3/5/7/10 first-N selection, ordering, and invalid count rejection.
+- Use `npm run test:leaderboard-race` for previous/final scores and ranks, deterministic ties, and nice scale ceilings.
+- Use `npm run check:visual:leaderboard-race` against a running app for 10-row 1366x768, 1920x1080, and reduced-motion captures.
+- Deployed rehearsal must create a fresh three-question Preview test session, use at least three participants covering fast correct, slow correct, and incorrect/timeout, finish after question 3, and verify winner-only certificate output says the winner's correct count out of 3.
+- Also create a fresh session without changing the control and confirm the first projection is `/10`.
+- Reports must include exact Vercel URL, deployment type, branch or commit, timestamp, tested viewports, locales, and whether testing was automated browser emulation or a physical device.
+
 ## Functional Acceptance Checklist
 
 - Guest can enter through QR code.
@@ -234,6 +244,9 @@ Milestone 5 checks:
 - Leaderboard advances directly to the next question or final winner without returning to reveal.
 - Safe retries do not create duplicate question responses.
 - Guest sees a result screen.
+- Correct guest reveal shows the authoritative awarded points; score labels use points while question progress keeps the `question/total` form.
+- Host can select a valid session question count before creation, reconnect restores it, and the final transition occurs after question N without preparing N+1.
+- Party Screen leaderboard grows bars from previous persisted totals, shows this-round gain, reorders stable participant rows, and settles without replaying on unrelated snapshot refreshes.
 - Party Screen and leaderboard update after submission or host-driven phase changes once runtime exists.
 - Guest, Party Screen leaderboard, reveal leaderboard, and final result identity surfaces show photo, preset, or initials fallback avatars.
 - Stored photo avatars contain sticker artwork but no selection ring or editor control.

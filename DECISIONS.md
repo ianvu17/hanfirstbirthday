@@ -454,3 +454,25 @@ The party needs smooth second-by-second feedback without high-frequency database
 **Consequence**
 
 Projections never expose `correctOptionId` before reveal. Winner ties remain deterministic through the existing leaderboard ordering; only rank 1 receives the certificate action. `CERTIFICATE_EVENT_DATE` is optional and must contain an Ian-approved localized date before it is shown; otherwise the certificate uses approved generic event wording.
+
+## ADR-022: Persisted Time Scoring, Session Question Count, And Leaderboard Race
+
+**Decision**
+
+Correct answers use `time-v1`: 1,000 base points plus a rounded bonus of up to 1,000 points based on authoritative server receipt time, persisted question-open time, and the configured question duration. Incorrect answers and timeouts earn zero. Every response persists `points_awarded` and `scoring_version`; the existing `response_duration_ms` is the clamped response-time evidence. Historical responses retain their original 0/1 value as `correct-count-v1` and are never rescored.
+
+Every party session persists an immutable `question_count`, defaulting to 10. Creation validates the count against the enabled approved question set, and the runtime uses the first N questions in existing deterministic order. The approved question definitions remain unchanged.
+
+Shared projections include previous score, current-question gain, previous rank, and final rank. The Party Screen renders these as a browser-only horizontal bar chart race. Animation progress is not persisted, and the race identity is session id plus question id. Reduced-motion clients render the settled result immediately.
+
+**Status**
+
+Accepted for the gameplay enhancement milestone on July 17, 2026.
+
+**Reason**
+
+The party benefits from rewarding both knowledge and speed, avoiding frequent ties, allowing shorter rehearsals, and making leaderboard reveals more exciting without weakening server authority.
+
+**Consequence**
+
+Leaderboard order is total points descending, then participant creation order, display name, and participant id. Winner and certificate authorization sum persisted awarded points. Host creation owns the session length; it cannot change during the session. The host advance action waits for the essential leaderboard animation unless reduced motion is requested.

@@ -2,7 +2,10 @@
 
 import type { Locale } from "@/lib/i18n/routing";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
-import { usePartySnapshot, useSharedPartyProjection } from "@/lib/party-runtime/runtime-provider";
+import {
+  usePartySnapshot,
+  useSharedPartyProjection,
+} from "@/lib/party-runtime/runtime-provider";
 
 import { PartyScreenView } from "./party-screen-view";
 
@@ -19,6 +22,7 @@ export function PartyScreen({ locale = "en" }: { locale?: Locale }) {
       serverNow={snapshot.now}
       connection="connected"
       label={copy.developmentLabel}
+      animationKey={`${snapshot.state.sessionId}:${snapshot.state.currentQuestionId ?? "none"}`}
     />
   );
 }

@@ -11,7 +11,7 @@ import {
   getApprovedPartyConfig,
   getDevelopmentPartyConfig,
   processPartyCommand,
-  selectLeaderboardRows
+  selectLeaderboardRows,
 } from "@/lib/party-engine";
 import { getLocalPartyRuntime } from "@/lib/party-runtime/local-runtime";
 import type { PartyCommand, PartyState } from "../types";
@@ -24,7 +24,7 @@ function cloneContent<T>(value: T): T {
 
 function assertInvalid(
   mutate: (en: MutableContent, vi: MutableContent) => void,
-  pattern: RegExp
+  pattern: RegExp,
 ) {
   const en = cloneContent(enContent);
   const vi = cloneContent(viContent) as MutableContent;
@@ -49,11 +49,14 @@ test("approved content maps authoring questions to runtime PartyQuestion shape",
   assert.equal(first.prompt.vi, viContent.quiz.questions[0].prompt);
   assert.deepEqual(
     first.options.map((option) => option.id),
-    enContent.quiz.questions[0].answers.map((answer) => answer.id)
+    enContent.quiz.questions[0].answers.map((answer) => answer.id),
   );
   assert.equal(first.options[1].label.en, "Han's first birthday");
   assert.equal(first.options[1].label.vi, "Sinh nhật đầu tiên của Han");
-  assert.equal(first.correctOptionId, enContent.quiz.questions[0].correctAnswerId);
+  assert.equal(
+    first.correctOptionId,
+    enContent.quiz.questions[0].correctAnswerId,
+  );
   assert.equal(first.funFact.en, enContent.quiz.questions[0].funFact);
   assert.equal(first.funFact.vi, viContent.quiz.questions[0].funFact);
 });
@@ -76,7 +79,7 @@ test("approved content filters disabled questions and sorts deterministically", 
 
   assert.deepEqual(
     config.questions.map((question) => question.id),
-    ["han-test-question-02"]
+    ["han-test-question-02"],
   );
 });
 
@@ -173,14 +176,28 @@ test("approved config contains no development fixture questions", () => {
   const fixtureIds = new Set(fixture.questions.map((question) => question.id));
 
   assert.ok(approved.questions.length > 0);
-  assert.equal(approved.questions.some((question) => question.id.startsWith("dev-question")), false);
-  assert.equal(approved.questions.some((question) => fixtureIds.has(question.id)), false);
+  assert.equal(
+    approved.questions.some((question) =>
+      question.id.startsWith("dev-question"),
+    ),
+    false,
+  );
+  assert.equal(
+    approved.questions.some((question) => fixtureIds.has(question.id)),
+    false,
+  );
 });
 
 test("normal local runtime uses approved content while QA and fixture tests remain isolated", () => {
   const runtime = getLocalPartyRuntime();
-  const qaHarness = readFileSync("components/party/qa-party-harness.tsx", "utf8");
-  const fixtureTest = readFileSync("lib/party-engine/__tests__/party-engine.test.ts", "utf8");
+  const qaHarness = readFileSync(
+    "components/party/qa-party-harness.tsx",
+    "utf8",
+  );
+  const fixtureTest = readFileSync(
+    "lib/party-engine/__tests__/party-engine.test.ts",
+    "utf8",
+  );
 
   assert.equal(runtime.getConfig().questions[0].id, "han-test-question-01");
   assert.equal(qaHarness.includes("getDevelopmentPartyConfig()"), true);
@@ -201,8 +218,8 @@ test("approved content preserves scoring, deadline, timeout, and response IDs", 
     ...config,
     fixtureGuests: [
       { id: "approved-guest-1", displayName: "Approved Guest 1", locale: "en" },
-      { id: "approved-guest-2", displayName: "Approved Guest 2", locale: "vi" }
-    ]
+      { id: "approved-guest-2", displayName: "Approved Guest 2", locale: "vi" },
+    ],
   });
 
   state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
@@ -216,9 +233,9 @@ test("approved content preserves scoring, deadline, timeout, and response IDs", 
       questionId: question.id,
       selectedOptionId: question.correctOptionId,
       submissionId: `approved-guest-1:${question.id}:${question.correctOptionId}`,
-      receivedAt: 2000
+      receivedAt: 2000,
     },
-    config
+    config,
   );
   assert.equal(correct.ok, true);
 
@@ -230,21 +247,33 @@ test("approved content preserves scoring, deadline, timeout, and response IDs", 
       questionId: question.id,
       selectedOptionId: question.options[0].id,
       submissionId: `approved-guest-2:${question.id}:${question.options[0].id}`,
-      receivedAt: 21_000
+      receivedAt: 21_000,
     },
-    config
+    config,
   );
   assert.equal(late.ok, false);
   assert.equal(late.ok === false && late.error.code, "deadline_reached");
 
-  state = mustAccept(correct.state, { type: "LOCK_QUESTION", now: 21_000, reason: "deadline" });
+  state = mustAccept(correct.state, {
+    type: "LOCK_QUESTION",
+    now: 21_000,
+    reason: "deadline",
+  });
   const rows = selectLeaderboardRows(state);
   const response = Object.values(state.responses).find(
-    (item) => item.guestId === "approved-guest-1"
+    (item) => item.guestId === "approved-guest-1",
   );
-  const timeoutProjection = buildGuestProjection(state, config, "approved-guest-2", 21_000);
+  const timeoutProjection = buildGuestProjection(
+    state,
+    config,
+    "approved-guest-2",
+    21_000,
+  );
 
-  assert.equal(rows.find((row) => row.guestId === "approved-guest-1")?.score, 1);
+  assert.equal(
+    rows.find((row) => row.guestId === "approved-guest-1")?.score,
+    1950,
+  );
   assert.equal(timeoutProjection.lockedResponse?.status, "locked_timeout");
   assert.equal(response?.questionId, question.id);
   assert.equal(response?.selectedOptionId, question.correctOptionId);

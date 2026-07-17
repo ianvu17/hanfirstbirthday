@@ -9,17 +9,28 @@ import { PartyScreenView } from "@/components/party/party-screen-view";
 import type { Locale } from "@/lib/i18n/routing";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import { useRemotePartySnapshot } from "@/lib/party-remote/use-remote-party";
-import type { RemoteNoSessionSnapshot, RemotePartySnapshot } from "@/lib/party-remote/types";
+import type {
+  RemoteNoSessionSnapshot,
+  RemotePartySnapshot,
+} from "@/lib/party-remote/types";
 
-export function RemotePartyScreenClient({ locale = "en" }: { locale?: Locale }) {
+export function RemotePartyScreenClient({
+  locale = "en",
+}: {
+  locale?: Locale;
+}) {
   const copy = getPartyUiCopy(locale);
-  const { snapshot, connection, error } =
-    useRemotePartySnapshot<RemotePartySnapshot | RemoteNoSessionSnapshot>(false);
+  const { snapshot, connection, error } = useRemotePartySnapshot<
+    RemotePartySnapshot | RemoteNoSessionSnapshot
+  >(false);
 
   if (!snapshot) {
     return (
       <section className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-3xl place-items-center">
-        <PaperPanel tone={error ? "warm" : "display"} className="w-full text-center">
+        <PaperPanel
+          tone={error ? "warm" : "display"}
+          className="w-full text-center"
+        >
           {error ? (
             <div className="space-y-4">
               <BirthdayBadge tone="coral">
@@ -33,7 +44,9 @@ export function RemotePartyScreenClient({ locale = "en" }: { locale?: Locale }) 
           ) : (
             <div className="space-y-4">
               <LoadingTreatment />
-              <p className="text-lg font-extrabold text-muted-foreground">{copy.connecting}</p>
+              <p className="text-lg font-extrabold text-muted-foreground">
+                {copy.connecting}
+              </p>
             </div>
           )}
         </PaperPanel>
@@ -46,7 +59,9 @@ export function RemotePartyScreenClient({ locale = "en" }: { locale?: Locale }) 
       <section className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-3xl place-items-center">
         <PaperPanel tone="display" className="w-full text-center">
           <div className="space-y-4">
-            <BirthdayBadge tone="yellow">{copy.remoteProductionSession}</BirthdayBadge>
+            <BirthdayBadge tone="yellow">
+              {copy.remoteProductionSession}
+            </BirthdayBadge>
             <h1 className="font-display text-5xl font-extrabold text-foreground">
               {copy.noActiveSession}
             </h1>
@@ -67,7 +82,12 @@ export function RemotePartyScreenClient({ locale = "en" }: { locale?: Locale }) 
       serverNow={snapshot.serverNow}
       joinUrl={snapshot.joinUrl}
       connection={connection}
-      label={snapshot.session.isTest ? copy.remoteTestSession : copy.remoteProductionSession}
+      label={
+        snapshot.session.isTest
+          ? copy.remoteTestSession
+          : copy.remoteProductionSession
+      }
+      animationKey={`${snapshot.session.id}:${snapshot.projection.currentQuestion?.id ?? "none"}`}
     />
   );
 }

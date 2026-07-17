@@ -11,23 +11,25 @@ const samples: WinnerCertificateContext[] = [
     participantId: "winner-en",
     displayName: "IAN",
     locale: "en",
-    score: 9,
+    score: 8_420,
+    correctAnswers: 8,
     rank: 1,
     totalQuestions: 10,
     eventDate: "Configured event date",
-    avatar: { type: "preset", presetId: "birthday-bear" }
+    avatar: { type: "preset", presetId: "birthday-bear" },
   },
   {
     sessionId: "visual-vi",
     participantId: "winner-vi",
     displayName: "NGUYỄN THỊ MINH ANH",
     locale: "vi",
-    score: 10,
+    score: 9_180,
+    correctAnswers: 9,
     rank: 1,
     totalQuestions: 10,
     eventDate: null,
-    avatar: { type: "fallback", initials: "NA" }
-  }
+    avatar: { type: "fallback", initials: "NA" },
+  },
 ];
 
 async function main() {

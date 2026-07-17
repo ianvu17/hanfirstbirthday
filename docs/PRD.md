@@ -113,6 +113,8 @@ Qualitative:
   - Han fun fact appears when provided in approved content.
   - App proceeds to the next question.
   - Final score is derived from all locked responses.
+- Correct answers earn 1,000 base points plus a server-authoritative response-time bonus up to 1,000 points. Incorrect and timed-out responses earn zero. Awarded integer points are persisted per response and summed for leaderboard and winner state.
+- Host-created sessions default to 10 questions and may select a shorter valid count. A session uses the first selected number of enabled approved questions in existing order, and its count cannot change after creation.
 - A submitted answer is immutable once accepted.
 - A timed-out question is immutable once locked.
 - Previous questions must not reopen for editing.
@@ -129,7 +131,7 @@ The shared game should be planned around explicit phases before quiz implementat
 - `QUESTION_ACTIVE`: Party Screen shows the large question, automatic 20-second countdown, progress, and number of answers submitted. Phones show answer controls only for the current guest.
 - `QUESTION_LOCKED`: Party Screen communicates that answering is closed and waits for the host-driven reveal. Phones show the guest's locked or timed-out state.
 - `ANSWER_REVEAL`: Party Screen reveals the correct answer and celebration. Phones show only personal feedback needed by the guest.
-- `LEADERBOARD`: Party Screen shows animated ranking and current positions. Phones may offer a smaller personal leaderboard view.
+- `LEADERBOARD`: Party Screen shows a horizontal bar chart race from previous scores to updated persisted points, then reorders rows. Phones show simplified personal score and current-round gain.
 - `NEXT_QUESTION`: Party Screen prepares the room for the next question under host control. Phones prepare the next personal answer state.
 - `FINISHED`: Party Screen shows final leaderboard, celebration, and thank-you. Phones show personal result and next actions.
 

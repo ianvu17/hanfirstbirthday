@@ -255,7 +255,7 @@ Milestone 4 local party state:
 - Submissions are accepted only when `receivedAt < deadlineAt`.
 - Host, guest, and Party Screen countdowns render from `questionDeadlineAt - (clientNow + serverClockOffset)`. A shared client hook updates at 200 ms, caps the delivery allowance at the configured 20-second visible duration, clamps at zero, recomputes on focus/visibility changes, and never persists per-second ticks. Remote question opening adds a five-second deadline delivery allowance so the authoritative phase can reach all room surfaces before their visible clock decreases; this is transport tolerance, not a per-second write loop.
 - Timeout responses are materialized when the question locks.
-- Scores are derived from locked responses only: correct equals 1, incorrect/timeout equals 0.
+- Scores sum persisted `pointsAwarded` from locked responses. `time-v1` correct answers receive 1,000 base points plus up to 1,000 points from authoritative response time; incorrect and timeout responses receive zero. Historical `correct-count-v1` rows retain their original 0/1 values.
 
 ```mermaid
 flowchart TD
@@ -307,7 +307,7 @@ Milestone 5 implements the runtime schema in `supabase/migrations/`. The older d
 
 #### `party_sessions`
 
-Authoritative shared party snapshot: join code, party key, deployment environment, current-session flag, lifecycle status, phase, current question references, question timestamps, display locale, test metadata, monotonic revision, session label, creation idempotency key, and lifecycle timestamps.
+Authoritative shared party snapshot: join code, party key, deployment environment, current-session flag, lifecycle status, phase, current question references, immutable `question_count`, question timestamps, display locale, test metadata, monotonic revision, session label, creation idempotency key, and lifecycle timestamps.
 
 Finished sessions remain current until archive or replacement. This keeps final projections and winner downloads refresh-safe while joining remains closed because only active sessions accept participants.
 
@@ -345,6 +345,8 @@ Fields:
 - `submitted_at`.
 - `locked_at`.
 - `response_duration_ms`.
+- `points_awarded`.
+- `scoring_version`: `correct-count-v1` or `time-v1`.
 - `is_correct`.
 - `submission_id`.
 - `is_test`.
@@ -355,7 +357,7 @@ Constraints:
 - Enforce timeout rows with no selected option and answer rows with a selected option.
 - Enforce non-negative response duration when present.
 - Enforce unique submission ids per party session and participant.
-- Final score should be calculated from accepted locked question responses.
+- Final score sums persisted `points_awarded` from accepted locked question responses.
 
 #### `host_command_log`
 
@@ -436,10 +438,10 @@ Supabase does not store question definitions. It stores only runtime session sta
 - Before the game, it should show hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
 - During the game, it should show the active question, countdown, progress, submitted-answer count, locked state, answer reveal, and approved Han fun fact.
 - During leaderboard phases, it should show animated ranking and current positions.
+- Current leaderboard projections include previous score/rank plus current-question gain/final score/rank. The Party Screen animates these as a browser-only bar chart race keyed by session and question; animation progress is never persisted.
 - At finish, it should show final leaderboard, celebration, and thank-you.
 - Source leaderboard from completed quiz attempts whose question responses are locked.
-- Rank by score first.
-- Use completion time or time remaining only if approved as a tie-breaker.
+- Rank by total persisted points first, then participant creation order, display name, and participant id.
 - Filter out QA/test data in production display.
 - Use Supabase real-time subscriptions or a lightweight polling fallback.
 

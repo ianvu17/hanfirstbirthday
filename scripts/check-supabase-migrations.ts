@@ -44,7 +44,18 @@ const requiredFragments = [
   "No anonymous avatar object reads",
   "No anonymous avatar object writes",
   "party_sessions_current_status_check",
-  "status in ('draft', 'active', 'finished')"
+  "status in ('draft', 'active', 'finished')",
+  "add column if not exists question_count integer not null default 10",
+  "party_sessions_question_count_check",
+  "add column if not exists points_awarded integer not null default 0",
+  "add column if not exists scoring_version text not null default 'time-v1'",
+  "question_responses_points_awarded_check",
+  "question_responses_scoring_version_check",
+  "scoring_version = 'correct-count-v1'",
+  "p_question_count integer",
+  "party_sessions_question_count_immutable",
+  "question_count_is_immutable",
+  "idempotency_conflict",
 ];
 
 const missing = requiredFragments.filter((fragment) => !sql.includes(fragment));
@@ -57,4 +68,6 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-console.log("Supabase migrations include runtime, finished winner state, avatar storage, constraints, indexes, and RLS policies.");
+console.log(
+  "Supabase migrations include runtime, time scoring, session question count, finished winner state, avatar storage, constraints, indexes, and RLS policies.",
+);

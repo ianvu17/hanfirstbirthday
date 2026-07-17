@@ -39,6 +39,7 @@ export type GuestSession = {
 };
 
 export type QuestionResponseStatus = "locked_answer" | "locked_timeout";
+export type ScoringVersion = "correct-count-v1" | "time-v1";
 
 export type LockedResponse = {
   guestId: string;
@@ -48,6 +49,8 @@ export type LockedResponse = {
   submittedAt: number;
   lockedAt: number;
   responseDurationMs: number | null;
+  pointsAwarded: number;
+  scoringVersion: ScoringVersion;
   submissionId: string;
   isCorrect: boolean;
 };
@@ -150,10 +153,14 @@ export type HostCapabilities = {
 
 export type LeaderboardRow = {
   rank: number;
+  previousRank: number;
   guestId: string;
   displayName: string;
   score: number;
+  previousScore: number;
+  pointsGained: number;
   answeredCount: number;
+  correctCount: number;
   isFixture: boolean;
   avatar?: ParticipantAvatarProjection | null;
 };

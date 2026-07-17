@@ -55,7 +55,7 @@ Canonical quiz settings:
 - `questionDurationSeconds`: global question duration. The current runtime maps this to `PartyConfig.questionDurationMs`. Per-question durations are not supported.
 - `responseLocking`: must be `per-question-immutable`.
 - `questionOrder`: must be `content-order`.
-- `scoringMode`: must be `correct-count`.
+- `scoringMode`: must be `time-v1`. Correct answers receive persisted integer points from the server-authoritative time formula; question definitions do not contain score values.
 
 Answer fields:
 
@@ -108,6 +108,8 @@ Potential fields:
 - `lockedAt`: lock timestamp.
 - `timedOut`: timeout flag.
 - `idempotencyKey`: retry token or equivalent.
+- `pointsAwarded`: persisted authoritative integer points.
+- `scoringVersion`: `time-v1` for new responses or `correct-count-v1` for preserved historical rows.
 
 Milestone 5 participant/session runtime fields:
 

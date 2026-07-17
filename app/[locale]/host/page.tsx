@@ -4,9 +4,10 @@ import { notFound } from "next/navigation";
 import { PageShell } from "@/components/design/page-shell";
 import { ProductionHostController } from "@/components/party/host/production-host-controller";
 import { isLocale, type Locale } from "@/lib/i18n/routing";
+import { getApprovedPartyConfig } from "@/lib/party-engine";
 
 export default async function HostPage({
-  params
+  params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
@@ -21,7 +22,10 @@ export default async function HostPage({
 
   return (
     <PageShell variant="admin" decorations={false}>
-      <ProductionHostController locale={locale} />
+      <ProductionHostController
+        locale={locale}
+        availableQuestionCount={getApprovedPartyConfig().questions.length}
+      />
     </PageShell>
   );
 }

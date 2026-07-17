@@ -19,7 +19,7 @@ The birthday game is host-driven, not autonomous. Ian controls phase transitions
 
 Future host controls should be intentionally lightweight. Expected controls include Start Game, Next, Reveal, and Pause, but Milestone 3.6 does not implement host controls.
 
-Milestone 5 implements the production Host Controller at `/{locale}/host`. It starts with a PIN screen, then shows party status, phase, question progress, participant count, submitted count, connection state, and one dominant valid next action. During active answering there is no required host action; the host waits for the deadline to close answering, then reveals the correct answer. Finish Party requires confirmation. Developer diagnostics and fixture actions remain in `/{locale}/qa/party`.
+Milestone 5 implements the production Host Controller at `/{locale}/host`. It starts with a PIN screen, then shows party status, phase, question progress, participant count, submitted count, connection state, and one dominant valid next action. New-session creation includes a localized 3/5/7/10 question-count choice, defaulting to 10. During active answering there is no required host action; the host waits for the deadline to close answering, then reveals the correct answer. Finish Party requires confirmation. Developer diagnostics and fixture actions remain in `/{locale}/qa/party`.
 
 ## Primary Guest Flow
 
@@ -60,7 +60,7 @@ Use these shared lifecycle terms for future planning:
 - `QUESTION_ACTIVE`: Phones collect answers; the Party Screen shows the question, answer choices, countdown, progress, and submitted-answer count.
 - `QUESTION_LOCKED`: Phones show locked or timed-out personal state; the Party Screen holds the room before reveal. In implementation this is reached by deadline-driven closure, not a required host lock.
 - `ANSWER_REVEAL`: The Party Screen gives the correct answer one dominant green treatment followed by the approved Han fun fact and subdued distribution. Phones explicitly label the correct answer and, when different, the guest's selected answer; timeout is its own state. Correctness remains secret before this phase.
-- `LEADERBOARD`: The Party Screen shows current rankings; phones may show a smaller personal leaderboard view.
+- `LEADERBOARD`: The Party Screen grows bars from previous totals to new totals, shows this-round points, then physically reorders rows. Phones keep the simpler personal score and gain view.
 - `NEXT_QUESTION`: The host advances the room to the next question.
 - `FINISHED`: The Party Screen closes with a winner-first celebration and top three. The winner's phone receives a Mastermind celebration and certificate download; other guests receive warm thanks and final rank without a certificate action.
 
@@ -186,6 +186,8 @@ States:
 - Temporary request failure.
 - Safe retry.
 - Transition to next question.
+
+Correct, incorrect, and timeout reveals show the authoritative points earned for that question. Progress remains `question/total`; score is always formatted as points so the two concepts are not confused.
 
 Milestone 4 decision:
 
