@@ -281,7 +281,7 @@ export async function generateWinnerCertificatePdf(
         width: 490,
       });
 
-    doc.rect(252, 393, 236, 50).fillAndStroke(palette.cream, palette.orange);
+    doc.rect(252, 390, 236, 64).fillAndStroke(palette.cream, palette.orange);
     doc
       .font("ExtraBold")
       .fontSize(16)
