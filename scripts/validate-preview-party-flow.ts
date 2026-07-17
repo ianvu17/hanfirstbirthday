@@ -1085,7 +1085,8 @@ async function main() {
 
     const explicitWrongLabels =
       (await guestEnPage.getByText(/^your answer$/i).count()) +
-      (await guestViPage.getByText(/^đáp án của bạn$/i).count());
+      (await guestViPage.getByText(/^đáp án của bạn$/i).count()) +
+      (await guestSlowPage.getByText(/^your answer$/i).count());
     if (explicitWrongLabels < 1) {
       throw new Error(
         `Question ${questionNumber} did not explicitly label a wrong selected answer.`,
