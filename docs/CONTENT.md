@@ -121,7 +121,7 @@ Milestone 5 participant/session runtime fields:
 - `resumeTokenHash`: server-side hash of the participant resume token.
 - `isTest`: separates QA/preview records from production event data.
 
-Final gameplay UI copy in `content/party-ui.json` includes explicit correct/selected/timeout reveal labels, direct next-question/show-winner controls, final winner/guest messages, and English/Vietnamese certificate wording. These labels are product copy; winner name, score, rank, and avatar remain runtime data derived by the server. `CERTIFICATE_EVENT_DATE` may be configured only with Ian-approved event wording and otherwise falls back to the localized event title.
+Final gameplay UI copy in `content/party-ui.json` includes lobby readiness labels, explicit correct/selected/timeout reveal labels, direct next-question/show-winner controls, final winner/guest messages, and English/Vietnamese certificate wording. These labels are product copy; winner name, score, rank, and avatar remain runtime data derived by the server. The guest participant locale, not a stale route default, selects runtime copy and approved localized question content. `CERTIFICATE_EVENT_DATE` may be configured only with Ian-approved event wording and otherwise falls back to the localized event title.
 
 ## Message Model
 

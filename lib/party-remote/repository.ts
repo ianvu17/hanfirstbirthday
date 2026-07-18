@@ -248,6 +248,12 @@ async function applyParticipantAvatarsToLeaderboard(
       ...row,
       avatar: avatarMap.get(row.guestId) ?? fallbackAvatar(row.displayName),
     })),
+    participants: projection.participants.map((participant) => ({
+      ...participant,
+      avatar:
+        avatarMap.get(participant.guestId) ??
+        fallbackAvatar(participant.displayName),
+    })),
   };
 }
 
@@ -269,6 +275,7 @@ function rowToPartyState(bundle: PartyBundle): PartyState {
         locale: participant.locale,
         createdOrder: index,
         isFixture: participant.is_test,
+        isReady: participant.is_ready,
       },
     ]),
   );
@@ -697,6 +704,8 @@ export async function buildRemotePartySnapshot(
           id: participant.id,
           displayName: participant.display_name,
           locale: participant.locale,
+          isReady: participant.is_ready,
+          readyAt: participant.ready_at,
           avatar: await buildParticipantAvatarProjection(participant),
         }
       : null,
@@ -709,6 +718,191 @@ function avatarObjectPath(
 ) {
   const context = getPartyContext();
   return `${context.deploymentEnvironment}/${participant.party_session_id}/${participant.id}/avatar.${extension}`;
+}
+
+export async function updateParticipantProfile(
+  participantSession: ParticipantSession | null,
+  requested: { displayName?: string; locale?: Locale },
+) {
+  const currentSession = await loadCurrentPartySession();
+
+  if (!currentSession) {
+    return {
+      ok: false as const,
+      error: {
+        code: "party_not_found" as const,
+        message: "No active party session is open.",
+      },
+    };
+  }
+
+  const participant = await validateParticipantSession(
+    currentSession.id,
+    participantSession,
+  );
+
+  if (!participant) {
+    return {
+      ok: false as const,
+      error: {
+        code: "invalid_participant_session" as const,
+        message: "Please rejoin the party on this phone.",
+      },
+    };
+  }
+
+  if (
+    !currentSession.is_current ||
+    currentSession.status !== "active" ||
+    currentSession.phase !== "lobby"
+  ) {
+    return {
+      ok: false as const,
+      error: {
+        code: "join_closed" as const,
+        message: "Profile changes are closed because the game has started.",
+      },
+    };
+  }
+
+  const displayName =
+    requested.displayName === undefined
+      ? participant.display_name
+      : normalizeDisplayName(requested.displayName);
+  const locale = requested.locale ?? participant.locale;
+
+  if (!displayName || displayName.length > 40) {
+    return {
+      ok: false as const,
+      error: {
+        code: "invalid_name" as const,
+        message: "Please enter a display name between 1 and 40 characters.",
+      },
+    };
+  }
+
+  const changed =
+    displayName !== participant.display_name || locale !== participant.locale;
+
+  if (!changed) {
+    return {
+      ok: true as const,
+      participant,
+      snapshot: await buildRemotePartySnapshot(participantSession),
+    };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const updated = await supabase
+    .from("participants")
+    .update({
+      display_name: displayName,
+      locale,
+      is_ready: false,
+      ready_at: null,
+      last_seen_at: new Date().toISOString(),
+    })
+    .eq("id", participant.id)
+    .eq("party_session_id", currentSession.id)
+    .eq("resume_token_hash", participant.resume_token_hash)
+    .select("*")
+    .single<ParticipantRow>();
+
+  if (updated.error) {
+    throw updated.error;
+  }
+
+  await supabase.rpc("touch_party_session_response", {
+    p_session_id: currentSession.id,
+  });
+
+  return {
+    ok: true as const,
+    participant: updated.data,
+    snapshot: await buildRemotePartySnapshot(participantSession),
+  };
+}
+
+export async function setParticipantReadiness(
+  participantSession: ParticipantSession | null,
+  isReady: boolean,
+) {
+  const currentSession = await loadCurrentPartySession();
+
+  if (!currentSession) {
+    return {
+      ok: false as const,
+      error: {
+        code: "party_not_found" as const,
+        message: "No active party session is open.",
+      },
+    };
+  }
+
+  const participant = await validateParticipantSession(
+    currentSession.id,
+    participantSession,
+  );
+
+  if (!participant) {
+    return {
+      ok: false as const,
+      error: {
+        code: "invalid_participant_session" as const,
+        message: "Please rejoin the party on this phone.",
+      },
+    };
+  }
+
+  if (
+    !currentSession.is_current ||
+    currentSession.status !== "active" ||
+    currentSession.phase !== "lobby"
+  ) {
+    return {
+      ok: false as const,
+      error: {
+        code: "join_closed" as const,
+        message: "Readiness can no longer be changed because the game has started.",
+      },
+    };
+  }
+
+  if (participant.is_ready === isReady) {
+    return {
+      ok: true as const,
+      participant,
+      snapshot: await buildRemotePartySnapshot(participantSession),
+    };
+  }
+
+  const supabase = createSupabaseServiceClient();
+  const updated = await supabase
+    .from("participants")
+    .update({
+      is_ready: isReady,
+      ready_at: isReady ? new Date().toISOString() : null,
+      last_seen_at: new Date().toISOString(),
+    })
+    .eq("id", participant.id)
+    .eq("party_session_id", currentSession.id)
+    .eq("resume_token_hash", participant.resume_token_hash)
+    .select("*")
+    .single<ParticipantRow>();
+
+  if (updated.error) {
+    throw updated.error;
+  }
+
+  await supabase.rpc("touch_party_session_response", {
+    p_session_id: currentSession.id,
+  });
+
+  return {
+    ok: true as const,
+    participant: updated.data,
+    snapshot: await buildRemotePartySnapshot(participantSession),
+  };
 }
 
 export async function updateParticipantPresetAvatar(
@@ -742,7 +936,11 @@ export async function updateParticipantPresetAvatar(
     };
   }
 
-  if (!currentSession.is_current || currentSession.status === "finished") {
+  if (
+    !currentSession.is_current ||
+    currentSession.status !== "active" ||
+    currentSession.phase !== "lobby"
+  ) {
     return {
       ok: false as const,
       error: {
@@ -766,6 +964,8 @@ export async function updateParticipantPresetAvatar(
       avatar_path: null,
       avatar_preset_id: presetId,
       avatar_updated_at: new Date().toISOString(),
+      is_ready: false,
+      ready_at: null,
     })
     .eq("id", participant.id)
     .eq("party_session_id", currentSession.id)
@@ -820,7 +1020,11 @@ export async function updateParticipantPhotoAvatar(
     };
   }
 
-  if (!currentSession.is_current || currentSession.status === "finished") {
+  if (
+    !currentSession.is_current ||
+    currentSession.status !== "active" ||
+    currentSession.phase !== "lobby"
+  ) {
     return {
       ok: false as const,
       error: {
@@ -864,6 +1068,8 @@ export async function updateParticipantPhotoAvatar(
       avatar_path: objectPath,
       avatar_preset_id: null,
       avatar_updated_at: new Date().toISOString(),
+      is_ready: false,
+      ready_at: null,
     })
     .eq("id", participant.id)
     .eq("party_session_id", currentSession.id)

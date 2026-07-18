@@ -103,6 +103,132 @@ function drawConfetti(doc: PDFKit.PDFDocument) {
   doc.circle(700, 90, 8).fill(palette.orange);
 }
 
+function drawBackgroundStars(doc: PDFKit.PDFDocument) {
+  const stars = [
+    [246, 197, 4],
+    [300, 184, 3],
+    [568, 198, 4],
+    [620, 178, 3],
+    [231, 467, 3],
+    [520, 470, 4],
+  ] as const;
+
+  doc.save().fillOpacity(0.13);
+  for (const [x, y, radius] of stars) {
+    const points: Array<[number, number]> = [];
+    for (let index = 0; index < 10; index += 1) {
+      const pointRadius = index % 2 === 0 ? radius : radius * 0.42;
+      const angle = -Math.PI / 2 + (index * Math.PI) / 5;
+      points.push([
+        x + Math.cos(angle) * pointRadius,
+        y + Math.sin(angle) * pointRadius,
+      ]);
+    }
+    doc.polygon(...points).fill(indexedStarColor(x));
+  }
+  doc.restore();
+}
+
+function indexedStarColor(x: number) {
+  return x % 2 === 0 ? palette.blue : palette.yellow;
+}
+
+function sealEdgePoints(cx: number, cy: number, outer: number, inner: number) {
+  const points: Array<[number, number]> = [];
+  for (let index = 0; index < 40; index += 1) {
+    const radius = index % 2 === 0 ? outer : inner;
+    const angle = -Math.PI / 2 + (index * Math.PI * 2) / 40;
+    points.push([cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius]);
+  }
+  return points;
+}
+
+function drawOfficialSeal(
+  doc: PDFKit.PDFDocument,
+  copy: ReturnType<typeof getPartyUiCopy>,
+) {
+  const cx = 691;
+  const cy = 408;
+
+  doc
+    .polygon(
+      [cx - 31, cy + 23],
+      [cx - 39, cy + 72],
+      [cx - 16, cy + 61],
+      [cx - 3, cy + 78],
+      [cx + 3, cy + 30],
+    )
+    .fillAndStroke(palette.coral, palette.orange);
+  doc
+    .polygon(
+      [cx + 31, cy + 23],
+      [cx + 39, cy + 72],
+      [cx + 16, cy + 61],
+      [cx + 3, cy + 78],
+      [cx - 3, cy + 30],
+    )
+    .fillAndStroke(palette.yellow, palette.orange);
+
+  doc
+    .save()
+    .fillOpacity(0.22)
+    .polygon(...sealEdgePoints(cx + 4, cy + 5, 51, 45))
+    .fill(palette.ink)
+    .restore();
+  doc
+    .polygon(...sealEdgePoints(cx, cy, 51, 45))
+    .fillAndStroke(palette.coral, palette.orange);
+  doc.lineWidth(2).circle(cx, cy, 40).fillAndStroke(palette.yellow, palette.blueDeep);
+  doc.lineWidth(2).circle(cx, cy, 34).fillAndStroke(palette.paper, palette.blueDeep);
+  doc.lineWidth(1).circle(cx, cy, 29).stroke(palette.coral);
+
+  const officialSize = fitText(
+    doc,
+    copy.certificateSealOfficial,
+    "ExtraBold",
+    7,
+    54,
+    5,
+  );
+  doc
+    .font("ExtraBold")
+    .fontSize(officialSize)
+    .fillColor(palette.blueDeep)
+    .text(copy.certificateSealOfficial, cx - 28, cy - 23, {
+      width: 56,
+      align: "center",
+    });
+  doc
+    .font("ExtraBold")
+    .fontSize(25)
+    .fillColor(palette.coral)
+    .text("1", cx - 18, cy - 15, { width: 36, align: "center" });
+  const expertSize = fitText(
+    doc,
+    copy.certificateSealExpert,
+    "ExtraBold",
+    7,
+    52,
+    5,
+  );
+  doc
+    .font("ExtraBold")
+    .fontSize(expertSize)
+    .fillColor(palette.blueDeep)
+    .text(copy.certificateSealExpert, cx - 27, cy + 13, {
+      width: 54,
+      align: "center",
+    });
+  doc
+    .font("Bold")
+    .fontSize(5)
+    .fillColor(palette.muted)
+    .text(copy.certificateSealNumber, cx - 25, cy + 25, {
+      width: 50,
+      align: "center",
+    });
+}
+
 async function preparedPhoto(bytes: Uint8Array) {
   return sharp(bytes)
     .resize(512, 512, { fit: "cover", position: "centre" })
@@ -218,6 +344,7 @@ export async function generateWinnerCertificatePdf(
     drawBunting(doc);
     drawGinghamCorners(doc);
     drawConfetti(doc);
+    drawBackgroundStars(doc);
 
     doc
       .font("Bold")
@@ -281,12 +408,15 @@ export async function generateWinnerCertificatePdf(
         width: 490,
       });
 
-    doc.rect(252, 390, 236, 64).fillAndStroke(palette.cream, palette.orange);
+    doc.roundedRect(252, 388, 252, 70, 10).fillAndStroke(palette.cream, palette.orange);
+    doc
+      .polygon([252, 388], [334, 388], [322, 405], [252, 405])
+      .fill(palette.coral);
     doc
       .font("ExtraBold")
       .fontSize(16)
       .fillColor(palette.ink)
-      .text(copy.certificateFirstPlace, 270, 402);
+      .text(copy.certificateFirstPlace, 270, 405);
     doc
       .font("Bold")
       .fontSize(11)
@@ -294,7 +424,7 @@ export async function generateWinnerCertificatePdf(
       .text(
         `${copy.certificateScore}: ${formatPoints(context.score, context.locale)} ${copy.points}`,
         270,
-        420,
+        425,
       );
     doc
       .font("Regular")
@@ -303,20 +433,10 @@ export async function generateWinnerCertificatePdf(
       .text(
         `${context.correctAnswers} ${copy.correctOutOf} ${context.totalQuestions}`,
         270,
-        435,
+        442,
       );
 
-    doc.circle(691, 418, 39).fillAndStroke(palette.yellow, palette.orange);
-    doc.lineWidth(2).circle(691, 418, 30).stroke(palette.paper);
-    const sealSize = fitText(doc, copy.certificateSeal, "ExtraBold", 13, 52, 9);
-    doc
-      .font("ExtraBold")
-      .fontSize(sealSize)
-      .fillColor(palette.ink)
-      .text(copy.certificateSeal, 665, 411, {
-        width: 52,
-        align: "center",
-      });
+    drawOfficialSeal(doc, copy);
 
     doc
       .font("Bold")

@@ -56,6 +56,8 @@ export type ParticipantRow = {
   joined_at: string;
   last_seen_at: string;
   is_test: boolean;
+  is_ready: boolean;
+  ready_at: string | null;
   avatar_type: "photo" | "preset" | null;
   avatar_path: string | null;
   avatar_preset_id: AvatarPresetId | null;
@@ -152,6 +154,8 @@ export type RemoteGuestSnapshot = RemotePartySnapshot & {
     id: string;
     displayName: string;
     locale: Locale;
+    isReady: boolean;
+    readyAt: string | null;
     avatar: ParticipantAvatarProjection;
   } | null;
 };

@@ -56,6 +56,10 @@ const requiredFragments = [
   "party_sessions_question_count_immutable",
   "question_count_is_immutable",
   "idempotency_conflict",
+  "add column if not exists is_ready boolean not null default false",
+  "add column if not exists ready_at timestamptz",
+  "participants_ready_at_check",
+  "participants_party_session_readiness_idx",
 ];
 
 const missing = requiredFragments.filter((fragment) => !sql.includes(fragment));

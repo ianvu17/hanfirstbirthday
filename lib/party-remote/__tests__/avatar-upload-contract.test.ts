@@ -99,18 +99,15 @@ test("prepared avatar signature inspection identifies WebP, JPEG, PNG, and decod
   });
 });
 
-test("client submits a File as avatar without manually setting multipart content type", () => {
-  const onboarding = readFileSync("components/guest/onboarding-flow.tsx", "utf8");
+test("client submits a File through progress-aware multipart XHR without manually setting content type", () => {
+  const uploadClient = readFileSync("lib/party-avatar-upload-client.ts", "utf8");
   const partyPhoto = readFileSync("components/guest/party-photo-card.tsx", "utf8");
-  const savePhotoStart = onboarding.indexOf("async function savePhotoAvatar");
-  const savePresetStart = onboarding.indexOf("async function savePresetAvatar");
-  const savePhotoSource = onboarding.slice(savePhotoStart, savePresetStart);
 
-  assert.equal(savePhotoSource.includes("formData.append(preparedAvatarFieldName, file);"), true);
-  assert.equal(savePhotoSource.includes('credentials: "include"'), true);
-  assert.equal(savePhotoSource.includes('"content-type"'), false);
-  assert.equal(savePhotoSource.includes('formData.set("file"'), false);
-  assert.equal(savePhotoSource.includes('formData.set("type", "photo")'), false);
+  assert.equal(uploadClient.includes("formData.append(preparedAvatarFieldName, file);"), true);
+  assert.equal(uploadClient.includes("xhr.withCredentials = true"), true);
+  assert.equal(uploadClient.includes('setRequestHeader("content-type"'), false);
+  assert.equal(uploadClient.includes("xhr.upload.onprogress"), true);
+  assert.equal(uploadClient.includes("xhr.abort()"), true);
   assert.equal(partyPhoto.includes("new File([preferred], getPreparedAvatarFileName(preferred.type)"), true);
   assert.equal(partyPhoto.includes("new File([fallback], getPreparedAvatarFileName(fallback.type)"), true);
 });

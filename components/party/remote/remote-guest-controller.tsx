@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import type { Locale } from "@/lib/i18n/routing";
 import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 import { formatPoints } from "@/lib/party-engine";
+import { buildGuestWelcomePath } from "@/lib/party-remote/join-routing";
 import { getPartyUiCopy } from "@/lib/party-runtime/copy";
 import { useRemotePartySnapshot } from "@/lib/party-remote/use-remote-party";
 import { useAuthoritativeCountdown } from "@/lib/party-runtime/use-authoritative-countdown";
@@ -95,7 +96,6 @@ export function RemoteGuestController({
   joinCode,
   avatar,
 }: RemoteGuestControllerProps) {
-  const copy = getPartyUiCopy(locale);
   const { snapshot, connection, error, refresh, applySnapshot } =
     useRemotePartySnapshot<RemoteGuestSnapshot | RemoteNoSessionSnapshot>(true);
   const [joinError, setJoinError] = useState<{
@@ -119,6 +119,8 @@ export function RemoteGuestController({
     snapshot?.session && "participant" in snapshot
       ? snapshot.participant
       : null;
+  const effectiveLocale = participant?.locale ?? locale;
+  const copy = getPartyUiCopy(effectiveLocale);
   const effectiveDisplayName = participant?.displayName ?? displayName;
   const effectiveAvatar = participant?.avatar ?? avatar ?? null;
   const question = projection?.currentQuestion ?? null;
@@ -164,9 +166,7 @@ export function RemoteGuestController({
         if (!ok) {
           setJoinError({
             sessionId,
-            message:
-              (payload as { error?: { message?: string } }).error?.message ??
-              copy.joinRequiredDescription,
+            message: copy.joinRequiredDescription,
           });
           return;
         }
@@ -248,7 +248,12 @@ export function RemoteGuestController({
         setDraft((current) => ({
           ...current,
           sessionId,
-          error: payload.error?.message ?? copy.timeout,
+          error:
+            payload.error?.code === "deadline_reached"
+              ? copy.timeout
+              : payload.error?.code === "response_already_locked"
+                ? copy.locked
+                : copy.stale,
         }));
         void refresh();
         return;
@@ -317,7 +322,7 @@ export function RemoteGuestController({
               {isJoining ? copy.connecting : copy.lobbyTitle}
             </h1>
             <p className="font-bold text-muted-foreground">
-              {activeJoinError || error?.message || copy.guestLobbyDescription}
+              {activeJoinError || (error ? copy.stale : copy.guestLobbyDescription)}
             </p>
           </div>
         </PaperPanel>
@@ -351,7 +356,7 @@ export function RemoteGuestController({
               {isWinner ? copy.youAreMastermind : copy.thanksForPlaying}
             </h1>
             <p className="text-lg font-extrabold text-muted-foreground">
-              {copy.personalScore}: {formatPoints(projection.score, locale)}{" "}
+              {copy.personalScore}: {formatPoints(projection.score, effectiveLocale)}{" "}
               {copy.points}
             </p>
             <p className="font-bold text-muted-foreground">
@@ -403,7 +408,7 @@ export function RemoteGuestController({
     connectionMessage,
     revealMessage,
     projection.reveal
-      ? `+${formatPoints(projection.reveal.pointsAwarded, locale)} ${copy.points}`
+      ? `+${formatPoints(projection.reveal.pointsAwarded, effectiveLocale)} ${copy.points}`
       : "",
     locked && !projection.reveal
       ? locked.status === "locked_timeout"
@@ -470,7 +475,7 @@ export function RemoteGuestController({
             </p>
             <h1 className="font-display text-[1.55rem] font-extrabold leading-[1.05] text-foreground [@media(max-height:620px)]:text-[1.35rem] [@media(max-height:700px)]:text-[1.45rem] sm:text-5xl">
               {question
-                ? question.prompt[locale]
+                ? question.prompt[effectiveLocale]
                 : phaseLabel(projection.phase, copy)}
             </h1>
           </div>
@@ -484,7 +489,7 @@ export function RemoteGuestController({
           {question && showAnswerOptions ? (
             <GuestAnswerOptions
               question={question}
-              locale={locale}
+              locale={effectiveLocale}
               copy={copy}
               projection={projection}
               selectedOptionId={selectedOptionId}
@@ -518,7 +523,7 @@ export function RemoteGuestController({
 
           <div className="grid min-h-11 gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
             <p className="text-sm font-bold text-muted-foreground [@media(max-height:620px)]:text-xs">
-              {copy.personalScore}: {formatPoints(projection.score, locale)}{" "}
+              {copy.personalScore}: {formatPoints(projection.score, effectiveLocale)}{" "}
               {copy.points}
             </p>
             {showSubmitAction ? (
@@ -535,6 +540,19 @@ export function RemoteGuestController({
                 className="w-full sm:w-auto"
               >
                 {isSubmitting ? copy.submitting : copy.submit}
+              </Button>
+            ) : null}
+            {projection.phase === "lobby" ? (
+              <Button asChild type="button" variant="outline" className="w-full sm:w-auto">
+                <Link
+                  href={buildGuestWelcomePath(
+                    effectiveLocale,
+                    joinCode ?? snapshot?.session?.publicJoinCode,
+                  )}
+                >
+                  <ArrowLeft aria-hidden="true" />
+                  {copy.editProfile}
+                </Link>
               </Button>
             ) : null}
           </div>

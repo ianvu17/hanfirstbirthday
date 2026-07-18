@@ -267,7 +267,7 @@ test("participant resume tokens are scoped to the current party session", () => 
   );
 });
 
-test("display name persistence is intentional but separate from participant identity", () => {
+test("session draft persistence is separate from remote participant identity", () => {
   const docs = readFileSync("docs/PARTY_SESSION_ARCHITECTURE.md", "utf8");
   const guestPlay = readFileSync(
     "components/party/guest-play-client.tsx",
@@ -275,11 +275,11 @@ test("display name persistence is intentional but separate from participant iden
   );
 
   assert.equal(
-    docs.includes("intentionally kept in browser `sessionStorage`"),
+    docs.includes("mirrored in browser `sessionStorage` as a draft/navigation bridge"),
     true,
   );
   assert.equal(
-    docs.includes("That stored display name is not participant identity."),
+    docs.includes("That data is not participant identity or remote authority."),
     true,
   );
   assert.equal(

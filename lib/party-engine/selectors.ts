@@ -17,6 +17,13 @@ export type SharedPartyProjection = {
   questionNumber: number | null;
   totalQuestions: number;
   participantCount: number;
+  readyParticipantCount: number;
+  participants: Array<{
+    guestId: string;
+    displayName: string;
+    isReady: boolean;
+    avatar: LeaderboardRow["avatar"];
+  }>;
   submittedCount: number;
   timedOutCount: number;
   questionDeadlineAt: number | null;
@@ -32,6 +39,17 @@ export type SharedPartyProjection = {
   leaderboard: LeaderboardRow[];
 };
 
+export type GuestLockedResponse = Pick<
+  LockedResponse,
+  | "guestId"
+  | "questionId"
+  | "selectedOptionId"
+  | "status"
+  | "submittedAt"
+  | "lockedAt"
+  | "submissionId"
+>;
+
 export type GuestProjection = {
   phase: PartyPhase;
   guestId: string;
@@ -43,7 +61,7 @@ export type GuestProjection = {
   questionDurationMs: number;
   remainingMs: number;
   canAnswer: boolean;
-  lockedResponse: LockedResponse | null;
+  lockedResponse: GuestLockedResponse | null;
   reveal: {
     status: "correct" | "incorrect" | "timed_out";
     correctOptionId: string;
@@ -288,6 +306,33 @@ export function buildSharedPartyProjection(
   const responses = Object.values(state.responses).filter(
     (response) => response.questionId === state.currentQuestionId,
   );
+  const authoritativeLeaderboard = selectLeaderboardRows(state);
+  const visibleLeaderboard = shouldReveal
+    ? authoritativeLeaderboard
+    : authoritativeLeaderboard
+        .map((row) => {
+          const currentResponse = responses.find(
+            (response) => response.guestId === row.guestId,
+          );
+
+          return {
+            ...row,
+            rank: row.previousRank,
+            score: row.previousScore,
+            pointsGained: 0,
+            correctCount:
+              row.correctCount - (currentResponse?.isCorrect ? 1 : 0),
+          };
+        })
+        .sort((a, b) => a.rank - b.rank);
+  const participants = Object.values(state.guests)
+    .sort((a, b) => a.createdOrder - b.createdOrder)
+    .map((guest) => ({
+      guestId: guest.id,
+      displayName: guest.displayName,
+      isReady: guest.isReady ?? false,
+      avatar: guest.avatar ?? null,
+    }));
 
   return {
     phase: state.phase,
@@ -299,6 +344,9 @@ export function buildSharedPartyProjection(
         : state.currentQuestionIndex + 1,
     totalQuestions: state.totalQuestions,
     participantCount: Object.keys(state.guests).length,
+    readyParticipantCount: participants.filter((participant) => participant.isReady)
+      .length,
+    participants,
     submittedCount: selectSubmittedCount(state),
     timedOutCount: selectTimedOutCount(state),
     questionDeadlineAt:
@@ -315,7 +363,7 @@ export function buildSharedPartyProjection(
         ).length,
         isCorrect: shouldReveal ? option.id === question.correctOptionId : null,
       })) ?? [],
-    leaderboard: selectLeaderboardRows(state),
+    leaderboard: visibleLeaderboard,
   };
 }
 
@@ -333,6 +381,10 @@ export function buildGuestProjection(
     state.phase === "leaderboard" ||
     state.phase === "waiting_for_host" ||
     state.phase === "finished";
+  const guestRow = leaderboard.find((row) => row.guestId === guestId);
+  const visibleCorrectCount = shouldReveal
+    ? (guestRow?.correctCount ?? 0)
+    : (guestRow?.correctCount ?? 0) - (response?.isCorrect ? 1 : 0);
 
   return {
     phase: state.phase,
@@ -349,7 +401,17 @@ export function buildGuestProjection(
     questionDurationMs: config.questionDurationMs,
     remainingMs: selectRemainingMs(state, now),
     canAnswer: selectCanGuestAnswer(state, guestId, now),
-    lockedResponse: response,
+    lockedResponse: response
+      ? {
+          guestId: response.guestId,
+          questionId: response.questionId,
+          selectedOptionId: response.selectedOptionId,
+          status: response.status,
+          submittedAt: response.submittedAt,
+          lockedAt: response.lockedAt,
+          submissionId: response.submissionId,
+        }
+      : null,
     reveal:
       shouldReveal && question && response
         ? {
@@ -364,11 +426,9 @@ export function buildGuestProjection(
             pointsAwarded: response.pointsAwarded,
           }
         : null,
-    score: leaderboard.find((row) => row.guestId === guestId)?.score ?? 0,
-    correctCount:
-      leaderboard.find((row) => row.guestId === guestId)?.correctCount ?? 0,
-    pointsGained:
-      leaderboard.find((row) => row.guestId === guestId)?.pointsGained ?? 0,
+    score: shouldReveal ? (guestRow?.score ?? 0) : (guestRow?.previousScore ?? 0),
+    correctCount: Math.max(0, visibleCorrectCount),
+    pointsGained: shouldReveal ? (guestRow?.pointsGained ?? 0) : 0,
     finalRank:
       state.phase === "finished"
         ? (leaderboard.find((row) => row.guestId === guestId)?.rank ?? null)

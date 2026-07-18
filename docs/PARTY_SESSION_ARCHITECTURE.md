@@ -8,9 +8,9 @@
 
 `party_sessions` stores one game run. A row starts in lobby, moves through host-driven quiz phases, and ends as finished or archived. A new game creates a new row with an immutable `question_count`.
 
-`participants` stores one guest identity for one session. Display names are not permanent identity; the browser receives an opaque resume cookie and Supabase stores only its hash. Optional avatar metadata also lives on the participant row: either a private Supabase Storage path for a prepared photo avatar, a stable built-in preset avatar id, or null for initials fallback.
+`participants` stores one guest identity for one session. Display names are not permanent identity; the browser receives an opaque resume cookie and Supabase stores only its hash. Optional avatar metadata also lives on the participant row: either a private Supabase Storage path for a prepared photo avatar, a stable built-in preset avatar id, or null for initials fallback. Lobby readiness is persisted as `is_ready` plus nullable `ready_at`.
 
-The guest display name and local avatar preview entered during onboarding are intentionally kept in browser `sessionStorage` so a guest does not have to type them again across reconnects or a new game run. That stored display name is not participant identity. A new current session creates or validates a new `participants` row through the server-issued resume cookie, scoped to the current session id.
+The guest display name and local avatar preview entered during onboarding may be mirrored in browser `sessionStorage` as a draft/navigation bridge. That data is not participant identity or remote authority. Once joined, the server-issued resume cookie resolves the current participant row; Back edits use authenticated UPDATE operations on that row and never call JOIN again.
 
 `question_responses` stores immutable locked answers or timeouts. The database enforces one response per `party_session_id`, `participant_id`, and `question_id`. Each row preserves authoritative `response_duration_ms`, `points_awarded`, and `scoring_version` evidence.
 
@@ -38,7 +38,7 @@ The Party Screen QR uses one stable URL across game runs:
 /{locale}?join=<public join code>
 ```
 
-The QR must not include `party_session_id`. When a new guest opens the URL, the welcome route keeps the optional `join` query value through language selection, name entry, instructions, ready state, and the handoff to `/{locale}/play`. The server validates that join code when the participant is created or resumed. A valid existing participant cookie may skip onboarding and resume directly on `/{locale}/play`.
+The QR must not include `party_session_id`. When a new guest opens the URL, the welcome route keeps the optional `join` query value through language selection, name entry, instructions, ready state, and the handoff to `/{locale}/play`. The server validates that join code when the participant is created or resumed. A valid existing participant cookie resumes editable onboarding while the session remains in the lobby; after host start it routes directly to `/{participant.locale}/play`.
 
 This keeps one reusable QR for the event while still rejecting malformed or stale join codes.
 
@@ -91,6 +91,10 @@ Session creation validates `question_count` in the API, repository, and database
 Question ids and option ids are immutable content contracts for a rehearsed session. Changing ids or correct-answer ids while a session is active can make existing response rows misleading, so content deployments should be validated with a new session.
 
 Avatar updates go through `POST /api/party/participant/avatar`. The route validates the participant resume cookie, active session, preset id or prepared 512x512 WebP/JPEG image, then updates the participant row through the service-role repository. Guest browsers never receive Supabase service-role credentials or direct write access. Photo avatars are stored in the private `party-avatars` bucket at `{deployment_environment}/{party_session_id}/{participant_id}/avatar.webp` or `.jpg`; snapshots contain only short-lived signed URLs or preset IDs.
+
+Browser upload progress reports client preparation, real XHR multipart byte progress, then an indeterminate server Storage/database phase. Success is shown only after the server response. Cancel aborts the client request, preserves the prepared editor preview, and reconciles the participant snapshot because a server commit may already have won the race. The gallery input deliberately omits `capture`; the separate selfie flow uses `getUserMedia`. Browser/OS picker UI remains outside application control.
+
+Profile and readiness updates use `PATCH /api/party/participant/profile` and `PATCH /api/party/participant/readiness`. Both authenticate only through the resume cookie, accept no browser-supplied participant id, are lobby-only, and converge repeated same-value requests. A profile or avatar change clears readiness. The session revision is touched only on a material update so host snapshots/realtime reconcile counts and labels.
 
 Sticker selection outlines, resize handles, and editor affordances are DOM-only controls. The exported avatar canvas draws only the photo and sticker artwork, so editor borders cannot be stored in Supabase. Winner certificate photo reads occur only inside the authenticated server route and never expose the private object path.
 

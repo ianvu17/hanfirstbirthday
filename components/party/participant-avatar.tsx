@@ -139,7 +139,7 @@ export function ParticipantAvatar({
   className
 }: ParticipantAvatarProps) {
   const resolved = avatar ?? fallbackAvatar(displayName);
-  const label = displayName ? `${displayName} avatar` : "Guest avatar";
+  const label = displayName || undefined;
 
   return (
     <div

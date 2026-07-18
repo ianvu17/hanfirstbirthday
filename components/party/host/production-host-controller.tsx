@@ -14,6 +14,7 @@ import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { LoadingTreatment } from "@/components/design/loading-treatment";
 import { PaperPanel } from "@/components/design/paper-panel";
 import { ConnectionStatusBadge } from "@/components/party/connection-status-badge";
+import { ParticipantAvatar } from "@/components/party/participant-avatar";
 import { Button } from "@/components/ui/button";
 import {
   getAvailableSessionQuestionCounts,
@@ -104,6 +105,7 @@ export function ProductionHostController({
   const [pending, setPending] = useState(false);
   const [commandMessage, setCommandMessage] = useState("");
   const [confirmFinish, setConfirmFinish] = useState(false);
+  const [confirmUnreadyStart, setConfirmUnreadyStart] = useState(false);
   const [questionCount, setQuestionCount] = useState(
     getDefaultSessionQuestionCount(availableQuestionCount),
   );
@@ -332,6 +334,7 @@ export function ProductionHostController({
     const payload = await response.json();
     setPending(false);
     setConfirmFinish(false);
+    setConfirmUnreadyStart(false);
 
     if (!response.ok || !payload.ok) {
       setCommandMessage(
@@ -542,6 +545,7 @@ export function ProductionHostController({
                 {copy.participants}
               </p>
               <p className="mt-1 text-lg font-extrabold text-foreground">
+                {snapshot.projection.readyParticipantCount} {copy.readyOf}{" "}
                 {snapshot.projection.participantCount}
               </p>
             </div>
@@ -568,6 +572,45 @@ export function ProductionHostController({
               </p>
             </div>
           </div>
+
+          {snapshot.projection.phase === "lobby" ? (
+            <div className="grid gap-3 rounded-[1rem] border border-party-blue/25 bg-surface-sky/60 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="font-display text-2xl font-extrabold text-foreground">
+                  {copy.participants}
+                </p>
+                <BirthdayBadge tone={snapshot.projection.readyParticipantCount > 0 ? "yellow" : "coral"}>
+                  {snapshot.projection.readyParticipantCount}/{snapshot.projection.participantCount}{" "}
+                  {copy.ready}
+                </BirthdayBadge>
+              </div>
+              <div className="grid gap-2" data-testid="host-readiness-list">
+                {snapshot.projection.participants.map((participant) => (
+                  <div
+                    key={participant.guestId}
+                    className="flex min-h-12 items-center gap-3 rounded-[0.9rem] border border-border bg-surface-paper px-3 py-2 shadow-lift"
+                  >
+                    <ParticipantAvatar
+                      avatar={participant.avatar}
+                      displayName={participant.displayName}
+                      size="sm"
+                    />
+                    <span className="min-w-0 flex-1 truncate font-extrabold text-foreground">
+                      {participant.displayName}
+                    </span>
+                    <span className={participant.isReady ? "font-extrabold text-party-green" : "font-bold text-muted-foreground"}>
+                      {participant.isReady ? copy.ready : copy.notReady}
+                    </span>
+                  </div>
+                ))}
+                {snapshot.projection.participants.length === 0 ? (
+                  <p className="text-sm font-bold text-muted-foreground">
+                    {copy.guestLobbyDescription}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
 
           <div className="rounded-[1rem] border border-party-blue/25 bg-surface-sky/60 p-4">
             <p className="text-sm font-extrabold uppercase text-muted-foreground">
@@ -631,7 +674,28 @@ export function ProductionHostController({
             </div>
           ) : null}
 
-          {confirmFinish && action?.command === "FINISH_PARTY" ? (
+          {confirmUnreadyStart && action?.command === "PREPARE_FIRST_QUESTION" ? (
+            <div className="grid gap-3 rounded-[1rem] border border-party-orange/30 bg-surface-highlight/70 p-4">
+              <p className="font-bold">
+                {snapshot.projection.participantCount - snapshot.projection.readyParticipantCount}{" "}
+                {copy.startWithUnready}
+              </p>
+              <Button
+                type="button"
+                disabled={pending}
+                onClick={() => void runCommand("PREPARE_FIRST_QUESTION")}
+              >
+                {copy.startAnyway}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setConfirmUnreadyStart(false)}
+              >
+                {copy.cancel}
+              </Button>
+            </div>
+          ) : confirmFinish && action?.command === "FINISH_PARTY" ? (
             <div className="grid gap-3 rounded-[1rem] border border-party-red/30 bg-party-red/10 p-4">
               <p className="font-bold">{copy.confirmFinish}</p>
               <Button
@@ -664,6 +728,8 @@ export function ProductionHostController({
               disabled={
                 !action ||
                 pending ||
+                (action?.command === "PREPARE_FIRST_QUESTION" &&
+                  snapshot.projection.readyParticipantCount === 0) ||
                 !leaderboardAnimationReady ||
                 connection === "offline" ||
                 connection === "reconnecting"
@@ -675,6 +741,15 @@ export function ProductionHostController({
 
                 if (action.confirm) {
                   setConfirmFinish(true);
+                  return;
+                }
+
+                if (
+                  action.command === "PREPARE_FIRST_QUESTION" &&
+                  snapshot.projection.readyParticipantCount <
+                    snapshot.projection.participantCount
+                ) {
+                  setConfirmUnreadyStart(true);
                   return;
                 }
 
@@ -692,6 +767,13 @@ export function ProductionHostController({
                     : (action?.label ?? copy.waitingHost)}
             </Button>
           )}
+
+          {snapshot.projection.phase === "lobby" &&
+          snapshot.projection.readyParticipantCount === 0 ? (
+            <p className="text-center text-sm font-bold text-muted-foreground" role="status">
+              {copy.startNeedsReady}
+            </p>
+          ) : null}
 
           <div className="grid gap-3 sm:grid-cols-2">
             <Button

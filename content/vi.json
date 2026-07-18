@@ -63,12 +63,32 @@
       "skip": "Tiếp tục mà không đổi",
       "photoReady": "Ảnh đại diện đã sẵn sàng",
       "presetReady": "Đã chọn avatar sinh nhật",
+      "savingTitle": "Đang lưu ảnh dự tiệc của bạn",
+      "preparingPhoto": "Đang chuẩn bị ảnh…",
+      "uploadingPhoto": "Đang tải ảnh lên…",
+      "savingAvatar": "Đang lưu ảnh đại diện…",
+      "avatarReady": "Ảnh đại diện đã sẵn sàng!",
+      "cancelUpload": "Hủy tải ảnh",
+      "uploadCancelled": "Đã hủy tải ảnh. Phần chỉnh sửa vẫn còn đây.",
+      "retryUpload": "Thử tải lại",
+      "processingProgress": "Đang hoàn tất an toàn…",
       "uploadHelp": "JPEG, PNG, hoặc WebP. Tối đa 5 MB.",
       "cropHelp": "Di chuyển và phóng to ảnh để khuôn mặt nằm gọn trong vòng tròn.",
       "stickerLabel": "Nhãn dán sinh nhật",
       "zoomLabel": "Phóng to",
       "sizeLabel": "Cỡ nhãn dán",
       "removeSticker": "Xóa nhãn dán",
+      "addSticker": "Thêm",
+      "presets": {
+        "birthdayBear": "Gấu sinh nhật",
+        "birthdayBunny": "Thỏ sinh nhật",
+        "birthdayLion": "Sư tử sinh nhật",
+        "birthdayPanda": "Gấu trúc sinh nhật",
+        "birthdayKoala": "Gấu koala sinh nhật",
+        "birthdayTiger": "Hổ sinh nhật",
+        "birthdayStar": "Ngôi sao vui vẻ",
+        "birthdayCupcake": "Cupcake sinh nhật"
+      },
       "stickers": {
         "partyHat": "nón sinh nhật",
         "crown": "vương miện sinh nhật",
@@ -86,29 +106,29 @@
         "unsupportedFile": "Vui lòng chọn ảnh JPEG, PNG, hoặc WebP.",
         "fileTooLarge": "Vui lòng chọn ảnh nhỏ hơn 5 MB.",
         "imageInvalid": "Không thể mở ảnh này. Vui lòng thử ảnh khác.",
-        "uploadFailed": "Chưa thể lưu avatar này. Bạn có thể tiếp tục hoặc thử lại.",
+        "uploadFailed": "Chưa thể lưu avatar này. Vui lòng thử lại hoặc chọn avatar sinh nhật.",
         "saved": "Đã lưu avatar."
       }
     },
     "howToPlay": {
       "title": "Cách chơi",
-      "subtitle": "Nhanh, vui, và chỉ mất khoảng 3 đến 5 phút.",
+      "subtitle": "Ba bước thật nhanh, rồi cùng cả phòng chờ khoảnh khắc mở đáp án.",
       "primaryAction": "Tôi sẵn sàng",
       "cards": [
         {
           "id": "timer",
-          "title": "20 giây",
-          "description": "Mỗi câu hỏi có thời gian ngắn."
+          "title": "Trả lời thật nhanh",
+          "description": "Bạn có 20 giây. Trả lời đúng càng nhanh thì càng được nhiều điểm."
         },
         {
           "id": "locked",
-          "title": "Gửi câu trả lời",
-          "description": "Sau khi gửi, câu trả lời sẽ không đổi được."
+          "title": "Chốt đáp án",
+          "description": "Hãy chọn cẩn thận—đáp án không thể thay đổi sau khi gửi."
         },
         {
           "id": "reveal",
-          "title": "Xem đáp án",
-          "description": "Đáp án đúng, điều vui về Han, rồi câu tiếp theo."
+          "title": "Xem cuộc đua",
+          "description": "Xem đáp án đúng, điểm của bạn và các thanh xếp hạng đua lên vị trí mới."
         }
       ]
     },
@@ -129,6 +149,10 @@
       "partyPhoto": "Ảnh",
       "howToPlay": "Cách chơi",
       "ready": "Sẵn sàng"
+    },
+    "onboardingNavigation": {
+      "back": "Quay lại",
+      "backDuringUpload": "Hãy hủy tải ảnh trước khi quay lại."
     },
     "quizStart": {
       "title": "Sẵn sàng chưa?",

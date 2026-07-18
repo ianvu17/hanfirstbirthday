@@ -6,6 +6,7 @@ import { PageShell } from "@/components/design/page-shell";
 import { OnboardingFlow } from "@/components/guest/onboarding-flow";
 import { getContent } from "@/lib/content";
 import { isLocale, type Locale } from "@/lib/i18n/routing";
+import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 import {
   buildGuestPlayPath,
   normalizeJoinCode
@@ -34,6 +35,15 @@ export default async function GuestHomePage({
   setRequestLocale(locale);
   const joinCode = normalizeJoinCode(join);
   const remoteEnabled = isSupabaseConfigured();
+  let initialParticipant:
+    | {
+        id: string;
+        displayName: string;
+        locale: Locale;
+        isReady: boolean;
+        avatar: ParticipantAvatarProjection;
+      }
+    | undefined;
 
   if (remoteEnabled) {
     const cookieStore = await cookies();
@@ -45,7 +55,16 @@ export default async function GuestHomePage({
       const snapshot = await buildRemotePartySnapshot(participantSession);
 
       if (snapshot.session && "participant" in snapshot && snapshot.participant) {
-        redirect(buildGuestPlayPath(locale, joinCode ?? snapshot.session.publicJoinCode));
+        if (snapshot.session.phase !== "lobby") {
+          redirect(
+            buildGuestPlayPath(
+              snapshot.participant.locale,
+              joinCode ?? snapshot.session.publicJoinCode,
+            ),
+          );
+        }
+
+        initialParticipant = snapshot.participant;
       }
     }
   }
@@ -59,6 +78,7 @@ export default async function GuestHomePage({
         content={content}
         remoteEnabled={remoteEnabled}
         initialJoinCode={joinCode}
+        initialParticipant={initialParticipant}
       />
     </PageShell>
   );

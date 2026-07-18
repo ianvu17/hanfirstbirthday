@@ -33,6 +33,7 @@
     "check:visual:milestone4": "tsx scripts/check-milestone-4-visual.ts",
     "check:visual:milestone5": "tsx scripts/check-milestone-5-visual.ts",
     "check:visual:leaderboard-race": "tsx scripts/check-leaderboard-race-visual.ts",
+    "check:visual:production-polish": "tsx scripts/check-production-polish-visual.ts",
     "validate": "npm run validate:content && npm run typecheck && npm run lint && npm run test && npm run test:supabase && npm run build"
   },
   "dependencies": {

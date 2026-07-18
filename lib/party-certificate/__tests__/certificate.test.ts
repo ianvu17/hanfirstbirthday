@@ -111,3 +111,18 @@ test("certificate uses persisted points and the configured question denominator"
   assert.equal(source.includes("context.correctAnswers"), true);
   assert.equal(source.includes("context.totalQuestions"), true);
 });
+
+test("certificate seal is a vector official birthday seal with serrated edge and ribbon tails", () => {
+  const source = readFileSync("lib/party-certificate/pdf.ts", "utf8");
+  const copy = readFileSync("content/party-ui.json", "utf8");
+
+  assert.equal(source.includes("function sealEdgePoints"), true);
+  assert.equal(source.includes("function drawOfficialSeal"), true);
+  assert.equal(source.includes("sealEdgePoints(cx, cy, 51, 45)"), true);
+  assert.equal(source.includes("cy + 78"), true);
+  assert.equal(source.includes("copy.certificateSealOfficial"), true);
+  assert.equal(source.includes("copy.certificateSealExpert"), true);
+  assert.equal(source.includes("copy.certificateSealNumber"), true);
+  assert.equal(copy.includes('"certificateSeal": "ONE"'), false);
+  assert.equal(copy.includes('"certificateSeal": "MỘT"'), false);
+});

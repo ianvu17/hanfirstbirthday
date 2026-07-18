@@ -6,6 +6,7 @@ import { PageShell } from "@/components/design/page-shell";
 import { GuestPlayClient } from "@/components/party/guest-play-client";
 import { isLocale, type Locale } from "@/lib/i18n/routing";
 import {
+  buildGuestPlayPath,
   buildGuestWelcomePath,
   normalizeJoinCode
 } from "@/lib/party-remote/join-routing";
@@ -13,6 +14,7 @@ import {
   buildRemotePartySnapshot,
   parseParticipantCookieValue
 } from "@/lib/party-remote/repository";
+import type { RemoteGuestSnapshot } from "@/lib/party-remote/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 export default async function GuestPlayPage({
@@ -42,12 +44,29 @@ export default async function GuestPlayPage({
     const snapshot = participantSession
       ? await buildRemotePartySnapshot(participantSession)
       : null;
+    const guestSnapshot =
+      snapshot && "participant" in snapshot
+        ? (snapshot as RemoteGuestSnapshot)
+        : null;
     const hasParticipant =
       Boolean(snapshot?.session) &&
-      Boolean(snapshot && "participant" in snapshot && snapshot.participant);
+      Boolean(guestSnapshot?.participant);
 
     if (!hasParticipant) {
       redirect(buildGuestWelcomePath(locale, joinCode));
+    }
+
+    if (guestSnapshot?.session && guestSnapshot.participant) {
+      const participant = guestSnapshot.participant;
+      const effectiveJoinCode = joinCode ?? guestSnapshot.session.publicJoinCode;
+
+      if (guestSnapshot.session.phase === "lobby" && !participant.isReady) {
+        redirect(buildGuestWelcomePath(participant.locale, effectiveJoinCode));
+      }
+
+      if (participant.locale !== locale) {
+        redirect(buildGuestPlayPath(participant.locale, effectiveJoinCode));
+      }
     }
   }
 

@@ -383,6 +383,22 @@ async function setGuestSession(
           payload?.error?.message ?? "Could not join preview party.",
         );
       }
+
+      const readinessResponse = await fetch(
+        "/api/party/participant/readiness",
+        {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({ isReady: true }),
+        },
+      );
+
+      if (!readinessResponse.ok) {
+        throw new Error("Could not mark preview participant ready.");
+      }
     },
     {
       key: sessionStorageKey,
@@ -743,6 +759,25 @@ async function main() {
   await setGuestSession(guestEnPage, "en", guestNames.fast);
   await setGuestSession(guestViPage, "vi", guestNames.wrong);
   await setGuestSession(guestSlowPage, "en", guestNames.slow);
+  const readyLobbySnapshot = await snapshotPhase(host);
+  if (
+    readyLobbySnapshot.projection?.participantCount !== 3 ||
+    readyLobbySnapshot.projection?.readyParticipantCount !== 3 ||
+    readyLobbySnapshot.projection?.participants?.some(
+      (participant: { isReady: boolean }) => !participant.isReady,
+    )
+  ) {
+    throw new Error(
+      `Host readiness projection mismatch: ${JSON.stringify(readyLobbySnapshot.projection)}`,
+    );
+  }
+  await hostPage.getByTestId("host-readiness-list").waitFor({ timeout: 60_000 });
+  timeline.push({
+    step: "host-readiness-3-of-3",
+    at: new Date().toISOString(),
+    participantCount: readyLobbySnapshot.projection.participantCount,
+    readyParticipantCount: readyLobbySnapshot.projection.readyParticipantCount,
+  });
   await waitForGuestPhase(guestEnPage, /party lobby/i);
   await waitForGuestPhase(guestViPage, /sảnh chờ/i);
   await waitForGuestPhase(guestSlowPage, /party lobby/i);
@@ -800,6 +835,46 @@ async function main() {
   timeline.push({
     step: "three-guests-submitted",
     at: new Date().toISOString(),
+  });
+
+  const preRevealGuestSnapshot = await snapshotPhase(guestEn);
+  const preRevealSharedSnapshot = await snapshotPhase(display);
+  const preRevealLockedResponse = preRevealGuestSnapshot.projection?.lockedResponse;
+  const forbiddenLockedResponseFields = [
+    "isCorrect",
+    "pointsAwarded",
+    "responseDurationMs",
+    "scoringVersion",
+  ].filter((field) => field in (preRevealLockedResponse ?? {}));
+  const preRevealFastSharedRow = getLeaderboardRow(
+    preRevealSharedSnapshot,
+    guestNames.fast,
+  );
+
+  if (
+    forbiddenLockedResponseFields.length > 0 ||
+    preRevealGuestSnapshot.projection?.score !== 0 ||
+    preRevealGuestSnapshot.projection?.pointsGained !== 0 ||
+    preRevealFastSharedRow.score !== 0 ||
+    preRevealFastSharedRow.pointsGained !== 0
+  ) {
+    throw new Error(
+      `Pre-reveal score secrecy failed: ${JSON.stringify({
+        forbiddenLockedResponseFields,
+        guestScore: preRevealGuestSnapshot.projection?.score,
+        guestPointsGained: preRevealGuestSnapshot.projection?.pointsGained,
+        sharedRow: preRevealFastSharedRow,
+      })}`,
+    );
+  }
+  timeline.push({
+    step: "pre-reveal-score-secrecy",
+    at: new Date().toISOString(),
+    forbiddenLockedResponseFields,
+    guestVisibleScore: preRevealGuestSnapshot.projection?.score,
+    guestVisiblePointsGained: preRevealGuestSnapshot.projection?.pointsGained,
+    sharedVisibleScore: preRevealFastSharedRow.score,
+    sharedVisiblePointsGained: preRevealFastSharedRow.pointsGained,
   });
 
   const [hostCountdownResult, displayCountdownResult, guestCountdownResult] =
@@ -866,6 +941,14 @@ async function main() {
   await guestEnPage
     .getByText(/nice one|not this time|time's up/i)
     .waitFor({ timeout: 60_000 });
+  const revealedGuestSnapshot = await snapshotPhase(guestEn);
+  if (
+    !revealedGuestSnapshot.projection?.reveal ||
+    revealedGuestSnapshot.projection.reveal.pointsAwarded <= 0 ||
+    revealedGuestSnapshot.projection.score <= 0
+  ) {
+    throw new Error("Revealed guest points did not become visible.");
+  }
   matrix.push({
     ...(await measureState(guestEnPage, "answer-reveal", "en", [390, 640])),
     language: "en",

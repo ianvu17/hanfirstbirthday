@@ -17,7 +17,6 @@ import { BirthdayBadge } from "@/components/design/birthday-badge";
 import { PaperPanel } from "@/components/design/paper-panel";
 import {
   avatarPresetIds,
-  getAvatarPresetLabel,
   ParticipantAvatar,
   PresetAvatar
 } from "@/components/party/participant-avatar";
@@ -29,6 +28,7 @@ import {
   isPreparedAvatarMimeType,
   type PreparedAvatarMimeType
 } from "@/lib/party-avatar-upload";
+import type { AvatarUploadProgress } from "@/lib/party-avatar-upload-client";
 import { cn } from "@/lib/utils";
 
 type PartyPhotoCopy = BirthdayContent["screens"]["partyPhoto"];
@@ -61,10 +61,26 @@ type PartyPhotoCardProps = {
   copy: PartyPhotoCopy;
   displayName: string;
   currentAvatar?: ParticipantAvatarProjection | null;
-  onSavePhoto: (file: File) => Promise<ParticipantAvatarProjection | null>;
+  onSavePhoto: (
+    file: File,
+    options: {
+      signal: AbortSignal;
+      onProgress: (progress: AvatarUploadProgress) => void;
+    },
+  ) => Promise<ParticipantAvatarProjection | null>;
   onSavePreset: (presetId: AvatarPresetId) => Promise<ParticipantAvatarProjection | null>;
+  onBusyChange?: (busy: boolean) => void;
   onContinue: () => void;
 };
+
+type UploadState =
+  | "idle"
+  | "preparing"
+  | "uploading"
+  | "saving"
+  | "success"
+  | "failed"
+  | "cancelled";
 
 const maxSourceFileSize = 5 * 1024 * 1024;
 const maxStickers = 3;
@@ -114,6 +130,27 @@ function stickerLabel(copy: PartyPhotoCopy, kind: StickerKind) {
       return copy.stickers.bowTie;
     case "glasses":
       return copy.stickers.glasses;
+  }
+}
+
+function presetLabel(copy: PartyPhotoCopy, presetId: AvatarPresetId) {
+  switch (presetId) {
+    case "birthday-bear":
+      return copy.presets.birthdayBear;
+    case "birthday-bunny":
+      return copy.presets.birthdayBunny;
+    case "birthday-lion":
+      return copy.presets.birthdayLion;
+    case "birthday-panda":
+      return copy.presets.birthdayPanda;
+    case "birthday-koala":
+      return copy.presets.birthdayKoala;
+    case "birthday-tiger":
+      return copy.presets.birthdayTiger;
+    case "birthday-star":
+      return copy.presets.birthdayStar;
+    case "birthday-cupcake":
+      return copy.presets.birthdayCupcake;
   }
 }
 
@@ -544,12 +581,14 @@ export function PartyPhotoCard({
   currentAvatar,
   onSavePhoto,
   onSavePreset,
+  onBusyChange,
   onContinue
 }: PartyPhotoCardProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const uploadControllerRef = useRef<AbortController | null>(null);
   const dragRef = useRef<
     | {
         mode: "photo";
@@ -577,7 +616,13 @@ export function PartyPhotoCard({
   const [selectedStickerId, setSelectedStickerId] = useState<string | null>(null);
   const [preparedPhoto, setPreparedPhoto] = useState<PreparedPhoto | null>(null);
   const [selectedPresetId, setSelectedPresetId] = useState<AvatarPresetId | null>(null);
-  const [saving, setSaving] = useState(false);
+  const [uploadState, setUploadState] = useState<UploadState>("idle");
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [presetSaving, setPresetSaving] = useState(false);
+  const saving = presetSaving ||
+    uploadState === "preparing" ||
+    uploadState === "uploading" ||
+    uploadState === "saving";
   const activeSticker = stickers.find((sticker) => sticker.id === selectedStickerId) ?? null;
   const visibleAvatar = preparedPhoto
     ? ({ type: "photo", url: preparedPhoto.previewUrl } as const)
@@ -593,7 +638,12 @@ export function PartyPhotoCard({
   );
 
   useEffect(() => {
+    onBusyChange?.(saving);
+  }, [onBusyChange, saving]);
+
+  useEffect(() => {
     return () => {
+      uploadControllerRef.current?.abort();
       stopCamera();
       if (sourceUrl) {
         URL.revokeObjectURL(sourceUrl);
@@ -624,9 +674,29 @@ export function PartyPhotoCard({
     setSelectedStickerId(null);
     setStatus("");
     setError("");
+    setUploadState("idle");
+    setUploadProgress(null);
+  }
+
+  function discardEditor() {
+    if (saving) {
+      return;
+    }
+    if (sourceUrl) {
+      URL.revokeObjectURL(sourceUrl);
+    }
+    setSourceUrl(null);
+    setPreparedPhoto(null);
+    setUploadState("idle");
+    setUploadProgress(null);
+    setStatus("");
+    setError("");
   }
 
   async function startCamera() {
+    if (saving) {
+      return;
+    }
     setError("");
 
     if (!navigator.mediaDevices?.getUserMedia) {
@@ -687,6 +757,9 @@ export function PartyPhotoCard({
   }
 
   async function handleFile(file: File | undefined) {
+    if (saving) {
+      return;
+    }
     setError("");
 
     if (!file) {
@@ -720,6 +793,9 @@ export function PartyPhotoCard({
   }
 
   function addSticker(kind: StickerKind) {
+    if (saving) {
+      return;
+    }
     setStickers((current) => {
       if (current.length >= maxStickers) {
         return current;
@@ -763,7 +839,7 @@ export function PartyPhotoCard({
   }
 
   function handleEditorPointerDown(event: PointerEvent<HTMLDivElement>) {
-    if (!sourceUrl || event.button !== 0) {
+    if (!sourceUrl || saving || event.button !== 0) {
       return;
     }
 
@@ -855,8 +931,12 @@ export function PartyPhotoCard({
       return;
     }
 
-    setSaving(true);
+    const controller = new AbortController();
+    uploadControllerRef.current = controller;
+    setUploadState("preparing");
+    setUploadProgress(5);
     setError("");
+    setStatus("");
     setSelectedStickerId(null);
 
     try {
@@ -888,7 +968,14 @@ export function PartyPhotoCard({
       }
 
       const previewUrl = createObjectUrl(file);
-      const updated = await onSavePhoto(file);
+      setUploadProgress(10);
+      const updated = await onSavePhoto(file, {
+        signal: controller.signal,
+        onProgress: (progress) => {
+          setUploadState(progress.phase);
+          setUploadProgress(progress.percent);
+        },
+      });
 
       if (preparedPhoto?.previewUrl) {
         URL.revokeObjectURL(preparedPhoto.previewUrl);
@@ -899,12 +986,30 @@ export function PartyPhotoCard({
         previewUrl: updated?.type === "photo" ? updated.url : previewUrl
       });
       setSelectedPresetId(null);
-      setStatus(copy.validation.saved);
+      setUploadState("success");
+      setUploadProgress(100);
+      setStatus(copy.avatarReady);
     } catch (error) {
-      setError(error instanceof Error ? error.message : copy.validation.uploadFailed);
+      if (error instanceof DOMException && error.name === "AbortError") {
+        setUploadState("cancelled");
+        setUploadProgress(null);
+        setStatus(copy.uploadCancelled);
+      } else {
+        setUploadState("failed");
+        setUploadProgress(null);
+        setError(
+          error instanceof Error && error.message !== "avatar_upload_failed"
+            ? error.message
+            : copy.validation.uploadFailed,
+        );
+      }
     } finally {
-      setSaving(false);
+      uploadControllerRef.current = null;
     }
+  }
+
+  function cancelUpload() {
+    uploadControllerRef.current?.abort();
   }
 
   async function selectPreset(presetId: AvatarPresetId) {
@@ -912,7 +1017,7 @@ export function PartyPhotoCard({
       return;
     }
 
-    setSaving(true);
+    setPresetSaving(true);
     setError("");
 
     try {
@@ -923,7 +1028,7 @@ export function PartyPhotoCard({
     } catch (error) {
       setError(error instanceof Error ? error.message : copy.validation.uploadFailed);
     } finally {
-      setSaving(false);
+      setPresetSaving(false);
     }
   }
 
@@ -954,15 +1059,15 @@ export function PartyPhotoCard({
 
           <div className="space-y-4">
             <div className="grid gap-2 sm:grid-cols-3">
-              <Button type="button" variant="secondary" onClick={startCamera} disabled={cameraMode !== "idle"}>
+              <Button type="button" variant="secondary" onClick={startCamera} disabled={saving || cameraMode !== "idle"}>
                 <Camera aria-hidden="true" />
                 {copy.takeSelfie}
               </Button>
-              <Button type="button" variant="secondary" onClick={() => fileInputRef.current?.click()}>
+              <Button type="button" variant="secondary" disabled={saving || cameraMode !== "idle"} onClick={() => fileInputRef.current?.click()}>
                 <ImagePlus aria-hidden="true" />
                 {copy.choosePhoto}
               </Button>
-              <Button type="button" variant="secondary" onClick={() => setSourceUrl(null)}>
+              <Button type="button" variant="secondary" disabled={saving} onClick={discardEditor}>
                 <Sparkles aria-hidden="true" />
                 {copy.chooseAvatar}
               </Button>
@@ -970,7 +1075,7 @@ export function PartyPhotoCard({
                 ref={fileInputRef}
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
-                capture="user"
+                disabled={saving}
                 className="sr-only"
                 onChange={(event) => void handleFile(event.target.files?.[0])}
               />
@@ -985,11 +1090,11 @@ export function PartyPhotoCard({
                   className="aspect-square w-full rounded-[1rem] bg-foreground object-cover [transform:scaleX(-1)]"
                 />
                 <div className="grid gap-2 sm:grid-cols-2">
-                  <Button type="button" onClick={captureSelfie} disabled={cameraMode !== "active"}>
+                  <Button type="button" onClick={captureSelfie} disabled={cameraMode !== "active" || saving}>
                     <Camera aria-hidden="true" />
                     {copy.capture}
                   </Button>
-                  <Button type="button" variant="outline" onClick={stopCamera}>
+                  <Button type="button" variant="outline" onClick={stopCamera} disabled={saving}>
                     <X aria-hidden="true" />
                     {copy.cancel}
                   </Button>
@@ -1040,23 +1145,24 @@ export function PartyPhotoCard({
                       max="3"
                       step="0.01"
                       value={zoom}
+                      disabled={saving}
                       onChange={(event) => setZoom(Number(event.target.value))}
                     />
                   </label>
                   <div className="grid grid-cols-2 gap-2">
-                    <Button type="button" variant="outline" onClick={() => setOffsetX((value) => value - 14)}>
+                    <Button type="button" variant="outline" disabled={saving} onClick={() => setOffsetX((value) => value - 14)}>
                       <Minus aria-hidden="true" />
                       X
                     </Button>
-                    <Button type="button" variant="outline" onClick={() => setOffsetX((value) => value + 14)}>
+                    <Button type="button" variant="outline" disabled={saving} onClick={() => setOffsetX((value) => value + 14)}>
                       X
                       <PlusIcon />
                     </Button>
-                    <Button type="button" variant="outline" onClick={() => setOffsetY((value) => value - 14)}>
+                    <Button type="button" variant="outline" disabled={saving} onClick={() => setOffsetY((value) => value - 14)}>
                       <Minus aria-hidden="true" />
                       Y
                     </Button>
-                    <Button type="button" variant="outline" onClick={() => setOffsetY((value) => value + 14)}>
+                    <Button type="button" variant="outline" disabled={saving} onClick={() => setOffsetY((value) => value + 14)}>
                       Y
                       <PlusIcon />
                     </Button>
@@ -1070,8 +1176,8 @@ export function PartyPhotoCard({
                           key={kind}
                           type="button"
                           onClick={() => addSticker(kind)}
-                          disabled={stickers.length >= maxStickers}
-                          aria-label={`Add ${stickerLabel(copy, kind)}`}
+                          disabled={saving || stickers.length >= maxStickers}
+                          aria-label={`${copy.addSticker} ${stickerLabel(copy, kind)}`}
                           className="grid aspect-square place-items-center rounded-[0.85rem] border border-border bg-surface-paper p-1.5 shadow-lift transition hover:border-party-blue disabled:cursor-not-allowed disabled:opacity-45"
                         >
                           <StickerArtwork kind={kind} className="h-full w-full" />
@@ -1089,28 +1195,29 @@ export function PartyPhotoCard({
                           min="48"
                           max="160"
                           value={activeSticker.size}
+                          disabled={saving}
                           onChange={(event) => updateActiveSticker({ size: Number(event.target.value) })}
                         />
                       </label>
                       <div className="grid grid-cols-2 gap-2">
-                        <Button type="button" variant="outline" size="sm" onClick={() => updateActiveSticker({ x: activeSticker.x - 0.04 })}>
+                        <Button type="button" variant="outline" size="sm" disabled={saving} onClick={() => updateActiveSticker({ x: activeSticker.x - 0.04 })}>
                           <Minus aria-hidden="true" />
                           X
                         </Button>
-                        <Button type="button" variant="outline" size="sm" onClick={() => updateActiveSticker({ x: activeSticker.x + 0.04 })}>
+                        <Button type="button" variant="outline" size="sm" disabled={saving} onClick={() => updateActiveSticker({ x: activeSticker.x + 0.04 })}>
                           X
                           <PlusIcon />
                         </Button>
-                        <Button type="button" variant="outline" size="sm" onClick={() => updateActiveSticker({ y: activeSticker.y - 0.04 })}>
+                        <Button type="button" variant="outline" size="sm" disabled={saving} onClick={() => updateActiveSticker({ y: activeSticker.y - 0.04 })}>
                           <Minus aria-hidden="true" />
                           Y
                         </Button>
-                        <Button type="button" variant="outline" size="sm" onClick={() => updateActiveSticker({ y: activeSticker.y + 0.04 })}>
+                        <Button type="button" variant="outline" size="sm" disabled={saving} onClick={() => updateActiveSticker({ y: activeSticker.y + 0.04 })}>
                           Y
                           <PlusIcon />
                         </Button>
                       </div>
-                      <Button type="button" variant="ghost" size="sm" onClick={removeActiveSticker}>
+                      <Button type="button" variant="ghost" size="sm" disabled={saving} onClick={removeActiveSticker}>
                         <X aria-hidden="true" />
                         {copy.removeSticker}
                       </Button>
@@ -1120,9 +1227,13 @@ export function PartyPhotoCard({
                   <div className="grid gap-2">
                     <Button type="button" onClick={prepareAndSavePhoto} disabled={saving}>
                       <Check aria-hidden="true" />
-                      {saving ? copy.photoReady : copy.usePhoto}
+                      {uploadState === "failed" || uploadState === "cancelled"
+                        ? copy.retryUpload
+                        : saving
+                          ? copy.savingAvatar
+                          : copy.usePhoto}
                     </Button>
-                    <Button type="button" variant="outline" onClick={() => setSourceUrl(null)}>
+                    <Button type="button" variant="outline" disabled={saving} onClick={discardEditor}>
                       <RefreshCcw aria-hidden="true" />
                       {copy.retake}
                     </Button>
@@ -1137,6 +1248,7 @@ export function PartyPhotoCard({
                     <button
                       key={presetId}
                       type="button"
+                      disabled={saving}
                       onClick={() => void selectPreset(presetId)}
                       className={cn(
                         "grid gap-2 rounded-[1rem] border bg-surface-paper p-2 text-center text-xs font-extrabold shadow-lift transition",
@@ -1148,18 +1260,86 @@ export function PartyPhotoCard({
                       <span className="mx-auto h-16 w-16">
                         <PresetAvatar presetId={presetId} />
                       </span>
-                      <span>{getAvatarPresetLabel(presetId)}</span>
+                      <span>{presetLabel(copy, presetId)}</span>
                     </button>
                   ))}
                 </div>
               </div>
             )}
 
+            {uploadState !== "idle" ? (
+              <div
+                className="grid gap-3 rounded-[1.2rem] border border-party-blue/25 bg-surface-paper p-4 shadow-lift"
+                data-testid="avatar-upload-progress"
+              >
+                <div className="flex items-center gap-3">
+                  {sourceUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={sourceUrl}
+                      alt=""
+                      className="h-16 w-16 rounded-full border-2 border-party-blue-deep object-cover"
+                    />
+                  ) : (
+                    <ParticipantAvatar
+                      avatar={visibleAvatar}
+                      displayName={displayName}
+                      size="md"
+                    />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="font-display text-xl font-extrabold text-foreground">
+                      {copy.savingTitle}
+                    </p>
+                    <p className="text-sm font-bold text-muted-foreground" role="status">
+                      {uploadState === "preparing"
+                        ? copy.preparingPhoto
+                        : uploadState === "uploading"
+                          ? copy.uploadingPhoto
+                          : uploadState === "saving"
+                            ? copy.savingAvatar
+                            : uploadState === "success"
+                              ? copy.avatarReady
+                              : uploadState === "cancelled"
+                                ? copy.uploadCancelled
+                                : copy.validation.uploadFailed}
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <progress
+                    className="h-3 w-full overflow-hidden rounded-full accent-party-blue-deep"
+                    max={100}
+                    value={uploadProgress ?? undefined}
+                    aria-label={copy.savingTitle}
+                  />
+                  <div className="flex justify-between text-xs font-extrabold text-muted-foreground">
+                    <span>
+                      {uploadProgress === null ? copy.processingProgress : `${uploadProgress}%`}
+                    </span>
+                    {uploadState === "success" ? <span>100%</span> : null}
+                  </div>
+                </div>
+                {saving ? (
+                  <Button type="button" variant="outline" onClick={cancelUpload}>
+                    <X aria-hidden="true" />
+                    {copy.cancelUpload}
+                  </Button>
+                ) : null}
+              </div>
+            ) : null}
+
             <div className="min-h-6 text-sm font-bold text-party-red" role={error ? "alert" : "status"}>
               {error}
             </div>
 
-            <Button type="button" size="lg" className="w-full" onClick={onContinue}>
+            <Button
+              type="button"
+              size="lg"
+              className="w-full"
+              onClick={onContinue}
+              disabled={saving || Boolean(sourceUrl && !preparedPhoto)}
+            >
               <PartyPopper aria-hidden="true" />
               {visibleAvatar ? copy.continue : copy.skip}
             </Button>

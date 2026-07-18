@@ -243,7 +243,7 @@ Milestone 3 client/session state plus Enhancement 1A onboarding avatar bridge:
 - Optional local avatar preview or built-in preset selection.
 - Current onboarding step.
 
-This state is stored in browser `sessionStorage` only. The remote participant row and resume cookie remain the server-authoritative identity. In local runtime, the prepared avatar preview may remain a session-scoped data URL for browser testing. In remote runtime, photo avatars are uploaded through the server route to private Supabase Storage, and snapshots expose only signed URLs, preset IDs, or initials fallback.
+This draft/navigation state is stored in browser `sessionStorage`. It is not remote authority. The remote participant row and resume cookie are the server-authoritative identity and confirmed profile. In local runtime, the prepared avatar preview may remain a session-scoped data URL for browser testing. In remote runtime, photo avatars are uploaded through the server route to private Supabase Storage, and snapshots expose only signed URLs, preset IDs, or initials fallback.
 
 Milestone 4 local party state:
 
@@ -329,6 +329,8 @@ Fields:
 - `avatar_path`: private Storage object path for photo avatars.
 - `avatar_preset_id`: stable local preset id for built-in avatars.
 - `avatar_updated_at`.
+- `is_ready`: lobby readiness, default false.
+- `ready_at`: server timestamp when ready, null when not ready.
 
 #### `question_responses`
 
@@ -453,6 +455,8 @@ Implemented Milestone 5 route handlers:
 - `GET /api/party/sessions`: host-authorized current plus recent session history.
 - `POST /api/party/sessions`: host-authorized create/archive session actions.
 - `POST /api/party/join`: validates display name/locale, creates participant, sets `han_participant_session`.
+- `PATCH /api/party/participant/profile`: authenticates by participant cookie and updates locale/name on the same lobby participant; material changes reset readiness.
+- `PATCH /api/party/participant/readiness`: authenticates by participant cookie and idempotently sets lobby readiness.
 - `POST /api/party/participant/avatar`: validates participant cookie plus preset or prepared avatar image, uploads photo avatars to private Storage when needed, and updates participant avatar metadata.
 - `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
 - `GET /api/party/certificate`: validates the participant resume cookie against the current finished session, derives deterministic rank 1 server-side, privately downloads the stored photo avatar when present, and returns a localized one-page A4 PDF with private/no-store headers. Non-winners and unfinished sessions are rejected.
@@ -471,6 +475,8 @@ Planned future route handlers:
 - QA reset test data.
 
 All mutation paths should validate input, preserve immutable locked responses, and prevent duplicate question responses.
+
+Guest and shared projections distinguish authoritative persisted totals from revealed visible totals. While the current question is active or locked, the public locked-response shape omits correctness, points, response duration, scoring version, and correct answer data, and visible scores remain at the previous reveal. `answer_reveal` releases the persisted gain exactly once. This boundary also applies after refresh/reconnect.
 
 ## Admin And QA Separation
 

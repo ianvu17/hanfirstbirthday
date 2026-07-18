@@ -35,6 +35,7 @@ export type GuestSession = {
   locale: Locale;
   createdOrder: number;
   isFixture: boolean;
+  isReady?: boolean;
   avatar?: ParticipantAvatarProjection | null;
 };
 

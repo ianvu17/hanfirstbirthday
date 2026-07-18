@@ -28,6 +28,8 @@ Enhancement 1A adds participant avatar media. Built-in avatar presets and birthd
 
 Sticker editor controls are separate from exported artwork. Selection borders and handles must never be painted into the final avatar canvas. Winner certificates may embed a private stored photo only after server-side winner authorization; fallback initials and preset artwork require no remote asset.
 
+The winner PDF seal is vector artwork: a serrated coral medal edge, double rings, cream/yellow center, celebratory Han-approved wording, number-one hierarchy, star details, shadow, and ribbon tails. It must remain resolution-independent and must not regress to the former plain `ONE` circle.
+
 ## Asset Categories
 
 ### Brand And Event Assets

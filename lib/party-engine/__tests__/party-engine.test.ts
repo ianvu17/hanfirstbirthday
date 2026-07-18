@@ -355,6 +355,97 @@ test("projections hide correct answer until reveal", () => {
   );
 });
 
+test("guest and shared snapshots hide current-question correctness and points until reveal", () => {
+  let state = createInitialPartyState(config);
+  state = mustAccept(state, { type: "PREPARE_FIRST_QUESTION", now: 0 });
+  state = mustAccept(state, { type: "REVEAL_CHOICES", now: 100 });
+  state = mustAccept(state, {
+    type: "SUBMIT_RESPONSE",
+    guestId: "test-guest-01",
+    questionId: config.questions[0].id,
+    selectedOptionId: config.questions[0].correctOptionId,
+    submissionId: "secret-points",
+    receivedAt: 1_100,
+  });
+
+  const persisted = state.responses[
+    `test-guest-01::${config.questions[0].id}`
+  ];
+  assert.ok(persisted.pointsAwarded > 0);
+  assert.equal(persisted.isCorrect, true);
+
+  const activeGuest = buildGuestProjection(
+    state,
+    config,
+    "test-guest-01",
+    1_100,
+  );
+  const activeShared = buildSharedPartyProjection(state, config, 1_100);
+  const activePublicResponse = activeGuest.lockedResponse as unknown as Record<
+    string,
+    unknown
+  >;
+  const activePublicRow = activeShared.leaderboard.find(
+    (row) => row.guestId === "test-guest-01",
+  );
+
+  assert.equal(activeGuest.score, 0);
+  assert.equal(activeGuest.pointsGained, 0);
+  assert.equal(activeGuest.correctCount, 0);
+  assert.equal(activeGuest.reveal, null);
+  assert.equal("pointsAwarded" in activePublicResponse, false);
+  assert.equal("isCorrect" in activePublicResponse, false);
+  assert.equal("responseDurationMs" in activePublicResponse, false);
+  assert.equal(activePublicRow?.score, 0);
+  assert.equal(activePublicRow?.pointsGained, 0);
+  assert.equal(activePublicRow?.correctCount, 0);
+
+  state = mustAccept(state, {
+    type: "LOCK_QUESTION",
+    now: 20_100,
+    reason: "deadline",
+  });
+  const refreshedBeforeReveal = buildGuestProjection(
+    state,
+    config,
+    "test-guest-01",
+    20_100,
+  );
+  assert.equal(refreshedBeforeReveal.score, 0);
+  assert.equal(refreshedBeforeReveal.reveal, null);
+
+  state = mustAccept(state, { type: "REVEAL_ANSWER", now: 20_200 });
+  const revealed = buildGuestProjection(
+    state,
+    config,
+    "test-guest-01",
+    20_200,
+  );
+  assert.equal(revealed.score, persisted.pointsAwarded);
+  assert.equal(revealed.pointsGained, persisted.pointsAwarded);
+  assert.equal(revealed.correctCount, 1);
+  assert.equal(revealed.reveal?.pointsAwarded, persisted.pointsAwarded);
+});
+
+test("shared projection reports participant readiness without exposing resume tokens", () => {
+  const state = createInitialPartyState(config);
+  state.guests["test-guest-01"].isReady = true;
+  state.guests["test-guest-02"].isReady = false;
+
+  const projection = buildSharedPartyProjection(state, config, 0);
+  assert.equal(projection.participantCount, Object.keys(state.guests).length);
+  assert.equal(projection.readyParticipantCount, 1);
+  assert.equal(
+    projection.participants.find((row) => row.guestId === "test-guest-01")
+      ?.isReady,
+    true,
+  );
+  assert.equal(
+    projection.participants.some((row) => "resumeToken" in row),
+    false,
+  );
+});
+
 test("host capabilities are derived from phase", () => {
   let state = createInitialPartyState(config);
   assert.equal(selectHostCapabilities(state).canPrepareFirstQuestion, true);

@@ -109,7 +109,7 @@ UX notes:
 - Language options should be obvious and tappable.
 - Language can be changed later through a small accessible control.
 - Do not bury language behind settings.
-- Milestone 3 uses two large options and stores the selected locale in session-only state.
+- Local onboarding keeps the selected locale in session-only draft state. After remote join, language changes update the authenticated participant and route; the participant locale controls all later guest copy and question content.
 
 States:
 
@@ -125,7 +125,7 @@ UX notes:
 - Keep the form short.
 - Explain why the name is needed in a friendly way.
 - Use validation that feels helpful, not punitive.
-- Milestone 3 trims whitespace, rejects blank names, supports long Vietnamese names, and stores the display name only in session storage.
+- Name entry trims whitespace, rejects blank names, and supports Vietnamese names. After remote join, edits update the same authenticated participant, preserve join order/avatar/scores, and reset readiness.
 
 States:
 
@@ -136,6 +136,10 @@ States:
 ### Quiz Start
 
 Purpose: Prepare guests for a short timed quiz.
+
+Onboarding provides an in-app Back action from Language, Name, Party photo, How to Play, and Ready. Values are preserved. Ready-to-Back and any confirmed profile/avatar change reset persisted readiness. Once the host starts, editable onboarding closes and resumed participants route to the current game.
+
+How to Play is a connected three-step story: Answer fast explains the 20-second time score, Lock it in explains immutable submission, and Watch the race explains reveal plus leaderboard movement. Desktop uses purpose-built timer, answer-lock, and bar-race illustrations; mobile uses a compact vertical timeline. Motion respects reduced-motion.
 
 UX notes:
 

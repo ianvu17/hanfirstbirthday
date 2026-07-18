@@ -476,3 +476,27 @@ The party benefits from rewarding both knowledge and speed, avoiding frequent ti
 **Consequence**
 
 Leaderboard order is total points descending, then participant creation order, display name, and participant id. Winner and certificate authorization sum persisted awarded points. Host creation owns the session length; it cannot change during the session. The host advance action waits for the essential leaderboard animation unless reduced motion is requested.
+
+## ADR-023: Authenticated Onboarding Edits, Readiness, And Reveal-Safe Scores
+
+**Decision**
+
+Remote onboarding may move backward from every step after Welcome. Once a resume cookie identifies a participant, language, display-name, avatar, and readiness mutations update that participant only; they never call participant creation. Profile and avatar changes reset readiness. Repeating the same profile or readiness value is an idempotent no-op. The persisted participant locale is the source of truth for guest gameplay and resume routing.
+
+Participants persist `is_ready` and `ready_at`. The host lobby receives joined and ready counts plus display-safe participant summaries. Starting is disabled when nobody is ready, requires confirmation when some joined participants are not ready, and proceeds directly when all are ready.
+
+Correctness and awarded points may be computed and persisted when an answer is accepted, but guest and shared public projections mask the current question until `answer_reveal`. Before reveal they expose the previous revealed total and a public locked-response shape with no correctness, points, response-duration, scoring-version, or correct-option fields. At reveal the existing awarded points become visible and remain the source for the leaderboard race and certificate.
+
+Avatar upload progress uses browser preparation, observable multipart upload bytes, an indeterminate server-persistence phase, and 100% only after the authenticated avatar route returns success. Cancellation aborts the client request; because server commit may win the race, the client reconciles from the next authoritative participant snapshot. The gallery input has no `capture` attribute; the selfie path remains a separate `getUserMedia` flow.
+
+**Status**
+
+Accepted for the production-polish milestone on July 18, 2026.
+
+**Reason**
+
+Guests must be able to correct onboarding information without duplicate identities, hosts need trustworthy lobby readiness, and the quiz must preserve reveal suspense while keeping server-authoritative scoring intact.
+
+**Consequence**
+
+Editable onboarding is available only while the current session is in the lobby. Host start routes resumed guests to gameplay. Remote session storage is a draft/navigation bridge only; participant identity and confirmed profile state remain server-authoritative. A mobile browser or operating system may still offer camera as one chooser option, but the web app must not force camera capture from Choose a photo.

@@ -63,12 +63,32 @@
       "skip": "Continue without changing",
       "photoReady": "Photo avatar ready",
       "presetReady": "Birthday avatar selected",
+      "savingTitle": "Saving your party photo",
+      "preparingPhoto": "Preparing your photo…",
+      "uploadingPhoto": "Uploading your photo…",
+      "savingAvatar": "Saving your avatar…",
+      "avatarReady": "Your avatar is ready!",
+      "cancelUpload": "Cancel upload",
+      "uploadCancelled": "Upload cancelled. Your edit is still here.",
+      "retryUpload": "Retry upload",
+      "processingProgress": "Finishing securely…",
       "uploadHelp": "JPEG, PNG, or WebP. Maximum 5 MB.",
       "cropHelp": "Move and zoom the photo so your face fits inside the circle.",
       "stickerLabel": "Birthday stickers",
       "zoomLabel": "Zoom",
       "sizeLabel": "Sticker size",
       "removeSticker": "Remove sticker",
+      "addSticker": "Add",
+      "presets": {
+        "birthdayBear": "Birthday bear",
+        "birthdayBunny": "Birthday bunny",
+        "birthdayLion": "Birthday lion",
+        "birthdayPanda": "Birthday panda",
+        "birthdayKoala": "Birthday koala",
+        "birthdayTiger": "Birthday tiger",
+        "birthdayStar": "Cheerful star",
+        "birthdayCupcake": "Birthday cupcake"
+      },
       "stickers": {
         "partyHat": "party hat",
         "crown": "birthday crown",
@@ -86,29 +106,29 @@
         "unsupportedFile": "Please choose a JPEG, PNG, or WebP image.",
         "fileTooLarge": "Please choose an image smaller than 5 MB.",
         "imageInvalid": "That image could not be opened. Please try another photo.",
-        "uploadFailed": "We could not save that avatar yet. You can continue or try again.",
+        "uploadFailed": "We could not save that avatar yet. Please retry or choose a birthday avatar.",
         "saved": "Avatar saved."
       }
     },
     "howToPlay": {
       "title": "How to play",
-      "subtitle": "Quick, playful, and done in about 3 to 5 minutes.",
+      "subtitle": "Three quick moves, then watch the room celebrate the reveal.",
       "primaryAction": "I'm ready",
       "cards": [
         {
           "id": "timer",
-          "title": "20 seconds",
-          "description": "Each question has a short timer."
+          "title": "Answer fast",
+          "description": "You have 20 seconds. Faster correct answers earn more points."
         },
         {
           "id": "locked",
-          "title": "Submit your answer",
-          "description": "Once submitted, it cannot be changed."
+          "title": "Lock it in",
+          "description": "Choose carefully—your answer cannot be changed after submission."
         },
         {
           "id": "reveal",
-          "title": "See the reveal",
-          "description": "Correct answer, fun fact, then next question."
+          "title": "Watch the race",
+          "description": "See the correct answer, your points, and the leaderboard bars race into place."
         }
       ]
     },
@@ -129,6 +149,10 @@
       "partyPhoto": "Photo",
       "howToPlay": "How to play",
       "ready": "Ready"
+    },
+    "onboardingNavigation": {
+      "back": "Back",
+      "backDuringUpload": "Cancel the upload before going back."
     },
     "quizStart": {
       "title": "Ready?",

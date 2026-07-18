@@ -217,6 +217,8 @@ Milestone 5 checks:
 - Hosted Supabase RLS, Vercel preview deployment, and browser-context realtime validation have passed; physical multi-device rehearsal remains required before event approval.
 - Physical rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.
 
+Production-polish remote rehearsal must additionally verify Back edits preserve one participant, Ready-to-Back decrements host readiness, gallery selection does not carry a `capture` attribute, avatar upload exposes real byte progress plus indeterminate persistence and cancellation reconciliation, Vietnamese remains active through final state, and a correct submission exposes neither points nor correctness in the pre-reveal JSON snapshot. Record whether the picker was exercised on physical iOS Safari; viewport emulation is not equivalent.
+
 Time-scoring and configurable-session checks:
 
 - Use `npm run test:scoring` for worked 20-second examples, integer bounds, incorrect answers, defensive negative elapsed time, and malformed duration.
