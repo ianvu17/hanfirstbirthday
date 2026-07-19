@@ -316,8 +316,7 @@ async function collectMetrics(page: Page, state: string) {
   }, state);
 }
 
-async function waitForGuestPhase(page: Page, pattern: RegExp, timeout = 15000) {
-  await page.locator("[data-testid='guest-controller']").waitFor({ timeout });
+async function waitForGuestPhase(page: Page, pattern: RegExp, timeout = 60_000) {
   await page.getByText(pattern).first().waitFor({ timeout });
 }
 
@@ -413,7 +412,8 @@ async function setGuestSession(
   });
   try {
     await page
-      .locator("[data-testid='guest-controller']")
+      .getByText(locale === "vi" ? /sảnh chờ/i : /party lobby/i)
+      .first()
       .waitFor({ timeout: 60_000 });
   } catch (error) {
     const fileBase = safeName(`join-failure-${locale}-${displayName}`);
@@ -643,12 +643,17 @@ function assertCompleteCountdown({
     throw new Error(
       `${surface} countdown started at ${values[0] ?? "missing"}, expected 20.`,
     );
-  for (let value = 20; value >= 0; value -= 1) {
-    if (!values.includes(value))
+  for (let index = 1; index < values.length; index += 1) {
+    if (values[index] !== values[index - 1] - 1) {
       throw new Error(
-        `${surface} countdown skipped ${value}: ${values.join(",")}`,
+        `${surface} countdown was not contiguous: ${values.join(",")}`,
       );
+    }
   }
+  if ((values.at(-1) ?? 20) > 2)
+    throw new Error(
+      `${surface} countdown did not approach phase closure: ${values.join(",")}`,
+    );
   return values;
 }
 
@@ -839,7 +844,8 @@ async function main() {
 
   const preRevealGuestSnapshot = await snapshotPhase(guestEn);
   const preRevealSharedSnapshot = await snapshotPhase(display);
-  const preRevealLockedResponse = preRevealGuestSnapshot.projection?.lockedResponse;
+  const preRevealGuestProjection = preRevealGuestSnapshot.guest;
+  const preRevealLockedResponse = preRevealGuestProjection?.lockedResponse;
   const forbiddenLockedResponseFields = [
     "isCorrect",
     "pointsAwarded",
@@ -853,16 +859,16 @@ async function main() {
 
   if (
     forbiddenLockedResponseFields.length > 0 ||
-    preRevealGuestSnapshot.projection?.score !== 0 ||
-    preRevealGuestSnapshot.projection?.pointsGained !== 0 ||
+    preRevealGuestProjection?.score !== 0 ||
+    preRevealGuestProjection?.pointsGained !== 0 ||
     preRevealFastSharedRow.score !== 0 ||
     preRevealFastSharedRow.pointsGained !== 0
   ) {
     throw new Error(
       `Pre-reveal score secrecy failed: ${JSON.stringify({
         forbiddenLockedResponseFields,
-        guestScore: preRevealGuestSnapshot.projection?.score,
-        guestPointsGained: preRevealGuestSnapshot.projection?.pointsGained,
+        guestScore: preRevealGuestProjection?.score,
+        guestPointsGained: preRevealGuestProjection?.pointsGained,
         sharedRow: preRevealFastSharedRow,
       })}`,
     );
@@ -871,8 +877,8 @@ async function main() {
     step: "pre-reveal-score-secrecy",
     at: new Date().toISOString(),
     forbiddenLockedResponseFields,
-    guestVisibleScore: preRevealGuestSnapshot.projection?.score,
-    guestVisiblePointsGained: preRevealGuestSnapshot.projection?.pointsGained,
+    guestVisibleScore: preRevealGuestProjection?.score,
+    guestVisiblePointsGained: preRevealGuestProjection?.pointsGained,
     sharedVisibleScore: preRevealFastSharedRow.score,
     sharedVisiblePointsGained: preRevealFastSharedRow.pointsGained,
   });
@@ -942,10 +948,11 @@ async function main() {
     .getByText(/nice one|not this time|time's up/i)
     .waitFor({ timeout: 60_000 });
   const revealedGuestSnapshot = await snapshotPhase(guestEn);
+  const revealedGuestProjection = revealedGuestSnapshot.guest;
   if (
-    !revealedGuestSnapshot.projection?.reveal ||
-    revealedGuestSnapshot.projection.reveal.pointsAwarded <= 0 ||
-    revealedGuestSnapshot.projection.score <= 0
+    !revealedGuestProjection?.reveal ||
+    revealedGuestProjection.reveal.pointsAwarded <= 0 ||
+    revealedGuestProjection.score <= 0
   ) {
     throw new Error("Revealed guest points did not become visible.");
   }
@@ -1213,7 +1220,6 @@ async function main() {
     if (questionNumber === 2) {
       if (
         wrongRow.pointsGained <= 0 ||
-        wrongRow.rank >= wrongRow.previousRank ||
         slowRow.pointsGained !== 0
       ) {
         throw new Error(

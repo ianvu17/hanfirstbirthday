@@ -545,8 +545,8 @@ export function ProductionHostController({
                 {copy.participants}
               </p>
               <p className="mt-1 text-lg font-extrabold text-foreground">
-                {snapshot.projection.readyParticipantCount} {copy.readyOf}{" "}
-                {snapshot.projection.participantCount}
+                {snapshot.projection.readyParticipantCount}/
+                {snapshot.projection.participantCount} {copy.ready}
               </p>
             </div>
             <div className="rounded-[1rem] border border-border bg-surface-paper p-4 shadow-lift">

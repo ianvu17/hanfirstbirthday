@@ -1,0 +1,1283 @@
+{
+  "baseUrl": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app",
+  "sessionId": "1ac16d12-1ce8-4ac5-8950-65a74ac7b677",
+  "isTest": true,
+  "createdAt": "2026-07-18T23:51:48.893Z",
+  "finalSnapshot": {
+    "mode": "remote",
+    "configured": true,
+    "session": {
+      "id": "1ac16d12-1ce8-4ac5-8950-65a74ac7b677",
+      "publicJoinCode": "han-turns-one",
+      "partyKey": "han-first-birthday",
+      "deploymentEnvironment": "preview",
+      "status": "finished",
+      "phase": "finished",
+      "revision": 27,
+      "isTest": true,
+      "isCurrent": true,
+      "label": "Codex Preview validation 2026-07-18T23:48:13.626Z",
+      "createdAt": "2026-07-18T23:48:14.03902+00:00",
+      "updatedAt": "2026-07-18T23:51:40.538+00:00",
+      "finishedAt": "2026-07-18T23:51:40.538+00:00",
+      "archivedAt": null
+    },
+    "projection": {
+      "phase": "finished",
+      "revision": 27,
+      "currentQuestion": {
+        "id": "han-test-question-03",
+        "enabled": true,
+        "sortOrder": 3,
+        "prompt": {
+          "en": "Which item is most useful when a baby decides that lunch belongs on the floor?",
+          "vi": "Vật nào hữu ích nhất khi em bé quyết định rằng bữa trưa nên nằm dưới sàn?"
+        },
+        "options": [
+          {
+            "id": "option-a",
+            "label": {
+              "en": "A party hat",
+              "vi": "Một chiếc nón sinh nhật"
+            }
+          },
+          {
+            "id": "option-b",
+            "label": {
+              "en": "A television remote",
+              "vi": "Một chiếc điều khiển tivi"
+            }
+          },
+          {
+            "id": "option-c",
+            "label": {
+              "en": "A bib",
+              "vi": "Một chiếc yếm ăn"
+            }
+          }
+        ],
+        "funFact": {
+          "en": "A bib cannot stop every food adventure, but it can make the clean-up slightly less dramatic.",
+          "vi": "Chiếc yếm không thể ngăn mọi cuộc phiêu lưu của thức ăn, nhưng có thể giúp việc dọn dẹp bớt kịch tính hơn một chút."
+        }
+      },
+      "questionNumber": 3,
+      "totalQuestions": 3,
+      "participantCount": 3,
+      "readyParticipantCount": 3,
+      "participants": [
+        {
+          "guestId": "3f7ac69e-6eed-4eaa-9d2f-42027c19c4c5",
+          "displayName": "Codex Fast 1784418502497",
+          "isReady": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        {
+          "guestId": "5acb7c6e-9932-4dbc-b394-f36a7963ca14",
+          "displayName": "Codex Wrong 1784418502497",
+          "isReady": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        {
+          "guestId": "a675b923-3a63-4bab-8181-3ebbdd8dd970",
+          "displayName": "Codex Slow 1784418502497",
+          "isReady": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        }
+      ],
+      "submittedCount": 2,
+      "timedOutCount": 1,
+      "questionDeadlineAt": null,
+      "questionDurationMs": 20000,
+      "remainingMs": 0,
+      "correctOption": {
+        "id": "option-c",
+        "label": {
+          "en": "A bib",
+          "vi": "Một chiếc yếm ăn"
+        }
+      },
+      "answerDistribution": [
+        {
+          "optionId": "option-a",
+          "label": {
+            "en": "A party hat",
+            "vi": "Một chiếc nón sinh nhật"
+          },
+          "count": 1,
+          "isCorrect": false
+        },
+        {
+          "optionId": "option-b",
+          "label": {
+            "en": "A television remote",
+            "vi": "Một chiếc điều khiển tivi"
+          },
+          "count": 0,
+          "isCorrect": false
+        },
+        {
+          "optionId": "option-c",
+          "label": {
+            "en": "A bib",
+            "vi": "Một chiếc yếm ăn"
+          },
+          "count": 1,
+          "isCorrect": true
+        }
+      ],
+      "leaderboard": [
+        {
+          "rank": 1,
+          "previousRank": 1,
+          "guestId": "3f7ac69e-6eed-4eaa-9d2f-42027c19c4c5",
+          "displayName": "Codex Fast 1784418502497",
+          "score": 4909,
+          "previousScore": 3170,
+          "pointsGained": 1739,
+          "answeredCount": 3,
+          "correctCount": 3,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        {
+          "rank": 2,
+          "previousRank": 2,
+          "guestId": "5acb7c6e-9932-4dbc-b394-f36a7963ca14",
+          "displayName": "Codex Wrong 1784418502497",
+          "score": 1715,
+          "previousScore": 1715,
+          "pointsGained": 0,
+          "answeredCount": 3,
+          "correctCount": 1,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        {
+          "rank": 3,
+          "previousRank": 3,
+          "guestId": "a675b923-3a63-4bab-8181-3ebbdd8dd970",
+          "displayName": "Codex Slow 1784418502497",
+          "score": 1370,
+          "previousScore": 1370,
+          "pointsGained": 0,
+          "answeredCount": 3,
+          "correctCount": 1,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        }
+      ]
+    },
+    "joinUrl": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app/en?join=han-turns-one",
+    "connection": "connected",
+    "serverNow": 1784418708778
+  },
+  "rehearsalQuestionLimit": 3,
+  "certificateValidation": {
+    "winnerLocale": "en-fast",
+    "winnerStatus": 200,
+    "nonWinnerStatuses": [
+      403,
+      403
+    ],
+    "contentType": "application/pdf",
+    "pageCount": 1,
+    "bytes": 15968
+  },
+  "timeline": [
+    {
+      "step": "session-ready",
+      "at": "2026-07-18T23:48:20.444Z",
+      "sessionId": "1ac16d12-1ce8-4ac5-8950-65a74ac7b677",
+      "isTest": true,
+      "phase": "lobby"
+    },
+    {
+      "step": "host-readiness-3-of-3",
+      "at": "2026-07-18T23:49:00.756Z",
+      "participantCount": 3,
+      "readyParticipantCount": 3
+    },
+    {
+      "step": "question-preview",
+      "at": "2026-07-18T23:49:06.069Z"
+    },
+    {
+      "step": "answers-active",
+      "at": "2026-07-18T23:49:13.109Z"
+    },
+    {
+      "step": "three-guests-submitted",
+      "at": "2026-07-18T23:49:21.653Z"
+    },
+    {
+      "step": "pre-reveal-score-secrecy",
+      "at": "2026-07-18T23:49:24.728Z",
+      "forbiddenLockedResponseFields": [],
+      "guestVisibleScore": 0,
+      "guestVisiblePointsGained": 0,
+      "sharedVisibleScore": 0,
+      "sharedVisiblePointsGained": 0
+    },
+    {
+      "step": "countdown-observed",
+      "at": "2026-07-18T23:49:32.791Z",
+      "host": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "partyScreen": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "guest": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "step": "locked-survived-refresh",
+      "at": "2026-07-18T23:49:37.586Z"
+    },
+    {
+      "step": "deadline-closed",
+      "at": "2026-07-18T23:49:39.792Z"
+    },
+    {
+      "step": "late-answer-attempt",
+      "at": "2026-07-18T23:49:41.967Z",
+      "status": 409
+    },
+    {
+      "step": "leaderboard",
+      "at": "2026-07-18T23:49:53.762Z",
+      "scoring": {
+        "fastAfterFirst": {
+          "rank": 1,
+          "previousRank": 1,
+          "guestId": "3f7ac69e-6eed-4eaa-9d2f-42027c19c4c5",
+          "displayName": "Codex Fast 1784418502497",
+          "score": 1630,
+          "previousScore": 0,
+          "pointsGained": 1630,
+          "answeredCount": 1,
+          "correctCount": 1,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        "slowAfterFirst": {
+          "rank": 2,
+          "previousRank": 3,
+          "guestId": "a675b923-3a63-4bab-8181-3ebbdd8dd970",
+          "displayName": "Codex Slow 1784418502497",
+          "score": 1370,
+          "previousScore": 0,
+          "pointsGained": 1370,
+          "answeredCount": 1,
+          "correctCount": 1,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        "wrongAfterFirst": {
+          "rank": 3,
+          "previousRank": 2,
+          "guestId": "5acb7c6e-9932-4dbc-b394-f36a7963ca14",
+          "displayName": "Codex Wrong 1784418502497",
+          "score": 0,
+          "previousScore": 0,
+          "pointsGained": 0,
+          "answeredCount": 1,
+          "correctCount": 0,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        }
+      }
+    },
+    {
+      "step": "next-question-preview",
+      "at": "2026-07-18T23:49:58.054Z"
+    },
+    {
+      "step": "idle-after-poll",
+      "at": "2026-07-18T23:50:06.556Z"
+    },
+    {
+      "step": "offline-recovery",
+      "at": "2026-07-18T23:50:11.870Z"
+    },
+    {
+      "step": "question-2-complete",
+      "at": "2026-07-18T23:50:55.862Z",
+      "scoring": {
+        "fastRow": {
+          "rank": 1,
+          "previousRank": 1,
+          "guestId": "3f7ac69e-6eed-4eaa-9d2f-42027c19c4c5",
+          "displayName": "Codex Fast 1784418502497",
+          "score": 3170,
+          "previousScore": 1630,
+          "pointsGained": 1540,
+          "answeredCount": 2,
+          "correctCount": 2,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        "slowRow": {
+          "rank": 3,
+          "previousRank": 2,
+          "guestId": "a675b923-3a63-4bab-8181-3ebbdd8dd970",
+          "displayName": "Codex Slow 1784418502497",
+          "score": 1370,
+          "previousScore": 1370,
+          "pointsGained": 0,
+          "answeredCount": 2,
+          "correctCount": 1,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        "wrongRow": {
+          "rank": 2,
+          "previousRank": 3,
+          "guestId": "5acb7c6e-9932-4dbc-b394-f36a7963ca14",
+          "displayName": "Codex Wrong 1784418502497",
+          "score": 1715,
+          "previousScore": 0,
+          "pointsGained": 1715,
+          "answeredCount": 2,
+          "correctCount": 1,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        }
+      }
+    },
+    {
+      "step": "question-3-complete",
+      "at": "2026-07-18T23:51:41.098Z",
+      "scoring": {
+        "fastRow": {
+          "rank": 1,
+          "previousRank": 1,
+          "guestId": "3f7ac69e-6eed-4eaa-9d2f-42027c19c4c5",
+          "displayName": "Codex Fast 1784418502497",
+          "score": 4909,
+          "previousScore": 3170,
+          "pointsGained": 1739,
+          "answeredCount": 3,
+          "correctCount": 3,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        "slowRow": {
+          "rank": 3,
+          "previousRank": 3,
+          "guestId": "a675b923-3a63-4bab-8181-3ebbdd8dd970",
+          "displayName": "Codex Slow 1784418502497",
+          "score": 1370,
+          "previousScore": 1370,
+          "pointsGained": 0,
+          "answeredCount": 3,
+          "correctCount": 1,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        "wrongRow": {
+          "rank": 2,
+          "previousRank": 2,
+          "guestId": "5acb7c6e-9932-4dbc-b394-f36a7963ca14",
+          "displayName": "Codex Wrong 1784418502497",
+          "score": 1715,
+          "previousScore": 1715,
+          "pointsGained": 0,
+          "answeredCount": 3,
+          "correctCount": 1,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        }
+      }
+    }
+  ],
+  "matrix": [
+    {
+      "state": "lobby",
+      "url": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": null,
+      "questionRect": {
+        "top": 296,
+        "right": 363,
+        "bottom": 320,
+        "left": 27,
+        "width": 336,
+        "height": 24,
+        "text": "Party lobby"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "lobby",
+      "url": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app/vi/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": null,
+      "questionRect": {
+        "top": 296,
+        "right": 363,
+        "bottom": 320,
+        "left": 27,
+        "width": 336,
+        "height": 24,
+        "text": "Sảnh chờ buổi tiệc"
+      },
+      "statusBadgeRect": null,
+      "language": "vi",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answer-locked",
+      "url": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 256,
+        "right": 363,
+        "bottom": 404,
+        "left": 27,
+        "width": 336,
+        "height": 148,
+        "text": "Han's first day at schoolHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 200,
+        "right": 363,
+        "bottom": 248,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answers-closed",
+      "url": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 267,
+        "right": 363,
+        "bottom": 415,
+        "left": 27,
+        "width": 336,
+        "height": 148,
+        "text": "Han's first day at schoolHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 211,
+        "right": 363,
+        "bottom": 259,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answer-reveal",
+      "url": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 258,
+        "right": 363,
+        "bottom": 424,
+        "left": 27,
+        "width": 336,
+        "height": 166,
+        "text": "Han's first day at schoolCorrect answerHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 202,
+        "right": 363,
+        "bottom": 250,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "leaderboard",
+      "url": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 258,
+        "right": 363,
+        "bottom": 424,
+        "left": 27,
+        "width": 336,
+        "height": 166,
+        "text": "Han's first day at schoolCorrect answerHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 202,
+        "right": 363,
+        "bottom": 250,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    }
+  ],
+  "traces": {
+    "host": [
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:34.736Z",
+        "performanceMs": 278,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/status"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:34.737Z",
+        "performanceMs": 279,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:34.968Z",
+        "performanceMs": 510,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/status",
+          "status": 200,
+          "ok": true,
+          "durationMs": 233
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:34.970Z",
+        "performanceMs": 511,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/sessions"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:36.196Z",
+        "performanceMs": 1738,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1459
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "host",
+        "at": "2026-07-18T23:51:36.202Z",
+        "performanceMs": 1744,
+        "route": "/en/host",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "host",
+        "at": "2026-07-18T23:51:36.269Z",
+        "performanceMs": 1811,
+        "route": "/en/host",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:37.055Z",
+        "performanceMs": 2597,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:37.146Z",
+        "performanceMs": 2688,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/sessions",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2176
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:38.343Z",
+        "performanceMs": 3885,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1288
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:39.081Z",
+        "performanceMs": 4623,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/command"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:39.097Z",
+        "performanceMs": 4638,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:39.125Z",
+        "performanceMs": 4666,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:40.392Z",
+        "performanceMs": 5934,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1295
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:40.608Z",
+        "performanceMs": 6149,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1483
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:41.195Z",
+        "performanceMs": 6737,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:42.197Z",
+        "performanceMs": 7739,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/command",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3116
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:42.542Z",
+        "performanceMs": 8084,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1347
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:43.294Z",
+        "performanceMs": 8835,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:44.703Z",
+        "performanceMs": 10245,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1409
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:45.000Z",
+        "performanceMs": 10542,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-18T23:51:46.272Z",
+        "performanceMs": 11814,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1272
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-18T23:51:46.622Z",
+        "performanceMs": 12164,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ],
+    "partyScreen": [
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-18T23:51:41.161Z",
+        "performanceMs": 53,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-18T23:51:42.313Z",
+        "performanceMs": 1206,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1153
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "party-screen",
+        "at": "2026-07-18T23:51:42.331Z",
+        "performanceMs": 1223,
+        "route": "/display/party",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "party-screen",
+        "at": "2026-07-18T23:51:42.397Z",
+        "performanceMs": 1290,
+        "route": "/display/party",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-18T23:51:43.293Z",
+        "performanceMs": 2186,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-18T23:51:45.012Z",
+        "performanceMs": 3904,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1718
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-18T23:51:46.095Z",
+        "performanceMs": 4988,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ],
+    "guestEn": [
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-18T23:51:43.525Z",
+        "performanceMs": 2420,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/join"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-18T23:51:43.527Z",
+        "performanceMs": 2422,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-18T23:51:46.097Z",
+        "performanceMs": 4992,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2570
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "guest-en",
+        "at": "2026-07-18T23:51:46.101Z",
+        "performanceMs": 4996,
+        "route": "/en/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "guest-en",
+        "at": "2026-07-18T23:51:46.175Z",
+        "performanceMs": 5070,
+        "route": "/en/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-18T23:51:46.623Z",
+        "performanceMs": 5518,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-18T23:51:47.262Z",
+        "performanceMs": 6157,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/join",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3737
+        }
+      }
+    ],
+    "guestVi": [
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-18T23:51:44.508Z",
+        "performanceMs": 3403,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/join"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-18T23:51:44.509Z",
+        "performanceMs": 3403,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-18T23:51:46.472Z",
+        "performanceMs": 5366,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1963
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "guest-vi",
+        "at": "2026-07-18T23:51:46.476Z",
+        "performanceMs": 5370,
+        "route": "/vi/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "guest-vi",
+        "at": "2026-07-18T23:51:46.544Z",
+        "performanceMs": 5438,
+        "route": "/vi/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-18T23:51:47.161Z",
+        "performanceMs": 6056,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ],
+    "guestSlow": [
+      {
+        "type": "fetch:start",
+        "surface": "guest-slow",
+        "at": "2026-07-18T23:51:44.001Z",
+        "performanceMs": 2895,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/join"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-slow",
+        "at": "2026-07-18T23:51:44.003Z",
+        "performanceMs": 2897,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-slow",
+        "at": "2026-07-18T23:51:46.473Z",
+        "performanceMs": 5367,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2470
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "guest-slow",
+        "at": "2026-07-18T23:51:46.481Z",
+        "performanceMs": 5375,
+        "route": "/en/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "guest-slow",
+        "at": "2026-07-18T23:51:46.549Z",
+        "performanceMs": 5443,
+        "route": "/en/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-slow",
+        "at": "2026-07-18T23:51:47.161Z",
+        "performanceMs": 6055,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ]
+  }
+}
