@@ -7,6 +7,7 @@ const evidenceDir =
   process.env.PREVIEW_ONBOARDING_EVIDENCE_DIR ??
   "docs/evidence/production-polish-preview-onboarding";
 const joinCode = process.env.PREVIEW_PARTY_JOIN_CODE ?? "han-turns-one";
+const skipUpload = process.env.PREVIEW_ONBOARDING_SKIP_UPLOAD === "true";
 
 if (!baseUrl) throw new Error("PREVIEW_PARTY_BASE_URL is required.");
 
@@ -75,6 +76,10 @@ async function main() {
   guestPage.setDefaultTimeout(60_000);
 
   try {
+    const loginResponse = await host.request.post(`${baseUrl}/api/party/host/login`, {
+      data: { pin: hostPin },
+    });
+    if (!loginResponse.ok()) throw new Error("Host login failed.");
     await hostPage.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded" });
     const authorized = await host.request
       .get(`${baseUrl}/api/party/host/status`)
@@ -124,31 +129,41 @@ async function main() {
     if ((await galleryInput.getAttribute("capture")) !== null) {
       throw new Error("Gallery input unexpectedly forces capture.");
     }
-    await galleryInput.setInputFiles(
-      "docs/evidence/production-polish-local-20260718/screenshots/390x844-en-how-to-play.png",
-    );
-    await guestPage.getByRole("button", { name: /use this photo/i }).waitFor();
+    if (skipUpload) {
+      await guestPage.getByRole("button", { name: /birthday bear/i }).click();
+      await guestPage.waitForFunction(async () => {
+        const response = await fetch("/api/party/session", { cache: "no-store" });
+        const payload = await response.json();
+        return payload.participant?.avatar?.type === "preset";
+      });
+    } else {
+      await galleryInput.setInputFiles(
+        "docs/evidence/production-polish-local-20260718/screenshots/390x844-en-how-to-play.png",
+      );
+      await guestPage.getByRole("button", { name: /use this photo/i }).waitFor();
 
-    await guestPage.route("**/api/party/participant/avatar", async (route) => {
-      await new Promise((resolve) => setTimeout(resolve, 4_000));
-      await route.continue().catch(() => undefined);
-    });
-    void guestPage.getByRole("button", { name: /use this photo/i }).click();
-    const progress = guestPage.getByTestId("avatar-upload-progress");
-    await progress.waitFor();
-    await guestPage.getByRole("button", { name: /cancel upload/i }).click();
-    await progress.getByText(/upload cancelled/i).waitFor();
-    await guestPage.screenshot({
-      path: join(evidenceDir, "screenshots", "guest-upload-cancelled.png"),
-      fullPage: true,
-    });
-    await guestPage.unrouteAll({ behavior: "wait" });
+      await guestPage.route("**/api/party/participant/avatar", async (route) => {
+        await new Promise((resolve) => setTimeout(resolve, 4_000));
+        await route.continue().catch(() => undefined);
+      });
+      void guestPage.getByRole("button", { name: /use this photo/i }).click();
+      const progress = guestPage.getByTestId("avatar-upload-progress");
+      await progress.waitFor();
+      await guestPage.getByRole("button", { name: /cancel upload/i }).click();
+      await progress.getByText(/upload cancelled/i).waitFor();
+      await guestPage.screenshot({
+        path: join(evidenceDir, "screenshots", "guest-upload-cancelled.png"),
+        fullPage: true,
+      });
+      await guestPage.unrouteAll({ behavior: "wait" });
 
-    await guestPage.getByRole("button", { name: /retry upload/i }).click();
-    await progress.getByText(/your avatar is ready/i).waitFor();
+      await guestPage.getByRole("button", { name: /retry upload/i }).click();
+      await progress.getByText(/your avatar is ready/i).waitFor();
+    }
     const saved = await participantSnapshot(guestPage);
-    if (saved.participant?.id !== participantId || saved.participant?.avatar?.type !== "photo") {
-      throw new Error("Avatar retry did not persist to the same participant.");
+    const expectedAvatarType = skipUpload ? "preset" : "photo";
+    if (saved.participant?.id !== participantId || saved.participant?.avatar?.type !== expectedAvatarType) {
+      throw new Error("Avatar selection did not persist to the same participant.");
     }
 
     await guestPage.getByRole("button", { name: /^continue$/i }).click();
@@ -234,9 +249,10 @@ async function main() {
           participantCount: 1,
           finalParticipant: ready.participant,
           upload: {
-            progressUiObserved: true,
-            clientAbortObserved: true,
-            retryPersistedPhoto: true,
+            progressUiObserved: !skipUpload,
+            clientAbortObserved: !skipUpload,
+            retryPersistedPhoto: !skipUpload,
+            presetPersistenceObserved: skipUpload,
             galleryCaptureAttribute: null,
           },
           navigation: {

@@ -1,0 +1,28 @@
+{
+  "baseUrl": "https://hanfirstbirthday-84wfq2wty-ianalysed.vercel.app",
+  "createdAt": "2026-07-19T00:01:34.338Z",
+  "participantId": "fce0e6a4-3863-4856-ada0-ef3aeae9da99",
+  "participantCount": 1,
+  "finalParticipant": {
+    "id": "fce0e6a4-3863-4856-ada0-ef3aeae9da99",
+    "displayName": "Polish Guest Edited",
+    "locale": "vi",
+    "isReady": true,
+    "readyAt": "2026-07-19T00:00:56.707+00:00",
+    "avatar": {
+      "type": "photo",
+      "url": "[redacted expiring signed avatar URL]"
+    }
+  },
+  "upload": {
+    "progressUiObserved": true,
+    "clientAbortObserved": true,
+    "retryPersistedPhoto": true,
+    "galleryCaptureAttribute": null
+  },
+  "navigation": {
+    "sameParticipantAfterNameLocaleAvatarEdits": true,
+    "readyBackResetObserved": true,
+    "activeSessionRedirectedToPlay": true
+  }
+}
