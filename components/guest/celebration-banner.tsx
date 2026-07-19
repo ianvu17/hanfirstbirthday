@@ -10,6 +10,7 @@ type CelebrationBannerProps = {
   subtitle: string;
   primaryAction: string;
   guestName: string;
+  disabled?: boolean;
   onStartQuiz: () => void;
 };
 
@@ -25,6 +26,7 @@ export function CelebrationBanner({
   subtitle,
   primaryAction,
   guestName,
+  disabled = false,
   onStartQuiz
 }: CelebrationBannerProps) {
   return (
@@ -56,7 +58,7 @@ export function CelebrationBanner({
               </p>
             </div>
             <div className="flex justify-center md:justify-start">
-              <Button size="lg" onClick={onStartQuiz} data-testid="ready-start-quiz">
+              <Button size="lg" onClick={onStartQuiz} disabled={disabled} data-testid="ready-start-quiz">
                 <Sparkles aria-hidden="true" />
                 {primaryAction}
               </Button>

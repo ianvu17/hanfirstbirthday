@@ -1,0 +1,380 @@
+{
+  "label": "production",
+  "baseUrl": "https://hanfirstbirthday.vercel.app",
+  "startedAt": "2026-07-13T10:57:28.290Z",
+  "sessionText": "{\"mode\":\"remote\",\"configured\":true,\"session\":{\"id\":\"f2bea267-e675-4dd9-b0a8-33af89f155f3\",\"publicJoinCode\":\"han-turns-one\",\"partyKey\":\"han-first-birthday\",\"deploymentEnvironment\":\"production\",\"status\":\"active\",\"phase\":\"question_ready\",\"revision\":1,\"isTest\":true,\"isCurrent\":true,\"label\":\"Session 13/7/2026, 4:38:41 pm\",\"createdAt\":\"2026-07-13T06:38:42.417149+00:00\",\"updatedAt\":\"2026-07-13T08:55:15.417+00:00\",\"finishedAt\":null,\"archivedAt\":null},\"projection\":{\"phase\":\"question_ready\",\"revision\":1,\"currentQuestion\":{\"id\":\"dev-question-1\",\"enabled\":true,\"sortOrder\":1,\"correctOptionId\":\"option-b\",\"assetId\":\"dev-placeholder-image\",\"prompt\":{\"en\":\"Development question 1: Which placeholder answer is marked correct?\",\"vi\":\"Câu hỏi thử nghiệm 1: Đáp án mẫu nào được đánh dấu là đúng?\"},\"funFact\":{\"en\":\"Development-only fun fact placeholder. Replace with an approved Han fact before production.\",\"vi\":\"Thông tin mẫu chỉ dùng để thử nghiệm. Hãy thay bằng thông tin về Han đã được duyệt trước khi chạy thật.\"},\"options\":[{\"id\":\"option-a\",\"label\":{\"en\":\"Placeholder option A\",\"vi\":\"Đáp án mẫu A\"}},{\"id\":\"option-b\",\"label\":{\"en\":\"Placeholder option B\",\"vi\":\"Đáp án mẫu B\"}},{\"id\":\"option-c\",\"label\":{\"en\":\"Placeholder option C\",\"vi\":\"Đáp án mẫu C\"}}]},\"questionNumber\":1,\"totalQuestions\":2,\"participantCount\":35,\"submittedCount\":0,\"timedOutCount\":0,\"remainingMs\":0,\"correctOption\":null,\"answerDistribution\":[{\"optionId\":\"option-a\",\"label\":{\"en\":\"Placeholder option A\",\"vi\":\"Đáp án mẫu A\"},\"count\":0,\"isCorrect\":false},{\"optionId\":\"option-b\",\"label\":{\"en\":\"Placeholder option B\",\"vi\":\"Đáp án mẫu B\"},\"count\":0,\"isCorrect\":true},{\"optionId\":\"option-c\",\"label\":{\"en\":\"Placeholder option C\",\"vi\":\"Đáp án mẫu C\"},\"count\":0,\"isCorrect\":false}],\"leaderboard\":[{\"rank\":1,\"guestId\":\"2a41de48-5730-4bfb-a0b9-2329b3e0d53a\",\"displayName\":\"Codex 320x568-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":2,\"guestId\":\"3c8a4431-d6d9-437f-b02a-051d8499f7df\",\"displayName\":\"Codex 320x667-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":3,\"guestId\":\"7064b08a-ae11-4a43-a6d8-41dade4c9633\",\"displayName\":\"Codex 360x640-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":4,\"guestId\":\"92b9dcb5-becb-4515-8841-8751bbf693a5\",\"displayName\":\"Codex 360x740-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":5,\"guestId\":\"c28dc23b-6011-4140-a05f-886ef39b94d7\",\"displayName\":\"Codex 375x667-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":6,\"guestId\":\"ac1101bd-4f96-41de-80c0-a7e43671fada\",\"displayName\":\"Codex 390x844-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":7,\"guestId\":\"269cd4fe-3577-4e72-8b0d-c3241e3e94b0\",\"displayName\":\"Codex 412x732-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":8,\"guestId\":\"ec644591-2c75-435e-841a-76b4f817fc18\",\"displayName\":\"Codex 360x560-effective-browser-ui-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":9,\"guestId\":\"00b99816-843e-403c-898b-964c37714d95\",\"displayName\":\"Codex API Probe\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":10,\"guestId\":\"ab403aa6-d405-4220-9160-e0a3a10c285f\",\"displayName\":\"Codex 320x568-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":11,\"guestId\":\"47add193-cfde-4c04-a9bf-3615523c8b94\",\"displayName\":\"Codex 320x667-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":12,\"guestId\":\"4b59c570-beb9-4e16-a736-0b24e41cff66\",\"displayName\":\"Codex 360x640-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":13,\"guestId\":\"fdf2a0fc-4fc6-4055-8a95-45a71dbacee0\",\"displayName\":\"Codex 360x740-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":14,\"guestId\":\"10d5d4d9-25b8-4437-b5f1-382501889e5e\",\"displayName\":\"Codex 375x667-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":15,\"guestId\":\"3ec70461-f810-48bf-93c8-07eb7e17f5fd\",\"displayName\":\"Codex 390x640-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":16,\"guestId\":\"4b7dbffb-30ce-4a62-bdf4-086e4aa99de4\",\"displayName\":\"Codex 390x844-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":17,\"guestId\":\"9c8b4219-a430-443a-9d59-a9a7f2210c05\",\"displayName\":\"Codex 393x852-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":18,\"guestId\":\"d93a3e67-9d15-4959-9dcd-7661221e6f4d\",\"displayName\":\"Codex 412x732-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":19,\"guestId\":\"3d19001d-7590-4113-b87b-c1b2b7bc5003\",\"displayName\":\"Codex 412x915-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":20,\"guestId\":\"692babbf-121a-4ba8-8cc5-aa4949564282\",\"displayName\":\"Codex 360x560-effective-browser-ui-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":21,\"guestId\":\"9a26bfc4-1c7c-4849-bbb9-bbabdde3c460\",\"displayName\":\"Codex 390x640-text-scale-125-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":22,\"guestId\":\"e4e177ef-3b56-4f40-9138-34d2d93daaba\",\"displayName\":\"Codex pixel-5-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":23,\"guestId\":\"13706830-70f9-473f-bcac-da3231c08c64\",\"displayName\":\"Codex 320x568-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":24,\"guestId\":\"f37a9c90-1cae-460f-9128-3f2360e900ab\",\"displayName\":\"Codex 320x667-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":25,\"guestId\":\"7d9a9bce-2903-4d94-9a71-19fb8c23cb37\",\"displayName\":\"Codex 360x640-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":26,\"guestId\":\"2005c2be-b972-4e7c-846b-f0575e4c0653\",\"displayName\":\"Codex 360x740-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":27,\"guestId\":\"c2d815bd-fc6f-4df1-8ccb-eb73f95c44f9\",\"displayName\":\"Codex 375x667-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":28,\"guestId\":\"b69f78f3-8103-467a-8f8d-a812d5c15dcc\",\"displayName\":\"Codex 390x640-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":29,\"guestId\":\"7c5f9b89-5a38-436a-9306-9c19ad477174\",\"displayName\":\"Codex 390x844-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":30,\"guestId\":\"f491956d-ca73-459c-ba85-44f2da31316a\",\"displayName\":\"Codex 393x852-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":31,\"guestId\":\"d8bb34f4-4d1e-4bfb-8b4e-d31b28404ad2\",\"displayName\":\"Codex 412x732-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":32,\"guestId\":\"61fb2111-bdf5-403d-bf38-7e1f343a1c91\",\"displayName\":\"Codex 412x915-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":33,\"guestId\":\"8ef1c633-7bec-48c8-b5f0-253402c36f50\",\"displayName\":\"Codex 360x560-effective-browser-ui-en\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":34,\"guestId\":\"e9cd334c-bcaa-4e08-92a5-81a583bbbf86\",\"displayName\":\"Codex 390x640-text-scale-125-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true},{\"rank\":35,\"guestId\":\"637e2cd1-2d33-40f5-9a87-9ab0c65fda68\",\"displayName\":\"Codex pixel-5-vi\",\"score\":0,\"answeredCount\":0,\"isFixture\":true}]},\"joinUrl\":\"https://hanfirstbirthday.vercel.app/en/play?join=han-turns-one\",\"connection\":\"connected\",\"serverNow\":1783940249406}",
+  "metrics": {
+    "label": "production-direct-play",
+    "url": "https://hanfirstbirthday.vercel.app/en/play?join=han-turns-one",
+    "viewport": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "visualWidth": 390,
+      "visualHeight": 844,
+      "visualOffsetTop": 0,
+      "devicePixelRatio": 1
+    },
+    "document": {
+      "scrollHeight": 844,
+      "clientHeight": 844,
+      "bodyScrollHeight": 844,
+      "bodyClientHeight": 844,
+      "bodyOffsetHeight": 844,
+      "scrollY": 0,
+      "overflowPixels": 0,
+      "hasPageVerticalScroll": false
+    },
+    "rects": {
+      "pageShell": {
+        "name": "page-shell",
+        "selector": "main",
+        "text": "LIVE\nJoin from the welcome screen\n\nEnter a display name first so the local party runtime can lock your answers.\n\nBack to welcome",
+        "rect": {
+          "top": 0,
+          "right": 390,
+          "bottom": 844,
+          "left": 0,
+          "width": 390,
+          "height": 844
+        },
+        "position": "relative",
+        "display": "block",
+        "minHeight": "844px",
+        "height": "844px",
+        "paddingTop": "16px",
+        "paddingBottom": "16px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "overflowY": "hidden"
+      },
+      "controller": null,
+      "topHeader": null,
+      "questionText": null,
+      "timer": null,
+      "answerList": null,
+      "submitButton": null,
+      "connectionBadge": null,
+      "bottomStatus": null
+    },
+    "extending": [],
+    "sizedElements": [
+      {
+        "tag": "div",
+        "className": "pointer-events-none absolute inset-0 overflow-hidden",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 844,
+          "height": 844
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "844px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 81,
+          "height": 81
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "81.2812px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 144,
+          "bottom": 256,
+          "height": 112
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "112px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "div",
+        "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+        "text": "",
+        "rect": {
+          "top": 732,
+          "bottom": 844,
+          "height": 112
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "112px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "div",
+        "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+        "text": "",
+        "rect": {
+          "top": 716,
+          "bottom": 844,
+          "height": 128
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "128px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "next-route-announcer",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 844,
+          "bottom": 844,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "0px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      }
+    ]
+  },
+  "trace": [
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:57:29.961Z",
+      "performanceMs": 449
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=-cuKcHHaE9Bw6h6L"
+      },
+      "at": "2026-07-13T10:57:29.963Z",
+      "performanceMs": 451
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=-cuKcHHaE9Bw6h6L",
+        "status": 200,
+        "ok": true,
+        "durationMs": 36
+      },
+      "at": "2026-07-13T10:57:29.999Z",
+      "performanceMs": 486
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=z-4SRnK0w1hi3UWA"
+      },
+      "at": "2026-07-13T10:57:30.000Z",
+      "performanceMs": 488
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=o5-T2GFqHzcKZUvW"
+      },
+      "at": "2026-07-13T10:57:30.000Z",
+      "performanceMs": 488
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=_uttiSyt-vFdLy2o"
+      },
+      "at": "2026-07-13T10:57:30.000Z",
+      "performanceMs": 488
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=4cqYPqmfy7p0zEcu"
+      },
+      "at": "2026-07-13T10:57:30.000Z",
+      "performanceMs": 488
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=_uttiSyt-vFdLy2o",
+        "status": 200,
+        "ok": true,
+        "durationMs": 30
+      },
+      "at": "2026-07-13T10:57:30.030Z",
+      "performanceMs": 517
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=WQJMwoGifHo92rqw"
+      },
+      "at": "2026-07-13T10:57:30.032Z",
+      "performanceMs": 519
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=z-4SRnK0w1hi3UWA",
+        "status": 200,
+        "ok": true,
+        "durationMs": 42
+      },
+      "at": "2026-07-13T10:57:30.042Z",
+      "performanceMs": 530
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=WQJMwoGifHo92rqw",
+        "status": 200,
+        "ok": true,
+        "durationMs": 31
+      },
+      "at": "2026-07-13T10:57:30.062Z",
+      "performanceMs": 550
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=4cqYPqmfy7p0zEcu",
+        "status": 200,
+        "ok": true,
+        "durationMs": 101
+      },
+      "at": "2026-07-13T10:57:30.101Z",
+      "performanceMs": 589
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en?_rsc=o5-T2GFqHzcKZUvW",
+        "status": 200,
+        "ok": true,
+        "durationMs": 127
+      },
+      "at": "2026-07-13T10:57:30.127Z",
+      "performanceMs": 615
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1323
+      },
+      "at": "2026-07-13T10:57:31.285Z",
+      "performanceMs": 1772
+    },
+    {
+      "type": "websocket:create",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:57:31.290Z",
+      "performanceMs": 1777
+    },
+    {
+      "type": "websocket:open",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:57:31.374Z",
+      "performanceMs": 1862
+    }
+  ],
+  "finishedAt": "2026-07-13T10:57:35.876Z"
+}

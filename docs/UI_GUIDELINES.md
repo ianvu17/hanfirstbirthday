@@ -175,6 +175,7 @@ Use motion for:
 - Shared Party Screen phase transitions.
 - Answer and Han fun fact reveals.
 - New leaderboard entries.
+- Leaderboard bar growth, integer count-up, and row reordering in explicit intro/grow/reorder/settled stages.
 - Message submission confirmation.
 
 Avoid:
@@ -185,6 +186,8 @@ Avoid:
 - Effects that fail on lower-powered phones.
 
 Respect reduced-motion preferences.
+
+The Party Screen leaderboard uses one blue bar family with top-three paper accents, not unrelated chart colors. Bar scale uses a shared nice ceiling with a 2,000-point minimum; zero-score rows remain visible with an empty track. All 10 participant rows must fit 1366x768 without internal scrolling. Reduced motion skips bar growth and reordering and renders the final information immediately.
 
 ## Responsiveness
 
@@ -213,7 +216,7 @@ Production Host Controller:
 - Use restrained party styling rather than dashboard chrome.
 - Keep one large bottom-reachable primary action.
 - Show connection, phase, participant, response, revision, and current-question status in compact readable blocks.
-- PIN, pending, stale, offline, accepted, rejected, and finish-confirmation states must be legible at phone width.
+- PIN, pending, live, reconnecting, offline, accepted, rejected, and finish-confirmation states must be legible at phone width.
 - Do not expose QA fixture controls or developer diagnostics on the production Host Controller.
 
 ## Component Guidance

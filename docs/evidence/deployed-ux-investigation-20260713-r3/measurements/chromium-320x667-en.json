@@ -1,0 +1,116 @@
+{
+  "profile": {
+    "name": "320x667-en",
+    "width": 320,
+    "height": 667,
+    "language": "en"
+  },
+  "browserName": "chromium",
+  "baseUrl": "https://hanfirstbirthday.vercel.app",
+  "startedAt": "2026-07-13T10:54:21.405Z",
+  "states": [],
+  "error": "page.waitForSelector: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\\'guest-controller\\']') to be visible\u001b[22m\n",
+  "trace": [
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en/play?_rsc=IEbPg-Maawlshv1s"
+      },
+      "at": "2026-07-13T10:54:26.105Z",
+      "performanceMs": 4700
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en/play?_rsc=IEbPg-Maawlshv1s",
+        "status": 200,
+        "ok": true,
+        "durationMs": 276
+      },
+      "at": "2026-07-13T10:54:26.382Z",
+      "performanceMs": 4977
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/join"
+      },
+      "at": "2026-07-13T10:54:26.439Z",
+      "performanceMs": 5034
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:54:26.441Z",
+      "performanceMs": 5036
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1689
+      },
+      "at": "2026-07-13T10:54:28.130Z",
+      "performanceMs": 6725
+    },
+    {
+      "type": "websocket:create",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:54:28.134Z",
+      "performanceMs": 6729
+    },
+    {
+      "type": "websocket:open",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:54:28.204Z",
+      "performanceMs": 6799
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:54:29.106Z",
+      "performanceMs": 7701
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/join",
+        "status": 200,
+        "ok": true,
+        "durationMs": 2737
+      },
+      "at": "2026-07-13T10:54:29.176Z",
+      "performanceMs": 7771
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1140
+      },
+      "at": "2026-07-13T10:54:30.246Z",
+      "performanceMs": 8841
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:54:38.251Z",
+      "performanceMs": 16846
+    }
+  ],
+  "finishedAt": "2026-07-13T10:54:38.524Z"
+}

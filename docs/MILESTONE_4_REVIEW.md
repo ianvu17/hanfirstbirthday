@@ -201,6 +201,10 @@ Milestone 5 should implement shared session and realtime synchronization:
 - QA/test data persistence and filtering.
 - Host access strategy.
 
+## Later Amendment
+
+The Milestone 4 local engine originally exposed `OPEN_QUESTION` and `LOCK_QUESTION` in the QA-oriented lifecycle. A July 13, 2026 refinement kept the compatible phase strings but changed the product-facing host flow: `REVEAL_CHOICES` opens answering and starts the deadline, while answer closure happens automatically at the deadline. The original Milestone 4 record remains historical.
+
 ## Structured Self-Review
 
 Product Manager: The Party Screen is now a central shared surface, phones remain personal controllers, and no real Han content was invented.

@@ -1,0 +1,3877 @@
+{
+  "baseUrl": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app",
+  "sessionId": "c30559e3-7635-468e-ab05-7f2665f06788",
+  "isTest": true,
+  "createdAt": "2026-07-16T19:33:38.389Z",
+  "finalSnapshot": {
+    "mode": "remote",
+    "configured": true,
+    "session": {
+      "id": "c30559e3-7635-468e-ab05-7f2665f06788",
+      "publicJoinCode": "han-turns-one",
+      "partyKey": "han-first-birthday",
+      "deploymentEnvironment": "preview",
+      "status": "active",
+      "phase": "question_ready",
+      "revision": 15,
+      "isTest": true,
+      "isCurrent": true,
+      "label": "Codex Preview validation 2026-07-16T19:31:01.409Z",
+      "createdAt": "2026-07-16T19:31:02.269624+00:00",
+      "updatedAt": "2026-07-16T19:33:36.62+00:00",
+      "finishedAt": null,
+      "archivedAt": null
+    },
+    "projection": {
+      "phase": "question_ready",
+      "revision": 15,
+      "currentQuestion": {
+        "id": "han-test-question-03",
+        "enabled": true,
+        "sortOrder": 3,
+        "prompt": {
+          "en": "Which item is most useful when a baby decides that lunch belongs on the floor?",
+          "vi": "Vật nào hữu ích nhất khi em bé quyết định rằng bữa trưa nên nằm dưới sàn?"
+        },
+        "options": [
+          {
+            "id": "option-a",
+            "label": {
+              "en": "A party hat",
+              "vi": "Một chiếc nón sinh nhật"
+            }
+          },
+          {
+            "id": "option-b",
+            "label": {
+              "en": "A television remote",
+              "vi": "Một chiếc điều khiển tivi"
+            }
+          },
+          {
+            "id": "option-c",
+            "label": {
+              "en": "A bib",
+              "vi": "Một chiếc yếm ăn"
+            }
+          }
+        ],
+        "funFact": {
+          "en": "A bib cannot stop every food adventure, but it can make the clean-up slightly less dramatic.",
+          "vi": "Chiếc yếm không thể ngăn mọi cuộc phiêu lưu của thức ăn, nhưng có thể giúp việc dọn dẹp bớt kịch tính hơn một chút."
+        }
+      },
+      "questionNumber": 3,
+      "totalQuestions": 10,
+      "participantCount": 2,
+      "submittedCount": 0,
+      "timedOutCount": 0,
+      "questionDeadlineAt": null,
+      "questionDurationMs": 20000,
+      "remainingMs": 0,
+      "correctOption": null,
+      "answerDistribution": [
+        {
+          "optionId": "option-a",
+          "label": {
+            "en": "A party hat",
+            "vi": "Một chiếc nón sinh nhật"
+          },
+          "count": 0,
+          "isCorrect": null
+        },
+        {
+          "optionId": "option-b",
+          "label": {
+            "en": "A television remote",
+            "vi": "Một chiếc điều khiển tivi"
+          },
+          "count": 0,
+          "isCorrect": null
+        },
+        {
+          "optionId": "option-c",
+          "label": {
+            "en": "A bib",
+            "vi": "Một chiếc yếm ăn"
+          },
+          "count": 0,
+          "isCorrect": null
+        }
+      ],
+      "leaderboard": [
+        {
+          "rank": 1,
+          "guestId": "1af1fe20-09c8-4558-b5fa-35cd560dbed9",
+          "displayName": "Codex EN 1784230274502",
+          "score": 1,
+          "answeredCount": 2,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        {
+          "rank": 2,
+          "guestId": "08ddb95d-ccd8-488c-b564-94727f8b0136",
+          "displayName": "Codex VI 1784230289536",
+          "score": 0,
+          "answeredCount": 2,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        }
+      ]
+    },
+    "joinUrl": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en?join=han-turns-one",
+    "connection": "connected",
+    "serverNow": 1784230418291
+  },
+  "rehearsalQuestionLimit": 2,
+  "certificateValidation": null,
+  "timeline": [
+    {
+      "step": "session-ready",
+      "at": "2026-07-16T19:31:12.433Z",
+      "sessionId": "c30559e3-7635-468e-ab05-7f2665f06788",
+      "isTest": true,
+      "phase": "lobby"
+    },
+    {
+      "step": "question-preview",
+      "at": "2026-07-16T19:31:47.346Z"
+    },
+    {
+      "step": "answers-active",
+      "at": "2026-07-16T19:31:52.734Z"
+    },
+    {
+      "step": "both-guests-submitted",
+      "at": "2026-07-16T19:31:57.706Z"
+    },
+    {
+      "step": "countdown-observed",
+      "at": "2026-07-16T19:32:14.131Z",
+      "host": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "partyScreen": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "guest": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "step": "locked-survived-refresh",
+      "at": "2026-07-16T19:32:22.824Z"
+    },
+    {
+      "step": "deadline-closed",
+      "at": "2026-07-16T19:32:25.077Z"
+    },
+    {
+      "step": "late-answer-attempt",
+      "at": "2026-07-16T19:32:27.414Z",
+      "status": 409
+    },
+    {
+      "step": "leaderboard",
+      "at": "2026-07-16T19:32:38.887Z"
+    },
+    {
+      "step": "next-question-preview",
+      "at": "2026-07-16T19:32:43.840Z"
+    },
+    {
+      "step": "idle-after-poll",
+      "at": "2026-07-16T19:32:52.343Z"
+    },
+    {
+      "step": "offline-recovery",
+      "at": "2026-07-16T19:32:57.654Z"
+    },
+    {
+      "step": "question-2-complete",
+      "at": "2026-07-16T19:33:37.170Z"
+    }
+  ],
+  "matrix": [
+    {
+      "state": "lobby",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": null,
+      "questionRect": {
+        "top": 310,
+        "right": 363,
+        "bottom": 334,
+        "left": 27,
+        "width": 336,
+        "height": 24,
+        "text": "Party lobby"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "lobby",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/vi/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": null,
+      "questionRect": {
+        "top": 310,
+        "right": 363,
+        "bottom": 334,
+        "left": 27,
+        "width": 336,
+        "height": 24,
+        "text": "Sảnh chờ buổi tiệc"
+      },
+      "statusBadgeRect": null,
+      "language": "vi",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answers-active",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": {
+        "top": 478,
+        "right": 363,
+        "bottom": 522,
+        "left": 27,
+        "width": 336,
+        "height": 44,
+        "text": "Submit answer"
+      },
+      "answerListRect": {
+        "top": 242,
+        "right": 363,
+        "bottom": 390,
+        "left": 27,
+        "width": 336,
+        "height": 148,
+        "text": "Han's first day at schoolHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 186,
+        "right": 363,
+        "bottom": 234,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answer-locked",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 256,
+        "right": 363,
+        "bottom": 404,
+        "left": 27,
+        "width": 336,
+        "height": 148,
+        "text": "Han's first day at schoolHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 200,
+        "right": 363,
+        "bottom": 248,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answers-closed",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 267,
+        "right": 363,
+        "bottom": 415,
+        "left": 27,
+        "width": 336,
+        "height": 148,
+        "text": "Han's first day at schoolHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 211,
+        "right": 363,
+        "bottom": 259,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answer-reveal",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 258,
+        "right": 363,
+        "bottom": 442,
+        "left": 27,
+        "width": 336,
+        "height": 184,
+        "text": "Your answerHan's first day at schoolCorrect answerHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 202,
+        "right": 363,
+        "bottom": 250,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "leaderboard",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 258,
+        "right": 363,
+        "bottom": 442,
+        "left": 27,
+        "width": 336,
+        "height": 184,
+        "text": "Your answerHan's first day at schoolCorrect answerHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 202,
+        "right": 363,
+        "bottom": 250,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    }
+  ],
+  "traces": {
+    "host": [
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:33:33.875Z",
+        "performanceMs": 382,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/status"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:33:33.877Z",
+        "performanceMs": 384,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:33:34.104Z",
+        "performanceMs": 611,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/status",
+          "status": 200,
+          "ok": true,
+          "durationMs": 229
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:33:34.107Z",
+        "performanceMs": 614,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/sessions"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:33:35.067Z",
+        "performanceMs": 1574,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1190
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "host",
+        "at": "2026-07-16T19:33:35.071Z",
+        "performanceMs": 1579,
+        "route": "/en/host",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "host",
+        "at": "2026-07-16T19:33:35.150Z",
+        "performanceMs": 1657,
+        "route": "/en/host",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:33:35.194Z",
+        "performanceMs": 1701,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/command"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:33:35.203Z",
+        "performanceMs": 1711,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:33:35.469Z",
+        "performanceMs": 1976,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:33:36.462Z",
+        "performanceMs": 2969,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1258
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:33:36.469Z",
+        "performanceMs": 2976,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/sessions",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2361
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:33:36.682Z",
+        "performanceMs": 3189,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1213
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:33:37.116Z",
+        "performanceMs": 3623,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ],
+    "partyScreen": [
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:12.596Z",
+        "performanceMs": 162,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:14.268Z",
+        "performanceMs": 1833,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1671
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:14.283Z",
+        "performanceMs": 1848,
+        "route": "/display/party",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:14.353Z",
+        "performanceMs": 1918,
+        "route": "/display/party",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:18.720Z",
+        "performanceMs": 6285,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:20.722Z",
+        "performanceMs": 8288,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2003
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:21.284Z",
+        "performanceMs": 8849,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:23.692Z",
+        "performanceMs": 11258,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2409
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:25.943Z",
+        "performanceMs": 13509,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:28.189Z",
+        "performanceMs": 15754,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2246
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:28.966Z",
+        "performanceMs": 16532,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:31.207Z",
+        "performanceMs": 18773,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2241
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:32.090Z",
+        "performanceMs": 19656,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:35.161Z",
+        "performanceMs": 22727,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3071
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:38.232Z",
+        "performanceMs": 25797,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:40.921Z",
+        "performanceMs": 28487,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2690
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:41.407Z",
+        "performanceMs": 28972,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:43.248Z",
+        "performanceMs": 30813,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1841
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:43.379Z",
+        "performanceMs": 30945,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:44.624Z",
+        "performanceMs": 32190,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1245
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:46.284Z",
+        "performanceMs": 33850,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:48.165Z",
+        "performanceMs": 35731,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1881
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:49.193Z",
+        "performanceMs": 36759,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:50.415Z",
+        "performanceMs": 37981,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1222
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:51.852Z",
+        "performanceMs": 39418,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:53.153Z",
+        "performanceMs": 40719,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1301
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:53.874Z",
+        "performanceMs": 41439,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:56.361Z",
+        "performanceMs": 43927,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2488
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:56.582Z",
+        "performanceMs": 44148,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:31:58.829Z",
+        "performanceMs": 46394,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2247
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:00.269Z",
+        "performanceMs": 47835,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:01.520Z",
+        "performanceMs": 49086,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1251
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:02.283Z",
+        "performanceMs": 49849,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:03.579Z",
+        "performanceMs": 51145,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1296
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:03.943Z",
+        "performanceMs": 51509,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:05.725Z",
+        "performanceMs": 53291,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1782
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:06.026Z",
+        "performanceMs": 53592,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:07.794Z",
+        "performanceMs": 55360,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1768
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:08.145Z",
+        "performanceMs": 55711,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:09.451Z",
+        "performanceMs": 57017,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1306
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:10.282Z",
+        "performanceMs": 57848,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:12.226Z",
+        "performanceMs": 59792,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1944
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:12.868Z",
+        "performanceMs": 60434,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:16.371Z",
+        "performanceMs": 63937,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3503
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:16.469Z",
+        "performanceMs": 64035,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:17.775Z",
+        "performanceMs": 65341,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1307
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:18.284Z",
+        "performanceMs": 65850,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:19.511Z",
+        "performanceMs": 67077,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1227
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:19.590Z",
+        "performanceMs": 67156,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:21.793Z",
+        "performanceMs": 69359,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2204
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:22.711Z",
+        "performanceMs": 70277,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:24.507Z",
+        "performanceMs": 72073,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1796
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:26.283Z",
+        "performanceMs": 73849,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:27.519Z",
+        "performanceMs": 75085,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1236
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:28.391Z",
+        "performanceMs": 75958,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:30.581Z",
+        "performanceMs": 78147,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2190
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:31.016Z",
+        "performanceMs": 78582,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:32.244Z",
+        "performanceMs": 79810,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1228
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:32.578Z",
+        "performanceMs": 80144,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:34.143Z",
+        "performanceMs": 81709,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1565
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:34.283Z",
+        "performanceMs": 81849,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:35.588Z",
+        "performanceMs": 83155,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1306
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:35.727Z",
+        "performanceMs": 83293,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:37.060Z",
+        "performanceMs": 84626,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1333
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:38.850Z",
+        "performanceMs": 86416,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:40.286Z",
+        "performanceMs": 87852,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1436
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:40.910Z",
+        "performanceMs": 88476,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:42.171Z",
+        "performanceMs": 89737,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1261
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:42.284Z",
+        "performanceMs": 89850,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:43.463Z",
+        "performanceMs": 91030,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1180
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:44.077Z",
+        "performanceMs": 91643,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:46.392Z",
+        "performanceMs": 93959,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2315
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:49.670Z",
+        "performanceMs": 97236,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:50.884Z",
+        "performanceMs": 98450,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1214
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:52.771Z",
+        "performanceMs": 100337,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:54.109Z",
+        "performanceMs": 101675,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1338
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:55.871Z",
+        "performanceMs": 103438,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:57.582Z",
+        "performanceMs": 105149,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1711
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:32:57.945Z",
+        "performanceMs": 105512,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:00.156Z",
+        "performanceMs": 107722,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2210
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:00.562Z",
+        "performanceMs": 108128,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:01.794Z",
+        "performanceMs": 109360,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1232
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:03.158Z",
+        "performanceMs": 110725,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:04.966Z",
+        "performanceMs": 112533,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1808
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:05.756Z",
+        "performanceMs": 113323,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:06.959Z",
+        "performanceMs": 114525,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1203
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:08.405Z",
+        "performanceMs": 115972,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:09.678Z",
+        "performanceMs": 117245,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1273
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:10.492Z",
+        "performanceMs": 118058,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:11.727Z",
+        "performanceMs": 119293,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1235
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:13.093Z",
+        "performanceMs": 120660,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:14.443Z",
+        "performanceMs": 122010,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1350
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:15.178Z",
+        "performanceMs": 122745,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:16.472Z",
+        "performanceMs": 124039,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1294
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:17.240Z",
+        "performanceMs": 124807,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:18.584Z",
+        "performanceMs": 126151,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1345
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:19.309Z",
+        "performanceMs": 126875,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:21.144Z",
+        "performanceMs": 128711,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1835
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:21.448Z",
+        "performanceMs": 129015,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:22.946Z",
+        "performanceMs": 130513,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1497
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:23.460Z",
+        "performanceMs": 131027,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:26.161Z",
+        "performanceMs": 133728,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2702
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:27.122Z",
+        "performanceMs": 134689,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:28.489Z",
+        "performanceMs": 136056,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1368
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:29.216Z",
+        "performanceMs": 136783,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:30.461Z",
+        "performanceMs": 138028,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1246
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:30.767Z",
+        "performanceMs": 138334,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:32.101Z",
+        "performanceMs": 139668,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1333
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:32.843Z",
+        "performanceMs": 140410,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:34.663Z",
+        "performanceMs": 142230,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1820
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:34.965Z",
+        "performanceMs": 142532,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:36.197Z",
+        "performanceMs": 143764,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1232
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:33:37.116Z",
+        "performanceMs": 144683,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ],
+    "guestEn": [
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:19.996Z",
+        "performanceMs": 5814,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/join"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:19.999Z",
+        "performanceMs": 5817,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:22.466Z",
+        "performanceMs": 8284,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2467
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:22.469Z",
+        "performanceMs": 8287,
+        "route": "/en/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:22.558Z",
+        "performanceMs": 8376,
+        "route": "/en/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:24.266Z",
+        "performanceMs": 10084,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:24.417Z",
+        "performanceMs": 10235,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/join",
+          "status": 200,
+          "ok": true,
+          "durationMs": 4421
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:26.100Z",
+        "performanceMs": 11918,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1834
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:26.315Z",
+        "performanceMs": 12133,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:28.687Z",
+        "performanceMs": 14505,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2372
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:29.023Z",
+        "performanceMs": 14841,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:30.928Z",
+        "performanceMs": 16746,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1906
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:31.015Z",
+        "performanceMs": 16833,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:33.426Z",
+        "performanceMs": 19244,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2411
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:33.644Z",
+        "performanceMs": 19462,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:35.611Z",
+        "performanceMs": 21430,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1968
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:35.726Z",
+        "performanceMs": 21544,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:38.646Z",
+        "performanceMs": 24465,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2920
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:38.846Z",
+        "performanceMs": 24664,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:41.206Z",
+        "performanceMs": 27025,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2361
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:41.438Z",
+        "performanceMs": 27256,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:43.718Z",
+        "performanceMs": 29536,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2280
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:44.076Z",
+        "performanceMs": 29894,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:45.880Z",
+        "performanceMs": 31698,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1804
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:46.084Z",
+        "performanceMs": 31903,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:50.524Z",
+        "performanceMs": 36342,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 4440
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:50.712Z",
+        "performanceMs": 36530,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "browser:offline",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:52.349Z",
+        "performanceMs": 38167,
+        "route": "/en/play",
+        "detail": {
+          "online": false
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:53.082Z",
+        "performanceMs": 38900,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2370
+        }
+      },
+      {
+        "type": "browser:online",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:54.152Z",
+        "performanceMs": 39970,
+        "route": "/en/play",
+        "detail": {
+          "online": true
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:54.152Z",
+        "performanceMs": 39970,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:56.261Z",
+        "performanceMs": 42080,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2109
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:56.396Z",
+        "performanceMs": 42215,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:58.310Z",
+        "performanceMs": 44129,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1914
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:32:58.472Z",
+        "performanceMs": 44291,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:01.342Z",
+        "performanceMs": 47160,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2869
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:01.605Z",
+        "performanceMs": 47424,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:04.044Z",
+        "performanceMs": 49862,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2439
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:04.153Z",
+        "performanceMs": 49971,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/response"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:04.195Z",
+        "performanceMs": 50013,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:06.277Z",
+        "performanceMs": 52095,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2082
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:06.291Z",
+        "performanceMs": 52110,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:08.166Z",
+        "performanceMs": 53985,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1875
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:08.405Z",
+        "performanceMs": 54223,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:09.011Z",
+        "performanceMs": 54830,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/response",
+          "status": 200,
+          "ok": true,
+          "durationMs": 4859
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:10.521Z",
+        "performanceMs": 56339,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2116
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:11.018Z",
+        "performanceMs": 56837,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:13.809Z",
+        "performanceMs": 59627,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2790
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:14.134Z",
+        "performanceMs": 59953,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:17.151Z",
+        "performanceMs": 62970,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3017
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:17.235Z",
+        "performanceMs": 63054,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:19.619Z",
+        "performanceMs": 65437,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2383
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:19.913Z",
+        "performanceMs": 65731,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:22.646Z",
+        "performanceMs": 68464,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2733
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:22.933Z",
+        "performanceMs": 68752,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:24.764Z",
+        "performanceMs": 70583,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1831
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:25.007Z",
+        "performanceMs": 70826,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:26.926Z",
+        "performanceMs": 72745,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1919
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:27.119Z",
+        "performanceMs": 72937,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:29.131Z",
+        "performanceMs": 74950,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2013
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:29.213Z",
+        "performanceMs": 75031,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:31.179Z",
+        "performanceMs": 76998,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1966
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:31.293Z",
+        "performanceMs": 77112,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:33.134Z",
+        "performanceMs": 78953,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1840
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:33.379Z",
+        "performanceMs": 79198,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:35.255Z",
+        "performanceMs": 81074,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1877
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:33:35.465Z",
+        "performanceMs": 81284,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ],
+    "guestVi": [
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:38.600Z",
+        "performanceMs": 4561,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/join"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:38.604Z",
+        "performanceMs": 4565,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:41.407Z",
+        "performanceMs": 7367,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2803
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:41.413Z",
+        "performanceMs": 7373,
+        "route": "/vi/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:41.502Z",
+        "performanceMs": 7462,
+        "route": "/vi/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:41.916Z",
+        "performanceMs": 7876,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:43.312Z",
+        "performanceMs": 9273,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/join",
+          "status": 200,
+          "ok": true,
+          "durationMs": 4712
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:44.375Z",
+        "performanceMs": 10335,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2459
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:44.527Z",
+        "performanceMs": 10487,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:46.871Z",
+        "performanceMs": 12831,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2344
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:47.030Z",
+        "performanceMs": 12990,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:49.425Z",
+        "performanceMs": 15385,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2396
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:49.642Z",
+        "performanceMs": 15603,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:51.471Z",
+        "performanceMs": 17432,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1829
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:51.850Z",
+        "performanceMs": 17810,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:52.861Z",
+        "performanceMs": 18821,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/response"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:53.851Z",
+        "performanceMs": 19812,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2001
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:53.874Z",
+        "performanceMs": 19834,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:56.363Z",
+        "performanceMs": 22324,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2490
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:56.580Z",
+        "performanceMs": 22541,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:57.427Z",
+        "performanceMs": 23388,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/response",
+          "status": 200,
+          "ok": true,
+          "durationMs": 4567
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:58.510Z",
+        "performanceMs": 24470,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1930
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:31:58.711Z",
+        "performanceMs": 24671,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:00.587Z",
+        "performanceMs": 26547,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1876
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:00.808Z",
+        "performanceMs": 26768,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:02.965Z",
+        "performanceMs": 28926,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2157
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:03.943Z",
+        "performanceMs": 29904,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:07.392Z",
+        "performanceMs": 33352,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3448
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:07.613Z",
+        "performanceMs": 33574,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:10.179Z",
+        "performanceMs": 36140,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2566
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:10.296Z",
+        "performanceMs": 36256,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:16.222Z",
+        "performanceMs": 42182,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 5926
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:16.467Z",
+        "performanceMs": 42428,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:19.217Z",
+        "performanceMs": 45178,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2750
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:19.590Z",
+        "performanceMs": 45551,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:21.368Z",
+        "performanceMs": 47329,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1778
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:21.413Z",
+        "performanceMs": 47374,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:24.436Z",
+        "performanceMs": 50397,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3024
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:26.315Z",
+        "performanceMs": 52276,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:28.123Z",
+        "performanceMs": 54084,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1808
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:28.390Z",
+        "performanceMs": 54351,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:30.329Z",
+        "performanceMs": 56290,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1939
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:30.489Z",
+        "performanceMs": 56450,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:32.337Z",
+        "performanceMs": 58298,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1848
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:32.577Z",
+        "performanceMs": 58538,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:34.442Z",
+        "performanceMs": 60403,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1865
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:34.659Z",
+        "performanceMs": 60620,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:36.737Z",
+        "performanceMs": 62698,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2078
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:36.792Z",
+        "performanceMs": 62753,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:38.811Z",
+        "performanceMs": 64772,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2019
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:38.845Z",
+        "performanceMs": 64806,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:42.176Z",
+        "performanceMs": 68137,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3331
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:42.477Z",
+        "performanceMs": 68438,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:45.873Z",
+        "performanceMs": 71834,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3396
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:46.084Z",
+        "performanceMs": 72045,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:49.398Z",
+        "performanceMs": 75359,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3314
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:49.668Z",
+        "performanceMs": 75629,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:52.575Z",
+        "performanceMs": 78536,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2907
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:52.768Z",
+        "performanceMs": 78729,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:55.646Z",
+        "performanceMs": 81607,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2878
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:55.873Z",
+        "performanceMs": 81834,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:57.632Z",
+        "performanceMs": 83594,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1760
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:32:57.945Z",
+        "performanceMs": 83906,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:00.352Z",
+        "performanceMs": 86313,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2407
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:00.562Z",
+        "performanceMs": 86523,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:03.018Z",
+        "performanceMs": 88979,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2456
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:03.159Z",
+        "performanceMs": 89120,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:04.153Z",
+        "performanceMs": 90114,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/response"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:05.599Z",
+        "performanceMs": 91560,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2440
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:05.754Z",
+        "performanceMs": 91716,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:08.100Z",
+        "performanceMs": 94061,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2346
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:08.330Z",
+        "performanceMs": 94291,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/response",
+          "status": 200,
+          "ok": true,
+          "durationMs": 4177
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:08.407Z",
+        "performanceMs": 94369,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:10.902Z",
+        "performanceMs": 96864,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2495
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:11.019Z",
+        "performanceMs": 96980,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:12.859Z",
+        "performanceMs": 98820,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1840
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:13.093Z",
+        "performanceMs": 99054,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:15.062Z",
+        "performanceMs": 101024,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1969
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:15.175Z",
+        "performanceMs": 101136,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:17.153Z",
+        "performanceMs": 103114,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1978
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:17.235Z",
+        "performanceMs": 103197,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:19.284Z",
+        "performanceMs": 105245,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2048
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:19.308Z",
+        "performanceMs": 105269,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:21.174Z",
+        "performanceMs": 107136,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1866
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:21.449Z",
+        "performanceMs": 107410,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:23.396Z",
+        "performanceMs": 109358,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1948
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:23.459Z",
+        "performanceMs": 109421,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:25.341Z",
+        "performanceMs": 111302,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1882
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:25.412Z",
+        "performanceMs": 111374,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:27.212Z",
+        "performanceMs": 113173,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1799
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:28.170Z",
+        "performanceMs": 114132,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:30.507Z",
+        "performanceMs": 116468,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2337
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:30.768Z",
+        "performanceMs": 116729,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:32.731Z",
+        "performanceMs": 118692,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1963
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:32.843Z",
+        "performanceMs": 118805,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:34.686Z",
+        "performanceMs": 120648,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1843
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:33:34.967Z",
+        "performanceMs": 120929,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ]
+  }
+}

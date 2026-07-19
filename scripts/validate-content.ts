@@ -6,6 +6,7 @@ import viContent from "../content/vi.json" with { type: "json" };
 import { z } from "zod";
 import { ContentSchema } from "../lib/content/schema";
 import { getMissingPaths } from "../lib/content/parity";
+import { buildPartyConfigFromContent } from "../lib/party-engine/content-config";
 
 const ScaffoldCopySchema = z.object({
   localeLabels: z.object({
@@ -213,6 +214,13 @@ const missingInEnglish = getMissingPaths(viContent, enContent);
 if (missingInVietnamese.length > 0 || missingInEnglish.length > 0) {
   console.error("Locale content shape mismatch.");
   console.error({ missingInVietnamese, missingInEnglish });
+  process.exit(1);
+}
+
+try {
+  buildPartyConfigFromContent(enContent, viContent);
+} catch (error) {
+  console.error(error instanceof Error ? error.message : "Approved quiz content validation failed.");
   process.exit(1);
 }
 

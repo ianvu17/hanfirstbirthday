@@ -123,7 +123,7 @@ Model the experience as two simultaneous surfaces:
 - Phone: personal guest controller for QR entry, language choice, display name, answering questions, submitting answers, and viewing personal progress.
 - Desktop/laptop/TV: shared Party Screen for the room, including lobby/join, question, countdown, answer progress, answer reveal, Han fun fact, leaderboard, finished, celebration, and thank-you moments.
 
-The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic.
+The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic. ADR-019 later supersedes the production host wording here by replacing Open Question with Reveal Answers and removing required manual lock behavior.
 
 **Status**
 
@@ -374,3 +374,129 @@ The project needs repeatable CI, visible commit status, Vercel preview URLs tied
 **Consequence**
 
 `origin/main` becomes the production branch once production environment setup is approved. Local Vercel CLI deployments are reserved for diagnostics or explicitly approved emergency/manual work. Live hosted validation remains manually triggered and test-mode only.
+
+## ADR-019: Reveal Choices Opens Answering
+
+**Context**
+
+Pre-rehearsal UX review found that the host flow exposed too many technical steps: a question preview, a separate Open Question control, a manual Lock Answers control, and then reveal. Guests also saw answer options before the host had intentionally revealed choices, and transient realtime lifecycle events made the connection badge flicker.
+
+**Decision**
+
+Keep the persisted Milestone 5 phase strings for compatibility, but reinterpret them with clearer product semantics:
+
+- `question_ready` is the question preview state.
+- `REVEAL_CHOICES` moves from preview to `question_active`, reveals choices, and starts the authoritative 20-second deadline.
+- `question_active` has no required host action; the runtime/server closes it automatically at the deadline.
+- `LOCK_QUESTION` is retained only for deadline-driven runtime closure and is rejected when requested as a host action.
+- `question_locked` means answers are closed and the host may reveal the correct answer.
+
+Realtime UI exposes stabilized user-facing states: connecting, Live, reconnecting/resyncing, offline, and needs attention. Short subscription transitions use a grace period before becoming visible.
+
+**Status**
+
+Accepted as a July 13, 2026 pre-approval refinement. This does not mark Milestone 5 or Milestone 6 complete.
+
+**Reason**
+
+Ian should have one obvious action at each stage during the party, guests should not see answer controls until choices are revealed, and connection feedback should be calm and truthful rather than reflecting low-level transport noise.
+
+**Consequence**
+
+Production host controls must not show Open Question or required Lock Answers controls. Documentation and tests should describe `REVEAL_CHOICES` as the host-facing command while allowing existing `question_ready`, `question_active`, and `question_locked` rows to remain database-compatible.
+
+## ADR-020: Approved Static Bilingual Quiz Content Loader
+
+**Context**
+
+Milestone 4 and the first Milestone 5 implementation used development-only fixture questions for both local and remote runtime validation. The app now needs a production-safe content boundary for Ian-approved birthday questions without moving question definitions into Supabase.
+
+**Decision**
+
+Normal local application runtime, Vercel Preview, and Production load quiz questions from the approved bilingual locale content files, `content/en.json` and `content/vi.json`, through `getApprovedPartyConfig()`. The adapter validates both locale files, pairs questions by stable id, maps authoring `answers` to runtime `options`, maps `correctAnswerId` to `correctOptionId`, preserves optional `assetId`, and returns the existing `PartyConfig` shape.
+
+Development fixtures remain available only through explicit fixture use: the QA party harness and fixture-specific automated tests. Fixture selection must not be based only on `NODE_ENV`.
+
+Question definitions remain static content. Supabase remains responsible only for runtime state: party sessions, participants, immutable question responses, and host command logs.
+
+The canonical authoring schema uses quiz-level `questionDurationSeconds`; per-question durations are not supported. A question participates through one field, `enabled`.
+
+**Status**
+
+Accepted.
+
+**Reason**
+
+This preserves the tested Party Engine, reducer, projections, scoring, server-authoritative API routes, and Supabase runtime model while removing normal runtime dependency on development fixture questions.
+
+**Consequence**
+
+Question ids and option ids are content contracts. After rehearsal approval, they must not change for an active session because existing `question_responses` rows store those ids. A new content deployment should be tested with a new party session.
+
+## ADR-021: Authoritative Countdown, Direct Progression, And Winner Certificate
+
+**Decision**
+
+All host, guest, and Party Screen countdowns derive their visible time from the persisted question deadline plus the server-snapshot clock offset. Clients may animate locally at a short interval, but they must not write timer ticks or allow a clock correction to increase the displayed countdown. The remote deadline includes a small delivery allowance that clients cap at the configured 20 seconds, allowing each room surface to receive and visibly render 20 before decreasing.
+
+The production leaderboard has one action: advance directly to the next question preview, or finish and show the winner after the final question. The older `waiting_for_host` phase and split `COMPLETE_PRESENTATION` path remain readable for recovery compatibility but are not part of the normal production flow.
+
+The just-finished session remains current until the host archives it or replaces it. This preserves a refresh-safe final celebration and permits a server-only certificate endpoint to verify the participant resume cookie, derive the deterministic first-place row, download any photo avatar from private Storage, and generate the localized one-page A4 certificate. The browser supplies no winner name, score, rank, or avatar authority.
+
+**Status**
+
+Accepted as final gameplay polish on July 16, 2026.
+
+**Reason**
+
+The party needs smooth second-by-second feedback without high-frequency database traffic, an unambiguous answer reveal, one obvious host action, a durable winner moment, and a certificate that cannot be claimed or altered by another guest.
+
+**Consequence**
+
+Projections never expose `correctOptionId` before reveal. Winner ties remain deterministic through the existing leaderboard ordering; only rank 1 receives the certificate action. `CERTIFICATE_EVENT_DATE` is optional and must contain an Ian-approved localized date before it is shown; otherwise the certificate uses approved generic event wording.
+
+## ADR-022: Persisted Time Scoring, Session Question Count, And Leaderboard Race
+
+**Decision**
+
+Correct answers use `time-v1`: 1,000 base points plus a rounded bonus of up to 1,000 points based on authoritative server receipt time, persisted question-open time, and the configured question duration. Incorrect answers and timeouts earn zero. Every response persists `points_awarded` and `scoring_version`; the existing `response_duration_ms` is the clamped response-time evidence. Historical responses retain their original 0/1 value as `correct-count-v1` and are never rescored.
+
+Every party session persists an immutable `question_count`, defaulting to 10. Creation validates the count against the enabled approved question set, and the runtime uses the first N questions in existing deterministic order. The approved question definitions remain unchanged.
+
+Shared projections include previous score, current-question gain, previous rank, and final rank. The Party Screen renders these as a browser-only horizontal bar chart race. Animation progress is not persisted, and the race identity is session id plus question id. Reduced-motion clients render the settled result immediately.
+
+**Status**
+
+Accepted for the gameplay enhancement milestone on July 17, 2026.
+
+**Reason**
+
+The party benefits from rewarding both knowledge and speed, avoiding frequent ties, allowing shorter rehearsals, and making leaderboard reveals more exciting without weakening server authority.
+
+**Consequence**
+
+Leaderboard order is total points descending, then participant creation order, display name, and participant id. Winner and certificate authorization sum persisted awarded points. Host creation owns the session length; it cannot change during the session. The host advance action waits for the essential leaderboard animation unless reduced motion is requested.
+
+## ADR-023: Authenticated Onboarding Edits, Readiness, And Reveal-Safe Scores
+
+**Decision**
+
+Remote onboarding may move backward from every step after Welcome. Once a resume cookie identifies a participant, language, display-name, avatar, and readiness mutations update that participant only; they never call participant creation. Profile and avatar changes reset readiness. Repeating the same profile or readiness value is an idempotent no-op. The persisted participant locale is the source of truth for guest gameplay and resume routing.
+
+Participants persist `is_ready` and `ready_at`. The host lobby receives joined and ready counts plus display-safe participant summaries. Starting is disabled when nobody is ready, requires confirmation when some joined participants are not ready, and proceeds directly when all are ready.
+
+Correctness and awarded points may be computed and persisted when an answer is accepted, but guest and shared public projections mask the current question until `answer_reveal`. Before reveal they expose the previous revealed total and a public locked-response shape with no correctness, points, response-duration, scoring-version, or correct-option fields. At reveal the existing awarded points become visible and remain the source for the leaderboard race and certificate.
+
+Avatar upload progress uses browser preparation, observable multipart upload bytes, an indeterminate server-persistence phase, and 100% only after the authenticated avatar route returns success. Cancellation aborts the client request; because server commit may win the race, the client reconciles from the next authoritative participant snapshot. The gallery input has no `capture` attribute; the selfie path remains a separate `getUserMedia` flow.
+
+**Status**
+
+Accepted for the production-polish milestone on July 18, 2026.
+
+**Reason**
+
+Guests must be able to correct onboarding information without duplicate identities, hosts need trustworthy lobby readiness, and the quiz must preserve reveal suspense while keeping server-authoritative scoring intact.
+
+**Consequence**
+
+Editable onboarding is available only while the current session is in the lobby. Host start routes resumed guests to gameplay. Remote session storage is a draft/navigation bridge only; participant identity and confirmed profile state remain server-authoritative. A mobile browser or operating system may still offer camera as one chooser option, but the web app must not force camera capture from Choose a photo.

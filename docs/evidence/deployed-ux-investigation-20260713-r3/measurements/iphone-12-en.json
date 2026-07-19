@@ -1,0 +1,9 @@
+{
+  "device": "iPhone 12",
+  "language": "en",
+  "baseUrl": "https://hanfirstbirthday.vercel.app",
+  "startedAt": "2026-07-13T10:57:15.477Z",
+  "finishedAt": "2026-07-13T10:57:15.477Z",
+  "skipped": true,
+  "reason": "browserType.launch: Executable doesn't exist at /Users/ianvu/Library/Caches/ms-playwright/webkit_mac14_arm64_special-2251/pw_run.sh\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝"
+}

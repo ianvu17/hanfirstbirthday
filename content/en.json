@@ -1,176 +1,463 @@
 {
-    "schemaVersion": "1.0.0",
-    "locale": "en",
-    "metadata": {
-        "projectName": "Han Birthday Experience",
-        "publicTitle": "WHO IS TURNING ONE?!",
-        "contentStatus": "milestone-3-onboarding-copy-no-real-han-content",
-        "contentRules": {
-            "realContentRequiredFromIan": true,
-            "inventedMemoriesAllowed": false,
-            "fakePhotosAllowed": false,
-            "hardcodedContentAllowed": false
-        }
+  "schemaVersion": "1.0.0",
+  "locale": "en",
+  "metadata": {
+    "projectName": "Han Birthday Experience",
+    "publicTitle": "WHO IS TURNING ONE?!",
+    "contentStatus": "milestone-3-onboarding-copy-no-real-han-content",
+    "contentRules": {
+      "realContentRequiredFromIan": true,
+      "inventedMemoriesAllowed": false,
+      "fakePhotosAllowed": false,
+      "hardcodedContentAllowed": false
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "quiz": "Quiz",
+    "leaderboard": "Leaderboard",
+    "message": "Message",
+    "timeline": "Timeline",
+    "gallery": "Gallery"
+  },
+  "screens": {
+    "welcome": {
+      "title": "WHO IS TURNING ONE?!",
+      "subtitle": "A tiny birthday surprise is waiting.",
+      "primaryAction": "Let's go",
+      "heroPlaceholderLabel": "Han's photo will go here",
+      "heroPlaceholderAlt": "Decorative portrait frame reserved for a future approved photo of Han"
     },
-    "navigation": {
-        "home": "Home",
-        "quiz": "Quiz",
-        "leaderboard": "Leaderboard",
-        "message": "Message",
-        "timeline": "Timeline",
-        "gallery": "Gallery"
+    "language": {
+      "title": "Choose your language",
+      "subtitle": "Pick the language that feels easiest for the party.",
+      "englishLabel": "English",
+      "englishDescription": "Continue in English.",
+      "vietnameseLabel": "Tiếng Việt",
+      "vietnameseDescription": "Tiếp tục bằng tiếng Việt.",
+      "switchLabel": "Language"
     },
-    "screens": {
-        "welcome": {
-            "title": "WHO IS TURNING ONE?!",
-            "subtitle": "A tiny birthday surprise is waiting.",
-            "primaryAction": "Let's go",
-            "heroPlaceholderLabel": "Han's photo will go here",
-            "heroPlaceholderAlt": "Decorative portrait frame reserved for a future approved photo of Han"
+    "guestEntry": {
+      "title": "What name should we show?",
+      "description": "We'll use this for your quiz and celebration screens.",
+      "nameLabel": "Your display name",
+      "namePlaceholder": "Type your name",
+      "primaryAction": "Continue",
+      "validation": {
+        "required": "Please enter your name.",
+        "tooLong": "Please use a shorter display name.",
+        "alreadySubmitted": "This name is saved for this session."
+      }
+    },
+    "partyPhoto": {
+      "title": "Create your party avatar",
+      "description": "Your avatar will appear during the private party game and may be used on your final Han Master Certificate.",
+      "takeSelfie": "Take a selfie",
+      "choosePhoto": "Choose a photo",
+      "chooseAvatar": "Choose an avatar",
+      "capture": "Capture",
+      "cancel": "Cancel",
+      "retake": "Retake",
+      "usePhoto": "Use this photo",
+      "continue": "Continue",
+      "skip": "Continue without changing",
+      "photoReady": "Photo avatar ready",
+      "presetReady": "Birthday avatar selected",
+      "savingTitle": "Saving your party photo",
+      "preparingPhoto": "Preparing your photo…",
+      "uploadingPhoto": "Uploading your photo…",
+      "savingAvatar": "Saving your avatar…",
+      "avatarReady": "Your avatar is ready!",
+      "cancelUpload": "Cancel upload",
+      "uploadCancelled": "Upload cancelled. Your edit is still here.",
+      "retryUpload": "Retry upload",
+      "processingProgress": "Finishing securely…",
+      "uploadHelp": "JPEG, PNG, or WebP. Maximum 5 MB.",
+      "cropHelp": "Move and zoom the photo so your face fits inside the circle.",
+      "stickerLabel": "Birthday stickers",
+      "zoomLabel": "Zoom",
+      "sizeLabel": "Sticker size",
+      "removeSticker": "Remove sticker",
+      "addSticker": "Add",
+      "presets": {
+        "birthdayBear": "Birthday bear",
+        "birthdayBunny": "Birthday bunny",
+        "birthdayLion": "Birthday lion",
+        "birthdayPanda": "Birthday panda",
+        "birthdayKoala": "Birthday koala",
+        "birthdayTiger": "Birthday tiger",
+        "birthdayStar": "Cheerful star",
+        "birthdayCupcake": "Birthday cupcake"
+      },
+      "stickers": {
+        "partyHat": "party hat",
+        "crown": "birthday crown",
+        "balloons": "balloons",
+        "confetti": "confetti",
+        "cupcake": "birthday cupcake",
+        "star": "star",
+        "one": "number 1",
+        "bowTie": "bow tie",
+        "glasses": "celebration glasses"
+      },
+      "validation": {
+        "cameraUnavailable": "Camera is not available here. You can choose a photo or avatar instead.",
+        "cameraDenied": "Camera permission was not granted. You can choose a photo or avatar instead.",
+        "unsupportedFile": "Please choose a JPEG, PNG, or WebP image.",
+        "fileTooLarge": "Please choose an image smaller than 5 MB.",
+        "imageInvalid": "That image could not be opened. Please try another photo.",
+        "uploadFailed": "We could not save that avatar yet. Please retry or choose a birthday avatar.",
+        "saved": "Avatar saved."
+      }
+    },
+    "howToPlay": {
+      "title": "How to play",
+      "subtitle": "Three quick moves, then watch the room celebrate the reveal.",
+      "primaryAction": "I'm ready",
+      "cards": [
+        {
+          "id": "timer",
+          "title": "Answer fast",
+          "description": "You have 20 seconds. Faster correct answers earn more points."
         },
-        "language": {
-            "title": "Choose your language",
-            "subtitle": "Pick the language that feels easiest for the party.",
-            "englishLabel": "English",
-            "englishDescription": "Continue in English.",
-            "vietnameseLabel": "Tiếng Việt",
-            "vietnameseDescription": "Tiếp tục bằng tiếng Việt.",
-            "switchLabel": "Language"
+        {
+          "id": "locked",
+          "title": "Lock it in",
+          "description": "Choose carefully—your answer cannot be changed after submission."
         },
-        "guestEntry": {
-            "title": "What name should we show?",
-            "description": "We'll use this for your quiz and celebration screens.",
-            "nameLabel": "Your display name",
-            "namePlaceholder": "Type your name",
-            "primaryAction": "Continue",
-            "validation": {
-                "required": "Please enter your name.",
-                "tooLong": "Please use a shorter display name.",
-                "alreadySubmitted": "This name is saved for this session."
-            }
-        },
-        "howToPlay": {
-            "title": "How to play",
-            "subtitle": "Quick, playful, and done in about 3 to 5 minutes.",
-            "primaryAction": "I'm ready",
-            "cards": [
-                {
-                    "id": "timer",
-                    "title": "20 seconds",
-                    "description": "Each question has a short timer."
-                },
-                {
-                    "id": "locked",
-                    "title": "Submit your answer",
-                    "description": "Once submitted, it cannot be changed."
-                },
-                {
-                    "id": "reveal",
-                    "title": "See the reveal",
-                    "description": "Correct answer, fun fact, then next question."
-                }
-            ]
-        },
-        "ready": {
-            "title": "Ready?",
-            "subtitle": "Let's see how well you know Han!",
-            "primaryAction": "Start Quiz"
-        },
-        "quizPlaceholder": {
-            "title": "Quiz coming soon",
-            "description": "This is the stop before the quiz engine. Milestone 4 will replace this placeholder.",
-            "backAction": "Back to Ready"
-        },
-        "onboardingProgress": {
-            "welcome": "Welcome",
-            "language": "Language",
-            "name": "Name",
-            "howToPlay": "How to play",
-            "ready": "Ready"
-        },
-        "quizStart": {
-            "title": "Ready?",
-            "description": "Let's see how well you know Han.",
-            "timerNotice": "20 seconds per question.",
-            "primaryAction": "Start Quiz"
-        },
-        "quiz": {
-            "questionCounterLabel": "Question",
-            "timerLabel": "Time",
-            "timeExpiredLabel": "Time's up",
-            "nextAction": "Next",
-            "submitAction": "Submit"
-        },
-        "result": {
-            "title": "All done",
-            "scoreLabel": "Score",
-            "leaderboardAction": "View leaderboard",
-            "messageAction": "Leave a message"
-        },
-        "leaderboard": {
-            "title": "Leaderboard",
-            "emptyTitle": "No scores yet",
-            "emptyDescription": "Scores will appear after guests finish the quiz."
-        },
-        "message": {
-            "title": "Leave a message",
-            "description": "Write a birthday note for Han and family.",
-            "fieldLabel": "Birthday message",
-            "fieldPlaceholder": "Type your message",
-            "submitAction": "Send message",
-            "successTitle": "Message saved",
-            "successDescription": "Thank you for adding to the celebration."
-        },
-        "timeline": {
-            "title": "Timeline",
-            "emptyTitle": "Memories coming later",
-            "emptyDescription": "Timeline moments will appear when real content is provided."
-        },
-        "gallery": {
-            "title": "Gallery",
-            "emptyTitle": "Photos coming later",
-            "emptyDescription": "Real photos will appear when approved assets are provided."
-        },
-        "errors": {
-            "generic": "Something went wrong.",
-            "network": "The connection had a small hiccup.",
-            "retryAction": "Try again"
+        {
+          "id": "reveal",
+          "title": "Watch the race",
+          "description": "See the correct answer, your points, and the leaderboard bars race into place."
         }
+      ]
+    },
+    "ready": {
+      "title": "Ready?",
+      "subtitle": "Let's see how well you know Han!",
+      "primaryAction": "I'm ready"
+    },
+    "quizPlaceholder": {
+      "title": "Quiz coming soon",
+      "description": "This is the stop before the quiz engine. Milestone 4 will replace this placeholder.",
+      "backAction": "Back to Ready"
+    },
+    "onboardingProgress": {
+      "welcome": "Welcome",
+      "language": "Language",
+      "name": "Name",
+      "partyPhoto": "Photo",
+      "howToPlay": "How to play",
+      "ready": "Ready"
+    },
+    "onboardingNavigation": {
+      "back": "Back",
+      "backDuringUpload": "Cancel the upload before going back."
+    },
+    "quizStart": {
+      "title": "Ready?",
+      "description": "Let's see how well you know Han.",
+      "timerNotice": "20 seconds per question.",
+      "primaryAction": "Start Quiz"
     },
     "quiz": {
-        "settings": {
-            "defaultQuestionDurationSeconds": 20,
-            "responseLocking": "per-question-immutable",
-            "questionOrder": "content-order",
-            "scoringMode": "correct-count"
-        },
-        "questions": []
+      "questionCounterLabel": "Question",
+      "timerLabel": "Time",
+      "timeExpiredLabel": "Time's up",
+      "nextAction": "Next",
+      "submitAction": "Submit"
+    },
+    "result": {
+      "title": "All done",
+      "scoreLabel": "Score",
+      "leaderboardAction": "View leaderboard",
+      "messageAction": "Leave a message"
+    },
+    "leaderboard": {
+      "title": "Leaderboard",
+      "emptyTitle": "No scores yet",
+      "emptyDescription": "Scores will appear after guests finish the quiz."
+    },
+    "message": {
+      "title": "Leave a message",
+      "description": "Write a birthday note for Han and family.",
+      "fieldLabel": "Birthday message",
+      "fieldPlaceholder": "Type your message",
+      "submitAction": "Send message",
+      "successTitle": "Message saved",
+      "successDescription": "Thank you for adding to the celebration."
     },
     "timeline": {
-        "entries": []
+      "title": "Timeline",
+      "emptyTitle": "Memories coming later",
+      "emptyDescription": "Timeline moments will appear when real content is provided."
     },
     "gallery": {
-        "items": []
+      "title": "Gallery",
+      "emptyTitle": "Photos coming later",
+      "emptyDescription": "Real photos will appear when approved assets are provided."
     },
-    "messages": {
-        "constraints": {
-            "minLength": 1,
-            "maxLength": 500
-        },
-        "review": {
-            "simpleStatusWorkflow": []
-        }
-    },
-    "assets": {
-        "items": []
-    },
-    "admin": {
-        "labels": {
-            "dashboard": "",
-            "submissions": "",
-            "messages": "",
-            "qaMode": "",
-            "testData": ""
-        }
+    "errors": {
+      "generic": "Something went wrong.",
+      "network": "The connection had a small hiccup.",
+      "retryAction": "Try again"
     }
+  },
+  "quiz": {
+    "settings": {
+      "questionDurationSeconds": 20,
+      "responseLocking": "per-question-immutable",
+      "questionOrder": "content-order",
+      "scoringMode": "time-v1"
+    },
+    "questions": [
+      {
+        "id": "han-test-question-01",
+        "enabled": true,
+        "sortOrder": 1,
+        "prompt": "What is today's special celebration?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Han's first day at school"
+          },
+          {
+            "id": "option-b",
+            "label": "Han's first birthday"
+          },
+          {
+            "id": "option-c",
+            "label": "Han's first cooking class"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "This is temporary test content for Han's first-birthday quiz app."
+      },
+      {
+        "id": "han-test-question-02",
+        "enabled": true,
+        "sortOrder": 2,
+        "prompt": "How many candles would normally go on a first-birthday cake?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "One candle"
+          },
+          {
+            "id": "option-b",
+            "label": "Five candles"
+          },
+          {
+            "id": "option-c",
+            "label": "Ten candles"
+          }
+        ],
+        "correctAnswerId": "option-a",
+        "funFact": "One candle represents one completed year and gives the birthday baby one very important wish."
+      },
+      {
+        "id": "han-test-question-03",
+        "enabled": true,
+        "sortOrder": 3,
+        "prompt": "Which item is most useful when a baby decides that lunch belongs on the floor?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "A party hat"
+          },
+          {
+            "id": "option-b",
+            "label": "A television remote"
+          },
+          {
+            "id": "option-c",
+            "label": "A bib"
+          }
+        ],
+        "correctAnswerId": "option-c",
+        "funFact": "A bib cannot stop every food adventure, but it can make the clean-up slightly less dramatic."
+      },
+      {
+        "id": "han-test-question-04",
+        "enabled": true,
+        "sortOrder": 4,
+        "prompt": "What should guests do after selecting an answer on their phone?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Refresh the page immediately"
+          },
+          {
+            "id": "option-b",
+            "label": "Confirm and wait for the reveal"
+          },
+          {
+            "id": "option-c",
+            "label": "Scan the QR code again"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "Each guest can submit only once per question, so the confirmation step should be intentional."
+      },
+      {
+        "id": "han-test-question-05",
+        "enabled": true,
+        "sortOrder": 5,
+        "prompt": "How long does each test question stay open?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "20 seconds"
+          },
+          {
+            "id": "option-b",
+            "label": "2 minutes"
+          },
+          {
+            "id": "option-c",
+            "label": "Until tomorrow morning"
+          }
+        ],
+        "correctAnswerId": "option-a",
+        "funFact": "The quiz currently uses one global 20-second timer for every question."
+      },
+      {
+        "id": "han-test-question-06",
+        "enabled": true,
+        "sortOrder": 6,
+        "prompt": "Which answer would probably make a one-year-old happiest at a party?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "A detailed spreadsheet"
+          },
+          {
+            "id": "option-b",
+            "label": "A three-hour business meeting"
+          },
+          {
+            "id": "option-c",
+            "label": "Music, colourful decorations, and familiar faces"
+          }
+        ],
+        "correctAnswerId": "option-c",
+        "funFact": "This deliberately longer answer helps test wrapping and spacing on smaller phone screens."
+      },
+      {
+        "id": "han-test-question-07",
+        "enabled": true,
+        "sortOrder": 7,
+        "prompt": "What happens when the answer timer reaches zero?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Everyone automatically receives one point"
+          },
+          {
+            "id": "option-b",
+            "label": "The question locks and late answers are rejected"
+          },
+          {
+            "id": "option-c",
+            "label": "The quiz returns to the welcome screen"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "The server-authoritative deadline prevents answers submitted at or after the deadline from being accepted."
+      },
+      {
+        "id": "han-test-question-08",
+        "enabled": true,
+        "sortOrder": 8,
+        "prompt": "How many points does a correct answer currently receive?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "1 point"
+          },
+          {
+            "id": "option-b",
+            "label": "10 points plus a speed bonus"
+          },
+          {
+            "id": "option-c",
+            "label": "A random number of points"
+          }
+        ],
+        "correctAnswerId": "option-a",
+        "funFact": "The current scoring mode is correct-count: one point for a correct answer and zero for an incorrect answer."
+      },
+      {
+        "id": "han-test-question-09",
+        "enabled": true,
+        "sortOrder": 9,
+        "prompt": "If two guests finish with the same score, what does the current leaderboard use next?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Who answered the final question fastest"
+          },
+          {
+            "id": "option-b",
+            "label": "A random coin toss"
+          },
+          {
+            "id": "option-c",
+            "label": "Participant join order, then display name"
+          }
+        ],
+        "correctAnswerId": "option-c",
+        "funFact": "The current leaderboard does not use a speed bonus. Ties are resolved deterministically."
+      },
+      {
+        "id": "han-test-question-10",
+        "enabled": true,
+        "sortOrder": 10,
+        "prompt": "What is the most important goal of this temporary 10-question rehearsal?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "To permanently record fictional facts about Han"
+          },
+          {
+            "id": "option-b",
+            "label": "To verify the complete guest, host, display, scoring, reveal, and leaderboard flow"
+          },
+          {
+            "id": "option-c",
+            "label": "To replace the final birthday celebration"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "After the full rehearsal passes, these temporary questions will be replaced with Ian's approved real birthday questions."
+      }
+    ]
+  },
+  "timeline": {
+    "entries": []
+  },
+  "gallery": {
+    "items": []
+  },
+  "messages": {
+    "constraints": {
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "review": {
+      "simpleStatusWorkflow": []
+    }
+  },
+  "assets": {
+    "items": []
+  },
+  "admin": {
+    "labels": {
+      "dashboard": "",
+      "submissions": "",
+      "messages": "",
+      "qaMode": "",
+      "testData": ""
+    }
+  }
 }

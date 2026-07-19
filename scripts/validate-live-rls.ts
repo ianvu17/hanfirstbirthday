@@ -16,7 +16,8 @@ type TestResult = {
   expected: string;
   actual: string;
   result: "PASS" | "FAIL";
-  enforcementLayer: "database-enforced" | "server-route-enforced" | "test-setup";
+  enforcementLayer:
+    "database-enforced" | "server-route-enforced" | "test-setup";
 };
 
 type SupabaseResponse = {
@@ -28,7 +29,7 @@ type SupabaseResponse = {
 const requiredEnv = [
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-  "SUPABASE_SERVICE_ROLE_KEY"
+  "SUPABASE_SERVICE_ROLE_KEY",
 ];
 
 const missing = requiredEnv.filter((key) => !process.env[key]);
@@ -41,7 +42,8 @@ if (missing.length > 0) {
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const validationId = process.env.LIVE_RLS_VALIDATION_ID || `codex-m5-validation-${Date.now()}`;
+const validationId =
+  process.env.LIVE_RLS_VALIDATION_ID || `codex-m5-validation-${Date.now()}`;
 const randomUuid = crypto.randomUUID();
 
 function deriveProjectRef(apiUrl: string) {
@@ -67,7 +69,9 @@ function deriveProjectRef(apiUrl: string) {
 const projectRef = deriveProjectRef(url);
 
 if (!projectRef) {
-  console.error("Supabase API URL format is invalid or not a hosted supabase.co URL.");
+  console.error(
+    "Supabase API URL format is invalid or not a hosted supabase.co URL.",
+  );
   process.exit(1);
 }
 
@@ -76,20 +80,20 @@ console.log("Supabase project ref: derived");
 console.log(
   `Supabase browser credential format: ${
     anonKey.startsWith("sb_publishable_") ? "publishable" : "legacy/other"
-  }`
+  }`,
 );
 console.log(
   `Supabase server credential format: ${
     serviceRoleKey.startsWith("sb_secret_") ? "secret" : "legacy/other"
-  }`
+  }`,
 );
 console.log(`Validation id: ${validationId}`);
 
 const anon = createClient(url, anonKey, {
-  auth: { persistSession: false, autoRefreshToken: false }
+  auth: { persistSession: false, autoRefreshToken: false },
 });
 const service = createClient(url, serviceRoleKey, {
-  auth: { persistSession: false, autoRefreshToken: false }
+  auth: { persistSession: false, autoRefreshToken: false },
 });
 
 const results: TestResult[] = [];
@@ -101,11 +105,15 @@ function describeUnknownError(error: unknown) {
   }
 
   if (error && typeof error === "object") {
-    const candidate = error as { message?: unknown; code?: unknown; details?: unknown };
+    const candidate = error as {
+      message?: unknown;
+      code?: unknown;
+      details?: unknown;
+    };
     const parts = [
       typeof candidate.code === "string" ? candidate.code : null,
       typeof candidate.message === "string" ? candidate.message : null,
-      typeof candidate.details === "string" ? candidate.details : null
+      typeof candidate.details === "string" ? candidate.details : null,
     ].filter(Boolean);
 
     if (parts.length > 0) {
@@ -128,7 +136,7 @@ function pass(
   operation: string,
   expected: string,
   actual: string,
-  enforcementLayer: TestResult["enforcementLayer"]
+  enforcementLayer: TestResult["enforcementLayer"],
 ) {
   record({
     area,
@@ -139,7 +147,7 @@ function pass(
     expected,
     actual,
     result: "PASS",
-    enforcementLayer
+    enforcementLayer,
   });
 }
 
@@ -151,7 +159,7 @@ function fail(
   operation: string,
   expected: string,
   actual: string,
-  enforcementLayer: TestResult["enforcementLayer"]
+  enforcementLayer: TestResult["enforcementLayer"],
 ) {
   record({
     area,
@@ -162,7 +170,7 @@ function fail(
     expected,
     actual,
     result: "FAIL",
-    enforcementLayer
+    enforcementLayer,
   });
 }
 
@@ -175,7 +183,9 @@ function errorSummary(response: SupabaseResponse) {
     return `request succeeded with ${rowCount(response.data)} row(s)`;
   }
 
-  return response.error.code ? `error ${response.error.code}` : "request returned an error";
+  return response.error.code
+    ? `error ${response.error.code}`
+    : "request returned an error";
 }
 
 function recordDenied(
@@ -184,7 +194,7 @@ function recordDenied(
   response: SupabaseResponse,
   operation: string,
   expected = "request is denied",
-  enforcementLayer: TestResult["enforcementLayer"] = "database-enforced"
+  enforcementLayer: TestResult["enforcementLayer"] = "database-enforced",
 ) {
   if (response.error) {
     pass(
@@ -195,7 +205,7 @@ function recordDenied(
       operation,
       expected,
       errorSummary(response),
-      enforcementLayer
+      enforcementLayer,
     );
     return;
   }
@@ -208,7 +218,7 @@ function recordDenied(
     operation,
     expected,
     errorSummary(response),
-    enforcementLayer
+    enforcementLayer,
   );
 }
 
@@ -217,7 +227,7 @@ function recordNoRows(
   test: string,
   response: SupabaseResponse,
   operation: string,
-  expected = "zero rows returned"
+  expected = "zero rows returned",
 ) {
   if (!response.error && rowCount(response.data) === 0) {
     pass(
@@ -228,7 +238,7 @@ function recordNoRows(
       operation,
       expected,
       "zero rows returned",
-      "database-enforced"
+      "database-enforced",
     );
     return;
   }
@@ -241,7 +251,7 @@ function recordNoRows(
     operation,
     expected,
     errorSummary(response),
-    "database-enforced"
+    "database-enforced",
   );
 }
 
@@ -251,7 +261,7 @@ function recordExpectedRows(
   response: SupabaseResponse,
   operation: string,
   expectedRows: number,
-  expected = `${expectedRows} row(s) returned`
+  expected = `${expectedRows} row(s) returned`,
 ) {
   if (!response.error && rowCount(response.data) === expectedRows) {
     pass(
@@ -262,7 +272,7 @@ function recordExpectedRows(
       operation,
       expected,
       `${expectedRows} row(s) returned`,
-      "database-enforced"
+      "database-enforced",
     );
     return;
   }
@@ -275,7 +285,7 @@ function recordExpectedRows(
     operation,
     expected,
     errorSummary(response),
-    "database-enforced"
+    "database-enforced",
   );
 }
 
@@ -305,7 +315,11 @@ async function countResponsesForSessions(sessionIds: string[]) {
   return response.count ?? 0;
 }
 
-async function createSession(publicJoinCode: string, isTest: boolean, status = "active") {
+async function createSession(
+  publicJoinCode: string,
+  isTest: boolean,
+  status = "active",
+) {
   const inserted = await service
     .from("party_sessions")
     .insert({
@@ -313,7 +327,7 @@ async function createSession(publicJoinCode: string, isTest: boolean, status = "
       status,
       phase: "lobby",
       display_locale: "en",
-      is_test: isTest
+      is_test: isTest,
     })
     .select("id, public_join_code, status, is_test, revision")
     .single();
@@ -326,7 +340,11 @@ async function createSession(publicJoinCode: string, isTest: boolean, status = "
   return inserted.data;
 }
 
-async function createParticipant(sessionId: string, displayName: string, locale = "en") {
+async function createParticipant(
+  sessionId: string,
+  displayName: string,
+  locale = "en",
+) {
   const inserted = await service
     .from("participants")
     .insert({
@@ -334,7 +352,7 @@ async function createParticipant(sessionId: string, displayName: string, locale 
       display_name: displayName,
       locale,
       resume_token_hash: crypto.randomBytes(32).toString("hex"),
-      is_test: true
+      is_test: true,
     })
     .select("id, display_name")
     .single();
@@ -351,7 +369,7 @@ async function expectServiceFailure(
   test: string,
   operation: string,
   request: PromiseLike<SupabaseResponse>,
-  expected: string
+  expected: string,
 ) {
   const response = await request;
 
@@ -364,7 +382,7 @@ async function expectServiceFailure(
       operation,
       expected,
       errorSummary(response),
-      "database-enforced"
+      "database-enforced",
     );
     return;
   }
@@ -377,7 +395,7 @@ async function expectServiceFailure(
     operation,
     expected,
     errorSummary(response),
-    "database-enforced"
+    "database-enforced",
   );
 }
 
@@ -389,7 +407,7 @@ async function main() {
 
   if (credentialProbe.error) {
     throw new Error(
-      `Anon/publishable credential validation failed or migrations are missing: ${credentialProbe.error.message}`
+      `Anon/publishable credential validation failed or migrations are missing: ${credentialProbe.error.message}`,
     );
   }
 
@@ -401,7 +419,7 @@ async function main() {
     "select party_sessions head",
     "request succeeds without exposing secrets",
     "request succeeded",
-    "database-enforced"
+    "database-enforced",
   );
 
   const serviceProbe = await service
@@ -411,7 +429,7 @@ async function main() {
 
   if (serviceProbe.error) {
     throw new Error(
-      `Secret/service-role credential validation failed: ${serviceProbe.error.message}`
+      `Secret/service-role credential validation failed: ${serviceProbe.error.message}`,
     );
   }
 
@@ -423,19 +441,36 @@ async function main() {
     "select party_sessions head",
     "request succeeds from test context",
     "request succeeded",
-    "test-setup"
+    "test-setup",
   );
 
   const testSession = await createSession(validationId, true);
   const productionTwin = await createSession(validationId, false);
-  const inactiveSession = await createSession(`${validationId}-inactive`, true, "draft");
-  const unrelatedSession = await createSession(`${validationId}-unrelated`, true);
-  const participantA = await createParticipant(testSession.id, `${validationId}-a`);
-  const participantB = await createParticipant(testSession.id, `${validationId}-b`, "vi");
-  const duplicateName = await createParticipant(testSession.id, `${validationId}-a`);
+  const inactiveSession = await createSession(
+    `${validationId}-inactive`,
+    true,
+    "draft",
+  );
+  const unrelatedSession = await createSession(
+    `${validationId}-unrelated`,
+    true,
+  );
+  const participantA = await createParticipant(
+    testSession.id,
+    `${validationId}-a`,
+  );
+  const participantB = await createParticipant(
+    testSession.id,
+    `${validationId}-b`,
+    "vi",
+  );
+  const duplicateName = await createParticipant(
+    testSession.id,
+    `${validationId}-a`,
+  );
   const unrelatedParticipant = await createParticipant(
     unrelatedSession.id,
-    `${validationId}-u`
+    `${validationId}-u`,
   );
 
   if (productionTwin.is_test === false) {
@@ -447,7 +482,7 @@ async function main() {
       "insert test and production sessions with the same public_join_code",
       "unique index allows one test and one production session per join code",
       "both scoped sessions inserted",
-      "database-enforced"
+      "database-enforced",
     );
   }
 
@@ -460,7 +495,7 @@ async function main() {
       "insert duplicate display_name",
       "duplicate display names are allowed because identity is cookie/token based",
       "duplicate display name inserted",
-      "database-enforced"
+      "database-enforced",
     );
   } else {
     fail(
@@ -471,7 +506,7 @@ async function main() {
       "insert duplicate display_name",
       "duplicate display names are allowed because identity is cookie/token based",
       "duplicate display name changed unexpectedly",
-      "database-enforced"
+      "database-enforced",
     );
   }
 
@@ -484,9 +519,9 @@ async function main() {
       display_name: "",
       locale: "en",
       resume_token_hash: crypto.randomBytes(32).toString("hex"),
-      is_test: true
+      is_test: true,
     }),
-    "database rejects empty names"
+    "database rejects empty names",
   );
 
   await expectServiceFailure(
@@ -498,9 +533,9 @@ async function main() {
       display_name: "x".repeat(41),
       locale: "en",
       resume_token_hash: crypto.randomBytes(32).toString("hex"),
-      is_test: true
+      is_test: true,
     }),
-    "database rejects oversized names"
+    "database rejects oversized names",
   );
 
   recordExpectedRows(
@@ -512,7 +547,7 @@ async function main() {
       .eq("id", testSession.id),
     "select active test session shell",
     1,
-    "one active test session shell is visible for realtime wake-up"
+    "one active test session shell is visible for realtime wake-up",
   );
 
   recordNoRows(
@@ -522,7 +557,7 @@ async function main() {
       .from("party_sessions")
       .select("id")
       .eq("public_join_code", `${validationId}-unknown`),
-    "select unknown public_join_code"
+    "select unknown public_join_code",
   );
 
   recordNoRows(
@@ -530,7 +565,7 @@ async function main() {
     "inactive session hidden",
     await anon.from("party_sessions").select("id").eq("id", inactiveSession.id),
     "select inactive draft session by id",
-    "inactive draft session is hidden from anon"
+    "inactive draft session is hidden from anon",
   );
 
   recordExpectedRows(
@@ -543,7 +578,7 @@ async function main() {
       .eq("is_test", true),
     "select by join code and is_test=true",
     1,
-    "test join-code lookup returns only the test session"
+    "test join-code lookup returns only the test session",
   );
 
   recordExpectedRows(
@@ -556,7 +591,7 @@ async function main() {
       .eq("is_test", false),
     "select by join code and is_test=false",
     1,
-    "production join-code lookup returns only the production session"
+    "production join-code lookup returns only the production session",
   );
 
   recordExpectedRows(
@@ -568,28 +603,34 @@ async function main() {
       .eq("id", unrelatedSession.id),
     "select unrelated active session shell columns",
     1,
-    "only granted shell columns are visible"
+    "only granted shell columns are visible",
   );
 
   recordDenied(
     "Session access",
     "ungranted session fields are not selectable",
-    await anon.from("party_sessions").select("last_command_id").eq("id", testSession.id),
-    "select last_command_id"
+    await anon
+      .from("party_sessions")
+      .select("last_command_id")
+      .eq("id", testSession.id),
+    "select last_command_id",
   );
 
   recordNoRows(
     "Session access",
     "guessed session UUID access",
     await anon.from("party_sessions").select("id").eq("id", randomUuid),
-    "select random session uuid"
+    "select random session uuid",
   );
 
   recordDenied(
     "Host-only operations",
     "guest cannot start session",
-    await anon.from("party_sessions").update({ phase: "question_ready" }).eq("id", testSession.id),
-    "update phase to question_ready"
+    await anon
+      .from("party_sessions")
+      .update({ phase: "question_ready" })
+      .eq("id", testSession.id),
+    "update phase to question_ready",
   );
 
   recordDenied(
@@ -599,14 +640,17 @@ async function main() {
       .from("party_sessions")
       .update({ current_question_id: "q1", current_question_index: 0 })
       .eq("id", testSession.id),
-    "update current question fields"
+    "update current question fields",
   );
 
   recordDenied(
     "Host-only operations",
     "guest cannot advance round",
-    await anon.from("party_sessions").update({ phase: "leaderboard" }).eq("id", testSession.id),
-    "update phase to leaderboard"
+    await anon
+      .from("party_sessions")
+      .update({ phase: "leaderboard" })
+      .eq("id", testSession.id),
+    "update phase to leaderboard",
   );
 
   recordDenied(
@@ -616,14 +660,17 @@ async function main() {
       .from("party_sessions")
       .update({ phase: "lobby", revision: 0 })
       .eq("id", testSession.id),
-    "reset phase and revision"
+    "reset phase and revision",
   );
 
   recordDenied(
     "Host-only operations",
     "guest cannot end session",
-    await anon.from("party_sessions").update({ status: "finished" }).eq("id", testSession.id),
-    "update status to finished"
+    await anon
+      .from("party_sessions")
+      .update({ status: "finished" })
+      .eq("id", testSession.id),
+    "update status to finished",
   );
 
   recordExpectedRows(
@@ -635,15 +682,18 @@ async function main() {
       .eq("party_session_id", testSession.id),
     "select granted participant columns",
     3,
-    "safe participant wake-up columns are visible"
+    "safe participant wake-up columns are visible",
   );
 
   recordDenied(
     "Participant access",
     "resume token hash is not selectable",
-    await anon.from("participants").select("resume_token_hash").eq("party_session_id", testSession.id),
+    await anon
+      .from("participants")
+      .select("resume_token_hash")
+      .eq("party_session_id", testSession.id),
     "select resume_token_hash",
-    "anon cannot select resume_token_hash"
+    "anon cannot select resume_token_hash",
   );
 
   recordDenied(
@@ -654,9 +704,9 @@ async function main() {
       display_name: `${validationId}-direct`,
       locale: "en",
       resume_token_hash: crypto.randomBytes(32).toString("hex"),
-      is_test: true
+      is_test: true,
     }),
-    "insert participant directly"
+    "insert participant directly",
   );
 
   recordDenied(
@@ -666,22 +716,25 @@ async function main() {
       .from("participants")
       .update({ display_name: `${validationId}-tamper` })
       .eq("id", participantB.id),
-    "update another participant display_name"
+    "update another participant display_name",
   );
 
   recordDenied(
     "Participant access",
     "guest cannot delete guest B",
     await anon.from("participants").delete().eq("id", participantB.id),
-    "delete another participant"
+    "delete another participant",
   );
 
   recordDenied(
     "Participant access",
     "guest cannot assign host privileges",
-    await anon.from("participants").update({ is_host: true }).eq("id", participantA.id),
+    await anon
+      .from("participants")
+      .update({ is_host: true })
+      .eq("id", participantA.id),
     "update non-schema is_host field",
-    "request is denied or schema rejects host privilege field"
+    "request is denied or schema rejects host privilege field",
   );
 
   recordDenied(
@@ -691,7 +744,7 @@ async function main() {
       .from("participants")
       .update({ party_session_id: unrelatedSession.id })
       .eq("id", participantA.id),
-    "move participant to another session"
+    "move participant to another session",
   );
 
   const validResponse = await service
@@ -707,7 +760,7 @@ async function main() {
       response_duration_ms: 1200,
       is_correct: false,
       submission_id: `${validationId}-submission-a`,
-      is_test: true
+      is_test: true,
     })
     .select("id")
     .single();
@@ -724,15 +777,18 @@ async function main() {
     "insert locked response row",
     "trusted setup can create one valid row for constraint/RLS tests",
     "one response inserted",
-    "test-setup"
+    "test-setup",
   );
 
   recordDenied(
     "Answers",
     "anon cannot read raw responses",
-    await anon.from("question_responses").select("id").eq("party_session_id", testSession.id),
+    await anon
+      .from("question_responses")
+      .select("id")
+      .eq("party_session_id", testSession.id),
     "select raw response rows",
-    "anon raw response read is denied"
+    "anon raw response read is denied",
   );
 
   recordDenied(
@@ -746,9 +802,9 @@ async function main() {
       status: "locked_answer",
       is_correct: true,
       submission_id: `${validationId}-tamper-other`,
-      is_test: true
+      is_test: true,
     }),
-    "insert response for another participant"
+    "insert response for another participant",
   );
 
   recordDenied(
@@ -762,14 +818,14 @@ async function main() {
       status: "locked_answer",
       is_correct: true,
       submission_id: `${validationId}-tamper-correctness`,
-      is_test: true
+      is_test: true,
     }),
-    "insert response with is_correct=true"
+    "insert response with is_correct=true",
   );
 
   recordDenied(
     "Answers",
-    "client-supplied score is rejected",
+    "client-supplied awarded points are rejected",
     await anon.from("question_responses").insert({
       party_session_id: testSession.id,
       participant_id: participantA.id,
@@ -777,12 +833,12 @@ async function main() {
       selected_option_id: "option-a",
       status: "locked_answer",
       is_correct: true,
-      score: 999999,
+      points_awarded: 2000,
+      scoring_version: "time-v1",
       submission_id: `${validationId}-tamper-score`,
-      is_test: true
+      is_test: true,
     }),
-    "insert response with score payload",
-    "request is denied or schema rejects score field"
+    "insert response with awarded-points payload",
   );
 
   recordDenied(
@@ -796,9 +852,9 @@ async function main() {
       status: "locked_answer",
       is_correct: true,
       submission_id: `${validationId}-tamper-cross-session`,
-      is_test: true
+      is_test: true,
     }),
-    "insert response with participant from another session"
+    "insert response with participant from another session",
   );
 
   await expectServiceFailure(
@@ -816,9 +872,9 @@ async function main() {
       response_duration_ms: 900,
       is_correct: true,
       submission_id: `${validationId}-submission-b`,
-      is_test: true
+      is_test: true,
     }),
-    "unique constraint rejects duplicate participant/question response"
+    "unique constraint rejects duplicate participant/question response",
   );
 
   await expectServiceFailure(
@@ -836,9 +892,9 @@ async function main() {
       response_duration_ms: 900,
       is_correct: true,
       submission_id: `${validationId}-submission-a`,
-      is_test: true
+      is_test: true,
     }),
-    "unique constraint rejects replayed submission id"
+    "unique constraint rejects replayed submission id",
   );
 
   recordDenied(
@@ -851,17 +907,20 @@ async function main() {
       selected_option_id: null,
       status: "locked_answer",
       submission_id: `${validationId}-malformed`,
-      is_test: true
+      is_test: true,
     }),
     "insert locked_answer with null selected_option_id",
-    "request is denied or check constraint rejects malformed answer"
+    "request is denied or check constraint rejects malformed answer",
   );
 
   recordDenied(
     "Host-only operations",
-    "guest cannot alter score",
-    await anon.from("question_responses").update({ is_correct: true }).eq("id", validResponse.data.id),
-    "update response correctness"
+    "guest cannot alter awarded points",
+    await anon
+      .from("question_responses")
+      .update({ points_awarded: 2000 })
+      .eq("id", validResponse.data.id),
+    "update response points",
   );
 
   recordDenied(
@@ -876,17 +935,20 @@ async function main() {
       is_correct: true,
       leaderboard_position: 1,
       submission_id: `${validationId}-leaderboard-tamper`,
-      is_test: true
+      is_test: true,
     }),
     "insert leaderboard/status tampering payload",
-    "request is denied or schema rejects leaderboard/status fields"
+    "request is denied or schema rejects leaderboard/status fields",
   );
 
   recordDenied(
     "Host-only operations",
     "anon cannot read host command log",
-    await anon.from("host_command_log").select("id").eq("party_session_id", testSession.id),
-    "select host_command_log"
+    await anon
+      .from("host_command_log")
+      .select("id")
+      .eq("party_session_id", testSession.id),
+    "select host_command_log",
   );
 
   recordDenied(
@@ -899,18 +961,18 @@ async function main() {
       expected_revision: 0,
       accepted_revision: 1,
       status: "accepted",
-      is_test: true
+      is_test: true,
     }),
-    "insert host command log row"
+    "insert host command log row",
   );
 
   recordDenied(
     "Host-only operations",
     "anon cannot execute response touch RPC",
     await anon.rpc("touch_party_session_response", {
-      p_session_id: testSession.id
+      p_session_id: testSession.id,
     }),
-    "execute touch_party_session_response"
+    "execute touch_party_session_response",
   );
 }
 
@@ -922,11 +984,15 @@ async function cleanup() {
   const cleanupCounts = {
     question_responses: await countResponsesForSessions(cleanupSessionIds),
     participants: 0,
-    party_sessions: cleanupSessionIds.length
+    party_sessions: cleanupSessionIds.length,
   };
 
   for (const sessionId of cleanupSessionIds) {
-    cleanupCounts.participants += await countRows("participants", "party_session_id", sessionId);
+    cleanupCounts.participants += await countRows(
+      "participants",
+      "party_session_id",
+      sessionId,
+    );
   }
 
   console.log("Cleanup candidates:");
@@ -944,15 +1010,20 @@ async function cleanup() {
   }
 
   const unsafeSession = ownedSessions.data?.find(
-    (session) => !String(session.public_join_code).startsWith(validationId)
+    (session) => !String(session.public_join_code).startsWith(validationId),
   );
 
   if (unsafeSession) {
-    console.log("Cleanup skipped: at least one candidate did not match the validation id.");
+    console.log(
+      "Cleanup skipped: at least one candidate did not match the validation id.",
+    );
     return;
   }
 
-  const cleanupResult = await service.from("party_sessions").delete().in("id", cleanupSessionIds);
+  const cleanupResult = await service
+    .from("party_sessions")
+    .delete()
+    .in("id", cleanupSessionIds);
 
   if (cleanupResult.error) {
     throw cleanupResult.error;
@@ -971,7 +1042,7 @@ main()
       "run live RLS validation",
       "harness completes without uncaught errors",
       describeUnknownError(error),
-      "test-setup"
+      "test-setup",
     );
   })
   .finally(async () => {
@@ -986,7 +1057,7 @@ main()
         "delete validation-owned party_sessions",
         "only validation-owned rows are deleted",
         describeUnknownError(error),
-        "test-setup"
+        "test-setup",
       );
     }
 

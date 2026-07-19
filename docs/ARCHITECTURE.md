@@ -32,17 +32,18 @@ Milestone 3.6 aligns the architecture around two simultaneous surfaces:
 
 The phone must not become a second presentation screen. It should only display information useful to the current guest.
 
-The birthday game is host-driven. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, its 20-second countdown remains automatic.
+The birthday game is host-driven. Ian controls phase transitions such as Start Game, Reveal Answers, Reveal Correct Answer, Show Leaderboard, and Next Question. The question preview does not start the timer; revealing choices starts the automatic 20-second countdown, and deadline expiry closes answering without a required host lock.
 
-Milestone 3.6 does not implement quiz runtime, realtime, Supabase, networking, or host controls. These responsibilities are architecture planning constraints for future milestones.
+Milestone 3.6 originally documented this surface model before runtime work. Milestone 4 implemented the local Party Engine and Milestone 5 implemented the Supabase-backed remote runtime, realtime wake-up model, server route boundaries, and production Host Controller.
 
 ## Shared Game Lifecycle
 
 Future runtime work should use explicit phase semantics:
 
 - `LOBBY`: Party Screen shows hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
-- `QUESTION_ACTIVE`: Party Screen shows the large question, automatic countdown, progress, and submitted-answer count while phones collect guest answers.
-- `QUESTION_LOCKED`: Answering is closed; phones show personal locked or timed-out state while the Party Screen waits for host reveal.
+- `QUESTION_PREVIEW`: Party Screen and phones show the large question while answer choices remain hidden and the timer has not started.
+- `QUESTION_ACTIVE`: Party Screen shows the large question, revealed answer choices, automatic countdown, progress, and submitted-answer count while phones collect guest answers.
+- `QUESTION_LOCKED`: Answering is closed automatically at the deadline; phones show personal locked or timed-out state while the Party Screen waits for host reveal.
 - `ANSWER_REVEAL`: Party Screen reveals the correct answer, celebration, and approved Han fun fact.
 - `LEADERBOARD`: Party Screen shows animated rankings and current positions.
 - `NEXT_QUESTION`: Host advances the room toward the next question.
@@ -96,15 +97,16 @@ The exact structure started in Milestone 1 and Milestone 2. Feature folders shou
 
 ## Routing Plan
 
-Guest routes:
+Current and planned guest routes:
 
 - `/{locale}`: welcome and entry.
-- `/{locale}/quiz`: quiz flow.
-- `/{locale}/result`: result screen.
-- `/{locale}/leaderboard`: mobile leaderboard.
-- `/{locale}/message`: leave a birthday message.
-- `/{locale}/timeline`: placeholder or future timeline.
-- `/{locale}/gallery`: placeholder or future gallery.
+- `/{locale}/play`: implemented phone Guest Controller route for local or remote runtime.
+- `/{locale}/quiz`: older planned quiz-flow route; current implementation uses `/{locale}/play`.
+- `/{locale}/result`: planned result screen if separated from the controller.
+- `/{locale}/leaderboard`: planned mobile leaderboard.
+- `/{locale}/message`: planned leave-a-birthday-message route.
+- `/{locale}/timeline`: planned placeholder or future timeline.
+- `/{locale}/gallery`: planned placeholder or future gallery.
 
 Display routes:
 
@@ -122,7 +124,8 @@ Admin routes:
 QA routes:
 
 - `/{locale}/qa`: QA mode entry.
-- `/{locale}/qa/quiz`: test quiz flow.
+- `/{locale}/qa/party`: implemented local Party Engine harness with host controls, display preview, and guest preview.
+- `/{locale}/qa/quiz`: older planned test quiz route; current implementation uses `/{locale}/qa/party`.
 
 Route protection and final URLs should be decided during implementation planning.
 
@@ -233,28 +236,31 @@ Shared game state, once implemented:
 - Reveal/fun-fact visibility state controlled by the host.
 - Leaderboard visibility state.
 
-Milestone 3 client/session state:
+Milestone 3 client/session state plus Enhancement 1A onboarding avatar bridge:
 
 - Selected language.
 - Guest display name.
+- Optional local avatar preview or built-in preset selection.
 - Current onboarding step.
 
-This state is stored in browser `sessionStorage` only. It does not create participant IDs, Supabase records, quiz attempts, question responses, leaderboard entries, messages, admin records, or QA/test data.
+This draft/navigation state is stored in browser `sessionStorage`. It is not remote authority. The remote participant row and resume cookie are the server-authoritative identity and confirmed profile. In local runtime, the prepared avatar preview may remain a session-scoped data URL for browser testing. In remote runtime, photo avatars are uploaded through the server route to private Supabase Storage, and snapshots expose only signed URLs, preset IDs, or initials fallback.
 
 Milestone 4 local party state:
 
 - `PartyState.phase` is the single authoritative lifecycle phase.
-- Allowed phases are `lobby`, `question_ready`, `question_active`, `question_locked`, `answer_reveal`, `leaderboard`, `waiting_for_host`, and `finished`.
-- Static question text remains in development fixtures; runtime state stores question ids and responses.
+- Allowed phases are `lobby`, `question_ready`, `question_active`, `question_locked`, `answer_reveal`, `leaderboard`, `waiting_for_host`, and `finished`. Current product semantics treat `question_ready` as the preview state and `question_locked` as the deadline-closed state.
+- Static question text is loaded into `PartyConfig`; runtime state stores question ids and responses.
 - Guest draft answer selection remains local UI state until the Submit Answer command is accepted.
 - Locked responses are immutable. Exact duplicate retry returns the existing state; conflicting retry is rejected.
 - Submissions are accepted only when `receivedAt < deadlineAt`.
+- Host, guest, and Party Screen countdowns render from `questionDeadlineAt - (clientNow + serverClockOffset)`. A shared client hook updates at 200 ms, caps the delivery allowance at the configured 20-second visible duration, clamps at zero, recomputes on focus/visibility changes, and never persists per-second ticks. Remote question opening adds a five-second deadline delivery allowance so the authoritative phase can reach all room surfaces before their visible clock decreases; this is transport tolerance, not a per-second write loop.
 - Timeout responses are materialized when the question locks.
-- Scores are derived from locked responses only: correct equals 1, incorrect/timeout equals 0.
+- Scores sum persisted `pointsAwarded` from locked responses. `time-v1` correct answers receive 1,000 base points plus up to 1,000 points from authoritative response time; incorrect and timeout responses receive zero. Historical `correct-count-v1` rows retain their original 0/1 values.
 
 ```mermaid
 flowchart TD
-  Content[Development fixture content] --> Engine[React-independent Party Engine]
+  Content[Approved bilingual locale content] --> Adapter[getApprovedPartyConfig]
+  Adapter --> Engine[React-independent Party Engine]
   Engine --> Runtime[Local runtime contract]
   Runtime --> React[Runtime provider and hooks]
   React --> Display[Party Screen projection]
@@ -266,13 +272,12 @@ flowchart TD
 stateDiagram-v2
   [*] --> lobby
   lobby --> question_ready: PREPARE_FIRST_QUESTION
-  question_ready --> question_active: OPEN_QUESTION
-  question_active --> question_locked: LOCK_QUESTION / deadline
+  question_ready --> question_active: REVEAL_CHOICES
+  question_active --> question_locked: deadline
   question_locked --> answer_reveal: REVEAL_ANSWER
   answer_reveal --> leaderboard: SHOW_LEADERBOARD
-  leaderboard --> waiting_for_host: COMPLETE_PRESENTATION
-  waiting_for_host --> question_ready: PREPARE_NEXT_QUESTION
-  waiting_for_host --> finished: FINISH_PARTY
+  leaderboard --> question_ready: ADVANCE_FROM_LEADERBOARD (more questions)
+  leaderboard --> finished: ADVANCE_FROM_LEADERBOARD (final question)
 ```
 
 Server/runtime state:
@@ -294,66 +299,73 @@ Persistence should happen at clear boundaries so refreshes and duplicate taps do
 - Content schema validation should run during development/build once implementation begins.
 - Missing translation keys should block production release.
 
-## Supabase Schema Plan
+## Supabase Schema
 
-Tables should be finalized before migration implementation.
+Milestone 5 implements the runtime schema in `supabase/migrations/`. The older draft list below is retained only as historical planning context for features that are not yet implemented, such as messages.
 
-### `participants`
+### Implemented Runtime Tables
+
+#### `party_sessions`
+
+Authoritative shared party snapshot: join code, party key, deployment environment, current-session flag, lifecycle status, phase, current question references, immutable `question_count`, question timestamps, display locale, test metadata, monotonic revision, session label, creation idempotency key, and lifecycle timestamps.
+
+Finished sessions remain current until archive or replacement. This keeps final projections and winner downloads refresh-safe while joining remains closed because only active sessions accept participants.
+
+#### `participants`
 
 Purpose: Store guest identity for event interactions.
 
 Fields:
 
 - `id`.
+- `party_session_id`.
 - `display_name`.
 - `locale`.
-- `device_fingerprint` or equivalent non-sensitive duplicate-prevention token if approved.
+- `resume_token_hash`.
+- `joined_at`.
+- `last_seen_at`.
 - `is_test`.
-- `created_at`.
+- `avatar_type`: `photo`, `preset`, or null.
+- `avatar_path`: private Storage object path for photo avatars.
+- `avatar_preset_id`: stable local preset id for built-in avatars.
+- `avatar_updated_at`.
+- `is_ready`: lobby readiness, default false.
+- `ready_at`: server timestamp when ready, null when not ready.
 
-### `quiz_attempts`
+#### `question_responses`
 
-Purpose: Store one guest's quiz session.
+Purpose: Store one immutable response for one participant/question in one party session.
 
 Fields:
 
 - `id`.
+- `party_session_id`.
 - `participant_id`.
-- `status`.
-- `score`.
-- `total_questions`.
-- `started_at`.
-- `completed_at`.
-- `is_test`.
-
-Constraints:
-
-- Enforce one active or completed attempt per participant/event scope if the approved guest identity model needs it.
-
-### `question_responses`
-
-Purpose: Store one immutable response for one question within one quiz attempt.
-
-Fields:
-
-- `id`.
-- `attempt_id`.
 - `question_id`.
-- `selected_answer_id` or null for timeout.
-- `status`, such as `accepted` or `timed_out`.
-- `is_correct`.
-- `timed_out`.
+- `selected_option_id` or null for timeout.
+- `status`: `locked_answer` or `locked_timeout`.
 - `submitted_at`.
 - `locked_at`.
 - `response_duration_ms`.
-- `idempotency_key` or equivalent retry token.
+- `points_awarded`.
+- `scoring_version`: `correct-count-v1` or `time-v1`.
+- `is_correct`.
+- `submission_id`.
+- `is_test`.
 
 Constraints:
 
-- Enforce one accepted question response per quiz attempt per question.
-- Once accepted or timed out, a question response must not be reopened or edited.
-- Retried requests with the same idempotency key or equivalent retry token should return the existing locked response instead of creating a duplicate.
-- Final score should be calculated from accepted locked question responses.
+- Enforce one response per party session, participant, and question.
+- Enforce timeout rows with no selected option and answer rows with a selected option.
+- Enforce non-negative response duration when present.
+- Enforce unique submission ids per party session and participant.
+- Final score sums persisted `points_awarded` from accepted locked question responses.
+
+#### `host_command_log`
+
+Compact command audit for accepted or rejected host commands. Command ids are unique within a party session.
+
+### Planned Future Tables
 
 ### `messages`
 
@@ -381,7 +393,7 @@ Fields:
 - `value`.
 - `updated_at`.
 
-Future shared game state may live in `event_settings` or a dedicated table once the runtime model is approved. Milestone 3.6 intentionally does not choose a database shape.
+Future non-game settings may live in `event_settings` or a dedicated table if needed. Shared quiz runtime state now lives in `party_sessions` plus immutable response rows.
 
 Milestone 5 database implementation supersedes the older draft table list for quiz runtime:
 
@@ -391,7 +403,7 @@ Authoritative shared party snapshot: join code, lifecycle status, phase, current
 
 ### `participants`
 
-One guest in one party session: display name, locale, hashed resume token, joined/last-seen timestamps, and `is_test`. Display names are not identity; opaque participant ids and server-issued resume tokens are.
+One guest in one party session: display name, locale, hashed resume token, joined/last-seen timestamps, optional avatar metadata, and `is_test`. Display names are not identity; opaque participant ids and server-issued resume tokens are.
 
 ### `question_responses`
 
@@ -403,32 +415,59 @@ Compact command audit for accepted/rejected host commands. It is bounded by part
 
 The response endpoint calls `touch_party_session_response` after a new accepted response so realtime listeners can refetch counts and projections from the authoritative snapshot without exposing raw response rows to guests.
 
+## Approved Question Loading
+
+Normal local application runtime, Vercel Preview, and Production load text-based single-choice questions from `content/en.json` and `content/vi.json` through `lib/party-engine/content-config.ts`.
+
+The approved loader:
+
+- validates both locale files through `ContentSchema`;
+- pairs questions by stable id;
+- requires matching enabled states, sort order, answer ids, and correct answer ids;
+- filters disabled questions;
+- sorts enabled questions by `sortOrder`;
+- maps authoring `answers` to runtime `options`;
+- maps authoring `correctAnswerId` to runtime `correctOptionId`;
+- maps quiz-level `questionDurationSeconds` to `PartyConfig.questionDurationMs`.
+
+Development fixtures in `content/party-fixtures.json` are explicit-only. They are used by the QA party harness and fixture-specific tests, not selected by `NODE_ENV`.
+
+Supabase does not store question definitions. It stores only runtime session state, participants, immutable responses, and host command logs.
+
 ## Party Screen And Leaderboard Strategy
 
 - The Party Screen is the primary shared display and should not be implemented as only a leaderboard table.
 - Before the game, it should show hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
 - During the game, it should show the active question, countdown, progress, submitted-answer count, locked state, answer reveal, and approved Han fun fact.
 - During leaderboard phases, it should show animated ranking and current positions.
+- Current leaderboard projections include previous score/rank plus current-question gain/final score/rank. The Party Screen animates these as a browser-only bar chart race keyed by session and question; animation progress is never persisted.
 - At finish, it should show final leaderboard, celebration, and thank-you.
 - Source leaderboard from completed quiz attempts whose question responses are locked.
-- Rank by score first.
-- Use completion time or time remaining only if approved as a tie-breaker.
+- Rank by total persisted points first, then participant creation order, display name, and participant id.
 - Filter out QA/test data in production display.
 - Use Supabase real-time subscriptions or a lightweight polling fallback.
 
 ## API Structure
 
-Potential server actions or route handlers:
+Implemented Milestone 5 route handlers:
 
-- Create or resume participant.
-- Start quiz attempt.
-- Submit question response.
-- Lock timed-out question response.
-- Complete quiz attempt.
+- `GET /api/party/session`: returns display-safe or participant-safe snapshot based on participant cookie.
+- `GET /api/party/sessions`: host-authorized current plus recent session history.
+- `POST /api/party/sessions`: host-authorized create/archive session actions.
+- `POST /api/party/join`: validates display name/locale, creates participant, sets `han_participant_session`.
+- `PATCH /api/party/participant/profile`: authenticates by participant cookie and updates locale/name on the same lobby participant; material changes reset readiness.
+- `PATCH /api/party/participant/readiness`: authenticates by participant cookie and idempotently sets lobby readiness.
+- `POST /api/party/participant/avatar`: validates participant cookie plus preset or prepared avatar image, uploads photo avatars to private Storage when needed, and updates participant avatar metadata.
+- `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
+- `GET /api/party/certificate`: validates the participant resume cookie against the current finished session, derives deterministic rank 1 server-side, privately downloads the stored photo avatar when present, and returns a localized one-page A4 PDF with private/no-store headers. Non-winners and unfinished sessions are rejected.
+- `POST /api/party/host/login`: verifies host PIN and sets `han_host_session`.
+- `GET /api/party/host/status`: reports host auth configuration/session status.
+- `POST /api/party/host/command`: verifies host cookie, expected revision, and Party Engine transition before persisting.
+
+Planned future route handlers:
+
 - Fetch result.
-- Fetch leaderboard.
-- Fetch shared game state.
-- Advance shared game phase.
+- Fetch standalone mobile leaderboard.
 - Submit message.
 - Admin fetch final quiz scores.
 - Admin fetch messages.
@@ -437,14 +476,7 @@ Potential server actions or route handlers:
 
 All mutation paths should validate input, preserve immutable locked responses, and prevent duplicate question responses.
 
-Milestone 5 production route handlers:
-
-- `GET /api/party/session`: returns display-safe or participant-safe snapshot based on participant cookie.
-- `POST /api/party/join`: validates display name/locale, creates participant, sets `han_participant_session`.
-- `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
-- `POST /api/party/host/login`: verifies host PIN and sets `han_host_session`.
-- `GET /api/party/host/status`: reports host auth configuration/session status.
-- `POST /api/party/host/command`: verifies host cookie, expected revision, and Party Engine transition before persisting.
+Guest and shared projections distinguish authoritative persisted totals from revealed visible totals. While the current question is active or locked, the public locked-response shape omits correctness, points, response duration, scoring version, and correct answer data, and visible scores remain at the previous reveal. `answer_reveal` releases the persisted gain exactly once. This boundary also applies after refresh/reconnect.
 
 ## Admin And QA Separation
 
@@ -458,8 +490,10 @@ Milestone 5 production route handlers:
 
 - Vercel hosts the Next.js application.
 - Supabase hosts database and real-time services.
-- Environment variables should be documented when implementation begins.
-- Preview deployments should use separate or clearly tagged test data.
+- Environment variables are documented in `.env.example`, `README.md`, `docs/MILESTONE_5_REVIEW.md`, and `docs/DEPLOYMENT.md`.
+- GitHub Actions runs `npm run validate`; manual live validation runs hosted RLS and optional realtime rehearsal.
+- Normal deployments should use GitHub-driven Vercel integration. Local Vercel CLI deploys are reserved for diagnostics or approved emergency/manual fallback.
+- Preview and production current sessions are isolated by `party_key + deployment_environment + is_current`; `PARTY_SESSION_IS_TEST` is metadata for rehearsal/test rows.
 
 ## Future Scalability
 

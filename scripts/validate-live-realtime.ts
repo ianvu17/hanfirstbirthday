@@ -1,7 +1,12 @@
 import crypto from "node:crypto";
 import { existsSync } from "node:fs";
 
-import { chromium, expect, type BrowserContext, type Page } from "@playwright/test";
+import {
+  chromium,
+  expect,
+  type BrowserContext,
+  type Page,
+} from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 
 if (existsSync(".env.local")) {
@@ -17,13 +22,15 @@ const baseHost = new URL(baseUrl).hostname;
 const baseIsSecure = new URL(baseUrl).protocol === "https:";
 
 if (!validationJoinCode.startsWith("codex-m5-")) {
-  throw new Error("LIVE_REALTIME_JOIN_CODE must be a codex-m5-* validation code.");
+  throw new Error(
+    "LIVE_REALTIME_JOIN_CODE must be a codex-m5-* validation code.",
+  );
 }
 
 const service = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
-  { auth: { persistSession: false, autoRefreshToken: false } }
+  { auth: { persistSession: false, autoRefreshToken: false } },
 );
 
 function createHostCookieValue(now = Date.now()) {
@@ -31,8 +38,14 @@ function createHostCookieValue(now = Date.now()) {
   const nonce = crypto.randomBytes(16).toString("base64url");
   const payload = `host:${expiresAt}.${nonce}`;
   const secret =
-    process.env.HOST_SESSION_SECRET || process.env.HOST_PIN_HASH || process.env.HOST_PIN || "";
-  const signature = crypto.createHmac("sha256", secret).update(payload).digest("base64url");
+    process.env.HOST_SESSION_SECRET ||
+    process.env.HOST_PIN_HASH ||
+    process.env.HOST_PIN ||
+    "";
+  const signature = crypto
+    .createHmac("sha256", secret)
+    .update(payload)
+    .digest("base64url");
   return { value: `${expiresAt}.${nonce}.${signature}`, expiresAt };
 }
 
@@ -51,7 +64,9 @@ function watchPage(page: Page, label: string, failures: string[]) {
       return;
     }
 
-    failures.push(`${label} request failed: ${request.url()} ${request.failure()?.errorText || ""}`);
+    failures.push(
+      `${label} request failed: ${request.url()} ${request.failure()?.errorText || ""}`,
+    );
   });
   page.on("response", (response) => {
     if (response.status() >= 500) {
@@ -64,23 +79,25 @@ async function createGuestPage(
   browser: Awaited<ReturnType<typeof chromium.launch>>,
   locale: "en" | "vi",
   name: string,
-  id: string
+  id: string,
 ) {
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
-    isMobile: true
+    isMobile: true,
   });
   await context.addInitScript(
     ({ sessionKey, name, id }) => {
       window.sessionStorage.setItem(
         sessionKey,
-        JSON.stringify({ playerName: name, guestSessionId: id })
+        JSON.stringify({ playerName: name, guestSessionId: id }),
       );
     },
-    { sessionKey, name, id }
+    { sessionKey, name, id },
   );
   const page = await context.newPage();
-  await page.goto(`${baseUrl}/${locale}/play`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${baseUrl}/${locale}/play`, {
+    waitUntil: "domcontentloaded",
+  });
   return { context, page };
 }
 
@@ -88,7 +105,7 @@ async function snapshot(page: Page) {
   return page.evaluate(async () => {
     const response = await fetch("/api/party/session", {
       headers: { accept: "application/json" },
-      cache: "no-store"
+      cache: "no-store",
     });
     return response.json();
   });
@@ -100,23 +117,30 @@ async function hostCommand(page: Page, type: string) {
     async ({ type, revision }) => {
       const response = await fetch("/api/party/host/command", {
         method: "POST",
-        headers: { "content-type": "application/json", accept: "application/json" },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+        },
         body: JSON.stringify({
           type,
           expectedRevision: revision,
-          commandId: `${type}:${revision}:${globalThis.crypto.randomUUID()}`
-        })
+          commandId: `${type}:${revision}:${globalThis.crypto.randomUUID()}`,
+        }),
       });
-      return { ok: response.ok, status: response.status, body: await response.json() };
+      return {
+        ok: response.ok,
+        status: response.status,
+        body: await response.json(),
+      };
     },
-    { type, revision: current.session.revision }
+    { type, revision: current.session.revision },
   );
 
   if (!result.ok || !result.body.ok) {
     throw new Error(
       `Host command ${type} failed with HTTP ${result.status}: ${
         result.body?.error?.message || "unknown error"
-      }`
+      }`,
     );
   }
 
@@ -135,25 +159,30 @@ async function authenticateHost(context: BrowserContext) {
         httpOnly: true,
         sameSite: "Lax",
         secure: baseIsSecure,
-        expires: Math.floor(hostCookie.expiresAt / 1000)
-      }
+        expires: Math.floor(hostCookie.expiresAt / 1000),
+      },
     ]);
     return "signed-cookie";
   }
 
   const loginPage = await context.newPage();
   try {
-    await loginPage.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded" });
+    await loginPage.goto(`${baseUrl}/en/host`, {
+      waitUntil: "domcontentloaded",
+    });
     const result = await loginPage.evaluate(
       async ({ pin }) => {
         const response = await fetch("/api/party/host/login", {
           method: "POST",
-          headers: { "content-type": "application/json", accept: "application/json" },
-          body: JSON.stringify({ pin })
+          headers: {
+            "content-type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({ pin }),
         });
         return { ok: response.ok, status: response.status };
       },
-      { pin: validationHostPin }
+      { pin: validationHostPin },
     );
 
     if (!result.ok) {
@@ -178,14 +207,33 @@ async function extendActiveQuestionDeadline(sessionId: string) {
   }
 }
 
+async function expireActiveQuestionDeadline(sessionId: string) {
+  const deadline = new Date(Date.now() - 1000).toISOString();
+  const updated = await service
+    .from("party_sessions")
+    .update({ question_deadline_at: deadline })
+    .eq("id", sessionId);
+
+  if (updated.error) {
+    throw updated.error;
+  }
+}
+
 async function responsePost(page: Page, payload: Record<string, unknown>) {
   return page.evaluate(async (payload) => {
     const response = await fetch("/api/party/response", {
       method: "POST",
-      headers: { "content-type": "application/json", accept: "application/json" },
-      body: JSON.stringify(payload)
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify(payload),
     });
-    return { ok: response.ok, status: response.status, body: await response.json() };
+    return {
+      ok: response.ok,
+      status: response.status,
+      body: await response.json(),
+    };
   }, payload);
 }
 
@@ -201,7 +249,11 @@ async function cleanup() {
   }
 
   const ids = (sessions.data || []).map((row) => row.id);
-  const counts = { question_responses: 0, participants: 0, party_sessions: ids.length };
+  const counts = {
+    question_responses: 0,
+    participants: 0,
+    party_sessions: ids.length,
+  };
 
   if (ids.length > 0) {
     const responses = await service
@@ -240,30 +292,57 @@ async function main() {
   const failures: string[] = [];
 
   try {
-    const displayContext = await browser.newContext({ viewport: { width: 1366, height: 768 } });
+    const displayContext = await browser.newContext({
+      viewport: { width: 1366, height: 768 },
+    });
     const display = await displayContext.newPage();
     watchPage(display, "display", failures);
-    await display.goto(`${baseUrl}/display/party`, { waitUntil: "domcontentloaded" });
-    await expect(display.getByText(/Remote test session/)).toBeVisible({ timeout: 15000 });
+    await display.goto(`${baseUrl}/display/party`, {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(display.getByText(/Remote test session/)).toBeVisible({
+      timeout: 15000,
+    });
 
-    const guestA = await createGuestPage(browser, "en", "Codex Guest A", "codex-guest-a");
-    const guestB = await createGuestPage(browser, "vi", "Codex Guest B", "codex-guest-b");
+    const guestA = await createGuestPage(
+      browser,
+      "en",
+      "Codex Guest A",
+      "codex-guest-a",
+    );
+    const guestB = await createGuestPage(
+      browser,
+      "vi",
+      "Codex Guest B",
+      "codex-guest-b",
+    );
     watchPage(guestA.page, "guestA", failures);
     watchPage(guestB.page, "guestB", failures);
-    await expect(guestA.page.getByText("Codex Guest A")).toBeVisible({ timeout: 15000 });
-    await expect(guestB.page.getByText("Codex Guest B")).toBeVisible({ timeout: 15000 });
-    await expect(display.getByText(/Participants:\s*2/)).toBeVisible({ timeout: 15000 });
+    await expect(guestA.page.getByText("Codex Guest A")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(guestB.page.getByText("Codex Guest B")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(display.getByText(/Participants:\s*2/)).toBeVisible({
+      timeout: 15000,
+    });
 
     const unauthorizedHost = await guestA.page.evaluate(async () => {
-      const current = await fetch("/api/party/session").then((response) => response.json());
+      const current = await fetch("/api/party/session").then((response) =>
+        response.json(),
+      );
       const response = await fetch("/api/party/host/command", {
         method: "POST",
-        headers: { "content-type": "application/json", accept: "application/json" },
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+        },
         body: JSON.stringify({
           type: "PREPARE_FIRST_QUESTION",
           expectedRevision: current.session.revision,
-          commandId: `unauthorized:${globalThis.crypto.randomUUID()}`
-        })
+          commandId: `unauthorized:${globalThis.crypto.randomUUID()}`,
+        }),
       });
       return response.status;
     });
@@ -271,52 +350,69 @@ async function main() {
       throw new Error(`unauthorized host command returned ${unauthorizedHost}`);
     }
 
-    const forgedHost = await guestA.context.addCookies([
-      {
-        name: "han_host_session",
-        value: "forged.cookie.value",
-        domain: baseHost,
-        path: "/",
-        httpOnly: true,
-        sameSite: "Lax",
-        secure: baseIsSecure
-      }
-    ]).then(() =>
-      guestA.page.evaluate(async () => {
-        const current = await fetch("/api/party/session").then((response) => response.json());
-        const response = await fetch("/api/party/host/command", {
-          method: "POST",
-          headers: { "content-type": "application/json", accept: "application/json" },
-          body: JSON.stringify({
-            type: "PREPARE_FIRST_QUESTION",
-            expectedRevision: current.session.revision,
-            commandId: `forged:${globalThis.crypto.randomUUID()}`
-          })
-        });
-        return response.status;
-      })
-    );
+    const forgedHost = await guestA.context
+      .addCookies([
+        {
+          name: "han_host_session",
+          value: "forged.cookie.value",
+          domain: baseHost,
+          path: "/",
+          httpOnly: true,
+          sameSite: "Lax",
+          secure: baseIsSecure,
+        },
+      ])
+      .then(() =>
+        guestA.page.evaluate(async () => {
+          const current = await fetch("/api/party/session").then((response) =>
+            response.json(),
+          );
+          const response = await fetch("/api/party/host/command", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              accept: "application/json",
+            },
+            body: JSON.stringify({
+              type: "PREPARE_FIRST_QUESTION",
+              expectedRevision: current.session.revision,
+              commandId: `forged:${globalThis.crypto.randomUUID()}`,
+            }),
+          });
+          return response.status;
+        }),
+      );
     if (forgedHost !== 401) {
       throw new Error(`forged host cookie command returned ${forgedHost}`);
     }
 
     const hostContext = await browser.newContext({
       viewport: { width: 390, height: 844 },
-      isMobile: true
+      isMobile: true,
     });
     await authenticateHost(hostContext);
     const host = await hostContext.newPage();
     watchPage(host, "host", failures);
     await host.goto(`${baseUrl}/en/host`, { waitUntil: "domcontentloaded" });
-    await expect(host.getByText(/Han Party Control/)).toBeVisible({ timeout: 15000 });
+    await expect(host.getByText(/Han Party Control/)).toBeVisible({
+      timeout: 15000,
+    });
 
     await hostCommand(host, "PREPARE_FIRST_QUESTION");
-    await expect(display.getByText(/Question ready/)).toBeVisible({ timeout: 15000 });
-    const openedSnapshot = await hostCommand(host, "OPEN_QUESTION");
+    await expect(display.getByText(/Question ready/)).toBeVisible({
+      timeout: 15000,
+    });
+    const openedSnapshot = await hostCommand(host, "REVEAL_CHOICES");
     await extendActiveQuestionDeadline(openedSnapshot.session.id);
-    await expect(display.getByText(/Development question 1/)).toBeVisible({ timeout: 15000 });
-    await expect(guestA.page.getByText(/Development question 1/)).toBeVisible({ timeout: 15000 });
-    await expect(guestB.page.getByText(/Câu hỏi thử nghiệm 1/)).toBeVisible({ timeout: 15000 });
+    await expect(
+      display.getByText(/Temporary approved-content sample 1/),
+    ).toBeVisible({ timeout: 15000 });
+    await expect(
+      guestA.page.getByText(/Temporary approved-content sample 1/),
+    ).toBeVisible({ timeout: 15000 });
+    await expect(
+      guestB.page.getByText(/Câu hỏi mẫu nội dung đã duyệt 1/),
+    ).toBeVisible({ timeout: 15000 });
 
     const snapA = await snapshot(guestA.page);
     const participantA = snapA.participant.id;
@@ -328,12 +424,14 @@ async function main() {
       score: 999999,
       is_host: true,
       status: "completed",
-      leaderboard_position: 1
+      leaderboard_position: 1,
     });
     if (!answerA.ok) {
       throw new Error(`guest A response failed with HTTP ${answerA.status}`);
     }
-    await expect(display.getByText(/Submitted:\s*1/)).toBeVisible({ timeout: 15000 });
+    await expect(display.getByText(/Submitted:\s*1/)).toBeVisible({
+      timeout: 15000,
+    });
 
     const duplicate = await responsePost(guestA.page, {
       selectedOptionId: "option-b",
@@ -342,63 +440,99 @@ async function main() {
       score: 999999,
       is_host: true,
       status: "completed",
-      leaderboard_position: 1
+      leaderboard_position: 1,
     });
     if (!duplicate.ok) {
-      throw new Error(`exact duplicate response was not idempotent: ${duplicate.status}`);
+      throw new Error(
+        `exact duplicate response was not idempotent: ${duplicate.status}`,
+      );
     }
 
     const conflict = await responsePost(guestA.page, {
       selectedOptionId: "option-a",
-      submissionId: `${participantA}:${questionId}:option-a`
+      submissionId: `${participantA}:${questionId}:option-a`,
     });
     if (conflict.status !== 409) {
-      throw new Error(`conflicting duplicate response returned ${conflict.status}`);
+      throw new Error(
+        `conflicting duplicate response returned ${conflict.status}`,
+      );
     }
 
     const snapB = await snapshot(guestB.page);
     const participantB = snapB.participant.id;
     const answerB = await responsePost(guestB.page, {
       selectedOptionId: "option-a",
-      submissionId: `${participantB}:${questionId}:option-a`
+      submissionId: `${participantB}:${questionId}:option-a`,
     });
     if (!answerB.ok) {
       throw new Error(`guest B response failed with HTTP ${answerB.status}`);
     }
-    await expect(display.getByText(/Submitted:\s*2/)).toBeVisible({ timeout: 15000 });
+    await expect(display.getByText(/Submitted:\s*2/)).toBeVisible({
+      timeout: 15000,
+    });
     await expect(host.getByText(/Submitted/)).toBeVisible({ timeout: 15000 });
 
-    await hostCommand(host, "LOCK_QUESTION");
-    await expect(display.getByText(/Answers locked/)).toBeVisible({ timeout: 15000 });
+    await expireActiveQuestionDeadline(openedSnapshot.session.id);
+    await snapshot(host);
+    await expect(display.getByText(/Answers locked/)).toBeVisible({
+      timeout: 15000,
+    });
     const staleAfterLock = await responsePost(guestB.page, {
       selectedOptionId: "option-b",
-      submissionId: `late:${Date.now()}`
+      submissionId: `late:${Date.now()}`,
     });
     if (staleAfterLock.status !== 409) {
-      throw new Error(`stale locked response returned ${staleAfterLock.status}`);
+      throw new Error(
+        `stale locked response returned ${staleAfterLock.status}`,
+      );
     }
 
     await hostCommand(host, "REVEAL_ANSWER");
-    await expect(display.getByText(/Answer reveal/).first()).toBeVisible({ timeout: 15000 });
+    await expect(display.getByText(/Answer reveal/).first()).toBeVisible({
+      timeout: 15000,
+    });
     await hostCommand(host, "SHOW_LEADERBOARD");
-    await expect(display.getByText(/Leaderboard/).first()).toBeVisible({ timeout: 15000 });
-    await expect(display.getByText("Codex Guest A")).toBeVisible({ timeout: 15000 });
-    await expect(display.getByText("Codex Guest B")).toBeVisible({ timeout: 15000 });
+    await expect(display.getByText(/Leaderboard/).first()).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(display.getByText("Codex Guest A")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(display.getByText("Codex Guest B")).toBeVisible({
+      timeout: 15000,
+    });
 
     await guestA.page.reload({ waitUntil: "domcontentloaded" });
-    await expect(guestA.page.getByText("Codex Guest A")).toBeVisible({ timeout: 15000 });
-    await expect(guestA.page.getByText(/Your score:\s*1\/2/)).toBeVisible({ timeout: 15000 });
+    await expect(guestA.page.getByText("Codex Guest A")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(
+      guestA.page.getByText(/Your score:\s*[\d,]+ points/),
+    ).toBeVisible({ timeout: 15000 });
     await host.reload({ waitUntil: "domcontentloaded" });
     await expect(host.getByText(/leaderboard/)).toBeVisible({ timeout: 15000 });
 
-    const guestC = await createGuestPage(browser, "en", "Codex Guest C", "codex-guest-c");
+    const guestC = await createGuestPage(
+      browser,
+      "en",
+      "Codex Guest C",
+      "codex-guest-c",
+    );
     watchPage(guestC.page, "guestC", failures);
-    await expect(guestC.page.getByText("Codex Guest C")).toBeVisible({ timeout: 15000 });
-    await expect(display.getByText(/Participants:\s*3/)).toBeVisible({ timeout: 15000 });
+    await expect(guestC.page.getByText("Codex Guest C")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(display.getByText(/Participants:\s*3/)).toBeVisible({
+      timeout: 15000,
+    });
 
     await guestB.page.goto(`${baseUrl}/vi`, { waitUntil: "domcontentloaded" });
-    await guestB.page.goto(`${baseUrl}/vi/play`, { waitUntil: "domcontentloaded" });
-    await expect(guestB.page.getByText("Codex Guest B")).toBeVisible({ timeout: 15000 });
+    await guestB.page.goto(`${baseUrl}/vi/play`, {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(guestB.page.getByText("Codex Guest B")).toBeVisible({
+      timeout: 15000,
+    });
 
     if (failures.length > 0) {
       throw new Error(failures.join("\n"));
@@ -412,6 +546,8 @@ async function main() {
 }
 
 main().catch((error: unknown) => {
-  console.error(error instanceof Error ? error.message : "Live realtime validation failed.");
+  console.error(
+    error instanceof Error ? error.message : "Live realtime validation failed.",
+  );
   process.exit(1);
 });

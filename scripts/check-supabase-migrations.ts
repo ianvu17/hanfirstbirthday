@@ -36,7 +36,30 @@ const requiredFragments = [
   "grant select (",
   "grant execute on function public.touch_party_session_response(uuid) to service_role",
   "alter publication supabase_realtime add table public.party_sessions",
-  "alter publication supabase_realtime add table public.participants"
+  "alter publication supabase_realtime add table public.participants",
+  "add column if not exists avatar_type text",
+  "participants_avatar_combination_check",
+  "insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)",
+  "'party-avatars'",
+  "No anonymous avatar object reads",
+  "No anonymous avatar object writes",
+  "party_sessions_current_status_check",
+  "status in ('draft', 'active', 'finished')",
+  "add column if not exists question_count integer not null default 10",
+  "party_sessions_question_count_check",
+  "add column if not exists points_awarded integer not null default 0",
+  "add column if not exists scoring_version text not null default 'time-v1'",
+  "question_responses_points_awarded_check",
+  "question_responses_scoring_version_check",
+  "scoring_version = 'correct-count-v1'",
+  "p_question_count integer",
+  "party_sessions_question_count_immutable",
+  "question_count_is_immutable",
+  "idempotency_conflict",
+  "add column if not exists is_ready boolean not null default false",
+  "add column if not exists ready_at timestamptz",
+  "participants_ready_at_check",
+  "participants_party_session_readiness_idx",
 ];
 
 const missing = requiredFragments.filter((fragment) => !sql.includes(fragment));
@@ -49,4 +72,6 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-console.log("Supabase migration includes Milestone 5 tables, constraints, indexes, and RLS policies.");
+console.log(
+  "Supabase migrations include runtime, time scoring, session question count, finished winner state, avatar storage, constraints, indexes, and RLS policies.",
+);

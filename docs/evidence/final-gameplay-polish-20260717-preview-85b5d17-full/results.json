@@ -1,0 +1,1040 @@
+{
+  "baseUrl": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app",
+  "sessionId": "c6c672f2-058a-4db0-bc57-ccce12c7e0d1",
+  "isTest": true,
+  "createdAt": "2026-07-16T19:42:23.355Z",
+  "finalSnapshot": {
+    "mode": "remote",
+    "configured": true,
+    "session": {
+      "id": "c6c672f2-058a-4db0-bc57-ccce12c7e0d1",
+      "publicJoinCode": "han-turns-one",
+      "partyKey": "han-first-birthday",
+      "deploymentEnvironment": "preview",
+      "status": "finished",
+      "phase": "finished",
+      "revision": 71,
+      "isTest": true,
+      "isCurrent": true,
+      "label": "Codex Preview validation 2026-07-16T19:34:24.667Z",
+      "createdAt": "2026-07-16T19:34:24.96735+00:00",
+      "updatedAt": "2026-07-16T19:42:14.486+00:00",
+      "finishedAt": "2026-07-16T19:42:14.486+00:00",
+      "archivedAt": null
+    },
+    "projection": {
+      "phase": "finished",
+      "revision": 71,
+      "currentQuestion": {
+        "id": "han-test-question-10",
+        "enabled": true,
+        "sortOrder": 10,
+        "prompt": {
+          "en": "What is the most important goal of this temporary 10-question rehearsal?",
+          "vi": "Mục tiêu quan trọng nhất của buổi chạy thử với 10 câu hỏi tạm thời này là gì?"
+        },
+        "options": [
+          {
+            "id": "option-a",
+            "label": {
+              "en": "To permanently record fictional facts about Han",
+              "vi": "Lưu vĩnh viễn những thông tin hư cấu về Han"
+            }
+          },
+          {
+            "id": "option-b",
+            "label": {
+              "en": "To verify the complete guest, host, display, scoring, reveal, and leaderboard flow",
+              "vi": "Kiểm tra toàn bộ luồng của khách, host, màn hình chung, tính điểm, công bố đáp án và bảng xếp hạng"
+            }
+          },
+          {
+            "id": "option-c",
+            "label": {
+              "en": "To replace the final birthday celebration",
+              "vi": "Thay thế cho buổi tiệc sinh nhật thật"
+            }
+          }
+        ],
+        "funFact": {
+          "en": "After the full rehearsal passes, these temporary questions will be replaced with Ian's approved real birthday questions.",
+          "vi": "Sau khi toàn bộ buổi chạy thử thành công, các câu hỏi tạm thời này sẽ được thay bằng bộ câu hỏi sinh nhật thật đã được Ian duyệt."
+        }
+      },
+      "questionNumber": 10,
+      "totalQuestions": 10,
+      "participantCount": 2,
+      "submittedCount": 2,
+      "timedOutCount": 0,
+      "questionDeadlineAt": null,
+      "questionDurationMs": 20000,
+      "remainingMs": 0,
+      "correctOption": {
+        "id": "option-b",
+        "label": {
+          "en": "To verify the complete guest, host, display, scoring, reveal, and leaderboard flow",
+          "vi": "Kiểm tra toàn bộ luồng của khách, host, màn hình chung, tính điểm, công bố đáp án và bảng xếp hạng"
+        }
+      },
+      "answerDistribution": [
+        {
+          "optionId": "option-a",
+          "label": {
+            "en": "To permanently record fictional facts about Han",
+            "vi": "Lưu vĩnh viễn những thông tin hư cấu về Han"
+          },
+          "count": 1,
+          "isCorrect": false
+        },
+        {
+          "optionId": "option-b",
+          "label": {
+            "en": "To verify the complete guest, host, display, scoring, reveal, and leaderboard flow",
+            "vi": "Kiểm tra toàn bộ luồng của khách, host, màn hình chung, tính điểm, công bố đáp án và bảng xếp hạng"
+          },
+          "count": 0,
+          "isCorrect": true
+        },
+        {
+          "optionId": "option-c",
+          "label": {
+            "en": "To replace the final birthday celebration",
+            "vi": "Thay thế cho buổi tiệc sinh nhật thật"
+          },
+          "count": 1,
+          "isCorrect": false
+        }
+      ],
+      "leaderboard": [
+        {
+          "rank": 1,
+          "guestId": "fe33481c-e906-4838-a29f-1077d04e1a2d",
+          "displayName": "Codex EN 1784230472194",
+          "score": 3,
+          "answeredCount": 10,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        },
+        {
+          "rank": 2,
+          "guestId": "8029e28d-13c6-4dca-9d80-e51a881875c6",
+          "displayName": "Codex VI 1784230481311",
+          "score": 3,
+          "answeredCount": 10,
+          "isFixture": true,
+          "avatar": {
+            "type": "fallback",
+            "initials": "C1"
+          }
+        }
+      ]
+    },
+    "joinUrl": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en?join=han-turns-one",
+    "connection": "connected",
+    "serverNow": 1784230943211
+  },
+  "rehearsalQuestionLimit": 10,
+  "certificateValidation": {
+    "winnerLocale": "en",
+    "winnerStatus": 200,
+    "nonWinnerStatus": 403,
+    "contentType": "application/pdf",
+    "pageCount": 1,
+    "bytes": 14086
+  },
+  "timeline": [
+    {
+      "step": "session-ready",
+      "at": "2026-07-16T19:34:30.112Z",
+      "sessionId": "c6c672f2-058a-4db0-bc57-ccce12c7e0d1",
+      "isTest": true,
+      "phase": "lobby"
+    },
+    {
+      "step": "question-preview",
+      "at": "2026-07-16T19:34:59.573Z"
+    },
+    {
+      "step": "answers-active",
+      "at": "2026-07-16T19:35:03.979Z"
+    },
+    {
+      "step": "both-guests-submitted",
+      "at": "2026-07-16T19:35:08.950Z"
+    },
+    {
+      "step": "countdown-observed",
+      "at": "2026-07-16T19:35:26.400Z",
+      "host": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "partyScreen": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "guest": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "step": "locked-survived-refresh",
+      "at": "2026-07-16T19:35:31.165Z"
+    },
+    {
+      "step": "deadline-closed",
+      "at": "2026-07-16T19:35:33.436Z"
+    },
+    {
+      "step": "late-answer-attempt",
+      "at": "2026-07-16T19:35:35.345Z",
+      "status": 409
+    },
+    {
+      "step": "leaderboard",
+      "at": "2026-07-16T19:35:44.895Z"
+    },
+    {
+      "step": "next-question-preview",
+      "at": "2026-07-16T19:35:48.767Z"
+    },
+    {
+      "step": "idle-after-poll",
+      "at": "2026-07-16T19:35:57.270Z"
+    },
+    {
+      "step": "offline-recovery",
+      "at": "2026-07-16T19:36:02.581Z"
+    },
+    {
+      "step": "question-2-complete",
+      "at": "2026-07-16T19:36:41.928Z"
+    },
+    {
+      "step": "question-3-complete",
+      "at": "2026-07-16T19:37:24.942Z"
+    },
+    {
+      "step": "question-4-complete",
+      "at": "2026-07-16T19:38:05.855Z"
+    },
+    {
+      "step": "question-5-complete",
+      "at": "2026-07-16T19:38:49.327Z"
+    },
+    {
+      "step": "question-6-complete",
+      "at": "2026-07-16T19:39:30.991Z"
+    },
+    {
+      "step": "question-7-complete",
+      "at": "2026-07-16T19:40:12.045Z"
+    },
+    {
+      "step": "question-8-complete",
+      "at": "2026-07-16T19:40:53.790Z"
+    },
+    {
+      "step": "question-9-complete",
+      "at": "2026-07-16T19:41:34.389Z"
+    },
+    {
+      "step": "question-10-complete",
+      "at": "2026-07-16T19:42:15.499Z"
+    }
+  ],
+  "matrix": [
+    {
+      "state": "lobby",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": null,
+      "questionRect": {
+        "top": 310,
+        "right": 363,
+        "bottom": 334,
+        "left": 27,
+        "width": 336,
+        "height": 24,
+        "text": "Party lobby"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "lobby",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/vi/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": null,
+      "questionRect": {
+        "top": 310,
+        "right": 363,
+        "bottom": 334,
+        "left": 27,
+        "width": 336,
+        "height": 24,
+        "text": "Sảnh chờ buổi tiệc"
+      },
+      "statusBadgeRect": null,
+      "language": "vi",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answers-active",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": {
+        "top": 478,
+        "right": 363,
+        "bottom": 522,
+        "left": 27,
+        "width": 336,
+        "height": 44,
+        "text": "Submit answer"
+      },
+      "answerListRect": {
+        "top": 242,
+        "right": 363,
+        "bottom": 390,
+        "left": 27,
+        "width": 336,
+        "height": 148,
+        "text": "Han's first day at schoolHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 186,
+        "right": 363,
+        "bottom": 234,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answer-locked",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 256,
+        "right": 363,
+        "bottom": 404,
+        "left": 27,
+        "width": 336,
+        "height": 148,
+        "text": "Han's first day at schoolHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 200,
+        "right": 363,
+        "bottom": 248,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answers-closed",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 267,
+        "right": 363,
+        "bottom": 415,
+        "left": 27,
+        "width": 336,
+        "height": 148,
+        "text": "Han's first day at schoolHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 211,
+        "right": 363,
+        "bottom": 259,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "answer-reveal",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 258,
+        "right": 363,
+        "bottom": 442,
+        "left": 27,
+        "width": 336,
+        "height": 184,
+        "text": "Your answerHan's first day at schoolCorrect answerHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 202,
+        "right": 363,
+        "bottom": 250,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    },
+    {
+      "state": "leaderboard",
+      "url": "https://hanfirstbirthday-24h8194q3-ianalysed.vercel.app/en/play?join=han-turns-one",
+      "viewportWidth": 390,
+      "viewportHeight": 640,
+      "visualViewportHeight": 640,
+      "documentClientHeight": 640,
+      "documentScrollHeight": 640,
+      "bodyScrollHeight": 640,
+      "pageOverflowPixels": 0,
+      "scrollY": 0,
+      "canScroll": false,
+      "horizontalOverflowPixels": 0,
+      "essentialControlBelowFold": false,
+      "submitButtonRect": null,
+      "answerListRect": {
+        "top": 258,
+        "right": 363,
+        "bottom": 442,
+        "left": 27,
+        "width": 336,
+        "height": 184,
+        "text": "Your answerHan's first day at schoolCorrect answerHan's first birthdayHan's first cooking class"
+      },
+      "questionRect": {
+        "top": 202,
+        "right": 363,
+        "bottom": 250,
+        "left": 27,
+        "width": 336,
+        "height": 49,
+        "text": "What is today's special celebration?"
+      },
+      "statusBadgeRect": null,
+      "language": "en",
+      "viewport": [
+        390,
+        640
+      ],
+      "textScale": 1
+    }
+  ],
+  "traces": {
+    "host": [
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:11.237Z",
+        "performanceMs": 280,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/status"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:11.239Z",
+        "performanceMs": 281,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:11.478Z",
+        "performanceMs": 521,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/status",
+          "status": 200,
+          "ok": true,
+          "durationMs": 241
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:11.484Z",
+        "performanceMs": 526,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/sessions"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:12.708Z",
+        "performanceMs": 1750,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1469
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "host",
+        "at": "2026-07-16T19:42:12.713Z",
+        "performanceMs": 1756,
+        "route": "/en/host",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "host",
+        "at": "2026-07-16T19:42:13.006Z",
+        "performanceMs": 2048,
+        "route": "/en/host",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:13.054Z",
+        "performanceMs": 2096,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/command"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:13.064Z",
+        "performanceMs": 2107,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:13.214Z",
+        "performanceMs": 2256,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:13.518Z",
+        "performanceMs": 2561,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/sessions",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2035
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:14.439Z",
+        "performanceMs": 3482,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1225
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:14.776Z",
+        "performanceMs": 3819,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:14.791Z",
+        "performanceMs": 3833,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1727
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:16.081Z",
+        "performanceMs": 5123,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1305
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:16.222Z",
+        "performanceMs": 5264,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/host/command",
+          "status": 200,
+          "ok": true,
+          "durationMs": 3168
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:16.857Z",
+        "performanceMs": 5899,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:18.209Z",
+        "performanceMs": 7252,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1352
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:19.049Z",
+        "performanceMs": 8092,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "host",
+        "at": "2026-07-16T19:42:20.381Z",
+        "performanceMs": 9424,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1332
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "host",
+        "at": "2026-07-16T19:42:20.715Z",
+        "performanceMs": 9758,
+        "route": "/en/host",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ],
+    "partyScreen": [
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:15.543Z",
+        "performanceMs": 39,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:16.791Z",
+        "performanceMs": 1288,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1249
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:16.808Z",
+        "performanceMs": 1305,
+        "route": "/display/party",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:16.872Z",
+        "performanceMs": 1368,
+        "route": "/display/party",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:17.385Z",
+        "performanceMs": 1882,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:18.646Z",
+        "performanceMs": 3142,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1260
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:19.053Z",
+        "performanceMs": 3550,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:20.995Z",
+        "performanceMs": 5491,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 1941
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "party-screen",
+        "at": "2026-07-16T19:42:21.039Z",
+        "performanceMs": 5536,
+        "route": "/display/party",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      }
+    ],
+    "guestEn": [
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:42:19.293Z",
+        "performanceMs": 3793,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/join"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:42:19.295Z",
+        "performanceMs": 3795,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:42:21.795Z",
+        "performanceMs": 6294,
+        "route": "/en/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2499
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:42:21.800Z",
+        "performanceMs": 6299,
+        "route": "/en/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "guest-en",
+        "at": "2026-07-16T19:42:21.864Z",
+        "performanceMs": 6364,
+        "route": "/en/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      }
+    ],
+    "guestVi": [
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:42:19.344Z",
+        "performanceMs": 3841,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/join"
+        }
+      },
+      {
+        "type": "fetch:start",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:42:19.344Z",
+        "performanceMs": 3841,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session"
+        }
+      },
+      {
+        "type": "fetch:end",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:42:21.808Z",
+        "performanceMs": 6305,
+        "route": "/vi/play",
+        "detail": {
+          "url": "/api/party/session",
+          "status": 200,
+          "ok": true,
+          "durationMs": 2463
+        }
+      },
+      {
+        "type": "websocket:create",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:42:21.811Z",
+        "performanceMs": 6308,
+        "route": "/vi/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      },
+      {
+        "type": "websocket:open",
+        "surface": "guest-vi",
+        "at": "2026-07-16T19:42:21.883Z",
+        "performanceMs": 6380,
+        "route": "/vi/play",
+        "detail": {
+          "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+        }
+      }
+    ]
+  }
+}

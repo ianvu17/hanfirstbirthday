@@ -1,16 +1,15 @@
 import type {
   GuestProjection,
-  SharedPartyProjection
+  SharedPartyProjection,
 } from "@/lib/party-engine";
 import type { Locale } from "@/lib/i18n/routing";
+import type {
+  AvatarPresetId,
+  ParticipantAvatarProjection,
+} from "@/lib/party-avatar";
 
 export type RemoteConnectionState =
-  | "connecting"
-  | "connected"
-  | "reconnecting"
-  | "offline"
-  | "stale"
-  | "error";
+  "connecting" | "connected" | "reconnecting" | "offline" | "stale" | "error";
 
 export type PartySessionRow = {
   id: string;
@@ -29,6 +28,7 @@ export type PartySessionRow = {
     | "finished";
   current_question_index: number | null;
   current_question_id: string | null;
+  question_count: number;
   question_opened_at: string | null;
   question_deadline_at: string | null;
   question_locked_at: string | null;
@@ -56,6 +56,12 @@ export type ParticipantRow = {
   joined_at: string;
   last_seen_at: string;
   is_test: boolean;
+  is_ready: boolean;
+  ready_at: string | null;
+  avatar_type: "photo" | "preset" | null;
+  avatar_path: string | null;
+  avatar_preset_id: AvatarPresetId | null;
+  avatar_updated_at: string | null;
 };
 
 export type QuestionResponseRow = {
@@ -68,6 +74,8 @@ export type QuestionResponseRow = {
   submitted_at: string;
   locked_at: string;
   response_duration_ms: number | null;
+  points_awarded: number;
+  scoring_version: "correct-count-v1" | "time-v1";
   is_correct: boolean;
   submission_id: string;
   is_test: boolean;
@@ -81,6 +89,7 @@ export type SessionHistoryItem = {
   revision: number;
   currentQuestionIndex: number | null;
   currentQuestionId: string | null;
+  questionCount: number;
   isTest: boolean;
   isCurrent: boolean;
   label: string | null;
@@ -145,6 +154,9 @@ export type RemoteGuestSnapshot = RemotePartySnapshot & {
     id: string;
     displayName: string;
     locale: Locale;
+    isReady: boolean;
+    readyAt: string | null;
+    avatar: ParticipantAvatarProjection;
   } | null;
 };
 
@@ -156,6 +168,15 @@ export type RemoteApiErrorCode =
   | "invalid_name"
   | "invalid_locale"
   | "invalid_join_code"
+  | "invalid_question_count"
+  | "invalid_avatar"
+  | "avatar_blob_empty"
+  | "avatar_mime_missing"
+  | "avatar_mime_unsupported"
+  | "avatar_signature_mismatch"
+  | "avatar_decode_failed"
+  | "avatar_upload_failed"
+  | "avatar_infrastructure_missing"
   | "invalid_participant_session"
   | "host_unauthorized"
   | "host_session_expired"

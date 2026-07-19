@@ -1,4 +1,5 @@
 import { createInitialPartyState, responseKey } from "./state";
+import { calculateTimeScore, TIME_SCORING_VERSION } from "./scoring";
 import type {
   GuestSession,
   LockedResponse,
@@ -6,51 +7,57 @@ import type {
   PartyCommandResult,
   PartyConfig,
   PartyDomainError,
-  PartyState
+  PartyState,
 } from "./types";
 
 function domainError(
   code: PartyDomainError["code"],
   message: string,
-  context?: PartyDomainError["context"]
+  context?: PartyDomainError["context"],
 ): PartyDomainError {
   return { code, message, context };
 }
 
-function reject(state: PartyState, error: PartyDomainError): PartyCommandResult {
+function reject(
+  state: PartyState,
+  error: PartyDomainError,
+): PartyCommandResult {
   return {
     ok: false,
     state: {
       ...state,
-      lastError: error
+      lastError: error,
     },
-    error
+    error,
   };
 }
 
-function accept(state: PartyState, commandType: PartyCommand["type"]): PartyCommandResult {
+function accept(
+  state: PartyState,
+  commandType: PartyCommand["type"],
+): PartyCommandResult {
   return {
     ok: true,
     state: {
       ...state,
       revision: state.revision + 1,
       lastAcceptedCommand: commandType,
-      lastError: null
-    }
+      lastError: null,
+    },
   };
 }
 
 function acceptIdempotent(
   state: PartyState,
-  commandType: PartyCommand["type"]
+  commandType: PartyCommand["type"],
 ): PartyCommandResult {
   return {
     ok: true,
     state: {
       ...state,
       lastAcceptedCommand: commandType,
-      lastError: null
-    }
+      lastError: null,
+    },
   };
 }
 
@@ -62,7 +69,11 @@ function currentQuestion(config: PartyConfig, state: PartyState) {
   return config.questions[state.currentQuestionIndex] ?? null;
 }
 
-function materializeTimeouts(state: PartyState, config: PartyConfig, now: number): PartyState {
+function materializeTimeouts(
+  state: PartyState,
+  config: PartyConfig,
+  now: number,
+): PartyState {
   const question = currentQuestion(config, state);
 
   if (!question || state.questionOpenedAt === null) {
@@ -86,28 +97,30 @@ function materializeTimeouts(state: PartyState, config: PartyConfig, now: number
       submittedAt: now,
       lockedAt: now,
       responseDurationMs: null,
+      pointsAwarded: 0,
+      scoringVersion: TIME_SCORING_VERSION,
       submissionId: `timeout:${guest.id}:${question.id}`,
-      isCorrect: false
+      isCorrect: false,
     };
   }
 
   return {
     ...state,
-    responses
+    responses,
   };
 }
 
 export function processPartyCommand(
   state: PartyState,
   command: PartyCommand,
-  config: PartyConfig
+  config: PartyConfig,
 ): PartyCommandResult {
   if (state.phase === "finished" && command.type !== "RESET_LOCAL_PARTY") {
     return reject(
       state,
       domainError("party_finished", "The party is already finished.", {
-        command: command.type
-      })
+        command: command.type,
+      }),
     );
   }
 
@@ -121,7 +134,7 @@ export function processPartyCommand(
       if (!displayName) {
         return reject(
           state,
-          domainError("command_not_allowed", "Guest display name is required.")
+          domainError("command_not_allowed", "Guest display name is required."),
         );
       }
 
@@ -130,15 +143,19 @@ export function processPartyCommand(
         id: command.guestId,
         displayName,
         locale: command.locale,
-        createdOrder: existing?.createdOrder ?? Object.keys(state.guests).length,
-        isFixture: existing?.isFixture ?? false
+        createdOrder:
+          existing?.createdOrder ?? Object.keys(state.guests).length,
+        isFixture: existing?.isFixture ?? false,
+        avatar: command.avatar ?? existing?.avatar ?? null,
       };
 
       if (
         existing &&
         existing.displayName === nextGuest.displayName &&
         existing.locale === nextGuest.locale &&
-        existing.isFixture === nextGuest.isFixture
+        existing.isFixture === nextGuest.isFixture &&
+        JSON.stringify(existing.avatar ?? null) ===
+          JSON.stringify(nextGuest.avatar ?? null)
       ) {
         return acceptIdempotent(state, command.type);
       }
@@ -148,10 +165,10 @@ export function processPartyCommand(
           ...state,
           guests: {
             ...state.guests,
-            [command.guestId]: nextGuest
-          }
+            [command.guestId]: nextGuest,
+          },
         },
-        command.type
+        command.type,
       );
     }
 
@@ -159,12 +176,21 @@ export function processPartyCommand(
       if (state.phase !== "lobby") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "First question can only be prepared from lobby.")
+          domainError(
+            "invalid_phase_transition",
+            "First question can only be prepared from lobby.",
+          ),
         );
       }
 
       if (!config.questions[0]) {
-        return reject(state, domainError("question_not_found", "No enabled fixture question exists."));
+        return reject(
+          state,
+          domainError(
+            "question_not_found",
+            "No enabled fixture question exists.",
+          ),
+        );
       }
 
       return accept(
@@ -176,23 +202,30 @@ export function processPartyCommand(
           questionOpenedAt: null,
           questionDeadlineAt: null,
           questionLockedAt: null,
-          answerRevealedAt: null
+          answerRevealedAt: null,
         },
-        command.type
+        command.type,
       );
 
+    case "REVEAL_CHOICES":
     case "OPEN_QUESTION": {
       if (state.phase !== "question_ready") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "Question can only be opened from ready state.")
+          domainError(
+            "invalid_phase_transition",
+            "Answer choices can only be revealed from preview.",
+          ),
         );
       }
 
       const question = currentQuestion(config, state);
 
       if (!question) {
-        return reject(state, domainError("question_not_found", "Current question was not found."));
+        return reject(
+          state,
+          domainError("question_not_found", "Current question was not found."),
+        );
       }
 
       return accept(
@@ -203,9 +236,9 @@ export function processPartyCommand(
           questionOpenedAt: command.now,
           questionDeadlineAt: command.now + config.questionDurationMs,
           questionLockedAt: null,
-          answerRevealedAt: null
+          answerRevealedAt: null,
         },
-        command.type
+        command.type,
       );
     }
 
@@ -213,7 +246,20 @@ export function processPartyCommand(
       if (state.phase !== "question_active") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "Only an active question can be locked.")
+          domainError(
+            "invalid_phase_transition",
+            "Only an active question can be locked.",
+          ),
+        );
+      }
+
+      if (command.reason === "host") {
+        return reject(
+          state,
+          domainError(
+            "command_not_allowed",
+            "Answers close automatically when the question deadline expires.",
+          ),
         );
       }
 
@@ -221,10 +267,10 @@ export function processPartyCommand(
         {
           ...state,
           phase: "question_locked",
-          questionLockedAt: command.now
+          questionLockedAt: command.now,
         },
         config,
-        command.now
+        command.now,
       );
 
       return accept(lockedState, command.type);
@@ -234,7 +280,10 @@ export function processPartyCommand(
       if (state.phase !== "question_locked") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "Answer can only be revealed after lock.")
+          domainError(
+            "invalid_phase_transition",
+            "Answer can only be revealed after lock.",
+          ),
         );
       }
 
@@ -242,36 +291,33 @@ export function processPartyCommand(
         {
           ...state,
           phase: "answer_reveal",
-          answerRevealedAt: command.now
+          answerRevealedAt: command.now,
         },
-        command.type
+        command.type,
       );
 
     case "SHOW_LEADERBOARD":
       if (state.phase !== "answer_reveal") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "Leaderboard can only be shown after reveal.")
+          domainError(
+            "invalid_phase_transition",
+            "Leaderboard can only be shown after reveal.",
+          ),
         );
       }
 
       return accept({ ...state, phase: "leaderboard" }, command.type);
 
-    case "COMPLETE_PRESENTATION":
+    case "ADVANCE_FROM_LEADERBOARD":
+    case "COMPLETE_PRESENTATION": {
       if (state.phase !== "leaderboard") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "Presentation can only complete from leaderboard.")
-        );
-      }
-
-      return accept({ ...state, phase: "waiting_for_host" }, command.type);
-
-    case "PREPARE_NEXT_QUESTION": {
-      if (state.phase !== "waiting_for_host") {
-        return reject(
-          state,
-          domainError("invalid_phase_transition", "Next question can only be prepared while waiting.")
+          domainError(
+            "invalid_phase_transition",
+            "The quiz can only advance from the leaderboard.",
+          ),
         );
       }
 
@@ -279,11 +325,16 @@ export function processPartyCommand(
       const question = config.questions[nextIndex];
 
       if (!question) {
-        return reject(
-          state,
-          domainError("question_not_found", "There is no next fixture question.", {
-            nextIndex
-          })
+        return accept(
+          {
+            ...state,
+            phase: "finished",
+            questionOpenedAt: null,
+            questionDeadlineAt: null,
+            questionLockedAt: null,
+            answerRevealedAt: null,
+          },
+          command.type,
         );
       }
 
@@ -296,9 +347,51 @@ export function processPartyCommand(
           questionOpenedAt: null,
           questionDeadlineAt: null,
           questionLockedAt: null,
-          answerRevealedAt: null
+          answerRevealedAt: null,
         },
-        command.type
+        command.type,
+      );
+    }
+
+    case "PREPARE_NEXT_QUESTION": {
+      if (state.phase !== "waiting_for_host") {
+        return reject(
+          state,
+          domainError(
+            "invalid_phase_transition",
+            "Next question can only be prepared while waiting.",
+          ),
+        );
+      }
+
+      const nextIndex = (state.currentQuestionIndex ?? -1) + 1;
+      const question = config.questions[nextIndex];
+
+      if (!question) {
+        return reject(
+          state,
+          domainError(
+            "question_not_found",
+            "There is no next fixture question.",
+            {
+              nextIndex,
+            },
+          ),
+        );
+      }
+
+      return accept(
+        {
+          ...state,
+          phase: "question_ready",
+          currentQuestionIndex: nextIndex,
+          currentQuestionId: question.id,
+          questionOpenedAt: null,
+          questionDeadlineAt: null,
+          questionLockedAt: null,
+          answerRevealedAt: null,
+        },
+        command.type,
       );
     }
 
@@ -306,7 +399,10 @@ export function processPartyCommand(
       if (state.phase !== "waiting_for_host" && state.phase !== "lobby") {
         return reject(
           state,
-          domainError("invalid_phase_transition", "Party can only finish from lobby or waiting state.")
+          domainError(
+            "invalid_phase_transition",
+            "Party can only finish from lobby or waiting state.",
+          ),
         );
       }
 
@@ -316,7 +412,10 @@ export function processPartyCommand(
       if (state.phase !== "question_active") {
         return reject(
           state,
-          domainError("answer_window_closed", "Responses are accepted only while a question is active.")
+          domainError(
+            "answer_window_closed",
+            "Responses are accepted only while a question is active.",
+          ),
         );
       }
 
@@ -325,9 +424,13 @@ export function processPartyCommand(
       if (!guest) {
         return reject(
           state,
-          domainError("guest_not_registered", "Guest is not registered in the local party runtime.", {
-            guestId: command.guestId
-          })
+          domainError(
+            "guest_not_registered",
+            "Guest is not registered in the local party runtime.",
+            {
+              guestId: command.guestId,
+            },
+          ),
         );
       }
 
@@ -336,28 +439,51 @@ export function processPartyCommand(
       if (!question || question.id !== command.questionId) {
         return reject(
           state,
-          domainError("no_active_question", "Submitted question does not match the active question.")
+          domainError(
+            "no_active_question",
+            "Submitted question does not match the active question.",
+          ),
         );
       }
 
-      if (state.questionOpenedAt === null || state.questionDeadlineAt === null) {
-        return reject(state, domainError("no_active_question", "Active question timing is missing."));
+      if (
+        state.questionOpenedAt === null ||
+        state.questionDeadlineAt === null
+      ) {
+        return reject(
+          state,
+          domainError(
+            "no_active_question",
+            "Active question timing is missing.",
+          ),
+        );
       }
 
       if (command.receivedAt >= state.questionDeadlineAt) {
         return reject(
           state,
-          domainError("deadline_reached", "Submission reached the runtime at or after the deadline.", {
-            receivedAt: command.receivedAt,
-            deadlineAt: state.questionDeadlineAt
-          })
+          domainError(
+            "deadline_reached",
+            "Submission reached the runtime at or after the deadline.",
+            {
+              receivedAt: command.receivedAt,
+              deadlineAt: state.questionDeadlineAt,
+            },
+          ),
         );
       }
 
-      if (!question.options.some((option) => option.id === command.selectedOptionId)) {
+      if (
+        !question.options.some(
+          (option) => option.id === command.selectedOptionId,
+        )
+      ) {
         return reject(
           state,
-          domainError("invalid_option", "Selected option does not exist for the active question.")
+          domainError(
+            "invalid_option",
+            "Selected option does not exist for the active question.",
+          ),
         );
       }
 
@@ -374,13 +500,24 @@ export function processPartyCommand(
 
         return reject(
           state,
-          domainError("response_already_locked", "This question already has a locked response.", {
-            guestId: command.guestId,
-            questionId: command.questionId
-          })
+          domainError(
+            "response_already_locked",
+            "This question already has a locked response.",
+            {
+              guestId: command.guestId,
+              questionId: command.questionId,
+            },
+          ),
         );
       }
 
+      const isCorrect = command.selectedOptionId === question.correctOptionId;
+      const score = calculateTimeScore({
+        isCorrect,
+        responseReceivedAt: command.receivedAt,
+        questionOpenedAt: state.questionOpenedAt,
+        questionDurationMs: config.questionDurationMs,
+      });
       const response: LockedResponse = {
         guestId: command.guestId,
         questionId: command.questionId,
@@ -388,9 +525,11 @@ export function processPartyCommand(
         status: "locked_answer",
         submittedAt: command.receivedAt,
         lockedAt: command.receivedAt,
-        responseDurationMs: command.receivedAt - state.questionOpenedAt,
+        responseDurationMs: score.responseTimeMs,
+        pointsAwarded: score.pointsAwarded,
+        scoringVersion: score.scoringVersion,
         submissionId: command.submissionId,
-        isCorrect: command.selectedOptionId === question.correctOptionId
+        isCorrect,
       };
 
       return accept(
@@ -398,10 +537,10 @@ export function processPartyCommand(
           ...state,
           responses: {
             ...state.responses,
-            [key]: response
-          }
+            [key]: response,
+          },
         },
-        command.type
+        command.type,
       );
     }
   }

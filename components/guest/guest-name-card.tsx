@@ -13,6 +13,7 @@ type GuestNameCardProps = {
   primaryAction: string;
   value: string;
   error?: string;
+  disabled?: boolean;
   onValueChange: (value: string) => void;
   onSubmit: () => void;
 };
@@ -25,6 +26,7 @@ export function GuestNameCard({
   primaryAction,
   value,
   error,
+  disabled = false,
   onValueChange,
   onSubmit
 }: GuestNameCardProps) {
@@ -81,7 +83,13 @@ export function GuestNameCard({
             >
               {error}
             </p>
-            <Button type="submit" size="lg" className="w-full" data-testid="guest-name-submit">
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full"
+              disabled={disabled}
+              data-testid="guest-name-submit"
+            >
               <PartyPopper aria-hidden="true" />
               {primaryAction}
             </Button>

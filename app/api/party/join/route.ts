@@ -8,7 +8,8 @@ import {
   parseParticipantCookieValue,
   validateParticipantSession,
   loadCurrentPartySession,
-  buildRemotePartySnapshot
+  buildRemotePartySnapshot,
+  updateParticipantProfile,
 } from "@/lib/party-remote/repository";
 import { isLocale } from "@/lib/i18n/routing";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
@@ -83,6 +84,19 @@ export async function POST(request: Request) {
     const existingParticipant = await validateParticipantSession(partySession.id, existingSession);
 
     if (existingParticipant) {
+      if (partySession.phase === "lobby") {
+        const updated = await updateParticipantProfile(existingSession, {
+          displayName: parsed.data.displayName,
+          locale: parsed.data.locale,
+        });
+
+        if (!updated.ok) {
+          return NextResponse.json({ error: updated.error }, { status: 400 });
+        }
+
+        return NextResponse.json(updated.snapshot);
+      }
+
       return NextResponse.json(await buildRemotePartySnapshot(existingSession));
     }
 

@@ -3,7 +3,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useState,
   useSyncExternalStore,
@@ -13,28 +12,24 @@ import {
 import {
   buildGuestProjection,
   buildSharedPartyProjection,
-  selectHostCapabilities
+  selectHostCapabilities,
+  type PartyConfig
 } from "@/lib/party-engine";
+import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 
 import { getLocalPartyRuntime } from "./local-runtime";
 import type { PartyRuntime } from "./runtime-contract";
 
 const PartyRuntimeContext = createContext<PartyRuntime | null>(null);
 
-export function PartyRuntimeProvider({ children }: { children: ReactNode }) {
-  const [runtime] = useState(() => getLocalPartyRuntime());
-
-  useEffect(() => {
-    const tick = window.setInterval(() => {
-      const snapshot = runtime.getSnapshot();
-
-      if (snapshot.state.phase === "question_active") {
-        runtime.notifyClockTick();
-      }
-    }, 1000);
-
-    return () => window.clearInterval(tick);
-  }, [runtime]);
+export function PartyRuntimeProvider({
+  children,
+  config
+}: {
+  children: ReactNode;
+  config?: PartyConfig;
+}) {
+  const [runtime] = useState(() => getLocalPartyRuntime(config));
 
   return (
     <PartyRuntimeContext.Provider value={runtime}>{children}</PartyRuntimeContext.Provider>
@@ -66,13 +61,17 @@ export function usePartyActions() {
 
   return useMemo(
     () => ({
-      registerGuest: (guestId: string, displayName: string, locale: "en" | "vi") =>
-        runtime.dispatch({ type: "REGISTER_GUEST", guestId, displayName, locale }),
+      registerGuest: (
+        guestId: string,
+        displayName: string,
+        locale: "en" | "vi",
+        avatar?: ParticipantAvatarProjection | null
+      ) => runtime.dispatch({ type: "REGISTER_GUEST", guestId, displayName, locale, avatar }),
       prepareFirstQuestion: () => runtime.dispatch({ type: "PREPARE_FIRST_QUESTION" }),
-      openQuestion: () => runtime.dispatch({ type: "OPEN_QUESTION" }),
-      lockQuestion: () => runtime.dispatch({ type: "LOCK_QUESTION", reason: "host" }),
+      revealChoices: () => runtime.dispatch({ type: "REVEAL_CHOICES" }),
       revealAnswer: () => runtime.dispatch({ type: "REVEAL_ANSWER" }),
       showLeaderboard: () => runtime.dispatch({ type: "SHOW_LEADERBOARD" }),
+      advanceFromLeaderboard: () => runtime.dispatch({ type: "ADVANCE_FROM_LEADERBOARD" }),
       completePresentation: () => runtime.dispatch({ type: "COMPLETE_PRESENTATION" }),
       prepareNextQuestion: () => runtime.dispatch({ type: "PREPARE_NEXT_QUESTION" }),
       finishParty: () => runtime.dispatch({ type: "FINISH_PARTY" }),

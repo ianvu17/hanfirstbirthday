@@ -25,12 +25,40 @@ export type RemoteSnapshotTrackingState = {
   revision: number;
 };
 
+export type RemoteConnectionSignals = {
+  browserOnline: boolean;
+  hasAcceptedSnapshot: boolean;
+  hasConfirmedTransportIssue: boolean;
+  hasHardError: boolean;
+};
+
 type TrackableRemoteSnapshot = {
   session: {
     id: string;
     revision: number;
   } | null;
 };
+
+export function resolveVisibleRemoteConnection({
+  browserOnline,
+  hasAcceptedSnapshot,
+  hasConfirmedTransportIssue,
+  hasHardError
+}: RemoteConnectionSignals): RemoteConnectionState {
+  if (!browserOnline) {
+    return "offline";
+  }
+
+  if (hasHardError) {
+    return "error";
+  }
+
+  if (!hasAcceptedSnapshot) {
+    return hasConfirmedTransportIssue ? "reconnecting" : "connecting";
+  }
+
+  return hasConfirmedTransportIssue ? "reconnecting" : "connected";
+}
 
 export function resolveRemoteSnapshotTracking(
   current: RemoteSnapshotTrackingState,
@@ -92,6 +120,76 @@ export function useRemotePartySnapshot<
   const currentSessionIdRef = useRef<string | null>(null);
   const revisionRef = useRef(-1);
   const refreshInFlightRef = useRef<Promise<void> | null>(null);
+  const reconnectGraceTimerRef = useRef<number | null>(null);
+  const offlineGraceTimerRef = useRef<number | null>(null);
+  const acceptedSnapshotRef = useRef(false);
+  const browserOnlineRef = useRef(true);
+
+  const clearReconnectGrace = useCallback(() => {
+    if (reconnectGraceTimerRef.current !== null) {
+      window.clearTimeout(reconnectGraceTimerRef.current);
+      reconnectGraceTimerRef.current = null;
+    }
+  }, []);
+
+  const clearOfflineGrace = useCallback(() => {
+    if (offlineGraceTimerRef.current !== null) {
+      window.clearTimeout(offlineGraceTimerRef.current);
+      offlineGraceTimerRef.current = null;
+    }
+  }, []);
+
+  const settleLive = useCallback(() => {
+    clearReconnectGrace();
+    clearOfflineGrace();
+    setConnection(
+      resolveVisibleRemoteConnection({
+        browserOnline: browserOnlineRef.current,
+        hasAcceptedSnapshot: acceptedSnapshotRef.current,
+        hasConfirmedTransportIssue: false,
+        hasHardError: false
+      })
+    );
+  }, [clearOfflineGrace, clearReconnectGrace]);
+
+  const markReconnectingSoon = useCallback(() => {
+    if (reconnectGraceTimerRef.current !== null) {
+      return;
+    }
+
+    reconnectGraceTimerRef.current = window.setTimeout(() => {
+      reconnectGraceTimerRef.current = null;
+      setConnection((current) =>
+        resolveVisibleRemoteConnection({
+          browserOnline: browserOnlineRef.current,
+          hasAcceptedSnapshot: acceptedSnapshotRef.current || current === "connected",
+          hasConfirmedTransportIssue: true,
+          hasHardError: current === "error"
+        })
+      );
+    }, 2500);
+  }, []);
+
+  const markOfflineSoon = useCallback(() => {
+    clearReconnectGrace();
+
+    if (offlineGraceTimerRef.current !== null) {
+      return;
+    }
+
+    offlineGraceTimerRef.current = window.setTimeout(() => {
+      offlineGraceTimerRef.current = null;
+      browserOnlineRef.current = window.navigator.onLine;
+      setConnection(
+        resolveVisibleRemoteConnection({
+          browserOnline: browserOnlineRef.current,
+          hasAcceptedSnapshot: acceptedSnapshotRef.current,
+          hasConfirmedTransportIssue: !browserOnlineRef.current,
+          hasHardError: false
+        })
+      );
+    }, 900);
+  }, [clearReconnectGrace]);
 
   const applySnapshot = useCallback((nextSnapshot: TSnapshot) => {
     const tracking = resolveRemoteSnapshotTracking(
@@ -108,13 +206,14 @@ export function useRemotePartySnapshot<
 
     currentSessionIdRef.current = tracking.next.sessionId;
     revisionRef.current = tracking.next.revision;
+    acceptedSnapshotRef.current = true;
     setSnapshot({
       ...nextSnapshot,
       connection: "connected"
     });
-    setConnection("connected");
+    settleLive();
     setError(null);
-  }, []);
+  }, [settleLive]);
 
   const refresh = useCallback(async () => {
     if (refreshInFlightRef.current) {
@@ -122,8 +221,6 @@ export function useRemotePartySnapshot<
     }
 
     const refreshPromise = (async () => {
-      setConnection((current) => (current === "connected" ? "reconnecting" : "connecting"));
-
       try {
         const response = await fetch("/api/party/session", {
           headers: {
@@ -134,6 +231,7 @@ export function useRemotePartySnapshot<
         const payload = await response.json();
 
         if (!response.ok) {
+          clearReconnectGrace();
           setConnection("error");
           setError(payload.error ?? {
             code: "temporary_server_failure",
@@ -143,12 +241,12 @@ export function useRemotePartySnapshot<
         }
 
         if (includeGuest && payload.session && !isRemoteGuestSnapshot(payload)) {
-          setConnection("stale");
+          markReconnectingSoon();
         }
 
         applySnapshot(payload as TSnapshot);
       } catch {
-        setConnection(window.navigator.onLine ? "stale" : "offline");
+        markOfflineSoon();
         setError({
           code: "temporary_server_failure",
           message: "Connection paused. Trying to reconnect."
@@ -165,7 +263,7 @@ export function useRemotePartySnapshot<
         refreshInFlightRef.current = null;
       }
     }
-  }, [applySnapshot, includeGuest]);
+  }, [applySnapshot, clearReconnectGrace, includeGuest, markOfflineSoon, markReconnectingSoon]);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
@@ -184,8 +282,16 @@ export function useRemotePartySnapshot<
   }, [connection, refresh]);
 
   useEffect(() => {
-    const online = () => void refresh();
-    const offline = () => setConnection("offline");
+    browserOnlineRef.current = window.navigator.onLine;
+
+    const online = () => {
+      browserOnlineRef.current = true;
+      void refresh();
+    };
+    const offline = () => {
+      browserOnlineRef.current = false;
+      markOfflineSoon();
+    };
 
     window.addEventListener("online", online);
     window.addEventListener("offline", offline);
@@ -194,7 +300,7 @@ export function useRemotePartySnapshot<
       window.removeEventListener("online", online);
       window.removeEventListener("offline", offline);
     };
-  }, [refresh]);
+  }, [markOfflineSoon, refresh]);
 
   useEffect(() => {
     const client = getSupabaseBrowserClient();
@@ -232,18 +338,26 @@ export function useRemotePartySnapshot<
       )
       .subscribe((status) => {
         if (status === "SUBSCRIBED") {
-          setConnection("connected");
+          settleLive();
         }
 
         if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-          setConnection("stale");
+          markReconnectingSoon();
         }
       });
 
     return () => {
       void client.removeChannel(channel);
     };
-  }, [refresh, snapshot?.session?.id]);
+  }, [markReconnectingSoon, refresh, settleLive, snapshot?.session?.id]);
+
+  useEffect(
+    () => () => {
+      clearReconnectGrace();
+      clearOfflineGrace();
+    },
+    [clearOfflineGrace, clearReconnectGrace]
+  );
 
   return {
     snapshot,

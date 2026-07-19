@@ -70,6 +70,7 @@ Use cases:
 - Simulate empty leaderboard.
 - Simulate Party Screen lobby, active question, locked question, reveal, leaderboard, and finished phases once runtime exists.
 - Simulate host-driven phase advancement once host controls exist.
+- Simulate question preview, reveal-answer-choices, automatic deadline closure, and correct-answer reveal without a required manual lock step.
 - Simulate missing optional assets.
 
 Test mode must not invent real Han content. Use neutral placeholder content only.
@@ -142,6 +143,8 @@ Checklist:
 - Real content has been provided and approved.
 - English and Vietnamese content match in meaning.
 - Quiz correct answers are verified.
+- Question ids and answer-option ids are stable before rehearsal approval.
+- Final content is validated through `getApprovedPartyConfig()` and tested in a fresh session after deployment.
 - Timeline and gallery do not contain fake entries.
 - Asset alt text is present for meaningful images.
 
@@ -189,7 +192,7 @@ Milestone 4 visual checks:
 - Use `npm run check:visual:milestone4` against a running server. Set `MILESTONE4_BASE_URL` when the server is not on `http://localhost:3000`.
 - The script captures `/display/party`, `/{locale}/play`, and `/{locale}/qa/party` states.
 - Screenshots are stored in `.next/milestone-4-screenshots/`.
-- Captured states include lobby, question ready, active, locked, reveal, leaderboard, waiting, finished, guest join-required, Vietnamese active question, mobile active harness, and reduced-motion Vietnamese active harness.
+- Captured states include lobby, question ready, active, locked, reveal, leaderboard, direct next-question transition, finished, guest join-required, Vietnamese active question, mobile active harness, and reduced-motion Vietnamese active harness.
 - The script checks horizontal overflow, but screenshots must still be visually inspected before Milestone 4 approval.
 
 Milestone 4 logic checks:
@@ -203,24 +206,53 @@ Milestone 5 checks:
 - Use `npm run test:supabase` or `npm run test:rls` for static migration assertions covering tables, constraints, indexes, RLS policies, and the response revision touch function.
 - Use `npm run test:rls:live` only after hosted Supabase env values are configured. It creates `codex-m5-validation-*` test rows, validates anon RLS behavior with browser-equivalent credentials, verifies direct REST tampering is denied, reports cleanup counts, and deletes only its own validation sessions.
 - Use `npm run test:realtime:live` against an isolated local server and `LIVE_REALTIME_JOIN_CODE=codex-m5-*` to rehearse hosted Supabase realtime with independent display, host, English guest, and Vietnamese guest browser contexts.
+- Current realtime rehearsal expects `REVEAL_CHOICES` as the host action that opens answering. It should not rely on a production host `LOCK_QUESTION` command.
 - Set `LIVE_REALTIME_HOST_PIN` through a silent shell prompt for final rehearsal when the real Host PIN route must be validated end to end.
 - Use `npm run vercel:push-env -- --target=preview --dry-run` after Vercel linking to verify required preview env values without printing secrets, then rerun without `--dry-run` to push them.
 - Use native Vercel Git integration for normal preview deployments from GitHub commits. `npx vercel deploy --yes` is now a legacy/manual preview fallback only; do not pass `--target=preview`.
+- Use `PREVIEW_PARTY_BASE_URL=<preview-url> PREVIEW_PARTY_EVIDENCE_DIR=<evidence-dir> npx tsx scripts/validate-preview-party-flow.ts` for deployed Preview host/guest/Party Screen validation when checking mobile no-scroll, connection status stability, and host-driven question flow. The script creates only Preview test sessions and writes screenshots plus `results.json`.
+- Use `npm run test:countdown` for deadline math, device-clock offset, 20-through-0 sequencing, clamp, and cleanup coverage. Remote browser rehearsal must confirm all surfaces advance locally between snapshot refreshes.
+- Use `npm run test:certificate` and `npm run render:certificate-samples` for English/Vietnamese, long-name, preset, initials, single-page A4, and route-security coverage. Render the PDFs through Poppler plus a platform viewer, and test the deployed endpoint as winner and non-winner before release.
 - Use `npm run check:visual:milestone5` against a running server to capture `/display/party`, English/Vietnamese guest controller, production Host PIN screen, and QA harness screenshots.
 - Hosted Supabase RLS, Vercel preview deployment, and browser-context realtime validation have passed; physical multi-device rehearsal remains required before event approval.
 - Physical rehearsal should use laptop `/display/party`, Ian phone `/{locale}/host`, one English guest phone, and one Vietnamese guest phone. Test one guest on mobile data if possible.
+
+Production-polish remote rehearsal must additionally verify Back edits preserve one participant, Ready-to-Back decrements host readiness, gallery selection does not carry a `capture` attribute, avatar upload exposes real byte progress plus indeterminate persistence and cancellation reconciliation, Vietnamese remains active through final state, and a correct submission exposes neither points nor correctness in the pre-reveal JSON snapshot. Record whether the picker was exercised on physical iOS Safari; viewport emulation is not equivalent.
+
+Time-scoring and configurable-session checks:
+
+- Use `npm run test:scoring` for worked 20-second examples, integer bounds, incorrect answers, defensive negative elapsed time, and malformed duration.
+- Use `npm run test:session-config` for default 10, 3/5/7/10 first-N selection, ordering, and invalid count rejection.
+- Use `npm run test:leaderboard-race` for previous/final scores and ranks, deterministic ties, and nice scale ceilings.
+- Use `npm run check:visual:leaderboard-race` against a running app for 10-row 1366x768, 1920x1080, and reduced-motion captures.
+- Deployed rehearsal must create a fresh three-question Preview test session, use at least three participants covering fast correct, slow correct, and incorrect/timeout, finish after question 3, and verify winner-only certificate output says the winner's correct count out of 3.
+- Also create a fresh session without changing the control and confirm the first projection is `/10`.
+- Reports must include exact Vercel URL, deployment type, branch or commit, timestamp, tested viewports, locales, and whether testing was automated browser emulation or a physical device.
 
 ## Functional Acceptance Checklist
 
 - Guest can enter through QR code.
 - Guest can choose English or Vietnamese.
 - Guest can enter display name.
+- Guest can create or skip a party avatar after name entry using selfie, photo upload, or built-in preset.
+- Camera permission is requested only after tapping selfie, and the camera stops after capture, cancel, step navigation, or unmount.
+- Uploaded avatar images reject unsupported MIME types, oversized files, invalid images, and non-512 prepared server payloads.
 - Guest can answer quiz questions with 20-second timer.
+- Host reveals answer choices to start the 20-second timer.
 - Accepted answers lock and cannot be edited.
 - Timed-out questions lock and cannot be edited.
+- Answering closes automatically when the deadline expires.
+- Guest reveal explicitly identifies the correct answer, the guest's different selected answer, or timeout without exposing correctness before reveal.
+- Leaderboard advances directly to the next question or final winner without returning to reveal.
 - Safe retries do not create duplicate question responses.
 - Guest sees a result screen.
+- Correct guest reveal shows the authoritative awarded points; score labels use points while question progress keeps the `question/total` form.
+- Host can select a valid session question count before creation, reconnect restores it, and the final transition occurs after question N without preparing N+1.
+- Party Screen leaderboard grows bars from previous persisted totals, shows this-round gain, reorders stable participant rows, and settles without replaying on unrelated snapshot refreshes.
 - Party Screen and leaderboard update after submission or host-driven phase changes once runtime exists.
+- Guest, Party Screen leaderboard, reveal leaderboard, and final result identity surfaces show photo, preset, or initials fallback avatars.
+- Stored photo avatars contain sticker artwork but no selection ring or editor control.
+- Only deterministic rank 1 can download a localized, one-page A4 certificate; non-winners are denied.
 - Guest can leave a message.
 - Admin can see final quiz scores, messages, Party Screen or leaderboard state, and QA/test separation through a lightweight utility area.
 - QA/test data is separate from production data.

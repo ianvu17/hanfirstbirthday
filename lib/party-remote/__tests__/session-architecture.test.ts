@@ -5,8 +5,14 @@ import test from "node:test";
 import { getPartyDeploymentEnvironment } from "@/lib/supabase/env";
 import {
   resolveRemoteSnapshotTracking,
-  type RemoteSnapshotTrackingState
+  resolveVisibleRemoteConnection,
+  type RemoteSnapshotTrackingState,
 } from "@/lib/party-remote/use-remote-party";
+import {
+  buildGuestPlayPath,
+  buildGuestWelcomePath,
+  normalizeJoinCode,
+} from "@/lib/party-remote/join-routing";
 
 function restoreEnv(name: string, value: string | undefined) {
   if (value === undefined) {
@@ -37,43 +43,72 @@ test("deployment environment resolves to explicit Vercel contexts", () => {
   restoreEnv("NODE_ENV", previousNode);
 });
 
+test("guest join routing opens welcome first and preserves public join context", () => {
+  assert.equal(
+    buildGuestWelcomePath("en", "han-turns-one"),
+    "/en?join=han-turns-one",
+  );
+  assert.equal(buildGuestWelcomePath("vi"), "/vi");
+  assert.equal(
+    buildGuestPlayPath("vi", "han-turns-one"),
+    "/vi/play?join=han-turns-one",
+  );
+  assert.equal(normalizeJoinCode([" han-turns-one "]), "han-turns-one");
+  assert.equal(normalizeJoinCode(" "), undefined);
+});
+
 test("current session reads are not implemented through ensure-and-insert semantics", () => {
   const repository = readFileSync("lib/party-remote/repository.ts", "utf8");
-  const loadCurrentStart = repository.indexOf("export async function loadCurrentPartySession");
-  const createStart = repository.indexOf("export async function createPartySession");
+  const loadCurrentStart = repository.indexOf(
+    "export async function loadCurrentPartySession",
+  );
+  const createStart = repository.indexOf(
+    "export async function createPartySession",
+  );
 
   assert.notEqual(loadCurrentStart, -1);
   assert.notEqual(createStart, -1);
-  assert.equal(repository.includes("export async function ensureActivePartySession"), false);
+  assert.equal(
+    repository.includes("export async function ensureActivePartySession"),
+    false,
+  );
 
   const loadCurrentSource = repository.slice(loadCurrentStart, createStart);
   assert.equal(loadCurrentSource.includes('.eq("is_current", true)'), true);
   assert.equal(loadCurrentSource.includes(".insert("), false);
-  assert.equal(loadCurrentSource.includes(".rpc(\"create_party_session\""), false);
+  assert.equal(
+    loadCurrentSource.includes('.rpc("create_party_session"'),
+    false,
+  );
 });
 
 test("host command id is deterministic for retries of the same transition", () => {
   const hostController = readFileSync(
     "components/party/host/production-host-controller.tsx",
-    "utf8"
+    "utf8",
   );
 
   assert.equal(
     hostController.includes(
-      'commandId: `${snapshot.session.id}:${command}:${snapshot.session.revision}`'
+      "commandId: `${snapshot.session.id}:${command}:${snapshot.session.revision}`",
     ),
-    true
+    true,
   );
-  assert.equal(hostController.includes("commandId: `${command}:${snapshot.session.revision}:${Date.now()}`"), false);
+  assert.equal(
+    hostController.includes(
+      "commandId: `${command}:${snapshot.session.revision}:${Date.now()}`",
+    ),
+    false,
+  );
 });
 
 function track(
   current: RemoteSnapshotTrackingState,
   sessionId: string | null,
-  revision = -1
+  revision = -1,
 ) {
   return resolveRemoteSnapshotTracking(current, {
-    session: sessionId ? { id: sessionId, revision } : null
+    session: sessionId ? { id: sessionId, revision } : null,
   });
 }
 
@@ -96,7 +131,11 @@ test("remote snapshot tracking rejects lower revisions only within the same sess
 });
 
 test("remote snapshot tracking accepts a new session even when its revision is lower", () => {
-  const switched = track({ sessionId: "session-a", revision: 15 }, "session-b", 0);
+  const switched = track(
+    { sessionId: "session-a", revision: 15 },
+    "session-b",
+    0,
+  );
 
   assert.equal(switched.accept, true);
   assert.deepEqual(switched.next, { sessionId: "session-b", revision: 0 });
@@ -119,43 +158,143 @@ test("remote realtime subscriptions are keyed by session id and cleaned up on sw
   assert.equal(hook.includes("const sessionId = snapshot?.session?.id"), true);
   assert.equal(hook.includes(".channel(`party-session:${sessionId}`)"), true);
   assert.equal(hook.includes("filter: `id=eq.${sessionId}`"), true);
-  assert.equal(hook.includes("filter: `party_session_id=eq.${sessionId}`"), true);
+  assert.equal(
+    hook.includes("filter: `party_session_id=eq.${sessionId}`"),
+    true,
+  );
   assert.equal(hook.includes("void client.removeChannel(channel);"), true);
-  assert.equal(hook.includes("}, [refresh, snapshot?.session?.id]);"), true);
+  assert.equal(
+    hook.includes(
+      "}, [markReconnectingSoon, refresh, settleLive, snapshot?.session?.id]);",
+    ),
+    true,
+  );
+});
+
+test("normal polling refresh does not downgrade a live visible connection", () => {
+  const hook = readFileSync("lib/party-remote/use-remote-party.ts", "utf8");
+  const refreshStart = hook.indexOf(
+    "const refresh = useCallback(async () => {",
+  );
+  const firstFetch = hook.indexOf(
+    'const response = await fetch("/api/party/session"',
+    refreshStart,
+  );
+  const refreshPrelude = hook.slice(refreshStart, firstFetch);
+
+  assert.equal(refreshPrelude.includes("markReconnectingSoon();"), false);
+  assert.equal(refreshPrelude.includes('setConnection("reconnecting")'), false);
+});
+
+test("visible connection state separates browser reachability from refresh activity", () => {
+  assert.equal(
+    resolveVisibleRemoteConnection({
+      browserOnline: true,
+      hasAcceptedSnapshot: true,
+      hasConfirmedTransportIssue: false,
+      hasHardError: false,
+    }),
+    "connected",
+  );
+  assert.equal(
+    resolveVisibleRemoteConnection({
+      browserOnline: true,
+      hasAcceptedSnapshot: true,
+      hasConfirmedTransportIssue: true,
+      hasHardError: false,
+    }),
+    "reconnecting",
+  );
+  assert.equal(
+    resolveVisibleRemoteConnection({
+      browserOnline: false,
+      hasAcceptedSnapshot: true,
+      hasConfirmedTransportIssue: false,
+      hasHardError: false,
+    }),
+    "offline",
+  );
+});
+
+test("transient realtime status changes are stabilized before becoming visible", () => {
+  const hook = readFileSync("lib/party-remote/use-remote-party.ts", "utf8");
+
+  assert.equal(hook.includes("markReconnectingSoon"), true);
+  assert.equal(hook.includes("hasConfirmedTransportIssue: true"), true);
+  assert.equal(hook.includes('setConnection("stale")'), false);
+  assert.equal(
+    hook.includes(
+      'setConnection(window.navigator.onLine ? "stale" : "offline")',
+    ),
+    false,
+  );
 });
 
 test("old realtime events are wake-up signals only and refresh the current session", () => {
   const hook = readFileSync("lib/party-remote/use-remote-party.ts", "utf8");
 
-  assert.equal(hook.includes("const response = await fetch(\"/api/party/session\""), true);
+  assert.equal(
+    hook.includes('const response = await fetch("/api/party/session"'),
+    true,
+  );
   assert.equal(hook.includes("applySnapshot(payload as TSnapshot);"), true);
   assert.equal(hook.includes("postgres_changes"), true);
-  assert.equal(hook.includes("() => {\n          void refresh();\n        }"), true);
+  assert.equal(
+    hook.includes("() => {\n          void refresh();\n        }"),
+    true,
+  );
 });
 
 test("participant resume tokens are scoped to the current party session", () => {
   const repository = readFileSync("lib/party-remote/repository.ts", "utf8");
-  const validateStart = repository.indexOf("export async function validateParticipantSession");
+  const validateStart = repository.indexOf(
+    "export async function validateParticipantSession",
+  );
   const joinStart = repository.indexOf("export async function joinActiveParty");
   const validateSource = repository.slice(validateStart, joinStart);
 
-  assert.equal(validateSource.includes('.eq("id", participantSession.participantId)'), true);
-  assert.equal(validateSource.includes('.eq("party_session_id", partySessionId)'), true);
-  assert.equal(validateSource.includes('.eq("resume_token_hash", tokenHash)'), true);
+  assert.equal(
+    validateSource.includes('.eq("id", participantSession.participantId)'),
+    true,
+  );
+  assert.equal(
+    validateSource.includes('.eq("party_session_id", partySessionId)'),
+    true,
+  );
+  assert.equal(
+    validateSource.includes('.eq("resume_token_hash", tokenHash)'),
+    true,
+  );
 });
 
-test("display name persistence is intentional but separate from participant identity", () => {
+test("session draft persistence is separate from remote participant identity", () => {
   const docs = readFileSync("docs/PARTY_SESSION_ARCHITECTURE.md", "utf8");
-  const guestPlay = readFileSync("components/party/guest-play-client.tsx", "utf8");
+  const guestPlay = readFileSync(
+    "components/party/guest-play-client.tsx",
+    "utf8",
+  );
 
-  assert.equal(docs.includes("intentionally kept in browser `sessionStorage`"), true);
-  assert.equal(docs.includes("That stored display name is not participant identity."), true);
-  assert.equal(guestPlay.includes("window.sessionStorage.getItem(SESSION_KEY)"), true);
+  assert.equal(
+    docs.includes("mirrored in browser `sessionStorage` as a draft/navigation bridge"),
+    true,
+  );
+  assert.equal(
+    docs.includes("That data is not participant identity or remote authority."),
+    true,
+  );
+  assert.equal(
+    guestPlay.includes("window.sessionStorage.getItem(SESSION_KEY)"),
+    true,
+  );
 });
 
 test("polling can move an open tab to a different current session without reload", () => {
   const hook = readFileSync("lib/party-remote/use-remote-party.ts", "utf8");
-  const switched = track({ sessionId: "session-a", revision: 15 }, "session-b", 0);
+  const switched = track(
+    { sessionId: "session-a", revision: 15 },
+    "session-b",
+    0,
+  );
 
   assert.equal(switched.accept, true);
   assert.equal(hook.includes("window.setInterval"), true);
@@ -166,15 +305,99 @@ test("polling can move an open tab to a different current session without reload
 test("QR join codes are validated without adding session-specific QR routing", () => {
   const joinRoute = readFileSync("app/api/party/join/route.ts", "utf8");
   const playRoute = readFileSync("app/[locale]/play/page.tsx", "utf8");
+  const homeRoute = readFileSync("app/[locale]/(guest)/page.tsx", "utf8");
+  const onboarding = readFileSync(
+    "components/guest/onboarding-flow.tsx",
+    "utf8",
+  );
   const repository = readFileSync("lib/party-remote/repository.ts", "utf8");
   const buildJoinStart = repository.indexOf("function buildJoinUrl");
   const contextStart = repository.indexOf("function getPartyContext");
   const buildJoinSource = repository.slice(buildJoinStart, contextStart);
 
-  assert.equal(buildJoinSource.includes('url.searchParams.set("join", publicJoinCode)'), true);
+  assert.equal(
+    buildJoinSource.includes("buildGuestWelcomePath(locale, publicJoinCode)"),
+    true,
+  );
+  assert.equal(buildJoinSource.includes('"/play"'), false);
   assert.equal(buildJoinSource.includes("party_session_id"), false);
+  assert.equal(homeRoute.includes("searchParams"), true);
+  assert.equal(homeRoute.includes("initialJoinCode={joinCode}"), true);
+  assert.equal(onboarding.includes("buildGuestWelcomePath(nextLocale"), true);
+  assert.equal(
+    onboarding.includes("buildGuestPlayPath(locale, joinCode)"),
+    true,
+  );
   assert.equal(playRoute.includes("searchParams"), true);
   assert.equal(playRoute.includes("joinCode={joinCode}"), true);
+  assert.equal(
+    playRoute.includes("redirect(buildGuestWelcomePath(locale, joinCode))"),
+    true,
+  );
   assert.equal(joinRoute.includes("joinCode"), true);
-  assert.equal(joinRoute.includes("parsed.data.joinCode !== partySession.public_join_code"), true);
+  assert.equal(
+    joinRoute.includes(
+      "parsed.data.joinCode !== partySession.public_join_code",
+    ),
+    true,
+  );
+});
+
+test("session question count is host-selected, server-validated, persisted, and used to slice approved content", () => {
+  const route = readFileSync("app/api/party/sessions/route.ts", "utf8");
+  const repository = readFileSync("lib/party-remote/repository.ts", "utf8");
+  const migration = readFileSync(
+    "supabase/migrations/202607170001_time_scoring_and_session_question_count.sql",
+    "utf8",
+  );
+
+  assert.equal(route.includes("questionCount: z.number().int().min(1)"), true);
+  assert.equal(route.includes("invalid_question_count"), true);
+  assert.equal(repository.includes("validateSessionQuestionCount"), true);
+  assert.equal(repository.includes("p_question_count: questionCount"), true);
+  assert.equal(repository.includes("createSessionPartyConfig("), true);
+  assert.equal(repository.includes("session.data.question_count"), true);
+  assert.equal(
+    migration.includes("question_count integer not null default 10"),
+    true,
+  );
+  assert.equal(
+    migration.includes("check (question_count between 1 and 10)"),
+    true,
+  );
+  assert.equal(
+    migration.includes("party_sessions_question_count_immutable"),
+    true,
+  );
+  assert.equal(migration.includes("question_count_is_immutable"), true);
+  assert.equal(migration.includes("idempotency_conflict"), true);
+});
+
+test("time scoring persists evidence and points while legacy rows retain their historical value", () => {
+  const repository = readFileSync("lib/party-remote/repository.ts", "utf8");
+  const migration = readFileSync(
+    "supabase/migrations/202607170001_time_scoring_and_session_question_count.sql",
+    "utf8",
+  );
+
+  assert.equal(repository.includes("receivedAt: Date.now()"), true);
+  assert.equal(
+    repository.includes("points_awarded: response.pointsAwarded"),
+    true,
+  );
+  assert.equal(
+    repository.includes("scoring_version: response.scoringVersion"),
+    true,
+  );
+  assert.equal(migration.includes("response_duration_ms"), false);
+  assert.equal(
+    migration.includes("scoring_version = 'correct-count-v1'"),
+    true,
+  );
+  assert.equal(
+    migration.includes(
+      "points_awarded = case when is_correct then 1 else 0 end",
+    ),
+    true,
+  );
 });

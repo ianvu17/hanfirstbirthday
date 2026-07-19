@@ -1,4 +1,5 @@
 import type { Locale } from "@/lib/i18n/routing";
+import type { ParticipantAvatarProjection } from "@/lib/party-avatar";
 
 export type PartyPhase =
   | "lobby"
@@ -34,9 +35,12 @@ export type GuestSession = {
   locale: Locale;
   createdOrder: number;
   isFixture: boolean;
+  isReady?: boolean;
+  avatar?: ParticipantAvatarProjection | null;
 };
 
 export type QuestionResponseStatus = "locked_answer" | "locked_timeout";
+export type ScoringVersion = "correct-count-v1" | "time-v1";
 
 export type LockedResponse = {
   guestId: string;
@@ -46,6 +50,8 @@ export type LockedResponse = {
   submittedAt: number;
   lockedAt: number;
   responseDurationMs: number | null;
+  pointsAwarded: number;
+  scoringVersion: ScoringVersion;
   submissionId: string;
   isCorrect: boolean;
 };
@@ -75,12 +81,21 @@ export type PartyConfig = {
 };
 
 export type PartyCommand =
-  | { type: "REGISTER_GUEST"; guestId: string; displayName: string; locale: Locale; now: number }
+  | {
+      type: "REGISTER_GUEST";
+      guestId: string;
+      displayName: string;
+      locale: Locale;
+      avatar?: ParticipantAvatarProjection | null;
+      now: number;
+    }
   | { type: "PREPARE_FIRST_QUESTION"; now: number }
+  | { type: "REVEAL_CHOICES"; now: number }
   | { type: "OPEN_QUESTION"; now: number }
   | { type: "LOCK_QUESTION"; now: number; reason?: "deadline" | "host" }
   | { type: "REVEAL_ANSWER"; now: number }
   | { type: "SHOW_LEADERBOARD"; now: number }
+  | { type: "ADVANCE_FROM_LEADERBOARD"; now: number }
   | { type: "COMPLETE_PRESENTATION"; now: number }
   | { type: "PREPARE_NEXT_QUESTION"; now: number }
   | { type: "FINISH_PARTY"; now: number }
@@ -125,10 +140,12 @@ export type PartyCommandResult =
 
 export type HostCapabilities = {
   canPrepareFirstQuestion: boolean;
+  canRevealChoices: boolean;
   canOpenQuestion: boolean;
   canLockQuestion: boolean;
   canRevealAnswer: boolean;
   canShowLeaderboard: boolean;
+  canAdvanceFromLeaderboard: boolean;
   canCompletePresentation: boolean;
   canPrepareNextQuestion: boolean;
   canFinishParty: boolean;
@@ -137,11 +154,16 @@ export type HostCapabilities = {
 
 export type LeaderboardRow = {
   rank: number;
+  previousRank: number;
   guestId: string;
   displayName: string;
   score: number;
+  previousScore: number;
+  pointsGained: number;
   answeredCount: number;
+  correctCount: number;
   isFixture: boolean;
+  avatar?: ParticipantAvatarProjection | null;
 };
 
 export type PartySnapshot = {

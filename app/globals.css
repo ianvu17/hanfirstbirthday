@@ -177,6 +177,22 @@
     min-height: 44px;
     min-width: 44px;
   }
+
+  .guest-controller-page {
+    --safe-page-y: max(0.75rem, env(safe-area-inset-top));
+  }
+}
+
+@media (max-height: 700px) {
+  .guest-controller-page {
+    --safe-page-y: max(0.5rem, env(safe-area-inset-top));
+  }
+}
+
+@media (max-height: 620px) {
+  .guest-controller-page {
+    --safe-page-y: max(0.375rem, env(safe-area-inset-top));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

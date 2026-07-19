@@ -15,11 +15,11 @@ The phone should not duplicate the desktop presentation. It should show only inf
 
 ## Host Model
 
-The birthday game is host-driven, not autonomous. Ian controls phase transitions such as Start Game, Open Question, Reveal Answer, Show Fun Fact, Show Leaderboard, and Next Question. Once a question is opened, the 20-second countdown is automatic.
+The birthday game is host-driven, not autonomous. Ian controls phase transitions such as Start Game, Reveal Answers, Reveal Correct Answer, Show Leaderboard, and Next Question. A question first appears as a preview without answer choices; revealing answer choices starts the automatic 20-second countdown.
 
 Future host controls should be intentionally lightweight. Expected controls include Start Game, Next, Reveal, and Pause, but Milestone 3.6 does not implement host controls.
 
-Milestone 5 implements the production Host Controller at `/{locale}/host`. It starts with a PIN screen, then shows party status, phase, question progress, participant count, submitted count, connection state, and one dominant valid next action. Finish Party requires confirmation. Developer diagnostics and fixture actions remain in `/{locale}/qa/party`.
+Milestone 5 implements the production Host Controller at `/{locale}/host`. It starts with a PIN screen, then shows party status, phase, question progress, participant count, submitted count, connection state, and one dominant valid next action. New-session creation includes a localized 3/5/7/10 question-count choice, defaulting to 10. During active answering there is no required host action; the host waits for the deadline to close answering, then reveals the correct answer. Finish Party requires confirmation. Developer diagnostics and fixture actions remain in `/{locale}/qa/party`.
 
 ## Primary Guest Flow
 
@@ -40,27 +40,29 @@ Milestone 5 implements the production Host Controller at `/{locale}/host`. It st
 The shared Party Screen should eventually support:
 
 1. Lobby with hero artwork, QR code, join instructions, guest count, and future countdown-until-start support.
-2. Large active question with automatic countdown, progress, and number of answers submitted.
-3. Locked-question state after the timer ends or the host closes answering.
-4. Correct-answer reveal.
-5. Han fun fact reveal when approved content exists.
-6. Leaderboard with animated ranking and current positions.
-7. Next-question preparation.
-8. Finished state with final leaderboard, celebration, and thank-you.
+2. Question preview with no visible answer choices and no running timer.
+3. Revealed answer choices with automatic countdown, progress, and number of answers submitted.
+4. Closed-answer state after the timer ends automatically.
+5. Correct-answer reveal.
+6. Han fun fact reveal when approved content exists.
+7. Leaderboard with animated ranking and current positions.
+8. Next-question preparation.
+9. Finished state with final leaderboard, celebration, and thank-you.
 
-This is a planning flow only. Quiz runtime, realtime updates, Supabase, networking, and host controls are deferred.
+Milestone 5 implements this flow for the quiz runtime, Supabase-backed shared state, realtime wake-up, server snapshots, and host controls. Messages, timeline, gallery, and standalone mobile leaderboard remain future work.
 
 ## Game Phases
 
 Use these shared lifecycle terms for future planning:
 
 - `LOBBY`: Guests join by phone while the Party Screen provides QR and room context.
-- `QUESTION_ACTIVE`: Phones collect answers; the Party Screen shows the question, countdown, progress, and submitted-answer count.
-- `QUESTION_LOCKED`: Phones show locked or timed-out personal state; the Party Screen holds the room before reveal.
-- `ANSWER_REVEAL`: The Party Screen reveals the correct answer and celebration; phones show concise personal feedback.
-- `LEADERBOARD`: The Party Screen shows current rankings; phones may show a smaller personal leaderboard view.
+- `QUESTION_PREVIEW`: Phones and Party Screen show the question text while the answer choices remain hidden.
+- `QUESTION_ACTIVE`: Phones collect answers; the Party Screen shows the question, answer choices, countdown, progress, and submitted-answer count.
+- `QUESTION_LOCKED`: Phones show locked or timed-out personal state; the Party Screen holds the room before reveal. In implementation this is reached by deadline-driven closure, not a required host lock.
+- `ANSWER_REVEAL`: The Party Screen gives the correct answer one dominant green treatment followed by the approved Han fun fact and subdued distribution. Phones explicitly label the correct answer and, when different, the guest's selected answer; timeout is its own state. Correctness remains secret before this phase.
+- `LEADERBOARD`: The Party Screen grows bars from previous totals to new totals, shows this-round points, then physically reorders rows. Phones keep the simpler personal score and gain view.
 - `NEXT_QUESTION`: The host advances the room to the next question.
-- `FINISHED`: The Party Screen closes with final leaderboard, celebration, and thank-you; phones show personal result and next actions.
+- `FINISHED`: The Party Screen closes with a winner-first celebration and top three. The winner's phone receives a Mastermind celebration and certificate download; other guests receive warm thanks and final rank without a certificate action.
 
 Milestone 3 implemented the guest entry portion only:
 
@@ -71,7 +73,7 @@ Milestone 3 implemented the guest entry portion only:
 5. Ready.
 6. Quiz-coming-soon placeholder.
 
-The quiz engine, result, leaderboard, messages, admin behavior, QA tools, and Supabase persistence remain deferred.
+Milestone 4 replaced the quiz-coming-soon boundary with the local Party Engine and Milestone 5 added the Supabase-backed remote runtime. Messages, gallery, timeline, standalone mobile leaderboard, and full admin message/score utilities remain deferred.
 
 ## Screen Specifications
 
@@ -107,7 +109,7 @@ UX notes:
 - Language options should be obvious and tappable.
 - Language can be changed later through a small accessible control.
 - Do not bury language behind settings.
-- Milestone 3 uses two large options and stores the selected locale in session-only state.
+- Local onboarding keeps the selected locale in session-only draft state. After remote join, language changes update the authenticated participant and route; the participant locale controls all later guest copy and question content.
 
 States:
 
@@ -123,7 +125,7 @@ UX notes:
 - Keep the form short.
 - Explain why the name is needed in a friendly way.
 - Use validation that feels helpful, not punitive.
-- Milestone 3 trims whitespace, rejects blank names, supports long Vietnamese names, and stores the display name only in session storage.
+- Name entry trims whitespace, rejects blank names, and supports Vietnamese names. After remote join, edits update the same authenticated participant, preserve join order/avatar/scores, and reset readiness.
 
 States:
 
@@ -134,6 +136,10 @@ States:
 ### Quiz Start
 
 Purpose: Prepare guests for a short timed quiz.
+
+Onboarding provides an in-app Back action from Language, Name, Party photo, How to Play, and Ready. Values are preserved. Ready-to-Back and any confirmed profile/avatar change reset persisted readiness. Once the host starts, editable onboarding closes and resumed participants route to the current game.
+
+How to Play is a connected three-step story: Answer fast explains the 20-second time score, Lock it in explains immutable submission, and Watch the race explains reveal plus leaderboard movement. Desktop uses purpose-built timer, answer-lock, and bar-race illustrations; mobile uses a compact vertical timeline. Motion respects reduced-motion.
 
 UX notes:
 
@@ -168,6 +174,7 @@ Micro interactions:
 - Clear selected-answer state.
 - Subtle feedback when an answer is accepted and locked.
 - Timer transition should become more noticeable near the end without feeling alarming.
+- The visible timer should count every integer smoothly from 20 to 0 on all three surfaces, using the server deadline rather than snapshot refresh frequency.
 
 States:
 
@@ -183,6 +190,8 @@ States:
 - Temporary request failure.
 - Safe retry.
 - Transition to next question.
+
+Correct, incorrect, and timeout reveals show the authoritative points earned for that question. Progress remains `question/total`; score is always formatted as points so the two concepts are not confused.
 
 Milestone 4 decision:
 
@@ -211,6 +220,7 @@ UX notes:
 - Results should be warm regardless of score.
 - Avoid language that makes low scores embarrassing.
 - Offer actions to view leaderboard and leave a message.
+- Only the server-verified rank-1 participant may download the localized winner certificate.
 
 States:
 
@@ -253,7 +263,7 @@ Milestone 4 implementation:
 Milestone 5 implementation:
 
 - `/display/party` uses the Supabase-backed remote runtime when configured.
-- Lobby QR is generated from the active party join URL.
+- Lobby QR is generated from the active party join URL and opens the localized Welcome Screen with the public join code preserved.
 - Participant count, response count, reveal, and leaderboard projections come from server snapshots.
 - If Supabase env is absent, the route falls back to the local Milestone 4 runtime for development rather than running divergent device state.
 

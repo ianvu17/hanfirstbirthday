@@ -109,7 +109,7 @@ flowchart LR
   Projection --> UI[Display, Guest, Host UI]
 ```
 
-Realtime events are treated as wake-up signals. Clients refetch snapshots, ignore older revisions, and keep the last safe view during stale/offline states.
+Realtime events are treated as wake-up signals. Clients refetch snapshots, ignore older revisions, and keep the last safe view during reconnecting/offline states.
 
 ## Authentication And Session Boundaries
 
@@ -128,7 +128,7 @@ flowchart TD
 ```mermaid
 flowchart TD
   Lost[Connection lost] --> Keep[Keep last safe snapshot]
-  Keep --> Status[Show stale/offline state]
+  Keep --> Status[Show reconnecting/offline state]
   Status --> Retry[Poll or realtime reconnect]
   Retry --> Fetch[Fetch authoritative snapshot]
   Fetch --> Compare{Revision newer?}
@@ -387,3 +387,16 @@ Target remains about 10 guests with 20 simulated participants as rehearsal headr
 ## Human Approval Gate
 
 Milestone 5 stops here for Ian review. Do not begin Milestone 6 until Ian approves the remote runtime direction and the remaining live rehearsal checklist.
+
+## July 13, 2026 Flow Refinement Amendment
+
+After the initial Milestone 5 implementation pass, the host-controlled quiz flow was refined before physical-device rehearsal:
+
+- Production Host Controller no longer presents Open Question or required Lock Answers controls.
+- The host-facing command to open answering is `REVEAL_CHOICES`; it reveals answer choices and starts the 20-second authoritative deadline.
+- `LOCK_QUESTION` remains only as a deadline-driven runtime/server closure mechanism and is rejected as a host action.
+- `question_ready` remains the persisted preview phase and `question_locked` remains the persisted closed/waiting-for-reveal phase to avoid a database migration.
+- Guest phones hide answer choices during preview, show compact mobile-first answer controls during active answering, and preserve locked/submitted state through reconnects.
+- The realtime status UI now stabilizes transient subscription changes before showing reconnecting/offline and uses connected, reconnecting, offline, and attention icons that match the label.
+
+This amendment prepares Milestone 5 for Ian UX review and physical rehearsal. It does not mark Milestone 5 or Milestone 6 complete.

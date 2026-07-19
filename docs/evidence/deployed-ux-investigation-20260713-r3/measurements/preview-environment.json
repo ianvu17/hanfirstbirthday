@@ -1,0 +1,364 @@
+{
+  "label": "preview",
+  "baseUrl": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app",
+  "startedAt": "2026-07-13T10:57:36.018Z",
+  "sessionText": "{\"mode\":\"remote\",\"configured\":true,\"session\":null,\"reason\":\"no_active_session\",\"context\":{\"partyKey\":\"han-first-birthday\",\"deploymentEnvironment\":\"preview\",\"publicJoinCode\":\"han-turns-one\",\"isTest\":true},\"connection\":\"connected\",\"serverNow\":1783940256619}",
+  "metrics": {
+    "label": "preview-direct-play",
+    "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en/play?join=han-turns-one",
+    "viewport": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "visualWidth": 390,
+      "visualHeight": 844,
+      "visualOffsetTop": 0,
+      "devicePixelRatio": 1
+    },
+    "document": {
+      "scrollHeight": 844,
+      "clientHeight": 844,
+      "bodyScrollHeight": 844,
+      "bodyClientHeight": 844,
+      "bodyOffsetHeight": 844,
+      "scrollY": 0,
+      "overflowPixels": 0,
+      "hasPageVerticalScroll": false
+    },
+    "rects": {
+      "pageShell": {
+        "name": "page-shell",
+        "selector": "main",
+        "text": "LIVE\nJoin from the welcome screen\n\nEnter a display name first so the local party runtime can lock your answers.\n\nBack to welcome",
+        "rect": {
+          "top": 0,
+          "right": 390,
+          "bottom": 844,
+          "left": 0,
+          "width": 390,
+          "height": 844
+        },
+        "position": "relative",
+        "display": "block",
+        "minHeight": "844px",
+        "height": "844px",
+        "paddingTop": "16px",
+        "paddingBottom": "16px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "overflowY": "hidden"
+      },
+      "controller": null,
+      "topHeader": null,
+      "questionText": null,
+      "timer": null,
+      "answerList": null,
+      "submitButton": null,
+      "connectionBadge": null,
+      "bottomStatus": null
+    },
+    "extending": [],
+    "sizedElements": [
+      {
+        "tag": "div",
+        "className": "pointer-events-none absolute inset-0 overflow-hidden",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 844,
+          "height": 844
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "844px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 81,
+          "height": 81
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "81.2812px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 144,
+          "bottom": 256,
+          "height": 112
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "112px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "svg",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 0,
+          "bottom": 0,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "div",
+        "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+        "text": "",
+        "rect": {
+          "top": 732,
+          "bottom": 844,
+          "height": 112
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "112px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "div",
+        "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+        "text": "",
+        "rect": {
+          "top": 716,
+          "bottom": 844,
+          "height": 128
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "128px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      },
+      {
+        "tag": "next-route-announcer",
+        "className": "",
+        "text": "",
+        "rect": {
+          "top": 844,
+          "bottom": 844,
+          "height": 0
+        },
+        "position": "absolute",
+        "minHeight": "0px",
+        "height": "0px",
+        "paddingTop": "0px",
+        "paddingBottom": "0px"
+      }
+    ]
+  },
+  "trace": [
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:57:37.401Z",
+      "performanceMs": 669
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=-cuKcHHaE9Bw6h6L"
+      },
+      "at": "2026-07-13T10:57:37.403Z",
+      "performanceMs": 671
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=-cuKcHHaE9Bw6h6L",
+        "status": 200,
+        "ok": true,
+        "durationMs": 245
+      },
+      "at": "2026-07-13T10:57:37.648Z",
+      "performanceMs": 916
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=z-4SRnK0w1hi3UWA"
+      },
+      "at": "2026-07-13T10:57:37.650Z",
+      "performanceMs": 918
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=o5-T2GFqHzcKZUvW"
+      },
+      "at": "2026-07-13T10:57:37.650Z",
+      "performanceMs": 918
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=_uttiSyt-vFdLy2o"
+      },
+      "at": "2026-07-13T10:57:37.650Z",
+      "performanceMs": 918
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=4cqYPqmfy7p0zEcu"
+      },
+      "at": "2026-07-13T10:57:37.650Z",
+      "performanceMs": 918
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=_uttiSyt-vFdLy2o",
+        "status": 200,
+        "ok": true,
+        "durationMs": 243
+      },
+      "at": "2026-07-13T10:57:37.894Z",
+      "performanceMs": 1162
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=WQJMwoGifHo92rqw"
+      },
+      "at": "2026-07-13T10:57:37.895Z",
+      "performanceMs": 1163
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=4cqYPqmfy7p0zEcu",
+        "status": 200,
+        "ok": true,
+        "durationMs": 261
+      },
+      "at": "2026-07-13T10:57:37.911Z",
+      "performanceMs": 1179
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 577
+      },
+      "at": "2026-07-13T10:57:37.978Z",
+      "performanceMs": 1246
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=o5-T2GFqHzcKZUvW",
+        "status": 200,
+        "ok": true,
+        "durationMs": 395
+      },
+      "at": "2026-07-13T10:57:38.045Z",
+      "performanceMs": 1313
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=z-4SRnK0w1hi3UWA",
+        "status": 200,
+        "ok": true,
+        "durationMs": 401
+      },
+      "at": "2026-07-13T10:57:38.051Z",
+      "performanceMs": 1319
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday-5yl9hh1e3-ianalysed.vercel.app/en?_rsc=WQJMwoGifHo92rqw",
+        "status": 200,
+        "ok": true,
+        "durationMs": 250
+      },
+      "at": "2026-07-13T10:57:38.145Z",
+      "performanceMs": 1413
+    }
+  ],
+  "finishedAt": "2026-07-13T10:57:42.783Z"
+}

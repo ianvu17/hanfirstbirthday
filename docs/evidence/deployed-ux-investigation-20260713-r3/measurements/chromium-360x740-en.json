@@ -1,0 +1,1113 @@
+{
+  "profile": {
+    "name": "360x740-en",
+    "width": 360,
+    "height": 740,
+    "language": "en"
+  },
+  "browserName": "chromium",
+  "baseUrl": "https://hanfirstbirthday.vercel.app",
+  "startedAt": "2026-07-13T10:54:55.558Z",
+  "states": [
+    {
+      "label": "question-preview-before-scroll",
+      "url": "https://hanfirstbirthday.vercel.app/en/play",
+      "viewport": {
+        "innerWidth": 360,
+        "innerHeight": 740,
+        "visualWidth": 360,
+        "visualHeight": 740,
+        "visualOffsetTop": 0,
+        "devicePixelRatio": 2
+      },
+      "document": {
+        "scrollHeight": 763,
+        "clientHeight": 740,
+        "bodyScrollHeight": 763,
+        "bodyClientHeight": 763,
+        "bodyOffsetHeight": 763,
+        "scrollY": 0,
+        "overflowPixels": 23,
+        "hasPageVerticalScroll": true
+      },
+      "rects": {
+        "pageShell": {
+          "name": "page-shell",
+          "selector": "main",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYo",
+          "rect": {
+            "top": 0,
+            "right": 360,
+            "bottom": 763,
+            "left": 0,
+            "width": 360,
+            "height": 763
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "740px",
+          "height": "763px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "hidden"
+        },
+        "controller": {
+          "name": "guest-controller",
+          "selector": "[data-testid='guest-controller']",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYo",
+          "rect": {
+            "top": 16,
+            "right": 344,
+            "bottom": 747,
+            "left": 16,
+            "width": 328,
+            "height": 731
+          },
+          "position": "static",
+          "display": "flex",
+          "minHeight": "612px",
+          "height": "731px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "topHeader": null,
+        "questionText": {
+          "name": "question-text",
+          "selector": "[data-testid='guest-controller'] h1",
+          "text": "Development question 1: Which placeholder answer is marked correct?",
+          "rect": {
+            "top": 177,
+            "right": 323,
+            "bottom": 402,
+            "left": 37,
+            "width": 286,
+            "height": 225
+          },
+          "position": "static",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "225px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "8px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "timer": {
+          "name": "timer",
+          "selector": "[data-testid='guest-controller'] div:has(svg)",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYo",
+          "rect": {
+            "top": 53,
+            "right": 323,
+            "bottom": 710,
+            "left": 37,
+            "width": 286,
+            "height": 657
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "657px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "answerList": {
+          "name": "answer-list",
+          "selector": "[role='radiogroup']",
+          "text": "Placeholder option A\nPlaceholder option B\nPlaceholder option C",
+          "rect": {
+            "top": 422,
+            "right": 323,
+            "bottom": 614,
+            "left": 37,
+            "width": 286,
+            "height": 192
+          },
+          "position": "static",
+          "display": "grid",
+          "minHeight": "0px",
+          "height": "192px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "20px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "submitButton": {
+          "name": "submit-button",
+          "selector": "[data-testid='guest-submit-answer']",
+          "text": "Submit answer",
+          "rect": {
+            "top": 666,
+            "right": 323,
+            "bottom": 710,
+            "left": 37,
+            "width": 286,
+            "height": 44
+          },
+          "position": "relative",
+          "display": "flex",
+          "minHeight": "44px",
+          "height": "44px",
+          "paddingTop": "8px",
+          "paddingBottom": "8px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "connectionBadge": null,
+        "bottomStatus": null
+      },
+      "extending": [
+        {
+          "tag": "main",
+          "className": "paper-grid relative min-h-screen overflow-hidden px-[var(--safe-page-x)] py-[var(--safe-page-y)] text-foreground",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment que tion 1: Which placeholder an wer i  marked correct?\nPlaceh",
+          "rect": {
+            "top": 0,
+            "bottom": 763,
+            "height": 763
+          },
+          "position": "relative",
+          "minHeight": "740px",
+          "height": "763px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 763,
+            "height": 763
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "763px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 651,
+            "bottom": 763,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 635,
+            "bottom": 763,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "relative z-10 w-full mx-auto max-w-6xl",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment que tion 1: Which placeholder an wer i  marked correct?\nPlaceh",
+          "rect": {
+            "top": 16,
+            "bottom": 747,
+            "height": 731
+          },
+          "position": "relative",
+          "minHeight": "0px",
+          "height": "731px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "section",
+          "className": "mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl items-center py-4",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment que tion 1: Which placeholder an wer i  marked correct?\nPlaceh",
+          "rect": {
+            "top": 16,
+            "bottom": 747,
+            "height": 731
+          },
+          "position": "static",
+          "minHeight": "612px",
+          "height": "731px",
+          "overflowY": "visible"
+        }
+      ],
+      "sizedElements": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 763,
+            "height": 763
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "763px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 75,
+            "height": 75
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "75.0156px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 144,
+            "bottom": 256,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 651,
+            "bottom": 763,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 635,
+            "bottom": 763,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        }
+      ]
+    },
+    {
+      "label": "question-preview-after-scroll",
+      "url": "https://hanfirstbirthday.vercel.app/en/play",
+      "viewport": {
+        "innerWidth": 360,
+        "innerHeight": 740,
+        "visualWidth": 360,
+        "visualHeight": 740,
+        "visualOffsetTop": 0,
+        "devicePixelRatio": 2
+      },
+      "document": {
+        "scrollHeight": 763,
+        "clientHeight": 740,
+        "bodyScrollHeight": 763,
+        "bodyClientHeight": 763,
+        "bodyOffsetHeight": 763,
+        "scrollY": 23,
+        "overflowPixels": 23,
+        "hasPageVerticalScroll": true
+      },
+      "rects": {
+        "pageShell": {
+          "name": "page-shell",
+          "selector": "main",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYo",
+          "rect": {
+            "top": -23,
+            "right": 360,
+            "bottom": 740,
+            "left": 0,
+            "width": 360,
+            "height": 763
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "740px",
+          "height": "763px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "hidden"
+        },
+        "controller": {
+          "name": "guest-controller",
+          "selector": "[data-testid='guest-controller']",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYo",
+          "rect": {
+            "top": -7,
+            "right": 344,
+            "bottom": 724,
+            "left": 16,
+            "width": 328,
+            "height": 731
+          },
+          "position": "static",
+          "display": "flex",
+          "minHeight": "612px",
+          "height": "731px",
+          "paddingTop": "16px",
+          "paddingBottom": "16px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "topHeader": null,
+        "questionText": {
+          "name": "question-text",
+          "selector": "[data-testid='guest-controller'] h1",
+          "text": "Development question 1: Which placeholder answer is marked correct?",
+          "rect": {
+            "top": 154,
+            "right": 323,
+            "bottom": 379,
+            "left": 37,
+            "width": 286,
+            "height": 225
+          },
+          "position": "static",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "225px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "8px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "timer": {
+          "name": "timer",
+          "selector": "[data-testid='guest-controller'] div:has(svg)",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment question 1: Which placeholder answer is marked correct?\nPlaceholder option A\nPlaceholder option B\nPlaceholder option C\n\nYo",
+          "rect": {
+            "top": 30,
+            "right": 323,
+            "bottom": 687,
+            "left": 37,
+            "width": 286,
+            "height": 657
+          },
+          "position": "relative",
+          "display": "block",
+          "minHeight": "0px",
+          "height": "657px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "answerList": {
+          "name": "answer-list",
+          "selector": "[role='radiogroup']",
+          "text": "Placeholder option A\nPlaceholder option B\nPlaceholder option C",
+          "rect": {
+            "top": 399,
+            "right": 323,
+            "bottom": 591,
+            "left": 37,
+            "width": 286,
+            "height": 192
+          },
+          "position": "static",
+          "display": "grid",
+          "minHeight": "0px",
+          "height": "192px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "marginTop": "20px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "submitButton": {
+          "name": "submit-button",
+          "selector": "[data-testid='guest-submit-answer']",
+          "text": "Submit answer",
+          "rect": {
+            "top": 643,
+            "right": 323,
+            "bottom": 687,
+            "left": 37,
+            "width": 286,
+            "height": 44
+          },
+          "position": "relative",
+          "display": "flex",
+          "minHeight": "44px",
+          "height": "44px",
+          "paddingTop": "8px",
+          "paddingBottom": "8px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "overflowY": "visible"
+        },
+        "connectionBadge": null,
+        "bottomStatus": null
+      },
+      "extending": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -23,
+            "bottom": -23,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "main",
+          "className": "paper-grid relative min-h-screen overflow-hidden px-[var(--safe-page-x)] py-[var(--safe-page-y)] text-foreground",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment que tion 1: Which placeholder an wer i  marked correct?\nPlaceh",
+          "rect": {
+            "top": -23,
+            "bottom": 740,
+            "height": 763
+          },
+          "position": "relative",
+          "minHeight": "740px",
+          "height": "763px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": -23,
+            "bottom": 740,
+            "height": 763
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "763px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -23,
+            "bottom": 52,
+            "height": 75
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "75.0156px",
+          "overflowY": "hidden"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -13,
+            "bottom": 6,
+            "height": 19
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -9,
+            "bottom": 36,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -7,
+            "bottom": 38,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -6,
+            "bottom": 39,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -9,
+            "bottom": 36,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -12,
+            "bottom": 33,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -12,
+            "bottom": 33,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -10,
+            "bottom": 35,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -7,
+            "bottom": 38,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -6,
+            "bottom": 39,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "path",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -8,
+            "bottom": 37,
+            "height": 45
+          },
+          "position": "static",
+          "minHeight": "0px",
+          "height": "auto",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "div",
+          "className": "relative z-10 w-full mx-auto max-w-6xl",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment que tion 1: Which placeholder an wer i  marked correct?\nPlaceh",
+          "rect": {
+            "top": -7,
+            "bottom": 724,
+            "height": 731
+          },
+          "position": "relative",
+          "minHeight": "0px",
+          "height": "731px",
+          "overflowY": "visible"
+        },
+        {
+          "tag": "section",
+          "className": "mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl items-center py-4",
+          "text": "CODEX 360X740-EN\nGET READY\nRECONNECTING\n\n1/2\n\nDevelopment que tion 1: Which placeholder an wer i  marked correct?\nPlaceh",
+          "rect": {
+            "top": -7,
+            "bottom": 724,
+            "height": 731
+          },
+          "position": "static",
+          "minHeight": "612px",
+          "height": "731px",
+          "overflowY": "visible"
+        }
+      ],
+      "sizedElements": [
+        {
+          "tag": "next-route-announcer",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -23,
+            "bottom": -23,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "0px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "pointer-events-none absolute inset-0 overflow-hidden",
+          "text": "",
+          "rect": {
+            "top": -23,
+            "bottom": 740,
+            "height": 763
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "763px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": -23,
+            "bottom": 52,
+            "height": 75
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "75.0156px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 121,
+            "bottom": 233,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "svg",
+          "className": "",
+          "text": "",
+          "rect": {
+            "top": 0,
+            "bottom": 0,
+            "height": 0
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "auto",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "paper-stage absolute inset-x-[-8%] bottom-0 h-28 border-t border-party-orange/20 shadow-[0_-18px_40px_-38px_hsl(var(--shadow-warm))]",
+          "text": "",
+          "rect": {
+            "top": 628,
+            "bottom": 740,
+            "height": 112
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "112px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        },
+        {
+          "tag": "div",
+          "className": "blue-runner absolute bottom-0 left-1/2 h-32 w-44 -translate-x-1/2 rounded-t-[1.5rem] opacity-90 shadow-paper sm:w-64 lg:w-80",
+          "text": "",
+          "rect": {
+            "top": 612,
+            "bottom": 740,
+            "height": 128
+          },
+          "position": "absolute",
+          "minHeight": "0px",
+          "height": "128px",
+          "paddingTop": "0px",
+          "paddingBottom": "0px"
+        }
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en/play?_rsc=IEbPg-Maawlshv1s"
+      },
+      "at": "2026-07-13T10:54:59.638Z",
+      "performanceMs": 4080
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "https://hanfirstbirthday.vercel.app/en/play?_rsc=IEbPg-Maawlshv1s",
+        "status": 200,
+        "ok": true,
+        "durationMs": 273
+      },
+      "at": "2026-07-13T10:54:59.911Z",
+      "performanceMs": 4352
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/join"
+      },
+      "at": "2026-07-13T10:54:59.957Z",
+      "performanceMs": 4398
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:54:59.958Z",
+      "performanceMs": 4399
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1673
+      },
+      "at": "2026-07-13T10:55:01.631Z",
+      "performanceMs": 6072
+    },
+    {
+      "type": "websocket:create",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:55:01.633Z",
+      "performanceMs": 6074
+    },
+    {
+      "type": "websocket:open",
+      "detail": {
+        "url": "wss://coxzrpymrojqrsvgdeho.supabase.co/realtime/v1/websocket?apikey=[redacted]&vsn=2.0.0"
+      },
+      "at": "2026-07-13T10:55:01.717Z",
+      "performanceMs": 6159
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/join",
+        "status": 200,
+        "ok": true,
+        "durationMs": 2722
+      },
+      "at": "2026-07-13T10:55:02.678Z",
+      "performanceMs": 7120
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:55:02.823Z",
+      "performanceMs": 7264
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 1767
+      },
+      "at": "2026-07-13T10:55:04.590Z",
+      "performanceMs": 9031
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:55:04.880Z",
+      "performanceMs": 9321
+    },
+    {
+      "type": "fetch:end",
+      "detail": {
+        "url": "/api/party/session",
+        "status": 200,
+        "ok": true,
+        "durationMs": 2030
+      },
+      "at": "2026-07-13T10:55:06.910Z",
+      "performanceMs": 11351
+    },
+    {
+      "type": "fetch:start",
+      "detail": {
+        "url": "/api/party/session"
+      },
+      "at": "2026-07-13T10:55:06.942Z",
+      "performanceMs": 11383
+    }
+  ],
+  "finishedAt": "2026-07-13T10:55:08.521Z"
+}

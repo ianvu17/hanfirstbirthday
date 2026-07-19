@@ -1,176 +1,463 @@
 {
-    "schemaVersion": "1.0.0",
-    "locale": "vi",
-    "metadata": {
-        "projectName": "Han Birthday Experience",
-        "publicTitle": "WHO IS TURNING ONE?!",
-        "contentStatus": "milestone-3-onboarding-copy-no-real-han-content",
-        "contentRules": {
-            "realContentRequiredFromIan": true,
-            "inventedMemoriesAllowed": false,
-            "fakePhotosAllowed": false,
-            "hardcodedContentAllowed": false
-        }
+  "schemaVersion": "1.0.0",
+  "locale": "vi",
+  "metadata": {
+    "projectName": "Han Birthday Experience",
+    "publicTitle": "WHO IS TURNING ONE?!",
+    "contentStatus": "milestone-3-onboarding-copy-no-real-han-content",
+    "contentRules": {
+      "realContentRequiredFromIan": true,
+      "inventedMemoriesAllowed": false,
+      "fakePhotosAllowed": false,
+      "hardcodedContentAllowed": false
+    }
+  },
+  "navigation": {
+    "home": "Trang chủ",
+    "quiz": "Đố vui",
+    "leaderboard": "Bảng điểm",
+    "message": "Lời chúc",
+    "timeline": "Dòng thời gian",
+    "gallery": "Thư viện"
+  },
+  "screens": {
+    "welcome": {
+      "title": "WHO IS TURNING ONE?!",
+      "subtitle": "Một bất ngờ sinh nhật nhỏ đang chờ bạn.",
+      "primaryAction": "Bắt đầu",
+      "heroPlaceholderLabel": "Ảnh của Han sẽ được đặt ở đây",
+      "heroPlaceholderAlt": "Khung chân dung trang trí dành cho ảnh Han đã được duyệt sau này"
     },
-    "navigation": {
-        "home": "Trang chủ",
-        "quiz": "Đố vui",
-        "leaderboard": "Bảng điểm",
-        "message": "Lời chúc",
-        "timeline": "Dòng thời gian",
-        "gallery": "Thư viện"
+    "language": {
+      "title": "Chọn ngôn ngữ",
+      "subtitle": "Hãy chọn ngôn ngữ dễ dùng nhất trong buổi tiệc.",
+      "englishLabel": "English",
+      "englishDescription": "Continue in English.",
+      "vietnameseLabel": "Tiếng Việt",
+      "vietnameseDescription": "Tiếp tục bằng tiếng Việt.",
+      "switchLabel": "Ngôn ngữ"
     },
-    "screens": {
-        "welcome": {
-            "title": "WHO IS TURNING ONE?!",
-            "subtitle": "Một bất ngờ sinh nhật nhỏ đang chờ bạn.",
-            "primaryAction": "Bắt đầu",
-            "heroPlaceholderLabel": "Ảnh của Han sẽ được đặt ở đây",
-            "heroPlaceholderAlt": "Khung chân dung trang trí dành cho ảnh Han đã được duyệt sau này"
+    "guestEntry": {
+      "title": "Bạn muốn hiện tên nào?",
+      "description": "Tên này sẽ xuất hiện trong phần đố vui và màn hình chúc mừng.",
+      "nameLabel": "Tên hiển thị",
+      "namePlaceholder": "Nhập tên của bạn",
+      "primaryAction": "Tiếp tục",
+      "validation": {
+        "required": "Vui lòng nhập tên của bạn.",
+        "tooLong": "Vui lòng dùng tên hiển thị ngắn hơn.",
+        "alreadySubmitted": "Tên này đã được lưu cho phiên này."
+      }
+    },
+    "partyPhoto": {
+      "title": "Tạo ảnh đại diện dự tiệc",
+      "description": "Ảnh đại diện sẽ xuất hiện trong trò chơi riêng của buổi tiệc và có thể được dùng trên Han Master Certificate của bạn.",
+      "takeSelfie": "Chụp ảnh selfie",
+      "choosePhoto": "Chọn ảnh có sẵn",
+      "chooseAvatar": "Chọn avatar",
+      "capture": "Chụp",
+      "cancel": "Hủy",
+      "retake": "Chụp lại",
+      "usePhoto": "Dùng ảnh này",
+      "continue": "Tiếp tục",
+      "skip": "Tiếp tục mà không đổi",
+      "photoReady": "Ảnh đại diện đã sẵn sàng",
+      "presetReady": "Đã chọn avatar sinh nhật",
+      "savingTitle": "Đang lưu ảnh dự tiệc của bạn",
+      "preparingPhoto": "Đang chuẩn bị ảnh…",
+      "uploadingPhoto": "Đang tải ảnh lên…",
+      "savingAvatar": "Đang lưu ảnh đại diện…",
+      "avatarReady": "Ảnh đại diện đã sẵn sàng!",
+      "cancelUpload": "Hủy tải ảnh",
+      "uploadCancelled": "Đã hủy tải ảnh. Phần chỉnh sửa vẫn còn đây.",
+      "retryUpload": "Thử tải lại",
+      "processingProgress": "Đang hoàn tất an toàn…",
+      "uploadHelp": "JPEG, PNG, hoặc WebP. Tối đa 5 MB.",
+      "cropHelp": "Di chuyển và phóng to ảnh để khuôn mặt nằm gọn trong vòng tròn.",
+      "stickerLabel": "Nhãn dán sinh nhật",
+      "zoomLabel": "Phóng to",
+      "sizeLabel": "Cỡ nhãn dán",
+      "removeSticker": "Xóa nhãn dán",
+      "addSticker": "Thêm",
+      "presets": {
+        "birthdayBear": "Gấu sinh nhật",
+        "birthdayBunny": "Thỏ sinh nhật",
+        "birthdayLion": "Sư tử sinh nhật",
+        "birthdayPanda": "Gấu trúc sinh nhật",
+        "birthdayKoala": "Gấu koala sinh nhật",
+        "birthdayTiger": "Hổ sinh nhật",
+        "birthdayStar": "Ngôi sao vui vẻ",
+        "birthdayCupcake": "Cupcake sinh nhật"
+      },
+      "stickers": {
+        "partyHat": "nón sinh nhật",
+        "crown": "vương miện sinh nhật",
+        "balloons": "bong bóng",
+        "confetti": "hoa giấy",
+        "cupcake": "cupcake sinh nhật",
+        "star": "ngôi sao",
+        "one": "số 1",
+        "bowTie": "nơ cổ",
+        "glasses": "kính ăn mừng"
+      },
+      "validation": {
+        "cameraUnavailable": "Không thể dùng camera ở đây. Bạn có thể chọn ảnh hoặc avatar.",
+        "cameraDenied": "Bạn chưa cho phép dùng camera. Bạn có thể chọn ảnh hoặc avatar.",
+        "unsupportedFile": "Vui lòng chọn ảnh JPEG, PNG, hoặc WebP.",
+        "fileTooLarge": "Vui lòng chọn ảnh nhỏ hơn 5 MB.",
+        "imageInvalid": "Không thể mở ảnh này. Vui lòng thử ảnh khác.",
+        "uploadFailed": "Chưa thể lưu avatar này. Vui lòng thử lại hoặc chọn avatar sinh nhật.",
+        "saved": "Đã lưu avatar."
+      }
+    },
+    "howToPlay": {
+      "title": "Cách chơi",
+      "subtitle": "Ba bước thật nhanh, rồi cùng cả phòng chờ khoảnh khắc mở đáp án.",
+      "primaryAction": "Tôi sẵn sàng",
+      "cards": [
+        {
+          "id": "timer",
+          "title": "Trả lời thật nhanh",
+          "description": "Bạn có 20 giây. Trả lời đúng càng nhanh thì càng được nhiều điểm."
         },
-        "language": {
-            "title": "Chọn ngôn ngữ",
-            "subtitle": "Hãy chọn ngôn ngữ dễ dùng nhất trong buổi tiệc.",
-            "englishLabel": "English",
-            "englishDescription": "Continue in English.",
-            "vietnameseLabel": "Tiếng Việt",
-            "vietnameseDescription": "Tiếp tục bằng tiếng Việt.",
-            "switchLabel": "Ngôn ngữ"
+        {
+          "id": "locked",
+          "title": "Chốt đáp án",
+          "description": "Hãy chọn cẩn thận—đáp án không thể thay đổi sau khi gửi."
         },
-        "guestEntry": {
-            "title": "Bạn muốn hiện tên nào?",
-            "description": "Tên này sẽ xuất hiện trong phần đố vui và màn hình chúc mừng.",
-            "nameLabel": "Tên hiển thị",
-            "namePlaceholder": "Nhập tên của bạn",
-            "primaryAction": "Tiếp tục",
-            "validation": {
-                "required": "Vui lòng nhập tên của bạn.",
-                "tooLong": "Vui lòng dùng tên hiển thị ngắn hơn.",
-                "alreadySubmitted": "Tên này đã được lưu cho phiên này."
-            }
-        },
-        "howToPlay": {
-            "title": "Cách chơi",
-            "subtitle": "Nhanh, vui, và chỉ mất khoảng 3 đến 5 phút.",
-            "primaryAction": "Tôi sẵn sàng",
-            "cards": [
-                {
-                    "id": "timer",
-                    "title": "20 giây",
-                    "description": "Mỗi câu hỏi có thời gian ngắn."
-                },
-                {
-                    "id": "locked",
-                    "title": "Gửi câu trả lời",
-                    "description": "Sau khi gửi, câu trả lời sẽ không đổi được."
-                },
-                {
-                    "id": "reveal",
-                    "title": "Xem đáp án",
-                    "description": "Đáp án đúng, điều vui về Han, rồi câu tiếp theo."
-                }
-            ]
-        },
-        "ready": {
-            "title": "Sẵn sàng chưa?",
-            "subtitle": "Cùng xem bạn hiểu Han đến đâu nhé!",
-            "primaryAction": "Bắt đầu đố vui"
-        },
-        "quizPlaceholder": {
-            "title": "Phần đố vui sắp có",
-            "description": "Đây là điểm dừng trước khi có quiz engine. Milestone 4 sẽ thay phần tạm thời này.",
-            "backAction": "Quay lại"
-        },
-        "onboardingProgress": {
-            "welcome": "Chào mừng",
-            "language": "Ngôn ngữ",
-            "name": "Tên",
-            "howToPlay": "Cách chơi",
-            "ready": "Sẵn sàng"
-        },
-        "quizStart": {
-            "title": "Sẵn sàng chưa?",
-            "description": "Cùng xem bạn hiểu Han đến đâu nhé.",
-            "timerNotice": "20 giây cho mỗi câu hỏi.",
-            "primaryAction": "Bắt đầu đố vui"
-        },
-        "quiz": {
-            "questionCounterLabel": "Câu hỏi",
-            "timerLabel": "Thời gian",
-            "timeExpiredLabel": "Hết giờ",
-            "nextAction": "Tiếp theo",
-            "submitAction": "Gửi"
-        },
-        "result": {
-            "title": "Hoàn thành",
-            "scoreLabel": "Điểm",
-            "leaderboardAction": "Xem bảng điểm",
-            "messageAction": "Gửi lời chúc"
-        },
-        "leaderboard": {
-            "title": "Bảng điểm",
-            "emptyTitle": "Chưa có điểm",
-            "emptyDescription": "Điểm sẽ hiện sau khi khách hoàn thành phần đố vui."
-        },
-        "message": {
-            "title": "Gửi lời chúc",
-            "description": "Viết một lời chúc sinh nhật cho Han và gia đình.",
-            "fieldLabel": "Lời chúc sinh nhật",
-            "fieldPlaceholder": "Nhập lời chúc của bạn",
-            "submitAction": "Gửi lời chúc",
-            "successTitle": "Đã lưu lời chúc",
-            "successDescription": "Cảm ơn bạn đã góp thêm niềm vui cho buổi tiệc."
-        },
-        "timeline": {
-            "title": "Dòng thời gian",
-            "emptyTitle": "Kỷ niệm sẽ được thêm sau",
-            "emptyDescription": "Các khoảnh khắc sẽ xuất hiện khi nội dung thật được cung cấp."
-        },
-        "gallery": {
-            "title": "Thư viện",
-            "emptyTitle": "Ảnh sẽ được thêm sau",
-            "emptyDescription": "Ảnh thật sẽ xuất hiện khi tài sản đã được duyệt."
-        },
-        "errors": {
-            "generic": "Có lỗi xảy ra.",
-            "network": "Kết nối vừa bị gián đoạn nhẹ.",
-            "retryAction": "Thử lại"
+        {
+          "id": "reveal",
+          "title": "Xem cuộc đua",
+          "description": "Xem đáp án đúng, điểm của bạn và các thanh xếp hạng đua lên vị trí mới."
         }
+      ]
+    },
+    "ready": {
+      "title": "Sẵn sàng chưa?",
+      "subtitle": "Cùng xem bạn hiểu Han đến đâu nhé!",
+      "primaryAction": "Tôi sẵn sàng"
+    },
+    "quizPlaceholder": {
+      "title": "Phần đố vui sắp có",
+      "description": "Đây là điểm dừng trước khi có quiz engine. Milestone 4 sẽ thay phần tạm thời này.",
+      "backAction": "Quay lại"
+    },
+    "onboardingProgress": {
+      "welcome": "Chào mừng",
+      "language": "Ngôn ngữ",
+      "name": "Tên",
+      "partyPhoto": "Ảnh",
+      "howToPlay": "Cách chơi",
+      "ready": "Sẵn sàng"
+    },
+    "onboardingNavigation": {
+      "back": "Quay lại",
+      "backDuringUpload": "Hãy hủy tải ảnh trước khi quay lại."
+    },
+    "quizStart": {
+      "title": "Sẵn sàng chưa?",
+      "description": "Cùng xem bạn hiểu Han đến đâu nhé.",
+      "timerNotice": "20 giây cho mỗi câu hỏi.",
+      "primaryAction": "Bắt đầu đố vui"
     },
     "quiz": {
-        "settings": {
-            "defaultQuestionDurationSeconds": 20,
-            "responseLocking": "per-question-immutable",
-            "questionOrder": "content-order",
-            "scoringMode": "correct-count"
-        },
-        "questions": []
+      "questionCounterLabel": "Câu hỏi",
+      "timerLabel": "Thời gian",
+      "timeExpiredLabel": "Hết giờ",
+      "nextAction": "Tiếp theo",
+      "submitAction": "Gửi"
+    },
+    "result": {
+      "title": "Hoàn thành",
+      "scoreLabel": "Điểm",
+      "leaderboardAction": "Xem bảng điểm",
+      "messageAction": "Gửi lời chúc"
+    },
+    "leaderboard": {
+      "title": "Bảng điểm",
+      "emptyTitle": "Chưa có điểm",
+      "emptyDescription": "Điểm sẽ hiện sau khi khách hoàn thành phần đố vui."
+    },
+    "message": {
+      "title": "Gửi lời chúc",
+      "description": "Viết một lời chúc sinh nhật cho Han và gia đình.",
+      "fieldLabel": "Lời chúc sinh nhật",
+      "fieldPlaceholder": "Nhập lời chúc của bạn",
+      "submitAction": "Gửi lời chúc",
+      "successTitle": "Đã lưu lời chúc",
+      "successDescription": "Cảm ơn bạn đã góp thêm niềm vui cho buổi tiệc."
     },
     "timeline": {
-        "entries": []
+      "title": "Dòng thời gian",
+      "emptyTitle": "Kỷ niệm sẽ được thêm sau",
+      "emptyDescription": "Các khoảnh khắc sẽ xuất hiện khi nội dung thật được cung cấp."
     },
     "gallery": {
-        "items": []
+      "title": "Thư viện",
+      "emptyTitle": "Ảnh sẽ được thêm sau",
+      "emptyDescription": "Ảnh thật sẽ xuất hiện khi tài sản đã được duyệt."
     },
-    "messages": {
-        "constraints": {
-            "minLength": 1,
-            "maxLength": 500
-        },
-        "review": {
-            "simpleStatusWorkflow": []
-        }
-    },
-    "assets": {
-        "items": []
-    },
-    "admin": {
-        "labels": {
-            "dashboard": "",
-            "submissions": "",
-            "messages": "",
-            "qaMode": "",
-            "testData": ""
-        }
+    "errors": {
+      "generic": "Có lỗi xảy ra.",
+      "network": "Kết nối vừa bị gián đoạn nhẹ.",
+      "retryAction": "Thử lại"
     }
+  },
+  "quiz": {
+    "settings": {
+      "questionDurationSeconds": 20,
+      "responseLocking": "per-question-immutable",
+      "questionOrder": "content-order",
+      "scoringMode": "time-v1"
+    },
+    "questions": [
+      {
+        "id": "han-test-question-01",
+        "enabled": true,
+        "sortOrder": 1,
+        "prompt": "Hôm nay là dịp đặc biệt gì?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Ngày đầu tiên Han đi học"
+          },
+          {
+            "id": "option-b",
+            "label": "Sinh nhật đầu tiên của Han"
+          },
+          {
+            "id": "option-c",
+            "label": "Lớp học nấu ăn đầu tiên của Han"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "Đây là nội dung tạm thời để thử ứng dụng đố vui sinh nhật một tuổi của Han."
+      },
+      {
+        "id": "han-test-question-02",
+        "enabled": true,
+        "sortOrder": 2,
+        "prompt": "Bánh sinh nhật một tuổi thường có bao nhiêu cây nến?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Một cây nến"
+          },
+          {
+            "id": "option-b",
+            "label": "Năm cây nến"
+          },
+          {
+            "id": "option-c",
+            "label": "Mười cây nến"
+          }
+        ],
+        "correctAnswerId": "option-a",
+        "funFact": "Một cây nến tượng trưng cho một năm đầu đời và mang đến cho em bé một điều ước thật quan trọng."
+      },
+      {
+        "id": "han-test-question-03",
+        "enabled": true,
+        "sortOrder": 3,
+        "prompt": "Vật nào hữu ích nhất khi em bé quyết định rằng bữa trưa nên nằm dưới sàn?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Một chiếc nón sinh nhật"
+          },
+          {
+            "id": "option-b",
+            "label": "Một chiếc điều khiển tivi"
+          },
+          {
+            "id": "option-c",
+            "label": "Một chiếc yếm ăn"
+          }
+        ],
+        "correctAnswerId": "option-c",
+        "funFact": "Chiếc yếm không thể ngăn mọi cuộc phiêu lưu của thức ăn, nhưng có thể giúp việc dọn dẹp bớt kịch tính hơn một chút."
+      },
+      {
+        "id": "han-test-question-04",
+        "enabled": true,
+        "sortOrder": 4,
+        "prompt": "Khách nên làm gì sau khi chọn đáp án trên điện thoại?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Tải lại trang ngay lập tức"
+          },
+          {
+            "id": "option-b",
+            "label": "Xác nhận và chờ công bố đáp án"
+          },
+          {
+            "id": "option-c",
+            "label": "Quét lại mã QR"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "Mỗi khách chỉ được gửi một đáp án cho mỗi câu hỏi, vì vậy bước xác nhận cần được thực hiện cẩn thận."
+      },
+      {
+        "id": "han-test-question-05",
+        "enabled": true,
+        "sortOrder": 5,
+        "prompt": "Mỗi câu hỏi thử nghiệm được mở trong bao lâu?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "20 giây"
+          },
+          {
+            "id": "option-b",
+            "label": "2 phút"
+          },
+          {
+            "id": "option-c",
+            "label": "Đến sáng ngày mai"
+          }
+        ],
+        "correctAnswerId": "option-a",
+        "funFact": "Hiện tại toàn bộ câu hỏi trong trò chơi đều sử dụng chung thời gian trả lời là 20 giây."
+      },
+      {
+        "id": "han-test-question-06",
+        "enabled": true,
+        "sortOrder": 6,
+        "prompt": "Điều nào có lẽ sẽ làm một em bé một tuổi vui nhất trong buổi tiệc?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Một bảng tính có thật nhiều chi tiết"
+          },
+          {
+            "id": "option-b",
+            "label": "Một cuộc họp công việc kéo dài ba tiếng"
+          },
+          {
+            "id": "option-c",
+            "label": "Âm nhạc, đồ trang trí nhiều màu sắc và những gương mặt quen thuộc"
+          }
+        ],
+        "correctAnswerId": "option-c",
+        "funFact": "Đáp án dài này được sử dụng có chủ ý để kiểm tra việc xuống dòng và khoảng cách trên màn hình điện thoại nhỏ."
+      },
+      {
+        "id": "han-test-question-07",
+        "enabled": true,
+        "sortOrder": 7,
+        "prompt": "Điều gì xảy ra khi thời gian trả lời về số 0?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Mọi người tự động nhận được một điểm"
+          },
+          {
+            "id": "option-b",
+            "label": "Câu hỏi bị khóa và đáp án gửi trễ sẽ bị từ chối"
+          },
+          {
+            "id": "option-c",
+            "label": "Trò chơi quay lại màn hình chào mừng"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "Thời hạn do máy chủ kiểm soát sẽ ngăn các đáp án được gửi đúng tại hoặc sau thời điểm hết giờ."
+      },
+      {
+        "id": "han-test-question-08",
+        "enabled": true,
+        "sortOrder": 8,
+        "prompt": "Hiện tại một đáp án đúng nhận được bao nhiêu điểm?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "1 điểm"
+          },
+          {
+            "id": "option-b",
+            "label": "10 điểm cộng thêm điểm tốc độ"
+          },
+          {
+            "id": "option-c",
+            "label": "Một số điểm ngẫu nhiên"
+          }
+        ],
+        "correctAnswerId": "option-a",
+        "funFact": "Cách tính điểm hiện tại là đếm số câu đúng: một điểm cho đáp án đúng và không điểm cho đáp án sai."
+      },
+      {
+        "id": "han-test-question-09",
+        "enabled": true,
+        "sortOrder": 9,
+        "prompt": "Nếu hai khách có cùng số điểm, bảng xếp hạng hiện tại sẽ xét yếu tố nào tiếp theo?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Ai trả lời câu cuối nhanh nhất"
+          },
+          {
+            "id": "option-b",
+            "label": "Tung đồng xu ngẫu nhiên"
+          },
+          {
+            "id": "option-c",
+            "label": "Thứ tự tham gia, sau đó là tên hiển thị"
+          }
+        ],
+        "correctAnswerId": "option-c",
+        "funFact": "Bảng xếp hạng hiện tại không sử dụng điểm tốc độ và xử lý trường hợp hòa theo một thứ tự cố định."
+      },
+      {
+        "id": "han-test-question-10",
+        "enabled": true,
+        "sortOrder": 10,
+        "prompt": "Mục tiêu quan trọng nhất của buổi chạy thử với 10 câu hỏi tạm thời này là gì?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Lưu vĩnh viễn những thông tin hư cấu về Han"
+          },
+          {
+            "id": "option-b",
+            "label": "Kiểm tra toàn bộ luồng của khách, host, màn hình chung, tính điểm, công bố đáp án và bảng xếp hạng"
+          },
+          {
+            "id": "option-c",
+            "label": "Thay thế cho buổi tiệc sinh nhật thật"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "Sau khi toàn bộ buổi chạy thử thành công, các câu hỏi tạm thời này sẽ được thay bằng bộ câu hỏi sinh nhật thật đã được Ian duyệt."
+      }
+    ]
+  },
+  "timeline": {
+    "entries": []
+  },
+  "gallery": {
+    "items": []
+  },
+  "messages": {
+    "constraints": {
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "review": {
+      "simpleStatusWorkflow": []
+    }
+  },
+  "assets": {
+    "items": []
+  },
+  "admin": {
+    "labels": {
+      "dashboard": "",
+      "submissions": "",
+      "messages": "",
+      "qaMode": "",
+      "testData": ""
+    }
+  }
 }

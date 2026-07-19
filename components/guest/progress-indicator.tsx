@@ -20,7 +20,10 @@ export function ProgressIndicator({ steps, currentStep }: ProgressIndicatorProps
 
   return (
     <nav aria-label="Onboarding progress" className="mx-auto w-full max-w-3xl">
-      <ol className="relative grid grid-cols-5 gap-1.5 rounded-[1.25rem] border border-party-orange/20 bg-surface-paper/72 p-1.5 shadow-lift sm:gap-2">
+      <ol
+        className="relative grid gap-1.5 rounded-[1.25rem] border border-party-orange/20 bg-surface-paper/72 p-1.5 shadow-lift sm:gap-2"
+        style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}
+      >
         <span
           className="absolute left-6 right-6 top-1/2 h-1 -translate-y-1/2 rounded-full bg-party-orange/20"
           aria-hidden="true"
