@@ -212,224 +212,224 @@
     },
     "questions": [
       {
-        "id": "han-test-question-01",
+        "id": "han-question-01",
         "enabled": true,
         "sortOrder": 1,
-        "prompt": "Hôm nay là dịp đặc biệt gì?",
+        "prompt": "Hôm nay Han được bao nhiêu tuổi?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Ngày đầu tiên Han đi học"
+            "label": "6 tháng tuổi"
           },
           {
             "id": "option-b",
-            "label": "Sinh nhật đầu tiên của Han"
+            "label": "1 tuổi"
           },
           {
             "id": "option-c",
-            "label": "Lớp học nấu ăn đầu tiên của Han"
+            "label": "2 tuổi"
           }
         ],
         "correctAnswerId": "option-b",
-        "funFact": "Đây là nội dung tạm thời để thử ứng dụng đố vui sinh nhật một tuổi của Han."
+        "funFact": "Han sinh ngày 23/07/2025, và đây cũng chính là ngày kỷ niệm cưới của ba mẹ Ian và Jane."
       },
       {
-        "id": "han-test-question-02",
+        "id": "han-question-02",
         "enabled": true,
         "sortOrder": 2,
-        "prompt": "Bánh sinh nhật một tuổi thường có bao nhiêu cây nến?",
+        "prompt": "Tên “Callahan” có ý nghĩa là gì?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Một cây nến"
+            "label": "Chiến binh dũng cảm"
           },
           {
             "id": "option-b",
-            "label": "Năm cây nến"
+            "label": "Thông minh, sáng dạ"
           },
           {
             "id": "option-c",
-            "label": "Mười cây nến"
+            "label": "Món quà từ thiên đường"
           }
         ],
-        "correctAnswerId": "option-a",
-        "funFact": "Một cây nến tượng trưng cho một năm đầu đời và mang đến cho em bé một điều ước thật quan trọng."
+        "correctAnswerId": "option-b",
+        "funFact": "Ian và Jane mong Han sẽ lớn lên thông minh, mạnh mẽ và thanh lịch như chính cái tên của mình."
       },
       {
-        "id": "han-test-question-03",
+        "id": "han-question-03",
         "enabled": true,
         "sortOrder": 3,
-        "prompt": "Vật nào hữu ích nhất khi em bé quyết định rằng bữa trưa nên nằm dưới sàn?",
+        "prompt": "Han chào đời lúc mấy giờ?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Một chiếc nón sinh nhật"
+            "label": "8 giờ 03 phút sáng"
           },
           {
             "id": "option-b",
-            "label": "Một chiếc điều khiển tivi"
+            "label": "8 giờ 13 phút sáng"
           },
           {
             "id": "option-c",
-            "label": "Một chiếc yếm ăn"
+            "label": "8 giờ 30 phút sáng"
           }
         ],
-        "correctAnswerId": "option-c",
-        "funFact": "Chiếc yếm không thể ngăn mọi cuộc phiêu lưu của thức ăn, nhưng có thể giúp việc dọn dẹp bớt kịch tính hơn một chút."
+        "correctAnswerId": "option-b",
+        "funFact": "Han chào đời chính xác lúc 8 giờ 13 phút sáng, mang đến một trong những khoảnh khắc hạnh phúc nhất của Ian và Jane."
       },
       {
-        "id": "han-test-question-04",
+        "id": "han-question-04",
         "enabled": true,
         "sortOrder": 4,
-        "prompt": "Khách nên làm gì sau khi chọn đáp án trên điện thoại?",
+        "prompt": "Han thuộc cung hoàng đạo nào?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Tải lại trang ngay lập tức"
+            "label": "Cự Giải"
           },
           {
             "id": "option-b",
-            "label": "Xác nhận và chờ công bố đáp án"
+            "label": "Sư Tử"
           },
           {
             "id": "option-c",
-            "label": "Quét lại mã QR"
+            "label": "Xử Nữ"
           }
         ],
         "correctAnswerId": "option-b",
-        "funFact": "Mỗi khách chỉ được gửi một đáp án cho mỗi câu hỏi, vì vậy bước xác nhận cần được thực hiện cẩn thận."
+        "funFact": "Han sinh ngày 23 tháng 7 nên thuộc cung Sư Tử."
       },
       {
-        "id": "han-test-question-05",
+        "id": "han-question-05",
         "enabled": true,
         "sortOrder": 5,
-        "prompt": "Mỗi câu hỏi thử nghiệm được mở trong bao lâu?",
+        "prompt": "Ai là người tắm cho Han lần đầu tiên?",
         "answers": [
           {
             "id": "option-a",
-            "label": "20 giây"
+            "label": "Ba và mẹ"
           },
           {
             "id": "option-b",
-            "label": "2 phút"
+            "label": "Bà ngoại"
           },
           {
             "id": "option-c",
-            "label": "Đến sáng ngày mai"
+            "label": "Một người lạ"
           }
         ],
-        "correctAnswerId": "option-a",
-        "funFact": "Hiện tại toàn bộ câu hỏi trong trò chơi đều sử dụng chung thời gian trả lời là 20 giây."
+        "correctAnswerId": "option-c",
+        "funFact": "“Người lạ” đó thật ra là một cô y tá dễ thương tại bệnh viện, người đã tắm cho Han lần đầu tiên."
       },
       {
-        "id": "han-test-question-06",
+        "id": "han-question-06",
         "enabled": true,
         "sortOrder": 6,
-        "prompt": "Điều nào có lẽ sẽ làm một em bé một tuổi vui nhất trong buổi tiệc?",
+        "prompt": "Han mọc những chiếc răng đầu tiên khi được mấy tháng tuổi?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Một bảng tính có thật nhiều chi tiết"
+            "label": "6 tháng tuổi"
           },
           {
             "id": "option-b",
-            "label": "Một cuộc họp công việc kéo dài ba tiếng"
+            "label": "8 tháng tuổi"
           },
           {
             "id": "option-c",
-            "label": "Âm nhạc, đồ trang trí nhiều màu sắc và những gương mặt quen thuộc"
+            "label": "10 tháng tuổi"
           }
         ],
         "correctAnswerId": "option-c",
-        "funFact": "Đáp án dài này được sử dụng có chủ ý để kiểm tra việc xuống dòng và khoảng cách trên màn hình điện thoại nhỏ."
+        "funFact": "Han không chỉ mọc một chiếc răng đầu tiên—bốn chiếc răng đã mọc cùng một lúc."
       },
       {
-        "id": "han-test-question-07",
+        "id": "han-question-07",
         "enabled": true,
         "sortOrder": 7,
-        "prompt": "Điều gì xảy ra khi thời gian trả lời về số 0?",
+        "prompt": "Han thường làm gì khi đứng dưới vòi sen?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Mọi người tự động nhận được một điểm"
+            "label": "Khóc"
           },
           {
             "id": "option-b",
-            "label": "Câu hỏi bị khóa và đáp án gửi trễ sẽ bị từ chối"
+            "label": "Vùng vẫy để chạy đi"
           },
           {
             "id": "option-c",
-            "label": "Trò chơi quay lại màn hình chào mừng"
-          }
-        ],
-        "correctAnswerId": "option-b",
-        "funFact": "Thời hạn do máy chủ kiểm soát sẽ ngăn các đáp án được gửi đúng tại hoặc sau thời điểm hết giờ."
-      },
-      {
-        "id": "han-test-question-08",
-        "enabled": true,
-        "sortOrder": 8,
-        "prompt": "Hiện tại một đáp án đúng nhận được bao nhiêu điểm?",
-        "answers": [
-          {
-            "id": "option-a",
-            "label": "1 điểm"
-          },
-          {
-            "id": "option-b",
-            "label": "10 điểm cộng thêm điểm tốc độ"
-          },
-          {
-            "id": "option-c",
-            "label": "Một số điểm ngẫu nhiên"
-          }
-        ],
-        "correctAnswerId": "option-a",
-        "funFact": "Cách tính điểm hiện tại là đếm số câu đúng: một điểm cho đáp án đúng và không điểm cho đáp án sai."
-      },
-      {
-        "id": "han-test-question-09",
-        "enabled": true,
-        "sortOrder": 9,
-        "prompt": "Nếu hai khách có cùng số điểm, bảng xếp hạng hiện tại sẽ xét yếu tố nào tiếp theo?",
-        "answers": [
-          {
-            "id": "option-a",
-            "label": "Ai trả lời câu cuối nhanh nhất"
-          },
-          {
-            "id": "option-b",
-            "label": "Tung đồng xu ngẫu nhiên"
-          },
-          {
-            "id": "option-c",
-            "label": "Thứ tự tham gia, sau đó là tên hiển thị"
+            "label": "Thích thú và lè lưỡi ra hứng nước"
           }
         ],
         "correctAnswerId": "option-c",
-        "funFact": "Bảng xếp hạng hiện tại không sử dụng điểm tốc độ và xử lý trường hợp hòa theo một thứ tự cố định."
+        "funFact": "Han rất thích đứng dưới vòi sen và thường lè lưỡi ra hứng nước như đang chơi một trò chơi."
       },
       {
-        "id": "han-test-question-10",
+        "id": "han-question-08",
         "enabled": true,
-        "sortOrder": 10,
-        "prompt": "Mục tiêu quan trọng nhất của buổi chạy thử với 10 câu hỏi tạm thời này là gì?",
+        "sortOrder": 8,
+        "prompt": "Khi buồn ngủ, Han thường tìm ai?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Lưu vĩnh viễn những thông tin hư cấu về Han"
+            "label": "Ba"
           },
           {
             "id": "option-b",
-            "label": "Kiểm tra toàn bộ luồng của khách, host, màn hình chung, tính điểm, công bố đáp án và bảng xếp hạng"
+            "label": "Mẹ"
           },
           {
             "id": "option-c",
-            "label": "Thay thế cho buổi tiệc sinh nhật thật"
+            "label": "Han tự ngủ"
           }
         ],
         "correctAnswerId": "option-b",
-        "funFact": "Sau khi toàn bộ buổi chạy thử thành công, các câu hỏi tạm thời này sẽ được thay bằng bộ câu hỏi sinh nhật thật đã được Ian duyệt."
+        "funFact": "Mỗi khi buồn ngủ, mẹ thường là người Han tìm đến để cảm thấy an toàn và dễ chịu."
+      },
+      {
+        "id": "han-question-09",
+        "enabled": true,
+        "sortOrder": 9,
+        "prompt": "Mỗi khi nghe bài hát “Bingo”, Han sẽ làm gì?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Nhảy"
+          },
+          {
+            "id": "option-b",
+            "label": "Vỗ tay"
+          },
+          {
+            "id": "option-c",
+            "label": "Cười"
+          }
+        ],
+        "correctAnswerId": "option-b",
+        "funFact": "Mỗi khi bài “Bingo” vang lên, Han gần như luôn bắt đầu vỗ tay theo nhạc."
+      },
+      {
+        "id": "han-question-10",
+        "enabled": true,
+        "sortOrder": 10,
+        "prompt": "Điều Ian và Jane mong muốn nhất dành cho Han là gì?",
+        "answers": [
+          {
+            "id": "option-a",
+            "label": "Trở nên giàu có"
+          },
+          {
+            "id": "option-b",
+            "label": "Trở nên nổi tiếng"
+          },
+          {
+            "id": "option-c",
+            "label": "Lớn lên khỏe mạnh, tử tế và hạnh phúc"
+          }
+        ],
+        "correctAnswerId": "option-c",
+        "funFact": "Cảm ơn mọi người đã cùng gia đình chúc mừng sinh nhật đầu tiên của Han. Ba mẹ mong Han sẽ luôn lớn lên giữa tình yêu thương, tiếng cười và những người tuyệt vời như hôm nay."
       }
     ]
   },

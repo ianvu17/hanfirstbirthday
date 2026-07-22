@@ -44,15 +44,15 @@ test("approved content maps authoring questions to runtime PartyQuestion shape",
 
   assert.equal(config.sessionId, "approved-static-party-content");
   assert.equal(config.questionDurationMs, 20_000);
-  assert.equal(first.id, "han-test-question-01");
+  assert.equal(first.id, "han-question-01");
   assert.equal(first.prompt.en, enContent.quiz.questions[0].prompt);
   assert.equal(first.prompt.vi, viContent.quiz.questions[0].prompt);
   assert.deepEqual(
     first.options.map((option) => option.id),
     enContent.quiz.questions[0].answers.map((answer) => answer.id),
   );
-  assert.equal(first.options[1].label.en, "Han's first birthday");
-  assert.equal(first.options[1].label.vi, "Sinh nhật đầu tiên của Han");
+  assert.equal(first.options[1].label.en, "1 year old");
+  assert.equal(first.options[1].label.vi, "1 tuổi");
   assert.equal(
     first.correctOptionId,
     enContent.quiz.questions[0].correctAnswerId,
@@ -79,7 +79,7 @@ test("approved content filters disabled questions and sorts deterministically", 
 
   assert.deepEqual(
     config.questions.map((question) => question.id),
-    ["han-test-question-02"],
+    ["han-question-02"],
   );
 });
 
@@ -199,7 +199,7 @@ test("normal local runtime uses approved content while QA and fixture tests rema
     "utf8",
   );
 
-  assert.equal(runtime.getConfig().questions[0].id, "han-test-question-01");
+  assert.equal(runtime.getConfig().questions[0].id, "han-question-01");
   assert.equal(qaHarness.includes("getDevelopmentPartyConfig()"), true);
   assert.equal(fixtureTest.includes("getDevelopmentPartyConfig"), true);
 });
