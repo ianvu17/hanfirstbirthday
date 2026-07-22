@@ -220,7 +220,7 @@ UX notes:
 - Results should be warm regardless of score.
 - Avoid language that makes low scores embarrassing.
 - Offer actions to view leaderboard and leave a message.
-- Only the server-verified rank-1 participant may download the localized winner certificate.
+- Only the server-verified rank-1 participant sees the guest certificate action. The authenticated Host Controller may also export the current finished winner certificate for event operations.
 
 States:
 

@@ -460,6 +460,7 @@ Implemented Milestone 5 route handlers:
 - `POST /api/party/participant/avatar`: validates participant cookie plus preset or prepared avatar image, uploads photo avatars to private Storage when needed, and updates participant avatar metadata.
 - `POST /api/party/response`: validates participant cookie, active question, deadline, option, and uniqueness before inserting an immutable response.
 - `GET /api/party/certificate`: validates the participant resume cookie against the current finished session, derives deterministic rank 1 server-side, privately downloads the stored photo avatar when present, and returns a localized one-page A4 PDF with private/no-store headers. Non-winners and unfinished sessions are rejected.
+- `GET /api/party/host/certificate`: validates the host session cookie, derives the deterministic rank 1 participant for the current finished session server-side, privately downloads the stored photo avatar when present, and returns the same localized one-page A4 PDF with private/no-store headers. Unauthenticated hosts, unfinished sessions, and arbitrary session/winner inputs are rejected.
 - `POST /api/party/host/login`: verifies host PIN and sets `han_host_session`.
 - `GET /api/party/host/status`: reports host auth configuration/session status.
 - `POST /api/party/host/command`: verifies host cookie, expected revision, and Party Engine transition before persisting.

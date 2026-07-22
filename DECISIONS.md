@@ -500,3 +500,21 @@ Guests must be able to correct onboarding information without duplicate identiti
 **Consequence**
 
 Editable onboarding is available only while the current session is in the lobby. Host start routes resumed guests to gameplay. Remote session storage is a draft/navigation bridge only; participant identity and confirmed profile state remain server-authoritative. A mobile browser or operating system may still offer camera as one chooser option, but the web app must not force camera capture from Choose a photo.
+
+## ADR-024: Host Winner Certificate Export
+
+**Decision**
+
+Keep the guest certificate route winner-only, and add a separate host-authenticated certificate export for the current finished session. The host route verifies the signed host cookie, derives the deterministic first-place participant server-side from persisted responses, downloads any private avatar server-side, and returns the same localized Han Mastermind PDF.
+
+**Status**
+
+Accepted for event operations on July 22, 2026.
+
+**Reason**
+
+Ian may need to print or save the winner certificate from the Host Controller even if the winning guest's phone is unavailable. This keeps event-day control practical without letting browsers supply winner name, score, rank, avatar, or session data.
+
+**Consequence**
+
+`GET /api/party/certificate` remains participant-authenticated and winner-only. `GET /api/party/host/certificate` is host-authenticated and limited to the current finished session. Archived or arbitrary session exports are out of scope.

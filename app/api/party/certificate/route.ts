@@ -34,7 +34,8 @@ export async function GET() {
       const messages = {
         unauthenticated: "Please rejoin the party on this phone.",
         quiz_not_finished: "The winner certificate is available after the quiz finishes.",
-        not_winner: "This certificate is available only to the first-place winner."
+        not_winner: "This certificate is available only to the first-place winner.",
+        no_winner: "The winner certificate could not find a winner yet."
       } as const;
 
       return NextResponse.json(

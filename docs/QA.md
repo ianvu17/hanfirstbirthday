@@ -252,7 +252,7 @@ Time-scoring and configurable-session checks:
 - Party Screen and leaderboard update after submission or host-driven phase changes once runtime exists.
 - Guest, Party Screen leaderboard, reveal leaderboard, and final result identity surfaces show photo, preset, or initials fallback avatars.
 - Stored photo avatars contain sticker artwork but no selection ring or editor control.
-- Only deterministic rank 1 can download a localized, one-page A4 certificate; non-winners are denied.
+- Only deterministic rank 1 can download a localized, one-page A4 certificate from the guest flow; non-winners are denied. The authenticated Host Controller can export the current finished winner certificate, while unauthenticated host requests, unfinished sessions, and browser-supplied winner/session inputs are rejected.
 - Guest can leave a message.
 - Admin can see final quiz scores, messages, Party Screen or leaderboard state, and QA/test separation through a lightweight utility area.
 - QA/test data is separate from production data.
