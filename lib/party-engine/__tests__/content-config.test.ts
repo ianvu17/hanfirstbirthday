@@ -51,8 +51,8 @@ test("approved content maps authoring questions to runtime PartyQuestion shape",
     first.options.map((option) => option.id),
     enContent.quiz.questions[0].answers.map((answer) => answer.id),
   );
-  assert.equal(first.options[1].label.en, "Han's first birthday");
-  assert.equal(first.options[1].label.vi, "Sinh nhật đầu tiên của Han");
+  assert.equal(first.options[1].label.en, "1 year old");
+  assert.equal(first.options[1].label.vi, "1 tuổi");
   assert.equal(
     first.correctOptionId,
     enContent.quiz.questions[0].correctAnswerId,

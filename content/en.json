@@ -4,7 +4,7 @@
   "metadata": {
     "projectName": "Han Birthday Experience",
     "publicTitle": "WHO IS TURNING ONE?!",
-    "contentStatus": "milestone-3-onboarding-copy-no-real-han-content",
+    "contentStatus": "approved-production-quiz-content",
     "contentRules": {
       "realContentRequiredFromIan": true,
       "inventedMemoriesAllowed": false,
@@ -215,221 +215,221 @@
         "id": "han-test-question-01",
         "enabled": true,
         "sortOrder": 1,
-        "prompt": "What is today's special celebration?",
+        "prompt": "How old is Han today?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Han's first day at school"
+            "label": "6 months old"
           },
           {
             "id": "option-b",
-            "label": "Han's first birthday"
+            "label": "1 year old"
           },
           {
             "id": "option-c",
-            "label": "Han's first cooking class"
+            "label": "2 years old"
           }
         ],
         "correctAnswerId": "option-b",
-        "funFact": "This is temporary test content for Han's first-birthday quiz app."
+        "funFact": "Han was born on 23 July 2025, which is also Ian and Jane’s wedding anniversary."
       },
       {
         "id": "han-test-question-02",
         "enabled": true,
         "sortOrder": 2,
-        "prompt": "How many candles would normally go on a first-birthday cake?",
+        "prompt": "What does the name “Callahan” mean?",
         "answers": [
           {
             "id": "option-a",
-            "label": "One candle"
+            "label": "Brave warrior"
           },
           {
             "id": "option-b",
-            "label": "Five candles"
+            "label": "Bright-headed"
           },
           {
             "id": "option-c",
-            "label": "Ten candles"
+            "label": "Gift from heaven"
           }
         ],
-        "correctAnswerId": "option-a",
-        "funFact": "One candle represents one completed year and gives the birthday baby one very important wish."
+        "correctAnswerId": "option-b",
+        "funFact": "Ian and Jane hope Han will grow up intelligent, strong and elegant, just like his name."
       },
       {
         "id": "han-test-question-03",
         "enabled": true,
         "sortOrder": 3,
-        "prompt": "Which item is most useful when a baby decides that lunch belongs on the floor?",
+        "prompt": "What time was Han born?",
         "answers": [
           {
             "id": "option-a",
-            "label": "A party hat"
+            "label": "8:03 AM"
           },
           {
             "id": "option-b",
-            "label": "A television remote"
+            "label": "8:13 AM"
           },
           {
             "id": "option-c",
-            "label": "A bib"
+            "label": "8:30 AM"
           }
         ],
-        "correctAnswerId": "option-c",
-        "funFact": "A bib cannot stop every food adventure, but it can make the clean-up slightly less dramatic."
+        "correctAnswerId": "option-b",
+        "funFact": "Han arrived at exactly 8:13 in the morning, creating one of the happiest moments in Ian and Jane’s lives."
       },
       {
         "id": "han-test-question-04",
         "enabled": true,
         "sortOrder": 4,
-        "prompt": "What should guests do after selecting an answer on their phone?",
+        "prompt": "What is Han’s zodiac sign?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Refresh the page immediately"
+            "label": "Cancer"
           },
           {
             "id": "option-b",
-            "label": "Confirm and wait for the reveal"
+            "label": "Leo"
           },
           {
             "id": "option-c",
-            "label": "Scan the QR code again"
+            "label": "Virgo"
           }
         ],
         "correctAnswerId": "option-b",
-        "funFact": "Each guest can submit only once per question, so the confirmation step should be intentional."
+        "funFact": "Han was born on 23 July, making him a Leo."
       },
       {
         "id": "han-test-question-05",
         "enabled": true,
         "sortOrder": 5,
-        "prompt": "How long does each test question stay open?",
+        "prompt": "Who gave Han his very first bath?",
         "answers": [
           {
             "id": "option-a",
-            "label": "20 seconds"
+            "label": "Mum and Dad"
           },
           {
             "id": "option-b",
-            "label": "2 minutes"
+            "label": "Grandma"
           },
           {
             "id": "option-c",
-            "label": "Until tomorrow morning"
+            "label": "A stranger"
           }
         ],
-        "correctAnswerId": "option-a",
-        "funFact": "The quiz currently uses one global 20-second timer for every question."
+        "correctAnswerId": "option-c",
+        "funFact": "The “stranger” was actually a lovely nurse at the hospital who gave Han his very first bath."
       },
       {
         "id": "han-test-question-06",
         "enabled": true,
         "sortOrder": 6,
-        "prompt": "Which answer would probably make a one-year-old happiest at a party?",
+        "prompt": "How old was Han when his first teeth came through?",
         "answers": [
           {
             "id": "option-a",
-            "label": "A detailed spreadsheet"
+            "label": "6 months old"
           },
           {
             "id": "option-b",
-            "label": "A three-hour business meeting"
+            "label": "8 months old"
           },
           {
             "id": "option-c",
-            "label": "Music, colourful decorations, and familiar faces"
+            "label": "10 months old"
           }
         ],
         "correctAnswerId": "option-c",
-        "funFact": "This deliberately longer answer helps test wrapping and spacing on smaller phone screens."
+        "funFact": "Han did not get just one first tooth—four teeth came through at the same time."
       },
       {
         "id": "han-test-question-07",
         "enabled": true,
         "sortOrder": 7,
-        "prompt": "What happens when the answer timer reaches zero?",
+        "prompt": "What does Han do when he stands under the shower?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Everyone automatically receives one point"
+            "label": "Cry"
           },
           {
             "id": "option-b",
-            "label": "The question locks and late answers are rejected"
+            "label": "Struggle to get away"
           },
           {
             "id": "option-c",
-            "label": "The quiz returns to the welcome screen"
+            "label": "Enjoy it and stick out his tongue to catch the water"
           }
         ],
-        "correctAnswerId": "option-b",
-        "funFact": "The server-authoritative deadline prevents answers submitted at or after the deadline from being accepted."
+        "correctAnswerId": "option-c",
+        "funFact": "Han loves standing under the shower and sticks out his tongue to catch the water as if it were a game."
       },
       {
         "id": "han-test-question-08",
         "enabled": true,
         "sortOrder": 8,
-        "prompt": "How many points does a correct answer currently receive?",
+        "prompt": "Who does Han look for when he gets sleepy?",
         "answers": [
           {
             "id": "option-a",
-            "label": "1 point"
+            "label": "Dad"
           },
           {
             "id": "option-b",
-            "label": "10 points plus a speed bonus"
+            "label": "Mum"
           },
           {
             "id": "option-c",
-            "label": "A random number of points"
+            "label": "He falls asleep by himself"
           }
         ],
-        "correctAnswerId": "option-a",
-        "funFact": "The current scoring mode is correct-count: one point for a correct answer and zero for an incorrect answer."
+        "correctAnswerId": "option-b",
+        "funFact": "When Han feels sleepy, Mum is usually the person he looks for to feel safe and comfortable."
       },
       {
         "id": "han-test-question-09",
         "enabled": true,
         "sortOrder": 9,
-        "prompt": "If two guests finish with the same score, what does the current leaderboard use next?",
+        "prompt": "What does Han do whenever he hears the song “Bingo”?",
         "answers": [
           {
             "id": "option-a",
-            "label": "Who answered the final question fastest"
+            "label": "Dance"
           },
           {
             "id": "option-b",
-            "label": "A random coin toss"
+            "label": "Clap his hands"
           },
           {
             "id": "option-c",
-            "label": "Participant join order, then display name"
+            "label": "Laugh"
           }
         ],
-        "correctAnswerId": "option-c",
-        "funFact": "The current leaderboard does not use a speed bonus. Ties are resolved deterministically."
+        "correctAnswerId": "option-b",
+        "funFact": "Whenever “Bingo” starts playing, Han almost always begins clapping along to the music."
       },
       {
         "id": "han-test-question-10",
         "enabled": true,
         "sortOrder": 10,
-        "prompt": "What is the most important goal of this temporary 10-question rehearsal?",
+        "prompt": "What is Ian and Jane’s biggest wish for Han?",
         "answers": [
           {
             "id": "option-a",
-            "label": "To permanently record fictional facts about Han"
+            "label": "Become rich"
           },
           {
             "id": "option-b",
-            "label": "To verify the complete guest, host, display, scoring, reveal, and leaderboard flow"
+            "label": "Become famous"
           },
           {
             "id": "option-c",
-            "label": "To replace the final birthday celebration"
+            "label": "Grow up healthy, kind and happy"
           }
         ],
-        "correctAnswerId": "option-b",
-        "funFact": "After the full rehearsal passes, these temporary questions will be replaced with Ian's approved real birthday questions."
+        "correctAnswerId": "option-c",
+        "funFact": "Thank you for celebrating Han’s very first birthday with us. We hope he grows up surrounded by love, laughter and wonderful people—just like today."
       }
     ]
   },
