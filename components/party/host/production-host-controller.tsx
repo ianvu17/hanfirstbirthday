@@ -4,6 +4,7 @@ import {
   AlertCircle,
   CheckCircle2,
   Clock,
+  Download,
   LockKeyhole,
   PartyPopper,
 } from "lucide-react";
@@ -773,6 +774,15 @@ export function ProductionHostController({
             <p className="text-center text-sm font-bold text-muted-foreground" role="status">
               {copy.startNeedsReady}
             </p>
+          ) : null}
+
+          {snapshot.projection.phase === "finished" ? (
+            <Button asChild className="min-h-14 w-full">
+              <a href="/api/party/host/certificate" download>
+                <Download aria-hidden="true" />
+                {copy.downloadWinnerCertificate}
+              </a>
+            </Button>
           ) : null}
 
           <div className="grid gap-3 sm:grid-cols-2">

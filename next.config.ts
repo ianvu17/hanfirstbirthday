@@ -3,7 +3,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  serverExternalPackages: ["@expo-google-fonts/noto-sans", "pdfkit"]
+  outputFileTracingIncludes: {
+    "/assets/han1birthday": ["./lib/assets/han1birthday.JPEG"],
+  },
+  serverExternalPackages: ["@expo-google-fonts/noto-sans", "pdfkit"],
 };
 
 const withNextIntl = createNextIntlPlugin();

@@ -692,8 +692,7 @@ export function OnboardingFlow({
             title={content.screens.welcome.title}
             subtitle={content.screens.welcome.subtitle}
             primaryAction={content.screens.welcome.primaryAction}
-            heroPlaceholderLabel={content.screens.welcome.heroPlaceholderLabel}
-            heroPlaceholderAlt={content.screens.welcome.heroPlaceholderAlt}
+            heroPhotoAlt={content.screens.welcome.heroPhotoAlt}
             onStart={() => goToStep("language")}
           />
         ) : null}

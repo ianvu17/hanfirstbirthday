@@ -80,6 +80,18 @@ export type WinnerCertificateContext = {
   avatar: CertificateAvatar;
 };
 
+type WinnerCertificateResult =
+  | { ok: true; context: WinnerCertificateContext }
+  | {
+      ok: false;
+      status: 401 | 403 | 409;
+      error:
+        | "unauthenticated"
+        | "quiz_not_finished"
+        | "not_winner"
+        | "no_winner";
+    };
+
 function msFromIso(value: string | null) {
   return value ? new Date(value).getTime() : null;
 }
@@ -1134,14 +1146,7 @@ export async function validateParticipantSession(
 
 export async function loadWinnerCertificateContext(
   participantSession: ParticipantSession | null,
-): Promise<
-  | { ok: true; context: WinnerCertificateContext }
-  | {
-      ok: false;
-      status: 401 | 403 | 409;
-      error: "unauthenticated" | "quiz_not_finished" | "not_winner";
-    }
-> {
+): Promise<WinnerCertificateResult> {
   if (!participantSession) {
     return { ok: false, status: 401, error: "unauthenticated" };
   }
@@ -1188,6 +1193,41 @@ export async function loadWinnerCertificateContext(
     return { ok: false, status: 403, error: "not_winner" };
   }
 
+  return buildWinnerCertificateContext(bundle, participant, winner);
+}
+
+export async function loadHostWinnerCertificateContext(): Promise<WinnerCertificateResult> {
+  const session = await loadCurrentPartySession();
+
+  if (!session || session.phase !== "finished") {
+    return { ok: false, status: 409, error: "quiz_not_finished" };
+  }
+
+  const bundle = await loadPartyBundle(session.id);
+  const state = rowToPartyState(bundle);
+  const winner = selectLeaderboardRows(state)[0];
+
+  if (!winner) {
+    return { ok: false, status: 409, error: "no_winner" };
+  }
+
+  const participant = bundle.participants.find(
+    (item) => item.id === winner.guestId,
+  );
+
+  if (!participant) {
+    return { ok: false, status: 409, error: "no_winner" };
+  }
+
+  return buildWinnerCertificateContext(bundle, participant, winner);
+}
+
+async function buildWinnerCertificateContext(
+  bundle: PartyBundle,
+  participant: ParticipantRow,
+  winner: ReturnType<typeof selectLeaderboardRows>[number],
+): Promise<WinnerCertificateResult> {
+  const supabase = createSupabaseServiceClient();
   let avatar: CertificateAvatar = {
     type: "fallback",
     initials: getAvatarInitials(participant.display_name),

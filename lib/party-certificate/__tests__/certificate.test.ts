@@ -77,7 +77,15 @@ test("English, Vietnamese, photo, preset, fallback, and long-name certificates a
 
 test("certificate endpoint derives identity server-side and sets private download headers", () => {
   const route = readFileSync("app/api/party/certificate/route.ts", "utf8");
+  const hostRoute = readFileSync(
+    "app/api/party/host/certificate/route.ts",
+    "utf8",
+  );
   const repository = readFileSync("lib/party-remote/repository.ts", "utf8");
+  const hostController = readFileSync(
+    "components/party/host/production-host-controller.tsx",
+    "utf8",
+  );
 
   assert.equal(route.includes("request.url"), false);
   assert.equal(route.includes("searchParams"), false);
@@ -93,6 +101,23 @@ test("certificate endpoint derives identity server-side and sets private downloa
   );
   assert.equal(repository.includes("winner.guestId !== participant.id"), true);
   assert.equal(repository.includes("download(participant.avatar_path)"), true);
+
+  assert.equal(hostRoute.includes("request.url"), false);
+  assert.equal(hostRoute.includes("searchParams"), false);
+  assert.equal(
+    hostRoute.includes('cookieStore.get("han_host_session")'),
+    true,
+  );
+  assert.equal(hostRoute.includes("verifyHostSessionCookie"), true);
+  assert.equal(hostRoute.includes("loadHostWinnerCertificateContext"), true);
+  assert.equal(hostRoute.includes('"Content-Type": "application/pdf"'), true);
+  assert.equal(hostRoute.includes('"Cache-Control": "private, no-store"'), true);
+  assert.equal(repository.includes("loadCurrentPartySession()"), true);
+  assert.equal(repository.includes('session.phase !== "finished"'), true);
+  assert.equal(
+    hostController.includes('href="/api/party/host/certificate"'),
+    true,
+  );
 });
 
 test("certificate uses persisted points and the configured question denominator", async () => {
