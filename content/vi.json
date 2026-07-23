@@ -258,23 +258,23 @@
         "id": "han-question-03",
         "enabled": true,
         "sortOrder": 3,
-        "prompt": "Han chào đời lúc mấy giờ?",
+        "prompt": "Mỗi khi thức dậy, điều đầu tiên Han tìm là gì?",
         "answers": [
           {
             "id": "option-a",
-            "label": "8 giờ 03 phút sáng"
+            "label": "Mẹ"
           },
           {
             "id": "option-b",
-            "label": "8 giờ 13 phút sáng"
+            "label": "Ba"
           },
           {
             "id": "option-c",
-            "label": "8 giờ 30 phút sáng"
+            "label": "Ti giả của Han"
           }
         ],
-        "correctAnswerId": "option-b",
-        "funFact": "Han chào đời chính xác lúc 8 giờ 13 phút sáng, mang đến một trong những khoảnh khắc hạnh phúc nhất của Ian và Jane."
+        "correctAnswerId": "option-c",
+        "funFact": "Không ít lần ba mẹ lục tung cả nhà để tìm chiếc ti giả. Đến khi quay lại thì mới phát hiện... Han đã ngậm nó ngon lành từ bao giờ!"
       },
       {
         "id": "han-question-04",

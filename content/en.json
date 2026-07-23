@@ -258,23 +258,23 @@
         "id": "han-question-03",
         "enabled": true,
         "sortOrder": 3,
-        "prompt": "What time was Han born?",
+        "prompt": "What is the first thing Han looks for when he wakes up?",
         "answers": [
           {
             "id": "option-a",
-            "label": "8:03 AM"
+            "label": "Mum"
           },
           {
             "id": "option-b",
-            "label": "8:13 AM"
+            "label": "Dad"
           },
           {
             "id": "option-c",
-            "label": "8:30 AM"
+            "label": "His dummy"
           }
         ],
-        "correctAnswerId": "option-b",
-        "funFact": "Han arrived at exactly 8:13 in the morning, creating one of the happiest moments in Ian and Jane’s lives."
+        "correctAnswerId": "option-c",
+        "funFact": "Mum and Dad often spend ages looking for Han’s dummy. Then they turn around and realise... it is already in his mouth!"
       },
       {
         "id": "han-question-04",
