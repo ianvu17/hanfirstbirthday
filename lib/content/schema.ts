@@ -16,8 +16,7 @@ const ScreensSchema = z.object({
     title: LocalizedStringSchema,
     subtitle: LocalizedStringSchema,
     primaryAction: LocalizedStringSchema,
-    heroPlaceholderLabel: LocalizedStringSchema,
-    heroPlaceholderAlt: LocalizedStringSchema,
+    heroPhotoAlt: LocalizedStringSchema,
   }),
   language: z.object({
     title: LocalizedStringSchema,

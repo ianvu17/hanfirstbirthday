@@ -25,8 +25,7 @@
       "title": "WHO IS TURNING ONE?!",
       "subtitle": "A tiny birthday surprise is waiting.",
       "primaryAction": "Let's go",
-      "heroPlaceholderLabel": "Han's photo will go here",
-      "heroPlaceholderAlt": "Decorative portrait frame reserved for a future approved photo of Han"
+      "heroPhotoAlt": "Photo of Han"
     },
     "language": {
       "title": "Choose your language",

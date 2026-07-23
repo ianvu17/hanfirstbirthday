@@ -192,6 +192,6 @@ Timeline fallback:
 
 Milestone 2 status:
 
-- No real photos or real Han assets were added.
+- The guest Welcome hero now uses Ian-provided Han photo `lib/assets/han1birthday.JPEG`.
 - Current placeholders are visual-system placeholders only.
 - Future production content should move approved asset references into locale content metadata or Supabase Storage records before use in guest-facing memory features.
